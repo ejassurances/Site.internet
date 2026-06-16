@@ -1,0 +1,56 @@
+---
+import { cabinet } from '../data/cabinet.js';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-slate-900 text-slate-300">
+  <div class="mx-auto max-w-6xl grid gap-10 px-4 py-12 lg:grid-cols-4 lg:px-8">
+    <div>
+      <p class="text-lg font-bold text-white">{cabinet.nom}</p>
+      <p class="mt-3 text-sm leading-relaxed">{cabinet.adresse}</p>
+      <p class="mt-3 text-sm">{cabinet.horaires}</p>
+    </div>
+
+    <div>
+      <p class="font-semibold text-white">Nos expertises</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a href="/assurance-emprunteur" class="hover:text-white">Assurance emprunteur</a></li>
+        <li><a href="/prevoyance" class="hover:text-white">Prévoyance</a></li>
+        <li><a href="/transmission" class="hover:text-white">Transmission de patrimoine</a></li>
+        <li><a href="/a-propos" class="hover:text-white">À propos</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="font-semibold text-white">Nous contacter</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a href={cabinet.telephoneHref} class="hover:text-white">{cabinet.telephone}</a></li>
+        <li><a href={`mailto:${cabinet.emails.cabinet}`} class="hover:text-white">{cabinet.emails.cabinet}</a></li>
+        <li><a href={`mailto:${cabinet.emails.serviceClient}`} class="hover:text-white">Service client</a></li>
+        <li><a href={`mailto:${cabinet.emails.sinistre}`} class="hover:text-white">Déclarer un sinistre</a></li>
+        <li><a href={`mailto:${cabinet.emails.prescripteur}`} class="hover:text-white">Devenir prescripteur</a></li>
+        <li><a href={`mailto:${cabinet.emails.recrutement}`} class="hover:text-white">Recrutement</a></li>
+        <li>
+          <a href={cabinet.espaceClientUrl} target="_blank" rel="noopener noreferrer" class="hover:text-white">
+            Espace client / prescripteur
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="font-semibold text-white">Informations légales</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a href="/informations-courtier" class="hover:text-white">Informations courtier</a></li>
+        <li><a href="/mentions-legales" class="hover:text-white">Mentions légales</a></li>
+        <li><a href="/confidentialite" class="hover:text-white">Politique de confidentialité</a></li>
+      </ul>
+      <p class="mt-3 text-xs text-slate-500">ORIAS n°{cabinet.orias} — vérifiable sur orias.fr</p>
+    </div>
+  </div>
+
+  <div class="border-t border-slate-800 px-4 py-6 text-center text-xs text-slate-500 lg:px-8">
+    © {currentYear} {cabinet.nom}. Tous droits réservés. Courtier en assurances, sous le contrôle de l'ACPR.
+  </div>
+</footer>

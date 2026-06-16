@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* Palette inspirée du logo EJ Partners Assurances : bleu marine élégant + touche or discrète. */
+@theme {
+  --color-brand-50: #eef1f6;
+  --color-brand-100: #d9e0ec;
+  --color-brand-200: #b3c1d9;
+  --color-brand-300: #8aa1c4;
+  --color-brand-600: #1c3a63;
+  --color-brand-700: #14294a;
+  --color-brand-800: #0f1f38;
+  --color-brand-900: #0a1626;
+
+  --color-gold-100: #f3ead0;
+  --color-gold-300: #ddc173;
+  --color-gold-400: #c9a227;
+  --color-gold-600: #a98420;
+}

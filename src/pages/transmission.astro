@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const faqItems = [
+  {
+    question: 'Pourquoi la transmission est-elle plus complexe pour un couple non marié ?',
+    answer:
+      "En l'absence de mariage ou de Pacs avec une clause adaptée, un partenaire survivant peut être taxé jusqu'à 60% sur l'héritage reçu, contrairement à un conjoint marié qui peut être exonéré. Des solutions d'assurance-vie permettent d'atténuer fortement cette fiscalité.",
+  },
+  {
+    question: "Comment protéger un enfant né par PMA, GPA ou adoption dans la transmission ?",
+    answer:
+      "Nous structurons la clause bénéficiaire et la répartition du contrat pour que chaque enfant du foyer soit traité équitablement, en cohérence avec la situation de filiation et les objectifs familiaux.",
+  },
+  {
+    question: "L'assurance-vie est-elle adaptée aux familles recomposées ?",
+    answer:
+      "Oui, c'est souvent l'outil le plus flexible pour organiser une répartition sur-mesure entre partenaire survivant et enfants de différentes unions, en dehors des règles strictes de la succession légale.",
+  },
+];
+---
+
+<Layout
+  title="Transmission de patrimoine pour familles modernes — EJ Partners Assurances"
+  description="Organisez une transmission de patrimoine équitable pour votre partenaire survivant et vos enfants (PMA, GPA, adoption, famille recomposée). Solutions d'assurance-vie adaptées à l'évolution des familles."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Transmission</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Protégez votre partenaire survivant et organisez une transmission équitable.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Une situation que nous connaissons bien</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Thomas et David vivent en concubinage depuis 12 ans. Ils ont construit ensemble un patrimoine important,
+        mais sans Pacs ni mariage, l'un d'eux pourrait être taxé à 60% sur tout ce qu'il hériterait de l'autre.
+        Ils s'interrogent aussi sur la façon de transmettre équitablement à l'enfant de Thomas, né d'une précédente
+        union, et à celui qu'ils ont adopté ensemble.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Notre solution</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous mettons en place des contrats d'assurance-vie avec une clause bénéficiaire qui protège le partenaire
+        survivant en limitant l'impact fiscal, et qui organise une répartition équitable entre les enfants, quelle
+        que soit leur situation de filiation. Nous travaillons en complément, si besoin, avec votre notaire pour
+        sécuriser l'ensemble du dispositif.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Le bénéfice pour vous</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Une protection renforcée du partenaire survivant, marié ou non.</li>
+        <li>— Une répartition pensée pour tous vos enfants, sans distinction d'origine familiale.</li>
+        <li>— Une fiscalité optimisée grâce aux outils d'assurance-vie adaptés.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-2xl">
+      <Testimonial
+        quote="On a pu organiser la transmission pour nos deux enfants sans léser personne."
+        author="Thomas & David (témoignage à venir)"
+      />
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Questions fréquentes</h2>
+      <Faq items={faqItems} />
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>
