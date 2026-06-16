@@ -8,7 +8,7 @@ import { cabinet } from '../data/cabinet.js';
   title="Contact et rendez-vous — EJ Partners Assurances"
   description="Prenez rendez-vous avec EJ Partners Assurances, courtier dédié aux familles LGBT à Eaubonne : en ligne, par téléphone ou à domicile, du lundi au vendredi."
 >
-  <section class="bg-violet-50 px-4 py-14 lg:px-8">
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
     <div class="mx-auto max-w-4xl text-center">
       <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Prendre rendez-vous</h1>
       <p class="mt-4 text-lg text-slate-600">En ligne, par téléphone ou à domicile — sur rendez-vous uniquement.</p>
@@ -39,7 +39,7 @@ import { cabinet } from '../data/cabinet.js';
             name="nom"
             type="text"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-violet-500 focus:outline-none"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
           />
         </div>
 
@@ -50,7 +50,7 @@ import { cabinet } from '../data/cabinet.js';
             name="email"
             type="email"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-violet-500 focus:outline-none"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
           />
         </div>
 
@@ -61,7 +61,7 @@ import { cabinet } from '../data/cabinet.js';
             name="telephone"
             type="tel"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-violet-500 focus:outline-none"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
           />
         </div>
 
@@ -71,7 +71,7 @@ import { cabinet } from '../data/cabinet.js';
             id="besoin"
             name="besoin"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-violet-500 focus:outline-none"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
           >
             <option value="">Sélectionnez une option</option>
             <option value="assurance-emprunteur">Assurance emprunteur</option>
@@ -85,15 +85,15 @@ import { cabinet } from '../data/cabinet.js';
           <span class="block text-sm font-semibold text-slate-700">Type de rendez-vous souhaité *</span>
           <div class="mt-2 flex flex-col gap-2 sm:flex-row sm:gap-6">
             <label class="flex items-center gap-2 text-sm text-slate-600">
-              <input type="radio" name="type_rdv" value="en_ligne" required class="text-violet-600" />
+              <input type="radio" name="type_rdv" value="en_ligne" required class="text-brand-600" />
               En ligne
             </label>
             <label class="flex items-center gap-2 text-sm text-slate-600">
-              <input type="radio" name="type_rdv" value="telephone" required class="text-violet-600" />
+              <input type="radio" name="type_rdv" value="telephone" required class="text-brand-600" />
               Par téléphone
             </label>
             <label class="flex items-center gap-2 text-sm text-slate-600">
-              <input type="radio" name="type_rdv" value="domicile" required class="text-violet-600" />
+              <input type="radio" name="type_rdv" value="domicile" required class="text-brand-600" />
               À domicile
             </label>
           </div>
@@ -105,22 +105,22 @@ import { cabinet } from '../data/cabinet.js';
             id="message"
             name="message"
             rows="4"
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-violet-500 focus:outline-none"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
           ></textarea>
         </div>
 
         <label class="flex items-start gap-3 text-sm text-slate-600">
-          <input type="checkbox" name="consentement_rgpd" required class="mt-1 text-violet-600" />
+          <input type="checkbox" name="consentement_rgpd" required class="mt-1 text-brand-600" />
           <span>
             J'accepte que mes données soient utilisées par EJ Partners Assurances dans le cadre du traitement de
             ma demande, conformément à la
-            <a href="/confidentialite" class="text-violet-700 underline">politique de confidentialité</a>. *
+            <a href="/confidentialite" class="text-brand-700 underline">politique de confidentialité</a>. *
           </span>
         </label>
 
         <button
           type="submit"
-          class="mt-2 inline-flex items-center justify-center rounded-full bg-violet-700 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-800"
+          class="mt-2 inline-flex items-center justify-center rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800"
         >
           Envoyer ma demande de rendez-vous
         </button>
@@ -132,8 +132,8 @@ import { cabinet } from '../data/cabinet.js';
           <ul class="mt-4 space-y-3 text-sm text-slate-600">
             <li><strong class="text-slate-800">Cabinet :</strong> {cabinet.nom}</li>
             <li><strong class="text-slate-800">Adresse :</strong> {cabinet.adresse}</li>
-            <li><strong class="text-slate-800">Téléphone :</strong> <a href={cabinet.telephoneHref} class="text-violet-700 hover:underline">{cabinet.telephone}</a></li>
-            <li><strong class="text-slate-800">Email :</strong> <a href={`mailto:${cabinet.emails.cabinet}`} class="text-violet-700 hover:underline">{cabinet.emails.cabinet}</a></li>
+            <li><strong class="text-slate-800">Téléphone :</strong> <a href={cabinet.telephoneHref} class="text-brand-700 hover:underline">{cabinet.telephone}</a></li>
+            <li><strong class="text-slate-800">Email :</strong> <a href={`mailto:${cabinet.emails.cabinet}`} class="text-brand-700 hover:underline">{cabinet.emails.cabinet}</a></li>
             <li><strong class="text-slate-800">Horaires :</strong> {cabinet.horaires}</li>
           </ul>
         </div>
@@ -141,14 +141,14 @@ import { cabinet } from '../data/cabinet.js';
         <div class="rounded-2xl border border-slate-200 p-6">
           <h2 class="text-lg font-bold text-slate-900">Autres contacts</h2>
           <ul class="mt-4 space-y-3 text-sm text-slate-600">
-            <li><strong class="text-slate-800">Service client :</strong> <a href={`mailto:${cabinet.emails.serviceClient}`} class="text-violet-700 hover:underline">{cabinet.emails.serviceClient}</a></li>
-            <li><strong class="text-slate-800">Sinistre :</strong> <a href={`mailto:${cabinet.emails.sinistre}`} class="text-violet-700 hover:underline">{cabinet.emails.sinistre}</a></li>
-            <li><strong class="text-slate-800">RGPD / conformité :</strong> <a href={`mailto:${cabinet.emails.conformite}`} class="text-violet-700 hover:underline">{cabinet.emails.conformite}</a></li>
-            <li><strong class="text-slate-800">Devenir prescripteur :</strong> <a href={`mailto:${cabinet.emails.prescripteur}`} class="text-violet-700 hover:underline">{cabinet.emails.prescripteur}</a></li>
-            <li><strong class="text-slate-800">Recrutement :</strong> <a href={`mailto:${cabinet.emails.recrutement}`} class="text-violet-700 hover:underline">{cabinet.emails.recrutement}</a></li>
+            <li><strong class="text-slate-800">Service client :</strong> <a href={`mailto:${cabinet.emails.serviceClient}`} class="text-brand-700 hover:underline">{cabinet.emails.serviceClient}</a></li>
+            <li><strong class="text-slate-800">Sinistre :</strong> <a href={`mailto:${cabinet.emails.sinistre}`} class="text-brand-700 hover:underline">{cabinet.emails.sinistre}</a></li>
+            <li><strong class="text-slate-800">RGPD / conformité :</strong> <a href={`mailto:${cabinet.emails.conformite}`} class="text-brand-700 hover:underline">{cabinet.emails.conformite}</a></li>
+            <li><strong class="text-slate-800">Devenir prescripteur :</strong> <a href={`mailto:${cabinet.emails.prescripteur}`} class="text-brand-700 hover:underline">{cabinet.emails.prescripteur}</a></li>
+            <li><strong class="text-slate-800">Recrutement :</strong> <a href={`mailto:${cabinet.emails.recrutement}`} class="text-brand-700 hover:underline">{cabinet.emails.recrutement}</a></li>
             <li>
               <strong class="text-slate-800">Espace client / prescripteur :</strong>
-              <a href={cabinet.espaceClientUrl} target="_blank" rel="noopener noreferrer" class="text-violet-700 hover:underline">
+              <a href={cabinet.espaceClientUrl} target="_blank" rel="noopener noreferrer" class="text-brand-700 hover:underline">
                 moncompte.ej-assurances.fr
               </a>
             </li>
