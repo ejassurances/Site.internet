@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const faqItems = [
+  {
+    question: 'Sommes-nous obligés d\'être mariés pour souscrire une assurance emprunteur à deux ?',
+    answer:
+      "Non. Que vous soyez mariés, pacsés ou en concubinage, vous pouvez co-emprunter et être assurés ensemble. Nous adaptons la quotité d'assurance de chacun à votre situation réelle, quel que soit votre statut.",
+  },
+  {
+    question: "L'orientation sexuelle peut-elle influencer le tarif ou l'acceptation du dossier ?",
+    answer:
+      "Non, ce critère n'a aucune incidence légale sur l'évaluation d'un dossier d'assurance emprunteur. Nous sélectionnons des partenaires assureurs qui appliquent une tarification fondée uniquement sur des critères médicaux et financiers.",
+  },
+  {
+    question: "Que se passe-t-il en cas de séparation pour la part de l'autre co-emprunteur ?",
+    answer:
+      "Nous vous accompagnons pour adapter ou désolidariser le contrat en cas de rachat de soulte ou de séparation, afin que la couverture reste cohérente avec la nouvelle répartition du crédit.",
+  },
+];
+---
+
+<Layout
+  title="Assurance emprunteur pour couples LGBT — EJ Partners Assurances"
+  description="Assurance emprunteur pour couples de même sexe, mariés, pacsés ou en concubinage : protégez votre crédit immobilier sans discrimination. Cabinet de courtage dédié aux familles LGBT à Eaubonne."
+>
+  <section class="bg-violet-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Assurance emprunteur</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Protégez votre projet immobilier à deux, quel que soit votre statut juridique.
+      </p>
+    </div>
+  </section>
+
+  <!-- Situation concrète -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Une situation que nous connaissons bien</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Léa et Inès achètent leur premier appartement ensemble. Pacsées depuis deux ans, elles co-emprunteuses à
+        parts égales. Leur banque leur propose un contrat groupe standard, sans tenir compte du fait qu'Inès,
+        non-fumeuse depuis 3 ans, pourrait bénéficier d'un tarif plus avantageux en délégation d'assurance — et
+        sans qu'on leur explique clairement comment répartir les quotités en cas de séparation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Solution -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Notre solution</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous comparons les offres du marché en délégation d'assurance pour trouver la couverture la plus adaptée à
+        chaque co-emprunteur, sans jamais tenir compte de l'orientation sexuelle ou du statut marital dans
+        l'évaluation du dossier. Nous vous aidons à définir une répartition des quotités cohérente avec votre
+        apport respectif et vos revenus, et à anticiper les scénarios de séparation ou de rachat de soulte.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bénéfice -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Le bénéfice pour vous</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Une couverture juste, fondée sur votre situation réelle et non sur un modèle standard.</li>
+        <li>— Des économies potentielles grâce à la délégation d'assurance.</li>
+        <li>— Une tranquillité d'esprit en cas d'imprévu, pour vous et pour votre partenaire.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Témoignage -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-2xl">
+      <Testimonial
+        quote="On nous a enfin expliqué comment répartir les quotités sans préjuger de notre couple."
+        author="Léa & Inès (témoignage à venir)"
+      />
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Questions fréquentes</h2>
+      <Faq items={faqItems} />
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>

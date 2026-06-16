@@ -1,0 +1,21 @@
+---
+const points = [
+  { label: 'Accompagnement personnalisé et sans jugement' },
+  { label: 'Sur rendez-vous : en ligne, par téléphone ou à domicile' },
+  { label: 'Sans engagement' },
+  { label: 'Réponse sous 24-48h' },
+];
+---
+
+<div class="bg-rose-50 border border-rose-100 rounded-2xl px-6 py-5">
+  <ul class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-8 text-sm font-medium text-violet-900">
+    {points.map((point) => (
+      <li class="flex items-center gap-2">
+        <svg class="h-5 w-5 flex-shrink-0 text-violet-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.5 7.6a1 1 0 0 1-1.42.006l-3.5-3.5a1 1 0 1 1 1.414-1.414l2.793 2.793 6.793-6.886a1 1 0 0 1 1.414-.013Z" clip-rule="evenodd" />
+        </svg>
+        {point.label}
+      </li>
+    ))}
+  </ul>
+</div>
