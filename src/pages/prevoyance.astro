@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Faq from '../components/Faq.astro';
-import Testimonial from '../components/Testimonial.astro';
 
 const faqItems = [
   {
@@ -24,8 +23,8 @@ const faqItems = [
 ---
 
 <Layout
-  title="Prévoyance pour familles modernes — EJ Partners Assurances"
-  description="Prévoyance pour familles recomposées, monoparentales ou construites par adoption, PMA ou GPA : protégez votre partenaire et chacun de vos enfants. Désignation de bénéficiaires, maintien du niveau de vie."
+  title="Prévoyance | EJ Partners Assurances"
+  description="Prévoyance pour familles recomposées, monoparentales ou construites par adoption, PMA ou GPA : protégez votre partenaire et vos enfants."
 >
   <section class="bg-brand-50 px-4 py-14 lg:px-8">
     <div class="mx-auto max-w-4xl text-center">
@@ -68,15 +67,10 @@ const faqItems = [
         <li>— Un maintien du niveau de vie du foyer en cas de décès, d'invalidité ou d'arrêt de travail.</li>
         <li>— La certitude que chaque enfant du foyer est pris en compte.</li>
       </ul>
-    </div>
-  </section>
-
-  <section class="bg-slate-50 px-4 py-12 lg:px-8">
-    <div class="mx-auto max-w-2xl">
-      <Testimonial
-        quote="On a enfin pu désigner nos deux enfants sans avoir à justifier notre histoire familiale."
-        author="Marc & Julien (témoignage à venir)"
-      />
+      <p class="mt-6 text-sm text-slate-500">
+        Vous êtes en situation de coparentalité ou de pluriparentalité ?
+        <a href="/coparentalite" class="font-semibold text-brand-700 hover:underline">Découvrez nos solutions dédiées au parent social →</a>
+      </p>
     </div>
   </section>
 

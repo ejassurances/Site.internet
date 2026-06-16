@@ -7,8 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: remplacer par le nom de domaine définitif avant mise en production.
-  site: 'https://www.ej-assurances.fr',
+  site: 'https://ej-assurances.fr',
   vite: {
     plugins: [tailwindcss()]
   },

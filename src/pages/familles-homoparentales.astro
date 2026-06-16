@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+
+const faqItems = [
+  {
+    question: "L'orientation sexuelle ou le sexe des parents a-t-il un impact sur les contrats proposés ?",
+    answer:
+      "Non, aucun impact légal sur la tarification ou l'acceptation d'un dossier. Nous sélectionnons des partenaires assureurs qui évaluent uniquement sur des critères médicaux et financiers, et nous structurons les contrats pour refléter fidèlement votre réalité familiale.",
+  },
+  {
+    question: "Comment protéger le parent non biologique en couple homoparental ?",
+    answer:
+      "Par une désignation nominative dans les clauses bénéficiaires de prévoyance et d'assurance-vie, indépendamment de l'état d'avancement de la reconnaissance légale du lien de filiation (adoption, PMA).",
+  },
+  {
+    question: "Proposez-vous un accompagnement spécifique pour les couples mariés, pacsés ou en concubinage ?",
+    answer:
+      "Oui, quel que soit votre statut juridique, nous adaptons quotités d'assurance emprunteur, clauses bénéficiaires et stratégie de transmission à votre situation réelle.",
+  },
+];
+---
+
+<Layout
+  title="Assurance familles homoparentales | EJ Partners Assurances"
+  description="Assurance emprunteur, prévoyance et transmission pour couples et familles homoparentales : une protection adaptée, sans jugement."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Assurance pour familles homoparentales</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Une protection pensée pour les couples de même sexe et les familles homoparentales, à chaque étape de
+        votre projet.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Une expertise dédiée</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        EJ Partners Assurances est le premier cabinet de courtage à concevoir des solutions d'assurance emprunteur,
+        de prévoyance et de transmission de patrimoine réellement adaptées aux familles homoparentales : couples de
+        même sexe mariés, pacsés ou en concubinage, parcours de PMA ou GPA, adoption, parent non biologique en
+        cours de reconnaissance légale.
+      </p>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous connaissons ces situations dans le détail et construisons avec vous des contrats qui protègent
+        chaque parent et chaque enfant, sans que vous ayez besoin de justifier votre histoire familiale.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+      <h2 class="text-center text-2xl font-bold text-slate-900">Nos 3 expertises</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
+        <a href="/assurance-emprunteur" class="flex flex-col rounded-2xl bg-white p-6 shadow-sm border border-slate-100 hover:border-brand-300 transition-colors">
+          <h3 class="font-bold text-brand-800">Assurance emprunteur</h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-600">Protégez votre crédit immobilier en tant que co-emprunteurs.</p>
+        </a>
+        <a href="/prevoyance" class="flex flex-col rounded-2xl bg-white p-6 shadow-sm border border-slate-100 hover:border-brand-300 transition-colors">
+          <h3 class="font-bold text-brand-800">Prévoyance</h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-600">Protégez votre partenaire et chacun de vos enfants.</p>
+        </a>
+        <a href="/transmission" class="flex flex-col rounded-2xl bg-white p-6 shadow-sm border border-slate-100 hover:border-brand-300 transition-colors">
+          <h3 class="font-bold text-brand-800">Transmission</h3>
+          <p class="mt-3 text-sm leading-relaxed text-slate-600">Organisez une transmission équitable pour votre famille.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Questions fréquentes</h2>
+      <Faq items={faqItems} />
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>
