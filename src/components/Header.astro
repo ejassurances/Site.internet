@@ -13,10 +13,10 @@ const navItems = [
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-rose-100">
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-brand-100">
   <div class="mx-auto max-w-6xl flex items-center justify-between gap-4 px-4 py-3 lg:px-8">
-    <a href="/" class="flex items-center gap-2 font-bold text-lg text-violet-800">
-      <span class="inline-block h-3 w-3 rounded-full bg-gradient-to-br from-rose-400 via-amber-400 to-violet-500" aria-hidden="true"></span>
+    <a href="/" class="flex items-center gap-2 font-serif text-lg font-bold tracking-wide text-brand-900">
+      <span class="h-5 w-px bg-gold-400" aria-hidden="true"></span>
       EJ Partners Assurances
     </a>
 
@@ -25,9 +25,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
         <a
           href={item.href}
           class:list={[
-            'hover:text-violet-700 transition-colors',
+            'hover:text-brand-700 transition-colors',
             (item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href)) &&
-              'text-violet-800 font-semibold',
+              'text-brand-800 font-semibold',
           ]}
         >
           {item.label}
@@ -40,13 +40,13 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
         href={cabinet.espaceClientUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="hidden sm:inline-flex items-center rounded-full border border-violet-300 px-4 py-2 text-sm font-semibold text-violet-700 hover:bg-violet-50 transition-colors"
+        class="hidden sm:inline-flex items-center rounded-full border border-brand-300 px-4 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50 transition-colors"
       >
         Espace client
       </a>
       <a
         href="/contact"
-        class="inline-flex items-center rounded-full bg-violet-700 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800 transition-colors"
+        class="inline-flex items-center rounded-full bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-800 transition-colors"
       >
         Prendre rendez-vous
       </a>
@@ -55,7 +55,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   <nav class="lg:hidden flex gap-4 overflow-x-auto px-4 pb-3 text-sm font-medium text-slate-700">
     {navItems.map((item) => (
-      <a href={item.href} class="whitespace-nowrap hover:text-violet-700">{item.label}</a>
+      <a href={item.href} class="whitespace-nowrap hover:text-brand-700">{item.label}</a>
     ))}
   </nav>
 </header>

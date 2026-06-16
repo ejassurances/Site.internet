@@ -22,7 +22,7 @@ import { cabinet } from '../data/cabinet.js';
       <p class="mt-3 text-slate-600 leading-relaxed">
         {cabinet.nom} est immatriculé à l'ORIAS (Organisme pour le Registre des Intermédiaires en Assurance) sous
         le numéro <strong>{cabinet.orias}</strong>, en qualité de courtier d'assurances. Cette immatriculation est
-        vérifiable sur <a href={cabinet.oriasUrl} target="_blank" rel="noopener noreferrer" class="text-violet-700 underline">{cabinet.oriasUrl}</a>.
+        vérifiable sur <a href={cabinet.oriasUrl} target="_blank" rel="noopener noreferrer" class="text-brand-700 underline">{cabinet.oriasUrl}</a>.
       </p>
 
       <h2 class="mt-8 text-xl font-bold text-slate-900">Autorité de contrôle</h2>
@@ -34,7 +34,7 @@ import { cabinet } from '../data/cabinet.js';
       <h2 class="mt-8 text-xl font-bold text-slate-900">Médiation</h2>
       <p class="mt-3 text-slate-600 leading-relaxed">
         En cas de réclamation non résolue auprès du cabinet, vous pouvez saisir gratuitement
-        <a href={cabinet.mediateur.url} target="_blank" rel="noopener noreferrer" class="text-violet-700 underline">
+        <a href={cabinet.mediateur.url} target="_blank" rel="noopener noreferrer" class="text-brand-700 underline">
           {cabinet.mediateur.nom}
         </a>.
       </p>
@@ -49,7 +49,7 @@ import { cabinet } from '../data/cabinet.js';
       <h2 class="mt-8 text-xl font-bold text-slate-900">Réclamations</h2>
       <p class="mt-3 text-slate-600 leading-relaxed">
         Pour toute réclamation, contactez notre service client à
-        <a href={`mailto:${cabinet.emails.serviceClient}`} class="text-violet-700 underline">{cabinet.emails.serviceClient}</a>.
+        <a href={`mailto:${cabinet.emails.serviceClient}`} class="text-brand-700 underline">{cabinet.emails.serviceClient}</a>.
         Un accusé de réception vous sera adressé dans les 10 jours ouvrables, et une réponse sur le fond dans un
         délai de 2 mois.
       </p>
