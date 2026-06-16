@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const faqItems = [
+  {
+    question: 'Mon/ma partenaire non marié(e) peut-il/elle être désigné(e) bénéficiaire ?',
+    answer:
+      "Oui. En prévoyance, vous pouvez librement désigner la personne de votre choix comme bénéficiaire, y compris votre partenaire si vous n'êtes pas mariés. Nous vous aidons à rédiger une clause bénéficiaire précise pour éviter toute ambiguïté.",
+  },
+  {
+    question: 'Le parent non biologique ou non encore reconnu légalement peut-il être protégé ?',
+    answer:
+      "Oui, via une désignation nominative dans le contrat de prévoyance, indépendamment de la reconnaissance légale du lien de filiation, qui peut être en cours (adoption, démarche PMA).",
+  },
+  {
+    question: "Que couvre la prévoyance en cas d'arrêt de travail ou d'invalidité ?",
+    answer:
+      "Elle permet de maintenir une partie de vos revenus pour continuer à faire face aux charges du foyer (crédit, frais liés aux enfants) pendant un arrêt de travail prolongé ou une invalidité.",
+  },
+];
+---
+
+<Layout
+  title="Prévoyance pour familles homoparentales — EJ Partners Assurances"
+  description="Prévoyance pour familles LGBT : protégez votre partenaire et vos enfants, y compris le parent non biologique ou non encore reconnu légalement. Désignation de bénéficiaires, maintien du niveau de vie."
+>
+  <section class="bg-violet-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Prévoyance</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Protégez votre partenaire et vos enfants, quelle que soit la composition de votre famille.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Une situation que nous connaissons bien</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Marc et Julien élèvent ensemble la fille de Marc, née d'une précédente union, et leur fils né par GPA à
+        l'étranger, en cours de reconnaissance en France. Julien s'inquiète : en cas de décès de Marc, sa fille
+        serait-elle protégée ? Et lui, en tant que père non encore reconnu légalement de leur fils, pourrait-il
+        être désigné bénéficiaire d'un contrat pour continuer à subvenir aux besoins des enfants ?
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Notre solution</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous rédigeons avec vous une clause bénéficiaire sur-mesure, qui désigne nommément votre partenaire et
+        chacun de vos enfants — indépendamment de leur statut de filiation au moment de la souscription. Nous
+        dimensionnons les garanties décès, invalidité et arrêt de travail pour maintenir le niveau de vie du foyer
+        en cas de coup dur.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Le bénéfice pour vous</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Une protection nominative qui ne dépend pas uniquement du lien de filiation légal.</li>
+        <li>— Un maintien du niveau de vie du foyer en cas de décès, d'invalidité ou d'arrêt de travail.</li>
+        <li>— La certitude que chaque enfant du foyer est pris en compte.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-2xl">
+      <Testimonial
+        quote="On a enfin pu désigner nos deux enfants sans avoir à justifier notre histoire familiale."
+        author="Marc & Julien (témoignage à venir)"
+      />
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Questions fréquentes</h2>
+      <Faq items={faqItems} />
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>

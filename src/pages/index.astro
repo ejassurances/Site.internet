@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Reassurance from '../components/Reassurance.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const expertises = [
+  {
+    href: '/assurance-emprunteur',
+    title: 'Assurance emprunteur',
+    description:
+      "Protégez votre crédit immobilier en tant que co-emprunteurs, mariés, pacsés ou en concubinage, sans discrimination liée à votre orientation sexuelle.",
+  },
+  {
+    href: '/prevoyance',
+    title: 'Prévoyance',
+    description:
+      "Protégez votre partenaire et vos enfants — y compris le parent non biologique ou non légalement reconnu — en cas de décès, d'invalidité ou d'arrêt de travail.",
+  },
+  {
+    href: '/transmission',
+    title: 'Transmission',
+    description:
+      "Organisez une transmission de patrimoine équitable pour votre partenaire survivant et vos enfants, qu'ils soient nés de PMA, GPA, adoption ou d'une famille recomposée.",
+  },
+];
+---
+
+<Layout
+  title="EJ Partners Assurances — L'assurance pensée pour les familles LGBT"
+  description="Cabinet de courtage en assurances dédié aux couples et familles LGBT : assurance emprunteur, prévoyance et transmission de patrimoine. Sur rendez-vous, en ligne, par téléphone ou à domicile."
+>
+  <!-- Hero -->
+  <section class="bg-gradient-to-br from-violet-50 via-rose-50 to-amber-50">
+    <div class="mx-auto max-w-6xl px-4 py-16 lg:flex lg:items-center lg:gap-12 lg:px-8 lg:py-24">
+      <div class="lg:w-1/2">
+        <h1 class="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
+          L'assurance pensée pour les <span class="text-violet-700">familles LGBT</span>
+        </h1>
+        <p class="mt-5 text-lg text-slate-600">
+          EJ Partners Assurances accompagne les couples mariés, pacsés ou en concubinage, et les familles
+          homoparentales (adoption, PMA, GPA, coparentalité, familles recomposées) dans le choix de solutions
+          d'assurance adaptées à leur réalité — sans clichés, sans jugement.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href="/contact"
+            class="inline-flex items-center rounded-full bg-violet-700 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-800"
+          >
+            Prendre rendez-vous (en ligne, par téléphone ou à domicile)
+          </a>
+          <a
+            href="/a-propos"
+            class="inline-flex items-center rounded-full border border-violet-300 px-6 py-3 text-sm font-semibold text-violet-700 hover:bg-violet-50"
+          >
+            Découvrir notre approche
+          </a>
+        </div>
+      </div>
+      <div class="mt-12 lg:mt-0 lg:w-1/2">
+        <!-- Placeholder visuel : photo de famille LGBT diverse, format paysage 800x600px -->
+        <div class="aspect-[4/3] w-full rounded-3xl bg-gradient-to-br from-rose-200 via-amber-100 to-violet-200 shadow-inner"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Réassurance -->
+  <section class="px-4 py-10 lg:px-8">
+    <div class="mx-auto max-w-4xl">
+      <Reassurance />
+    </div>
+  </section>
+
+  <!-- Expertises -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-2xl font-bold text-slate-900 sm:text-3xl">Nos 3 expertises</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-center text-slate-600">
+        Des solutions construites autour des enjeux juridiques et humains propres aux familles LGBT, là où les
+        assureurs classiques proposent des contrats standards souvent inadaptés.
+      </p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        {expertises.map((item) => (
+          <a
+            href={item.href}
+            class="flex flex-col rounded-2xl border border-slate-200 p-6 hover:border-violet-300 hover:shadow-md transition-all"
+          >
+            <h3 class="text-lg font-bold text-violet-800">{item.title}</h3>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{item.description}</p>
+            <span class="mt-4 text-sm font-semibold text-violet-700">En savoir plus →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pourquoi nous -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h2 class="text-2xl font-bold text-slate-900 sm:text-3xl">Pourquoi un courtier dédié aux familles LGBT ?</h2>
+      <p class="mt-4 text-slate-600 leading-relaxed">
+        Les contrats d'assurance standards ne tiennent pas toujours compte des réalités juridiques des couples non
+        mariés, des parents non biologiques ou des familles construites par PMA, GPA, adoption ou coparentalité.
+        Nous connaissons ces situations dans le détail et construisons avec vous des solutions réellement adaptées.
+      </p>
+    </div>
+  </section>
+
+  <!-- Témoignage -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-2xl">
+      <Testimonial
+        quote="Enfin un courtier qui a compris notre situation sans qu'on ait besoin de tout réexpliquer depuis le début."
+        author="Camille & Sarah, propriétaires à Eaubonne (témoignage à venir)"
+      />
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>
