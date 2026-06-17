@@ -1,0 +1,78 @@
+---
+import Layout from '../components/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout title="Accueil" description="Courtier spécialisé en assurance coparentalité et familles recomposées à Eaubonne.">
+  <Header />
+  <main class="mx-auto max-w-7xl px-6 py-10 lg:py-16">
+    <section class="grid gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
+      <div class="space-y-6">
+        <p class="inline-flex rounded-full bg-softgreen-100 px-4 py-1 text-sm font-semibold text-softgreen-800">Courtier dédié aux familles séparées et recomposées</p>
+        <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Accompagner votre famille recomposée avec une assurance sereine</h1>
+        <p class="max-w-2xl text-lg leading-8 text-slate-700">EJ Partners Assurances propose un accompagnement personnalisé pour les familles en coparentalité, afin de protéger votre crédit, sécuriser l’avenir des enfants et organiser une transmission équitable.</p>
+        <div class="flex flex-col gap-4 sm:flex-row">
+          <a href="/contact" class="inline-flex items-center justify-center rounded-full bg-brand-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/20 transition hover:bg-brand-700">Prendre un rendez-vous gratuit</a>
+          <a href="#expertises" class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100">Découvrir nos expertises</a>
+        </div>
+      </div>
+      <div class="rounded-3xl bg-gradient-to-br from-slate-100 via-white to-softgreen-50 p-6 shadow-xl shadow-slate-200/80">
+        <div class="flex h-full min-h-[320px] flex-col justify-between rounded-3xl bg-white p-6">
+          <div class="rounded-3xl bg-slate-100 p-8 text-center text-slate-500">Visuel famille/protection 1200×800</div>
+          <div class="mt-6 space-y-4 text-left">
+            <p class="text-lg font-semibold text-slate-900">Accompagnement sur mesure</p>
+            <p class="text-slate-600">Rendez-vous en ligne, par téléphone ou à domicile, sans engagement en agence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="expertises" class="mt-16 space-y-8">
+      <div class="grid gap-6 md:grid-cols-3">
+        <article class="rounded-3xl bg-white p-8 shadow-sm shadow-slate-200/60">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-600">Assurance emprunteur</p>
+          <h2 class="mt-4 text-2xl font-semibold text-slate-900">Co-emprunteurs séparés</h2>
+          <p class="mt-3 text-slate-600">Protégez un prêt immobilier en situation de coparentalité ou de famille recomposée.</p>
+          <a href="/assurance-emprunteur" class="mt-6 inline-flex text-sm font-semibold text-brand-600 hover:text-brand-700">Voir cette expertise →</a>
+        </article>
+        <article class="rounded-3xl bg-white p-8 shadow-sm shadow-slate-200/60">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-softgreen-600">Prévoyance</p>
+          <h2 class="mt-4 text-2xl font-semibold text-slate-900">Sécuriser les revenus</h2>
+          <p class="mt-3 text-slate-600">Garantir le quotidien des enfants en cas de décès, invalidité ou arrêt de travail.</p>
+          <a href="/prevoyance" class="mt-6 inline-flex text-sm font-semibold text-brand-600 hover:text-brand-700">Voir cette expertise →</a>
+        </article>
+        <article class="rounded-3xl bg-white p-8 shadow-sm shadow-slate-200/60">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-700">Transmission</p>
+          <h2 class="mt-4 text-2xl font-semibold text-slate-900">Organiser l’héritage</h2>
+          <p class="mt-3 text-slate-600">Construire un partage transparent entre enfants de différentes unions.</p>
+          <a href="/transmission" class="mt-6 inline-flex text-sm font-semibold text-brand-600 hover:text-brand-700">Voir cette expertise →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="mt-16 rounded-[2rem] bg-brand-600 px-8 py-12 text-white shadow-2xl shadow-brand-500/20">
+      <div class="grid gap-8 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
+        <div>
+          <p class="text-sm uppercase tracking-[0.24em] text-brand-200">Réassurance</p>
+          <h2 class="mt-4 text-3xl font-semibold">Accompagnement personnalisé, sans engagement</h2>
+          <p class="mt-4 max-w-2xl text-lg leading-8 text-brand-100">Nos clients reçoivent une réponse sous 24-48h. Un expert dédié analyse votre situation familiale, juridique et émotionnelle pour proposer des solutions claires.</p>
+        </div>
+        <div class="space-y-4 rounded-3xl bg-white/10 p-6 text-sm text-brand-100">
+          <div class="rounded-3xl bg-white/15 p-5">
+            <p class="font-semibold">Expertise</p>
+            <p>Familles séparées / recomposées, situation juridique complexe.</p>
+          </div>
+          <div class="rounded-3xl bg-white/15 p-5">
+            <p class="font-semibold">Disponibilité</p>
+            <p>Rendez-vous en ligne, par téléphone ou à domicile.</p>
+          </div>
+          <div class="rounded-3xl bg-white/15 p-5">
+            <p class="font-semibold">Réponse rapide</p>
+            <p>Proposition personnalisée sous 48h.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

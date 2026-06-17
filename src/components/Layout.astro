@@ -1,0 +1,24 @@
+---
+import '../styles/global.css';
+const { title, description, pathname } = Astro.props;
+const pageTitle = title ? `${title} | EJ Partners Assurances` : 'EJ Partners Assurances';
+const pageDescription = description ?? 'Courtier spécialisé en assurance famille séparée et recomposée : emprunteur, prévoyance, transmission.';
+const canonical = `https://ej-partners-assurances.fr${pathname ?? '/'}`;
+---
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="keywords" content="assurance emprunteur coparentalité, prévoyance famille recomposée, transmission patrimoine enfants séparés, courtier assurance famille séparée, courtier assurance Eaubonne" />
+    <link rel="canonical" href={canonical} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#3b82f6" />
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <slot />
+  </body>
+</html>
