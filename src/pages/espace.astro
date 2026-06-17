@@ -1,31 +1,70 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const roleCards = [
+const roleSpaces = [
   {
     role: 'admin',
     title: 'Espace courtier admin',
-    items: ['Gestion des clients', 'Gestion des projets', 'Contrats', 'Documents', 'Mandataires', 'Prescripteurs'],
+    intro: 'Pilotage global du cabinet EJ Partners Assurances.',
+    stats: [
+      ['Clients actifs', 'À connecter'],
+      ['Projets ouverts', 'À connecter'],
+      ['Documents à traiter', 'À connecter'],
+    ],
+    modules: [
+      'Gestion des clients',
+      'Gestion des projets',
+      'Gestion des contrats',
+      'Gestion des documents',
+      'Gestion des mandataires',
+      'Gestion des prescripteurs',
+      'Suivi des demandes',
+      'Paramètres cabinet',
+    ],
   },
   {
     role: 'courtier',
     title: 'Espace courtier',
-    items: ['Clients', 'Projets', 'Contrats', 'Documents', 'Demandes'],
+    intro: 'Suivi opérationnel des dossiers clients et demandes entrantes.',
+    stats: [
+      ['Clients suivis', 'À connecter'],
+      ['Contrats', 'À connecter'],
+      ['Messages', 'À connecter'],
+    ],
+    modules: ['Clients', 'Projets', 'Contrats', 'Documents', 'Demandes', 'Messages'],
   },
   {
     role: 'client',
     title: 'Espace client',
-    items: ['Mes informations', 'Mes projets', 'Mes contrats', 'Mes documents', 'Messages'],
+    intro: 'Votre espace personnel pour suivre vos projets et documents.',
+    stats: [
+      ['Projets', 'À connecter'],
+      ['Contrats', 'À connecter'],
+      ['Documents', 'À connecter'],
+    ],
+    modules: ['Mes informations', 'Mes projets', 'Mes contrats', 'Mes documents', 'Dépôt de documents', 'Messages'],
   },
   {
     role: 'mandataire',
     title: 'Espace mandataire',
-    items: ['Mes clients', 'Mes projets', 'Mes commissions', 'Mes documents', 'Conformité'],
+    intro: 'Votre activité commerciale, vos dossiers et votre conformité.',
+    stats: [
+      ['Clients', 'À connecter'],
+      ['Projets', 'À connecter'],
+      ['Commissions', 'À connecter'],
+    ],
+    modules: ['Mes clients', 'Mes projets', 'Mes commissions', 'Mes documents', 'Mon profil conformité'],
   },
   {
     role: 'prescripteur',
     title: 'Espace prescripteur',
-    items: ['Déposer un prospect', 'Suivi prospects', 'Historique', 'Documents convention'],
+    intro: 'Transmission et suivi des prospects confiés au cabinet.',
+    stats: [
+      ['Prospects transmis', 'À connecter'],
+      ['En cours', 'À connecter'],
+      ['Historique', 'À connecter'],
+    ],
+    modules: ['Déposer un prospect', 'Suivi des prospects transmis', 'Historique', 'Documents / convention'],
   },
 ];
 ---
@@ -53,27 +92,46 @@ const roleCards = [
       </div>
 
       <div id="space-content" class="mt-8 hidden">
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {roleCards.map((card) => (
-            <article class="space-card hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" data-role={card.role}>
-              <h2 class="text-xl font-bold text-brand-800">{card.title}</h2>
-              <ul class="mt-4 space-y-2 text-sm text-slate-600">
-                {card.items.map((item) => <li>• {item}</li>)}
-              </ul>
-            </article>
-          ))}
-        </div>
+        {roleSpaces.map((space) => (
+          <section class="space-panel hidden" data-role={space.role}>
+            <div class="grid gap-4 md:grid-cols-3">
+              {space.stats.map(([label, value]) => (
+                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                  <p class="text-sm font-semibold text-slate-500">{label}</p>
+                  <p class="mt-2 text-xl font-extrabold text-brand-800">{value}</p>
+                </div>
+              ))}
+            </div>
 
-        <div class="mt-8 rounded-2xl bg-slate-50 p-5 text-sm leading-relaxed text-slate-600">
-          Cette première version confirme l'authentification et prépare les espaces par rôle. Les données métiers
-          complètes (contrats, documents, messages et suivis) seront connectées progressivement à Supabase avec les
-          droits d'accès déjà prévus.
-        </div>
+            <div class="mt-8 grid gap-8 lg:grid-cols-[0.85fr,1.15fr]">
+              <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <p class="text-sm font-semibold uppercase tracking-wider text-gold-600">Tableau de bord</p>
+                <h2 class="mt-2 text-2xl font-bold text-slate-900">{space.title}</h2>
+                <p class="mt-3 text-sm leading-relaxed text-slate-600">{space.intro}</p>
+                <div class="mt-6 rounded-xl bg-brand-50 p-4 text-sm leading-relaxed text-brand-900">
+                  Connexion Supabase active. Les prochaines données affichées ici viendront des tables clients,
+                  projects, contracts, documents, messages et referrals.
+                </div>
+              </article>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+                {space.modules.map((module) => (
+                  <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <h3 class="font-bold text-brand-800">{module}</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-slate-600">
+                      Module prêt pour la V1. Les données seront branchées progressivement avec les droits du rôle.
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        ))}
 
         <button
           id="logout-button"
           type="button"
-          class="mt-6 inline-flex items-center justify-center rounded-full border border-brand-700 px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+          class="mt-8 inline-flex items-center justify-center rounded-full border border-brand-700 px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
         >
           Se déconnecter
         </button>
@@ -81,8 +139,8 @@ const roleCards = [
     </div>
   </section>
 
-  <script type="module" is:inline>
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+  <script>
+    import { createClient } from '@supabase/supabase-js';
 
     const supabase = createClient(
       'https://huneukcmqaftwhidyegi.supabase.co',
@@ -130,14 +188,14 @@ const roleCards = [
       const storedRole = window.localStorage.getItem('ej_profile_role');
       const role = profile?.role || storedRole || 'client';
       const fullName = profile?.full_name || window.localStorage.getItem('ej_profile_name') || session.user.email;
-      const matchingCard = document.querySelector(`.space-card[data-role="${role}"]`);
+      const matchingPanel = document.querySelector(`.space-panel[data-role="${role}"]`);
 
       title.textContent = `Bonjour ${fullName || ''}`.trim();
       subtitle.textContent = `Vous êtes connecté à votre espace ${roleLabels[role] || role}.`;
       alertBox.textContent = 'Connexion confirmée. Les modules de votre espace sont prêts à être reliés aux données Supabase.';
       alertBox.className = 'rounded-2xl border border-brand-100 bg-brand-50 p-6 text-sm leading-relaxed text-brand-800 shadow-sm';
       content.classList.remove('hidden');
-      matchingCard?.classList.remove('hidden');
+      matchingPanel?.classList.remove('hidden');
     }
 
     logoutButton?.addEventListener('click', async () => {
