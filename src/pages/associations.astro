@@ -1,0 +1,164 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Reassurance from '../components/Reassurance.astro';
+import { cabinet } from '../data/cabinet.js';
+
+const formats = [
+  {
+    title: 'Réunions publiques et ateliers d\'information',
+    description:
+      "Nous intervenons auprès de vos adhérents, en ligne ou en présentiel, pour présenter de façon claire et sans jargon les solutions d'assurance adaptées à leur situation familiale.",
+  },
+  {
+    title: 'Rendez-vous individualisés',
+    description:
+      "Chaque adhérent intéressé peut prendre un rendez-vous personnel avec notre cabinet, en ligne, par téléphone ou à domicile, pour étudier sa situation en toute confidentialité.",
+  },
+];
+---
+
+<Layout
+  title="Associations partenaires | EJ Partners Assurances"
+  description="EJ Partners Assurances accompagne les associations LGBT, de familles monoparentales, recomposées et de parentalité pour informer leurs adhérents sur leurs droits en assurance."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Associations partenaires</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Faites connaître EJ Partners Assurances à vos adhérents : une protection qui s'adapte à leur famille.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-10 lg:px-8">
+    <div class="mx-auto max-w-4xl">
+      <Reassurance />
+    </div>
+  </section>
+
+  <!-- Présentation du partenariat -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Un partenariat au bénéfice de vos adhérents</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Associations LGBT, de familles monoparentales ou recomposées, de soutien à la parentalité : vos adhérents
+        font face à des réalités familiales que les assureurs classiques connaissent encore mal. En devenant
+        partenaire d'EJ Partners Assurances, vous offrez à vos membres un accès direct à un courtier qui maîtrise
+        ces situations dans le détail, sans jugement et sans qu'ils aient à justifier leur histoire familiale.
+      </p>
+    </div>
+  </section>
+
+  <!-- Formats proposés -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+      <h2 class="text-center text-2xl font-bold text-slate-900">Les formats que nous proposons</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2">
+        {formats.map((format) => (
+          <div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
+            <h3 class="font-bold text-brand-800">{format.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-slate-600">{format.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagement solidaire -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Un engagement solidaire</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Pour chaque adhérent de l'association partenaire devenu client, EJ Partners Assurances reverse une partie
+        de sa rémunération à l'association, en soutien de ses actions auprès de ses membres. Les modalités précises
+        sont définies ensemble dans une convention de partenariat.
+      </p>
+    </div>
+  </section>
+
+  <!-- Formulaire dédié -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-2xl">
+      <h2 class="text-center text-2xl font-bold text-slate-900">Devenir association partenaire</h2>
+      <p class="mt-3 text-center text-slate-600">
+        Présentez-nous votre association, nous reviendrons vers vous sous 24-48h pour échanger sur les modalités
+        du partenariat.
+      </p>
+
+      <form
+        action={cabinet.formspreeEndpoint}
+        method="POST"
+        class="mt-8 flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6"
+      >
+        <div>
+          <label for="association" class="block text-sm font-semibold text-slate-700">Nom de l'association *</label>
+          <input
+            id="association"
+            name="association"
+            type="text"
+            required
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="contact_nom" class="block text-sm font-semibold text-slate-700">Nom et prénom du contact *</label>
+          <input
+            id="contact_nom"
+            name="contact_nom"
+            type="text"
+            required
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-semibold text-slate-700">Email *</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="telephone" class="block text-sm font-semibold text-slate-700">Téléphone</label>
+          <input
+            id="telephone"
+            name="telephone"
+            type="tel"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="message" class="block text-sm font-semibold text-slate-700">Présentation de votre association et de vos attentes</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+          ></textarea>
+        </div>
+
+        <label class="flex items-start gap-3 text-sm text-slate-600">
+          <input type="checkbox" name="consentement_rgpd" required class="mt-1 text-brand-600" />
+          <span>
+            J'accepte que ces données soient utilisées par EJ Partners Assurances dans le cadre du traitement de
+            cette demande de partenariat, conformément à la
+            <a href="/confidentialite" class="text-brand-700 underline">politique de confidentialité</a>. *
+          </span>
+        </label>
+
+        <button
+          type="submit"
+          class="mt-2 inline-flex items-center justify-center rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800"
+        >
+          Envoyer ma demande de partenariat
+        </button>
+      </form>
+    </div>
+  </section>
+</Layout>

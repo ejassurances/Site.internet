@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const faqItems = [
+  {
+    question: 'Comment protéger mon nouveau conjoint sans léser les enfants de ma première union ?',
+    answer:
+      "L'assurance-vie permet de désigner librement votre conjoint comme bénéficiaire, en complément de la part réservée par la loi à vos enfants. Nous structurons la clause bénéficiaire pour équilibrer la protection de votre conjoint et celle de chacun de vos enfants.",
+  },
+  {
+    question: 'Les beaux-enfants peuvent-ils être désignés bénéficiaires ?',
+    answer:
+      "Oui, vous pouvez désigner nommément un beau-fils ou une belle-fille comme bénéficiaire d'un contrat de prévoyance ou d'assurance-vie, indépendamment de tout lien de filiation légal.",
+  },
+  {
+    question: 'Comment éviter les conflits de succession entre enfants de différentes unions ?',
+    answer:
+      "Nous vous aidons à organiser une répartition claire et équitable entre tous les enfants du foyer, en amont, pour limiter les sources de litige au moment de la succession. Nous travaillons si besoin avec votre notaire pour sécuriser l'ensemble du dispositif.",
+  },
+];
+---
+
+<Layout
+  title="Assurance familles recomposées | EJ Partners Assurances"
+  description="Assurance, prévoyance et transmission pour familles recomposées : protégez votre conjoint et les enfants de chaque union, organisez une succession équitable."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Familles recomposées</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        L'assurance et la protection qui s'adaptent à votre famille — beaux-enfants, demi-frères et demi-sœurs
+        compris.
+      </p>
+    </div>
+  </section>
+
+  <!-- Situation concrète -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Une situation que nous connaissons bien</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Sophie a deux enfants d'une première union. Elle vit aujourd'hui avec Karim, qui a lui aussi un fils, et
+        ensemble ils ont eu une petite fille. Trois enfants, trois situations de filiation différentes. Sophie et
+        Karim s'interrogent : en cas de décès de l'un d'eux, comment protéger l'autre sans léser les enfants
+        respectifs, et comment transmettre équitablement entre tous les enfants du foyer ?
+      </p>
+    </div>
+  </section>
+
+  <!-- Défis -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Les défis des familles recomposées</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Protéger le nouveau conjoint sans léser les enfants des unions précédentes.</li>
+        <li>— Protéger chaque enfant du foyer, quelle que soit l'union dont il est issu.</li>
+        <li>— Organiser une transmission équitable entre demi-frères et demi-sœurs.</li>
+        <li>— Éviter les conflits de succession entre enfants de différentes unions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Comment la protection s'adapte -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Comment notre protection s'adapte</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous construisons des clauses bénéficiaires sur-mesure qui protègent votre conjoint tout en réservant une
+        part claire à chacun de vos enfants, qu'ils soient issus de votre union actuelle ou d'une précédente. En
+        prévoyance comme en assurance-vie, nous organisons une répartition équitable entre tous les enfants du
+        foyer, pour limiter les sources de conflit au moment de la succession.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bénéfice -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Le bénéfice pour vous</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Un conjoint protégé, sans léser les enfants de chaque union.</li>
+        <li>— Une transmission équitable entre tous les enfants du foyer.</li>
+        <li>— Moins de tensions familiales au moment de la succession.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Témoignage -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Ils nous font confiance</h2>
+      <Testimonial
+        quote="Avec trois enfants de trois situations différentes, on avait peur de créer des inégalités sans le vouloir. EJ Partners nous a aidés à tout remettre à plat, clairement, pour que chaque enfant soit protégé de la même façon."
+        author="Sophie, maman dans une famille recomposée"
+      />
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Questions fréquentes</h2>
+      <Faq items={faqItems} />
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>

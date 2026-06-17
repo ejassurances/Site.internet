@@ -2,71 +2,105 @@
 import Layout from '../layouts/Layout.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import Faq from '../components/Faq.astro';
+import Testimonial from '../components/Testimonial.astro';
 
 const faqItems = [
   {
-    question: "Qu'est-ce que la coparentalité et la pluriparentalité ?",
+    question: 'Que se passe-t-il pour notre assurance emprunteur en cas de séparation ?',
     answer:
-      "La coparentalité désigne le choix d'élever un enfant ensemble sans être en couple (deux amis, un couple et un tiers donneur impliqué, etc.). La pluriparentalité concerne les configurations à plus de deux parents ou figures parentales. Le droit français protège encore mal ces situations, notamment le statut du parent social.",
+      "Nous vous accompagnons pour adapter ou désolidariser le contrat lors d'un rachat de soulte ou d'une séparation, afin que la couverture de chaque ex-conjoint reste cohérente avec la nouvelle répartition du crédit ou du logement.",
   },
   {
-    question: "Comment protéger un parent social qui n'a pas de lien de filiation reconnu ?",
+    question: 'Comment bien désigner les bénéficiaires quand on est parents séparés ?',
     answer:
-      "Par une désignation nominative dans les clauses bénéficiaires de prévoyance et d'assurance-vie : le parent social peut être protégé financièrement et désigné pour subvenir aux besoins de l'enfant, indépendamment de la reconnaissance légale du lien de filiation.",
+      "Nous vous aidons à rédiger des clauses bénéficiaires précises pour que vos enfants restent protégés quelle que soit l'évolution de votre situation conjugale, indépendamment de la garde ou de la pension alimentaire en cours.",
   },
   {
-    question: "Une assurance peut-elle s'adapter à plus de deux parents ou coparents ?",
+    question: 'La pension alimentaire est-elle prise en compte dans la prévoyance ?',
     answer:
-      "Oui. Nous structurons les clauses bénéficiaires et la répartition des contrats pour refléter l'organisation réelle de votre famille, qu'elle compte deux, trois ou plus de figures parentales.",
+      "Oui. Nous dimensionnons les garanties décès, invalidité et arrêt de travail en tenant compte de vos obligations envers vos enfants, pour que la pension alimentaire ou la contribution à leur entretien soit maintenue en cas de coup dur.",
   },
 ];
 ---
 
 <Layout
-  title="Coparentalité et parent social | EJ Partners Assurances"
-  description="Assurance et prévoyance pour la coparentalité et la protection du parent social, là où le droit classique protège encore mal ces familles."
+  title="Assurance coparentalité | EJ Partners Assurances"
+  description="Assurance et prévoyance pour parents séparés ou coparents : protégez vos enfants entre deux foyers, sécurisez vos revenus et votre crédit immobilier."
 >
   <section class="bg-brand-50 px-4 py-14 lg:px-8">
     <div class="mx-auto max-w-4xl text-center">
-      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Coparentalité & parent social</h1>
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Coparentalité</h1>
       <p class="mt-4 text-lg text-slate-600">
-        Protégez chaque parent et chaque enfant, quelle que soit l'organisation de votre famille.
+        L'assurance et la protection qui s'adaptent à votre famille — même lorsque vos enfants vivent entre deux
+        foyers.
       </p>
     </div>
   </section>
 
+  <!-- Situation concrète -->
   <section class="px-4 py-12 lg:px-8">
     <div class="mx-auto max-w-3xl">
-      <h2 class="text-2xl font-bold text-slate-900">Un vide juridique que nous comblons</h2>
+      <h2 class="text-2xl font-bold text-slate-900">Une situation que nous connaissons bien</h2>
       <p class="mt-4 leading-relaxed text-slate-600">
-        Coparentalité, pluriparentalité, parent social non reconnu légalement : la loi française protège encore
-        mal ces configurations familiales, qu'elles concernent des couples de même sexe, des couples hétérosexuels
-        ou des amis qui choisissent d'élever un enfant ensemble sans être en couple.
-      </p>
-      <p class="mt-4 leading-relaxed text-slate-600">
-        EJ Partners Assurances construit des solutions de prévoyance, d'assurance-vie et de transmission qui
-        comblent ce vide : désignation nominative de chaque parent ou coparent comme bénéficiaire, répartition
-        équitable entre tous les enfants du foyer, quelle que soit leur situation de filiation.
+        Camille et Antoine se sont séparés il y a deux ans. Ils élèvent ensemble leurs deux enfants en garde
+        alternée. Camille a gardé le crédit de l'appartement familial seule, tandis qu'Antoine verse une
+        contribution à l'entretien des enfants. Tous les deux s'interrogent : en cas de décès ou d'incapacité de
+        l'un d'eux, les enfants resteraient-ils protégés financièrement dans les deux foyers ?
       </p>
     </div>
   </section>
 
+  <!-- Défis -->
   <section class="bg-slate-50 px-4 py-12 lg:px-8">
-    <div class="mx-auto max-w-5xl">
-      <h2 class="text-center text-2xl font-bold text-slate-900">Nos solutions</h2>
-      <div class="mt-8 grid gap-6 sm:grid-cols-2">
-        <a href="/prevoyance" class="flex flex-col rounded-2xl bg-white p-6 shadow-sm border border-slate-100 hover:border-brand-300 transition-colors">
-          <h3 class="font-bold text-brand-800">Prévoyance</h3>
-          <p class="mt-3 text-sm leading-relaxed text-slate-600">Désignez chaque parent ou coparent comme bénéficiaire, sans attendre la reconnaissance légale du lien de filiation.</p>
-        </a>
-        <a href="/transmission" class="flex flex-col rounded-2xl bg-white p-6 shadow-sm border border-slate-100 hover:border-brand-300 transition-colors">
-          <h3 class="font-bold text-brand-800">Transmission</h3>
-          <p class="mt-3 text-sm leading-relaxed text-slate-600">Organisez une transmission équitable entre tous les enfants du foyer, quelle que soit leur filiation.</p>
-        </a>
-      </div>
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Les défis de la coparentalité</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Protéger les enfants quel que soit le foyer dans lequel ils se trouvent.</li>
+        <li>— Sécuriser un crédit immobilier porté par un seul ex-conjoint après la séparation.</li>
+        <li>— Maintenir la pension alimentaire ou la contribution à l'entretien en cas de coup dur.</li>
+        <li>— Désigner les bons bénéficiaires, sans ambiguïté, malgré l'évolution de la situation conjugale.</li>
+      </ul>
     </div>
   </section>
 
+  <!-- Comment la protection s'adapte -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Comment notre protection s'adapte</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous revoyons avec chaque parent la répartition de l'assurance emprunteur lors d'un rachat de soulte ou
+        d'une désolidarisation de crédit. Nous rédigeons des clauses bénéficiaires de prévoyance qui désignent
+        nommément vos enfants, dans chacun des deux foyers, et nous dimensionnons les garanties pour que la
+        pension alimentaire ou la contribution à l'entretien soit maintenue en cas de décès, d'invalidité ou
+        d'arrêt de travail.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bénéfice -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Le bénéfice pour vous</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Des enfants protégés financièrement, dans les deux foyers.</li>
+        <li>— Un crédit immobilier sécurisé, même après une séparation.</li>
+        <li>— Une tranquillité d'esprit pour chaque parent, sans tension entre ex-conjoints.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Témoignage -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Ils nous font confiance</h2>
+      <Testimonial
+        quote="Après notre séparation, on ne savait pas comment réorganiser nos assurances sans se retrouver l'un contre l'autre. EJ Partners nous a accompagnés tous les deux, séparément, pour protéger nos enfants en priorité."
+        author="Camille, maman coparente"
+      />
+    </div>
+  </section>
+
+  <!-- FAQ -->
   <section class="px-4 py-12 lg:px-8">
     <div class="mx-auto max-w-3xl">
       <h2 class="text-2xl font-bold text-slate-900 mb-6">Questions fréquentes</h2>
