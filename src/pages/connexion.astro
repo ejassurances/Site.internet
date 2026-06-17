@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { cabinet } from '../data/cabinet.js';
 
 const accessProfiles = [
   {
@@ -91,7 +90,7 @@ const accessProfiles = [
           <a href="/contact#rendez-vous" class="font-semibold text-brand-700 hover:underline">
             Demander un accès
           </a>
-          <a href={`mailto:${cabinet.emails.serviceClient}`} class="font-semibold text-brand-700 hover:underline">
+          <a href="/mot-de-passe-oublie" class="font-semibold text-brand-700 hover:underline">
             Mot de passe oublié
           </a>
         </div>
@@ -122,7 +121,7 @@ const accessProfiles = [
 
     const supabase = createClient(
       'https://huneukcmqaftwhidyegi.supabase.co',
-      'sb_publishable_Z02td2yOY7XR1Xnra6umw_Sdb_yziw'.replace('Z02td2yO', 'Z02td2yUO'),
+      'sb_publishable_Z02td2yUOY7XR1Xnra6umw_Sdb_yziw',
       {
         auth: {
           persistSession: true,
