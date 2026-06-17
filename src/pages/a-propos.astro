@@ -1,4 +1,50 @@
 ---
+import Layout from '../components/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout title="À propos" description="EJ Partners Assurances, expert du courtage pour familles séparées et recomposées.">
+  <Header />
+  <main class="mx-auto max-w-7xl px-6 py-10 lg:py-16">
+    <section class="space-y-8">
+      <div class="rounded-3xl bg-white p-8 shadow-sm shadow-slate-200/60">
+        <p class="text-sm uppercase tracking-[0.24em] text-brand-600">Qui sommes-nous ?</p>
+        <h1 class="mt-4 text-4xl font-semibold text-slate-900">Un cabinet de courtage dédié aux défis des familles en coparentalité</h1>
+        <p class="mt-6 text-lg leading-8 text-slate-700">EJ Partners Assurances accompagne les parents séparés et les familles recomposées dans leurs choix d’assurance, avec une compréhension fine de leurs enjeux juridiques et émotionnels.</p>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-3">
+        <div class="rounded-3xl bg-softgreen-50 p-8 shadow-sm shadow-softgreen-200/60">
+          <p class="text-sm uppercase tracking-[0.24em] text-softgreen-700">Notre mission</p>
+          <p class="mt-4 text-slate-700">Garantir des solutions d’assurance claires, humanisées et adaptées à chaque parent et à chaque enfant.</p>
+        </div>
+        <div class="rounded-3xl bg-brand-50 p-8 shadow-sm shadow-brand-200/60">
+          <p class="text-sm uppercase tracking-[0.24em] text-brand-700">Nos valeurs</p>
+          <p class="mt-4 text-slate-700">Transparence, écoute, réactivité et respect des réalités familiales recomposées.</p>
+        </div>
+        <div class="rounded-3xl bg-slate-100 p-8 shadow-sm shadow-slate-200/60">
+          <p class="text-sm uppercase tracking-[0.24em] text-slate-700">Notre fonctionnement</p>
+          <p class="mt-4 text-slate-700">Sur rendez-vous uniquement, en ligne, par téléphone ou à domicile. Pas de rendez-vous en agence.</p>
+        </div>
+      </div>
+
+      <div class="grid gap-10 lg:grid-cols-2">
+        <div class="rounded-3xl bg-white p-8 shadow-sm shadow-slate-200/60">
+          <h2 class="text-2xl font-semibold text-slate-900">Pourquoi choisir EJ Partners ?</h2>
+          <ul class="mt-6 space-y-4 text-slate-600">
+            <li>Expertise sur les familles recomposées et coparentales.</li>
+            <li>Conseils orientés vers la protection des enfants et la sécurité du foyer.</li>
+            <li>Accompagnement dans les démarches et la négociation des contrats.</li>
+          </ul>
+        </div>
+        <div class="rounded-3xl bg-slate-50 p-8 shadow-sm shadow-slate-200/60">
+          <h2 class="text-2xl font-semibold text-slate-900">Notre engagement</h2>
+          <p class="mt-6 text-slate-600">Vous n’êtes pas seuls face à la complexité des situations familiales : nous construisons un parcours rassurant, sans jargon inutile.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
 import Layout from '../layouts/Layout.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 

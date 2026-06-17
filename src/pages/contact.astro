@@ -1,4 +1,64 @@
 ---
+import Layout from '../components/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout title="Contact" description="Contactez EJ Partners Assurances pour un rendez-vous personnalisé en ligne, téléphone ou à domicile.">
+  <Header />
+  <main class="mx-auto max-w-7xl px-6 py-10 lg:py-16">
+    <section class="grid gap-10 lg:grid-cols-[1.2fr,0.8fr] lg:items-start">
+      <div class="space-y-6">
+        <p class="inline-flex rounded-full bg-brand-50 px-4 py-1 text-sm font-semibold text-brand-700">Contact</p>
+        <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Prenez un rendez-vous gratuit</h1>
+        <p class="max-w-2xl text-lg leading-8 text-slate-700">Nous vous répondons sous 24-48h. Rendez-vous en ligne, par téléphone ou à domicile, selon votre préférence.</p>
+        <div class="rounded-3xl bg-slate-100 p-8 shadow-sm shadow-slate-200/60">
+          <p class="font-semibold text-slate-900">Coordonnées</p>
+          <p class="mt-4 text-slate-600">71 Rue du Docteur Roux, 95600 Eaubonne</p>
+          <p class="mt-2 text-slate-600">Tél: <a href="tel:+33669421157" class="text-brand-600 hover:text-brand-700">06.69.42.11.57</a></p>
+          <p class="mt-2 text-slate-600">Email: <a href="mailto:contact@ej-assurances.fr" class="text-brand-600 hover:text-brand-700">contact@ej-assurances.fr</a></p>
+        </div>
+      </div>
+
+      <div class="rounded-3xl bg-white p-8 shadow-sm shadow-slate-200/60">
+        <h2 class="text-2xl font-semibold text-slate-900">Formulaire de contact</h2>
+        <p class="mt-3 text-slate-600">Remplissez ce formulaire pour demander un rendez-vous.</p>
+        <form action="https://formspree.io/f/maypadkb" method="POST" class="mt-6 space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-semibold text-slate-700">Nom</label>
+            <input id="name" name="name" type="text" required class="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200" placeholder="Votre nom" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-semibold text-slate-700">Email</label>
+            <input id="email" name="email" type="email" required class="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200" placeholder="votre.email@exemple.com" />
+          </div>
+          <div>
+            <label for="phone" class="block text-sm font-semibold text-slate-700">Téléphone</label>
+            <input id="phone" name="phone" type="tel" required class="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200" placeholder="06 00 00 00 00" />
+          </div>
+          <div>
+            <label for="need" class="block text-sm font-semibold text-slate-700">Besoin</label>
+            <textarea id="need" name="message" rows="4" required class="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200" placeholder="Décrivez brièvement votre situation"></textarea>
+          </div>
+          <div>
+            <label for="appointment" class="block text-sm font-semibold text-slate-700">Type de RDV souhaité</label>
+            <select id="appointment" name="appointment" required class="mt-2 w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+              <option value="">Choisissez une option</option>
+              <option>En ligne</option>
+              <option>Par téléphone</option>
+              <option>À domicile</option>
+            </select>
+          </div>
+          <div class="flex items-start gap-3">
+            <input id="rgpd" name="rgpd" type="checkbox" required class="mt-2 h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+            <label for="rgpd" class="text-sm text-slate-600">J’accepte le traitement de mes données pour la prise de contact conforme au RGPD.</label>
+          </div>
+          <button type="submit" class="inline-flex w-full items-center justify-center rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/20 transition hover:bg-brand-700">Envoyer ma demande</button>
+          <p class="text-sm text-slate-500">Formulaire prêt pour Formspree. Remplacez l’URL de destination par votre compte.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+  <Footer />
 import Layout from '../layouts/Layout.astro';
 import Reassurance from '../components/Reassurance.astro';
 import { cabinet } from '../data/cabinet.js';
