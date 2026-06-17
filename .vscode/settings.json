@@ -1,5 +1,8 @@
 {
     "chat.tools.terminal.autoApprove": {
         "npm install": true
-    }
+    },
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ]
 }
