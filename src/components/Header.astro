@@ -30,13 +30,6 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     </a>
 
     <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-700">
-      <a
-        href="/"
-        class:list={['hover:text-brand-700 transition-colors', currentPath === '/' && 'text-brand-800 font-semibold']}
-      >
-        Accueil
-      </a>
-
       <div class="group relative">
         <button
           type="button"
@@ -110,7 +103,6 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
   </div>
 
   <nav class="lg:hidden flex gap-4 overflow-x-auto px-4 pb-3 text-sm font-medium text-slate-700">
-    <a href="/" class="whitespace-nowrap hover:text-brand-700">Accueil</a>
     {situations.map((item) => (
       <a href={item.href} class="whitespace-nowrap hover:text-brand-700">{item.label}</a>
     ))}
