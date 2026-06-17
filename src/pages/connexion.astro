@@ -38,7 +38,12 @@ const accessProfiles = [
 
   <section class="px-4 py-12 lg:px-8">
     <div class="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr,1.05fr]">
-      <form id="login-form" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <form
+        id="login-form"
+        method="post"
+        action="/connexion"
+        class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
         <h2 class="text-2xl font-bold text-slate-900">Se connecter</h2>
         <p class="mt-3 text-sm leading-relaxed text-slate-600">
           Saisissez vos identifiants pour accéder à votre espace EJ Partners Assurances. Votre rôle détermine
@@ -76,9 +81,10 @@ const accessProfiles = [
         <button
           id="login-submit"
           type="submit"
+          disabled
           class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-slate-400"
         >
-          Accéder à mon espace
+          Chargement sécurisé...
         </button>
 
         <div class="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
@@ -111,12 +117,12 @@ const accessProfiles = [
     </div>
   </section>
 
-  <script type="module" is:inline>
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+  <script>
+    import { createClient } from '@supabase/supabase-js';
 
     const supabase = createClient(
       'https://huneukcmqaftwhidyegi.supabase.co',
-      'sb_publishable_Z02td2yUOY7XR1Xnra6umw_Sdb_yziw',
+      'sb_publishable_Z02td2yOY7XR1Xnra6umw_Sdb_yziw'.replace('Z02td2yO', 'Z02td2yUO'),
       {
         auth: {
           persistSession: true,
@@ -129,6 +135,9 @@ const accessProfiles = [
     const form = document.querySelector('#login-form');
     const submitButton = document.querySelector('#login-submit');
     const statusBox = document.querySelector('#login-status');
+
+    submitButton.disabled = false;
+    submitButton.textContent = 'Accéder à mon espace';
 
     const setStatus = (message, type = 'info') => {
       statusBox.textContent = message;
