@@ -8,153 +8,293 @@ import { cabinet } from '../data/cabinet.js';
   title="Contact et rendez-vous | EJ Partners Assurances"
   description="Prenez rendez-vous avec EJ Partners Assurances à Eaubonne : en ligne, par téléphone ou à domicile, du lundi au vendredi."
 >
+  <!-- Hero section -->
   <section class="bg-brand-50 px-4 py-14 lg:px-8">
     <div class="mx-auto max-w-4xl text-center">
-      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Prendre rendez-vous</h1>
-      <p class="mt-4 text-lg text-slate-600">En ligne, par téléphone ou à domicile — sur rendez-vous uniquement.</p>
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Contact & Rendez-vous</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        En ligne, par téléphone ou à domicile — sur rendez-vous uniquement, du lundi au vendredi.
+      </p>
     </div>
   </section>
 
+  <!-- Bandeau de réassurance -->
   <section class="px-4 py-10 lg:px-8">
     <div class="mx-auto max-w-4xl">
       <Reassurance />
     </div>
   </section>
 
+  <!-- Formulaire + coordonnées -->
   <section class="px-4 py-12 lg:px-8">
     <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2">
-      <!-- Formulaire de contact.
-           Remplacer l'action ci-dessous par votre endpoint Formspree (cabinet.formspreeEndpoint
-           dans src/data/cabinet.js), ou par une intégration Netlify Forms
-           (ajouter data-netlify="true" + name="contact" si le site est déployé sur Netlify). -->
+
+      <!-- ============================================================
+           FORMULAIRE DE CONTACT
+           - Action Formspree : remplacer cabinet.formspreeEndpoint dans
+             src/data/cabinet.js par votre endpoint https://formspree.io/f/XXXXXXXX
+           - Netlify Forms : ajouter data-netlify="true" et name="contact"
+             sur la balise <form> si le site est déployé sur Netlify.
+           ============================================================ -->
       <form
         action={cabinet.formspreeEndpoint}
         method="POST"
-        class="flex flex-col gap-5 rounded-2xl border border-slate-200 p-6"
+        class="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
       >
+        <h2 class="text-xl font-bold text-slate-900">Envoyez-nous un message</h2>
+
+        <!-- Nom et prénom -->
         <div>
-          <label for="nom" class="block text-sm font-semibold text-slate-700">Nom et prénom *</label>
+          <label for="nom" class="block text-sm font-semibold text-slate-700">
+            Nom et prénom <span class="text-red-500">*</span>
+          </label>
           <input
             id="nom"
             name="nom"
             type="text"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+            autocomplete="name"
+            placeholder="Marie Dupont"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
 
+        <!-- Email -->
         <div>
-          <label for="email" class="block text-sm font-semibold text-slate-700">Email *</label>
+          <label for="email" class="block text-sm font-semibold text-slate-700">
+            Adresse email <span class="text-red-500">*</span>
+          </label>
           <input
             id="email"
             name="email"
             type="email"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+            autocomplete="email"
+            placeholder="marie.dupont@exemple.fr"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
 
+        <!-- Téléphone -->
         <div>
-          <label for="telephone" class="block text-sm font-semibold text-slate-700">Téléphone *</label>
+          <label for="telephone" class="block text-sm font-semibold text-slate-700">
+            Téléphone <span class="text-red-500">*</span>
+          </label>
           <input
             id="telephone"
             name="telephone"
             type="tel"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+            autocomplete="tel"
+            placeholder="06 12 34 56 78"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         </div>
 
+        <!-- Besoin -->
         <div>
-          <label for="besoin" class="block text-sm font-semibold text-slate-700">Votre besoin *</label>
+          <label for="besoin" class="block text-sm font-semibold text-slate-700">
+            Votre besoin <span class="text-red-500">*</span>
+          </label>
           <select
             id="besoin"
             name="besoin"
             required
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
           >
             <option value="">Sélectionnez une option</option>
             <option value="assurance-emprunteur">Assurance emprunteur</option>
             <option value="prevoyance">Prévoyance</option>
             <option value="transmission">Transmission de patrimoine</option>
+            <option value="coparentalite">Coparentalité</option>
+            <option value="famille-recomposee">Famille recomposée</option>
+            <option value="famille-homoparentale">Famille homoparentale / LGBT+</option>
             <option value="autre">Autre demande</option>
           </select>
         </div>
 
-        <div>
-          <span class="block text-sm font-semibold text-slate-700">Type de rendez-vous souhaité *</span>
+        <!-- Type de rendez-vous -->
+        <fieldset>
+          <legend class="block text-sm font-semibold text-slate-700">
+            Type de rendez-vous souhaité <span class="text-red-500">*</span>
+          </legend>
           <div class="mt-2 flex flex-col gap-2 sm:flex-row sm:gap-6">
-            <label class="flex items-center gap-2 text-sm text-slate-600">
-              <input type="radio" name="type_rdv" value="en_ligne" required class="text-brand-600" />
-              En ligne
+            <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+              <input
+                type="radio"
+                name="type_rdv"
+                value="en_ligne"
+                required
+                class="h-4 w-4 accent-brand-700"
+              />
+              En ligne (visio)
             </label>
-            <label class="flex items-center gap-2 text-sm text-slate-600">
-              <input type="radio" name="type_rdv" value="telephone" required class="text-brand-600" />
+            <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+              <input
+                type="radio"
+                name="type_rdv"
+                value="telephone"
+                class="h-4 w-4 accent-brand-700"
+              />
               Par téléphone
             </label>
-            <label class="flex items-center gap-2 text-sm text-slate-600">
-              <input type="radio" name="type_rdv" value="domicile" required class="text-brand-600" />
+            <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+              <input
+                type="radio"
+                name="type_rdv"
+                value="domicile"
+                class="h-4 w-4 accent-brand-700"
+              />
               À domicile
             </label>
           </div>
-        </div>
+        </fieldset>
 
+        <!-- Message -->
         <div>
-          <label for="message" class="block text-sm font-semibold text-slate-700">Message (optionnel)</label>
+          <label for="message" class="block text-sm font-semibold text-slate-700">
+            Message <span class="text-slate-400 font-normal">(optionnel)</span>
+          </label>
           <textarea
             id="message"
             name="message"
             rows="4"
-            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+            placeholder="Décrivez brièvement votre situation ou votre question…"
+            class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
           ></textarea>
         </div>
 
-        <label class="flex items-start gap-3 text-sm text-slate-600">
-          <input type="checkbox" name="consentement_rgpd" required class="mt-1 text-brand-600" />
+        <!-- Consentement RGPD -->
+        <label class="flex items-start gap-3 text-sm text-slate-600 cursor-pointer">
+          <input
+            type="checkbox"
+            name="consentement_rgpd"
+            required
+            class="mt-0.5 h-4 w-4 accent-brand-700 shrink-0"
+          />
           <span>
-            J'accepte que mes données soient utilisées par EJ Partners Assurances dans le cadre du traitement de
-            ma demande, conformément à la
-            <a href="/confidentialite" class="text-brand-700 underline">politique de confidentialité</a>. *
+            J'accepte que mes données personnelles soient traitées par EJ Partners Assurances
+            dans le cadre du traitement de ma demande de rendez-vous, conformément à la{' '}
+            <a href="/confidentialite" class="text-brand-700 underline hover:text-brand-900">
+              politique de confidentialité
+            </a>. <span class="text-red-500">*</span>
           </span>
         </label>
 
         <button
           type="submit"
-          class="mt-2 inline-flex items-center justify-center rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800"
+          class="mt-2 inline-flex items-center justify-center rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow hover:bg-brand-800 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
         >
           Envoyer ma demande de rendez-vous
         </button>
+
+        <p class="text-xs text-slate-400">
+          Les champs marqués d'un <span class="text-red-500">*</span> sont obligatoires.
+          Réponse sous 24-48h.
+        </p>
       </form>
 
+      <!-- Coordonnées -->
       <div class="flex flex-col gap-6">
-        <div class="rounded-2xl border border-slate-200 p-6">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 class="text-lg font-bold text-slate-900">Nos coordonnées</h2>
           <ul class="mt-4 space-y-3 text-sm text-slate-600">
-            <li><strong class="text-slate-800">Cabinet :</strong> {cabinet.nom}</li>
-            <li><strong class="text-slate-800">Adresse :</strong> {cabinet.adresse}</li>
-            <li><strong class="text-slate-800">Téléphone :</strong> <a href={cabinet.telephoneHref} class="text-brand-700 hover:underline">{cabinet.telephone}</a></li>
-            <li><strong class="text-slate-800">Email :</strong> <a href={`mailto:${cabinet.emails.cabinet}`} class="text-brand-700 hover:underline">{cabinet.emails.cabinet}</a></li>
-            <li><strong class="text-slate-800">Horaires :</strong> {cabinet.horaires}</li>
+            <li>
+              <strong class="text-slate-800">Cabinet :</strong> {cabinet.nom}
+            </li>
+            <li>
+              <strong class="text-slate-800">Adresse :</strong> {cabinet.adresse}
+            </li>
+            <li>
+              <strong class="text-slate-800">Téléphone :</strong>{' '}
+              <a href={cabinet.telephoneHref} class="text-brand-700 hover:underline">
+                {cabinet.telephone}
+              </a>
+            </li>
+            <li>
+              <strong class="text-slate-800">Email :</strong>{' '}
+              <a href={`mailto:${cabinet.emails.cabinet}`} class="text-brand-700 hover:underline">
+                {cabinet.emails.cabinet}
+              </a>
+            </li>
+            <li>
+              <strong class="text-slate-800">Horaires :</strong> {cabinet.horaires}
+            </li>
           </ul>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 p-6">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 class="text-lg font-bold text-slate-900">Autres contacts</h2>
           <ul class="mt-4 space-y-3 text-sm text-slate-600">
-            <li><strong class="text-slate-800">Service client :</strong> <a href={`mailto:${cabinet.emails.serviceClient}`} class="text-brand-700 hover:underline">{cabinet.emails.serviceClient}</a></li>
-            <li><strong class="text-slate-800">Sinistre :</strong> <a href={`mailto:${cabinet.emails.sinistre}`} class="text-brand-700 hover:underline">{cabinet.emails.sinistre}</a></li>
-            <li><strong class="text-slate-800">RGPD / conformité :</strong> <a href={`mailto:${cabinet.emails.conformite}`} class="text-brand-700 hover:underline">{cabinet.emails.conformite}</a></li>
-            <li><strong class="text-slate-800">Devenir prescripteur :</strong> <a href={`mailto:${cabinet.emails.prescripteur}`} class="text-brand-700 hover:underline">{cabinet.emails.prescripteur}</a></li>
-            <li><strong class="text-slate-800">Recrutement :</strong> <a href={`mailto:${cabinet.emails.recrutement}`} class="text-brand-700 hover:underline">{cabinet.emails.recrutement}</a></li>
             <li>
-              <strong class="text-slate-800">Espace client / prescripteur :</strong>
-              <a href={cabinet.espaceClientUrl} target="_blank" rel="noopener noreferrer" class="text-brand-700 hover:underline">
+              <strong class="text-slate-800">Service client :</strong>{' '}
+              <a href={`mailto:${cabinet.emails.serviceClient}`} class="text-brand-700 hover:underline">
+                {cabinet.emails.serviceClient}
+              </a>
+            </li>
+            <li>
+              <strong class="text-slate-800">Sinistre :</strong>{' '}
+              <a href={`mailto:${cabinet.emails.sinistre}`} class="text-brand-700 hover:underline">
+                {cabinet.emails.sinistre}
+              </a>
+            </li>
+            <li>
+              <strong class="text-slate-800">RGPD / conformité :</strong>{' '}
+              <a href={`mailto:${cabinet.emails.conformite}`} class="text-brand-700 hover:underline">
+                {cabinet.emails.conformite}
+              </a>
+            </li>
+            <li>
+              <strong class="text-slate-800">Devenir prescripteur :</strong>{' '}
+              <a href={`mailto:${cabinet.emails.prescripteur}`} class="text-brand-700 hover:underline">
+                {cabinet.emails.prescripteur}
+              </a>
+            </li>
+            <li>
+              <strong class="text-slate-800">Recrutement :</strong>{' '}
+              <a href={`mailto:${cabinet.emails.recrutement}`} class="text-brand-700 hover:underline">
+                {cabinet.emails.recrutement}
+              </a>
+            </li>
+            <li>
+              <strong class="text-slate-800">Espace client :</strong>{' '}
+              <a
+                href={cabinet.espaceClientUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-brand-700 hover:underline"
+              >
                 moncompte.ej-assurances.fr
               </a>
             </li>
           </ul>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       AGENDA DE PRISE DE RENDEZ-VOUS EN LIGNE — KOALENDAR
+       id="rendez-vous" permet aux CTA du site d'ancrer directement
+       sur cette section via /contact#rendez-vous
+       ============================================================ -->
+  <section id="rendez-vous" class="px-4 py-14 lg:px-8 bg-brand-50">
+    <div class="mx-auto max-w-5xl">
+      <div class="mb-8 text-center">
+        <h2 class="text-2xl font-extrabold text-slate-900 sm:text-3xl">
+          Réservez votre créneau en ligne
+        </h2>
+        <p class="mt-3 text-slate-600">
+          Choisissez directement le créneau qui vous convient — sans attente, sans engagement.
+        </p>
+      </div>
+
+      <!-- Koalendar Inline Embed Start -->
+      <div id="inline-widget-ej-partners-assurances"></div>
+      <script is:inline>window.Koalendar=window.Koalendar||function(){(Koalendar.props=Koalendar.props||[]).push(arguments)};</script>
+      <script is:inline async src="https://koalendar.com/assets/widget.js"></script>
+      <script is:inline>Koalendar('inline', {"url":"https://koalendar.com/e/ej-partners-assurances","selector":"#inline-widget-ej-partners-assurances"});</script>
+      <!-- Koalendar Inline Embed End -->
     </div>
   </section>
 </Layout>
