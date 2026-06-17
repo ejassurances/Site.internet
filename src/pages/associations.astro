@@ -1,4 +1,21 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Reassurance from '../components/Reassurance.astro';
+import { cabinet } from '../data/cabinet.js';
+
+const formats = [
+  {
+    title: 'Réunions publiques et ateliers d\'information',
+    description:
+      "Nous intervenons auprès de vos adhérents, en ligne ou en présentiel, pour présenter de façon claire et sans jargon les solutions d'assurance adaptées à leur situation familiale.",
+  },
+  {
+    title: 'Rendez-vous individualisés',
+    description:
+      "Chaque adhérent intéressé peut prendre un rendez-vous personnel avec notre cabinet, en ligne, par téléphone ou à domicile, pour étudier sa situation en toute confidentialité.",
+  },
+];
+---
 
 <Layout
   title="Associations partenaires | EJ Partners Assurances"

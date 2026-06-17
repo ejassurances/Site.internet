@@ -1,4 +1,26 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+
+const faqItems = [
+  {
+    question: 'Pourquoi la transmission est-elle plus complexe pour un couple non marié ?',
+    answer:
+      "En l'absence de mariage ou de Pacs avec une clause adaptée, un partenaire survivant peut être taxé jusqu'à 60% sur l'héritage reçu, contrairement à un conjoint marié qui peut être exonéré. Des solutions d'assurance-vie permettent d'atténuer fortement cette fiscalité.",
+  },
+  {
+    question: "Comment protéger un enfant né par PMA, GPA ou adoption dans la transmission ?",
+    answer:
+      "Nous structurons la clause bénéficiaire et la répartition du contrat pour que chaque enfant du foyer soit traité équitablement, en cohérence avec la situation de filiation et les objectifs familiaux.",
+  },
+  {
+    question: "L'assurance-vie est-elle adaptée aux familles recomposées ?",
+    answer:
+      "Oui, c'est souvent l'outil le plus flexible pour organiser une répartition sur-mesure entre partenaire survivant et enfants de différentes unions, en dehors des règles strictes de la succession légale.",
+  },
+];
+---
 
 <Layout
   title="Transmission de patrimoine | EJ Partners Assurances"

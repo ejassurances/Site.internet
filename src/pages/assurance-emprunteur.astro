@@ -1,4 +1,26 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+
+const faqItems = [
+  {
+    question: 'Sommes-nous obligés d\'être mariés pour souscrire une assurance emprunteur à deux ?',
+    answer:
+      "Non. Que vous soyez mariés, pacsés ou en concubinage, vous pouvez co-emprunter et être assurés ensemble. Nous adaptons la quotité d'assurance de chacun à votre situation réelle, quel que soit votre statut.",
+  },
+  {
+    question: "Notre statut de couple non marié peut-il influencer le tarif ou l'acceptation du dossier ?",
+    answer:
+      "Non, ce critère n'a aucune incidence légale sur l'évaluation d'un dossier d'assurance emprunteur. Nous sélectionnons des partenaires assureurs qui appliquent une tarification fondée uniquement sur des critères médicaux et financiers.",
+  },
+  {
+    question: "Que se passe-t-il en cas de séparation pour la part de l'autre co-emprunteur ?",
+    answer:
+      "Nous vous accompagnons pour adapter ou désolidariser le contrat en cas de rachat de soulte ou de séparation, afin que la couverture reste cohérente avec la nouvelle répartition du crédit.",
+  },
+];
+---
 
 <Layout
   title="Assurance emprunteur | EJ Partners Assurances"

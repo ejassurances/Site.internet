@@ -1,4 +1,26 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+
+const faqItems = [
+  {
+    question: 'Mon/ma partenaire non marié(e) peut-il/elle être désigné(e) bénéficiaire ?',
+    answer:
+      "Oui. En prévoyance, vous pouvez librement désigner la personne de votre choix comme bénéficiaire, y compris votre partenaire si vous n'êtes pas mariés. Nous vous aidons à rédiger une clause bénéficiaire précise pour éviter toute ambiguïté.",
+  },
+  {
+    question: 'Le parent non biologique ou non encore reconnu légalement peut-il être protégé ?',
+    answer:
+      "Oui, via une désignation nominative dans le contrat de prévoyance, indépendamment de la reconnaissance légale du lien de filiation, qui peut être en cours (adoption, démarche PMA).",
+  },
+  {
+    question: "Que couvre la prévoyance en cas d'arrêt de travail ou d'invalidité ?",
+    answer:
+      "Elle permet de maintenir une partie de vos revenus pour continuer à faire face aux charges du foyer (crédit, frais liés aux enfants) pendant un arrêt de travail prolongé ou une invalidité.",
+  },
+];
+---
 
 <Layout
   title="Prévoyance | EJ Partners Assurances"

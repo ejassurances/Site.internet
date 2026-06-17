@@ -1,5 +1,24 @@
 ---
-<xml version="1.0" encoding="UTF-8"?>
+const siteUrl = Astro.site?.origin ?? "https://ej-partners-assurances.fr";
+const pages = [
+  "/",
+  "/coparentalite",
+  "/familles-recomposees",
+  "/communaute-lgbt",
+  "/assurance-emprunteur",
+  "/prevoyance",
+  "/transmission",
+  "/associations",
+  "/a-propos",
+  "/contact",
+  "/informations-courtier",
+  "/mentions-legales",
+  "/confidentialite",
+];
+
+Astro.response.headers.set("Content-Type", "application/xml");
+---
+
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   {pages.map((page) => (
     <url>
