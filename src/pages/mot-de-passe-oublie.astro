@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const siteName = 'EJ Partners Assurances';
+---
+
+<Layout
+  title={`Mot de passe oublié | ${siteName}`}
+  description="Demander un lien sécurisé pour réinitialiser le mot de passe de votre espace EJ Partners Assurances."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="text-sm font-semibold uppercase tracking-wider text-gold-600">Accès sécurisé</p>
+      <h1 class="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl">Mot de passe oublié</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+        Recevez un lien sécurisé pour définir un nouveau mot de passe.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <form
+      id="reset-request-form"
+      method="post"
+      action="/mot-de-passe-oublie"
+      class="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+    >
+      <h2 class="text-2xl font-bold text-slate-900">Recevoir un lien</h2>
+      <p class="mt-3 text-sm leading-relaxed text-slate-600">
+        Indiquez l'email utilisé pour votre espace EJ Partners Assurances. Si un compte existe, un email de
+        réinitialisation vous sera envoyé.
+      </p>
+
+      <div class="mt-6">
+        <label for="email" class="block text-sm font-semibold text-slate-700">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="vous@exemple.fr"
+          required
+          class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+        />
+      </div>
+
+      <p id="reset-status" class="mt-5 hidden rounded-lg px-4 py-3 text-sm" aria-live="polite"></p>
+
+      <button
+        id="reset-submit"
+        type="submit"
+        disabled
+        class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+      >
+        Chargement sécurisé...
+      </button>
+
+      <a href="/connexion" class="mt-5 inline-flex text-sm font-semibold text-brand-700 hover:underline">
+        Retour à la connexion
+      </a>
+    </form>
+  </section>
+
+  <script>
+    import { createClient } from '@supabase/supabase-js';
+
+    const supabase = createClient(
+      'https://huneukcmqaftwhidyegi.supabase.co',
+      'sb_publishable_Z02td2yUOY7XR1Xnra6umw_Sdb_yziw',
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+      },
+    );
+
+    const form = document.querySelector('#reset-request-form');
+    const submitButton = document.querySelector('#reset-submit');
+    const statusBox = document.querySelector('#reset-status');
+
+    submitButton.disabled = false;
+    submitButton.textContent = 'Envoyer le lien de réinitialisation';
+
+    const setStatus = (message, type = 'info') => {
+      statusBox.textContent = message;
+      statusBox.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-brand-50', 'text-brand-800');
+      statusBox.classList.add(type === 'error' ? 'bg-red-50' : 'bg-brand-50');
+      statusBox.classList.add(type === 'error' ? 'text-red-700' : 'text-brand-800');
+    };
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const email = String(formData.get('email') || '').trim();
+
+      if (!email) {
+        setStatus('Merci de renseigner votre email.', 'error');
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Envoi en cours...';
+      setStatus('Préparation du lien sécurisé...');
+
+      const redirectTo = `${window.location.origin}/nouveau-mot-de-passe`;
+      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+
+      submitButton.disabled = false;
+      submitButton.textContent = 'Envoyer le lien de réinitialisation';
+
+      if (error) {
+        setStatus(
+          "Impossible d'envoyer le lien. Vérifiez que l'URL de redirection est autorisée dans Supabase.",
+          'error',
+        );
+        return;
+      }
+
+      setStatus('Si un compte existe pour cet email, un lien de réinitialisation vient d’être envoyé.');
+      form.reset();
+    });
+  </script>
+</Layout>
