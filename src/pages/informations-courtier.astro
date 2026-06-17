@@ -1,27 +1,4 @@
 ---
-import Layout from '../components/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
----
-<Layout title="Informations courtier" description="Informations réglementaires et conformité pour EJ Partners Assurances.">
-  <Header />
-  <main class="mx-auto max-w-5xl px-6 py-10 lg:py-16">
-    <section class="space-y-6 rounded-3xl bg-white p-8 shadow-sm shadow-slate-200/60">
-      <h1 class="text-3xl font-semibold text-slate-900">Informations courtier</h1>
-      <div class="space-y-4 text-slate-600">
-        <p><strong>N° ORIAS :</strong> 25 005 812 (vérifiable sur orias.fr)</p>
-        <p><strong>SIRET :</strong> 500 256 904 00060</p>
-        <p><strong>Autorité de contrôle :</strong> ACPR, 4 Place de Budapest, CS 92459, 75436 Paris Cedex 09</p>
-        <p><strong>Médiateur :</strong> La Médiation de l'Assurance, mediation-assurance.org</p>
-      </div>
-      <p class="text-slate-600">Ce site présente des informations sur l’assurance et les services de courtage sans promesse de rendement ni formulation trompeuse.</p>
-      <p class="text-slate-600">Nos engagements : transparence, conformité RGPD, respect des règles de l’assurance et écoute des enjeux familiaux.</p>
-    </section>
-  </main>
-  <Footer />
-import Layout from '../layouts/Layout.astro';
-import { cabinet } from '../data/cabinet.js';
----
 
 <Layout
   title="Informations courtier — EJ Partners Assurances"
