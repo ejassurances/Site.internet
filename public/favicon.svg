@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="EJ Partners Assurances">
-  <rect width="64" height="64" rx="14" fill="#0a1626" />
-  <path d="M15 18h18v6H22v6h10v6H22v4h12v6H15V18Z" fill="#ffffff" />
-  <path d="M39 18h10v20c0 6.7-4.4 10.5-10.9 10.5-3.1 0-5.9-.8-8.1-2.4l2.9-5.4c1.3.9 2.9 1.5 4.6 1.5 2.7 0 4.1-1.5 4.1-4.5V24H39v-6Z" fill="#ddc173" />
-  <path d="M12 52h40" stroke="#ddc173" stroke-width="3" stroke-linecap="round" />
+  <rect width="64" height="64" rx="10" fill="#0a1626" />
+  <text x="32" y="31" text-anchor="middle" fill="#f7f7f3" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700" letter-spacing="0.6">EJ</text>
+  <text x="32" y="45" text-anchor="middle" fill="#f7f7f3" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="600" letter-spacing="2.2">ASSUR</text>
 </svg>
