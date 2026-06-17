@@ -1,0 +1,150 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const roleCards = [
+  {
+    role: 'admin',
+    title: 'Espace courtier admin',
+    items: ['Gestion des clients', 'Gestion des projets', 'Contrats', 'Documents', 'Mandataires', 'Prescripteurs'],
+  },
+  {
+    role: 'courtier',
+    title: 'Espace courtier',
+    items: ['Clients', 'Projets', 'Contrats', 'Documents', 'Demandes'],
+  },
+  {
+    role: 'client',
+    title: 'Espace client',
+    items: ['Mes informations', 'Mes projets', 'Mes contrats', 'Mes documents', 'Messages'],
+  },
+  {
+    role: 'mandataire',
+    title: 'Espace mandataire',
+    items: ['Mes clients', 'Mes projets', 'Mes commissions', 'Mes documents', 'Conformité'],
+  },
+  {
+    role: 'prescripteur',
+    title: 'Espace prescripteur',
+    items: ['Déposer un prospect', 'Suivi prospects', 'Historique', 'Documents convention'],
+  },
+];
+---
+
+<Layout
+  title="Votre espace | EJ Partners Assurances"
+  description="Espace sécurisé EJ Partners Assurances pour clients, courtiers, mandataires et prescripteurs."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+      <p class="text-sm font-semibold uppercase tracking-wider text-gold-600">Espace sécurisé</p>
+      <h1 id="space-title" class="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl">
+        Ouverture de votre espace
+      </h1>
+      <p id="space-subtitle" class="mt-4 max-w-2xl text-lg text-slate-600">
+        Vérification de votre session en cours.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+      <div id="space-alert" class="rounded-2xl border border-slate-200 bg-white p-6 text-sm leading-relaxed text-slate-600 shadow-sm">
+        Chargement de votre profil...
+      </div>
+
+      <div id="space-content" class="mt-8 hidden">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {roleCards.map((card) => (
+            <article class="space-card hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm" data-role={card.role}>
+              <h2 class="text-xl font-bold text-brand-800">{card.title}</h2>
+              <ul class="mt-4 space-y-2 text-sm text-slate-600">
+                {card.items.map((item) => <li>• {item}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-8 rounded-2xl bg-slate-50 p-5 text-sm leading-relaxed text-slate-600">
+          Cette première version confirme l'authentification et prépare les espaces par rôle. Les données métiers
+          complètes (contrats, documents, messages et suivis) seront connectées progressivement à Supabase avec les
+          droits d'accès déjà prévus.
+        </div>
+
+        <button
+          id="logout-button"
+          type="button"
+          class="mt-6 inline-flex items-center justify-center rounded-full border border-brand-700 px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+        >
+          Se déconnecter
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" is:inline>
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabase = createClient(
+      'https://huneukcmqaftwhidyegi.supabase.co',
+      'sb_publishable_Z02td2yUOY7XR1Xnra6umw_Sdb_yziw',
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+      },
+    );
+
+    const title = document.querySelector('#space-title');
+    const subtitle = document.querySelector('#space-subtitle');
+    const alertBox = document.querySelector('#space-alert');
+    const content = document.querySelector('#space-content');
+    const logoutButton = document.querySelector('#logout-button');
+    const roleLabels = {
+      admin: 'courtier admin',
+      courtier: 'courtier',
+      client: 'client',
+      mandataire: 'mandataire',
+      prescripteur: 'prescripteur',
+    };
+
+    const showError = (message) => {
+      alertBox.textContent = message;
+      alertBox.className = 'rounded-2xl border border-red-100 bg-red-50 p-6 text-sm leading-relaxed text-red-700 shadow-sm';
+    };
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    const session = sessionData?.session;
+
+    if (!session?.user) {
+      showError('Votre session n’est pas active. Vous allez être redirigé vers la page de connexion.');
+      window.setTimeout(() => window.location.assign('/connexion'), 1200);
+    } else {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role, full_name')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      const storedRole = window.localStorage.getItem('ej_profile_role');
+      const role = profile?.role || storedRole || 'client';
+      const fullName = profile?.full_name || window.localStorage.getItem('ej_profile_name') || session.user.email;
+      const matchingCard = document.querySelector(`.space-card[data-role="${role}"]`);
+
+      title.textContent = `Bonjour ${fullName || ''}`.trim();
+      subtitle.textContent = `Vous êtes connecté à votre espace ${roleLabels[role] || role}.`;
+      alertBox.textContent = 'Connexion confirmée. Les modules de votre espace sont prêts à être reliés aux données Supabase.';
+      alertBox.className = 'rounded-2xl border border-brand-100 bg-brand-50 p-6 text-sm leading-relaxed text-brand-800 shadow-sm';
+      content.classList.remove('hidden');
+      matchingCard?.classList.remove('hidden');
+    }
+
+    logoutButton?.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.localStorage.removeItem('ej_profile_role');
+      window.localStorage.removeItem('ej_profile_name');
+      window.location.assign('/connexion');
+    });
+  </script>
+</Layout>
