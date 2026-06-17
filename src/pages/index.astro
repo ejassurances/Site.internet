@@ -75,4 +75,154 @@ import Footer from '../components/Footer.astro';
     </section>
   </main>
   <Footer />
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Reassurance from '../components/Reassurance.astro';
+
+const situations = [
+  {
+    href: '/coparentalite',
+    title: 'Coparentalité',
+    description: "Protégez vos enfants entre deux foyers, sécurisez revenus et crédit quelle que soit la situation du couple.",
+  },
+  {
+    href: '/familles-recomposees',
+    title: 'Familles recomposées',
+    description: "Protégez votre nouveau conjoint et les enfants de chaque union, organisez une transmission équitable.",
+  },
+  {
+    href: '/communaute-lgbt',
+    title: 'Communauté LGBT',
+    description: "Protégez votre partenaire et le parent non légalement reconnu, évitez la sur-taxation des couples non mariés.",
+  },
+];
+
+const expertises = [
+  {
+    href: '/assurance-emprunteur',
+    title: 'Assurance emprunteur',
+    description:
+      "Protégez votre crédit immobilier en tant que co-emprunteurs, quel que soit votre statut juridique : mariage, Pacs ou concubinage.",
+  },
+  {
+    href: '/prevoyance',
+    title: 'Prévoyance',
+    description:
+      "Protégez votre partenaire et chacun de vos enfants, quelle que soit la manière dont votre famille s'est construite.",
+  },
+  {
+    href: '/transmission',
+    title: 'Transmission',
+    description:
+      "Organisez une transmission de patrimoine équitable pour votre partenaire survivant et tous vos enfants.",
+  },
+];
+---
+
+<Layout
+  title="EJ Partners Assurances | Familles modernes"
+  description="Premier cabinet de courtage à adapter l'assurance et la prévoyance à l'évolution des familles modernes : emprunteur, prévoyance, transmission."
+>
+  <!-- Hero -->
+  <section class="bg-brand-50">
+    <div class="mx-auto max-w-6xl px-4 py-16 lg:flex lg:items-center lg:gap-12 lg:px-8 lg:py-24">
+      <div class="lg:w-1/2">
+        <p class="text-sm font-semibold uppercase tracking-wider text-gold-600">Le premier cabinet pensé pour les familles modernes</p>
+        <h1 class="mt-3 text-3xl font-extrabold leading-tight text-brand-900 sm:text-4xl lg:text-5xl">
+          L'assurance qui s'adapte à <span class="text-brand-700">l'évolution des familles</span>
+        </h1>
+        <p class="mt-5 text-lg text-slate-600">
+          Couples mariés, pacsés ou en concubinage, familles recomposées, monoparentales ou construites par
+          adoption, PMA ou GPA : EJ Partners Assurances est le premier cabinet de courtage à concevoir des
+          solutions d'assurance emprunteur, de prévoyance et de transmission réellement adaptées à la diversité
+          des familles d'aujourd'hui.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href="/contact#rendez-vous"
+            class="inline-flex items-center rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800"
+          >
+            Prendre rendez-vous (en ligne, par téléphone ou à domicile)
+          </a>
+          <a
+            href="/a-propos"
+            class="inline-flex items-center rounded-full border border-brand-300 px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+          >
+            Découvrir notre approche
+          </a>
+        </div>
+      </div>
+      <div class="mt-12 lg:mt-0 lg:w-1/2">
+        <!-- Placeholder visuel : photo de famille, format paysage 800x600px -->
+        <div class="aspect-[4/3] w-full rounded-3xl bg-brand-100 shadow-inner"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Réassurance -->
+  <section class="px-4 py-10 lg:px-8">
+    <div class="mx-auto max-w-4xl">
+      <Reassurance />
+    </div>
+  </section>
+
+  <!-- Vos situations -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-2xl font-bold text-brand-900 sm:text-3xl">Vos situations</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-center text-slate-600">
+        L'assurance et la protection qui s'adaptent à votre famille, quelle que soit la façon dont elle s'est
+        construite.
+      </p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        {situations.map((item) => (
+          <a
+            href={item.href}
+            class="flex flex-col rounded-2xl border border-slate-200 p-6 hover:border-brand-300 hover:shadow-md transition-all"
+          >
+            <h3 class="text-lg font-bold text-brand-800">{item.title}</h3>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{item.description}</p>
+            <span class="mt-4 text-sm font-semibold text-brand-700">En savoir plus →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Expertises -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-center text-2xl font-bold text-brand-900 sm:text-3xl">Nos 3 solutions</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-center text-slate-600">
+        Des solutions construites autour des réalités juridiques et humaines des familles modernes, là où les
+        assureurs classiques proposent encore des contrats standards souvent inadaptés.
+      </p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        {expertises.map((item) => (
+          <a
+            href={item.href}
+            class="flex flex-col rounded-2xl border border-slate-200 p-6 hover:border-brand-300 hover:shadow-md transition-all"
+          >
+            <h3 class="text-lg font-bold text-brand-800">{item.title}</h3>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{item.description}</p>
+            <span class="mt-4 text-sm font-semibold text-brand-700">En savoir plus →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pourquoi nous -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h2 class="text-2xl font-bold text-brand-900 sm:text-3xl">Pourquoi un courtier pensé pour les familles modernes ?</h2>
+      <p class="mt-4 text-slate-600 leading-relaxed">
+        Les contrats d'assurance standards ne tiennent pas toujours compte des réalités juridiques des couples non
+        mariés, des parents non biologiques ou des familles recomposées. Nous connaissons ces situations dans le
+        détail et construisons avec vous des solutions réellement adaptées à votre famille, telle qu'elle est.
+      </p>
+    </div>
+  </section>
+
+  <CtaBanner />
 </Layout>

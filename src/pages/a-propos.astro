@@ -45,4 +45,83 @@ import Footer from '../components/Footer.astro';
     </section>
   </main>
   <Footer />
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+
+const valeurs = [
+  {
+    title: 'Expertise juridique et humaine',
+    description:
+      "Nous maîtrisons les enjeux propres aux couples non mariés, aux familles recomposées et aux parcours PMA, GPA, adoption ou coparentalité.",
+  },
+  {
+    title: 'Bienveillance, sans jugement',
+    description:
+      "Chaque famille est différente. Nous écoutons votre situation sans présupposé et sans avoir besoin de vous justifier.",
+  },
+  {
+    title: 'Disponibilité',
+    description:
+      "Rendez-vous en ligne, par téléphone ou à domicile, du lundi au vendredi de 9h à 13h et de 14h à 19h.",
+  },
+];
+---
+
+<Layout
+  title="À propos | EJ Partners Assurances"
+  description="Le premier cabinet de courtage pensé pour l'évolution des familles modernes : notre histoire, nos valeurs et notre accompagnement."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Un courtier pensé pour vous</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        Pourquoi un cabinet de courtage pensé pour l'évolution des familles modernes ?
+      </p>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Notre constat</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Les familles d'aujourd'hui font face à des réalités juridiques de plus en plus diverses : statut
+        matrimonial, lien de filiation parfois en cours de reconnaissance, parcours de PMA, GPA, adoption ou
+        coparentalité, recomposition familiale. Les assureurs classiques proposent souvent des contrats standards
+        qui ne tiennent pas compte de ces situations — au risque de laisser un partenaire ou un enfant
+        insuffisamment protégé.
+      </p>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        EJ Partners Assurances a été créé pour répondre précisément à ce besoin : un accompagnement qui comprend
+        votre situation dès le premier rendez-vous, sans que vous ayez à l'expliquer ou à la justifier.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+      <h2 class="text-center text-2xl font-bold text-slate-900">Nos valeurs</h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
+        {valeurs.map((valeur) => (
+          <div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
+            <h3 class="font-bold text-brand-800">{valeur.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-slate-600">{valeur.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Notre fonctionnement</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous travaillons uniquement sur rendez-vous, sans accueil en agence. Vous pouvez nous rencontrer en ligne,
+        par téléphone ou à domicile, du lundi au vendredi, de 9h00 à 13h00 et de 14h00 à 19h00. Cette organisation
+        nous permet de vous consacrer le temps nécessaire pour comprendre votre situation et construire une
+        solution sur-mesure.
+      </p>
+    </div>
+  </section>
+
+  <CtaBanner />
 </Layout>

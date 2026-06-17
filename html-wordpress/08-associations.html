@@ -1,0 +1,157 @@
+<!-- ============================================================
+     PAGE : ASSOCIATIONS PARTENAIRES
+     À coller dans WordPress > Pages > Ajouter > bloc "HTML personnalisé"
+     IMPORTANT : remplacer l'action du formulaire par votre endpoint Formspree
+     (ex : https://formspree.io/f/VOTRE_ID)
+     ============================================================ -->
+
+<style>
+  .ejp-hero { background: #eff6ff; padding: 60px 24px; text-align: center; }
+  .ejp-h1 { font-size: 2.2rem; font-weight: 900; color: #1a365d; margin: 0 0 16px; }
+  .ejp-hero-sub { font-size: 1.1rem; color: #475569; max-width: 640px; margin: 0 auto; line-height: 1.7; }
+  .ejp-reassurance { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: 20px 24px; max-width: 760px; margin: 40px auto; }
+  .ejp-reassurance ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .ejp-reassurance li { font-size: 14px; font-weight: 600; color: #1a365d; }
+  .ejp-reassurance li::before { content: "✓ "; color: #2d6a9f; }
+  .ejp-section { padding: 52px 24px; }
+  .ejp-section-gray { background: #f8fafc; padding: 52px 24px; }
+  .ejp-inner { max-width: 720px; margin: 0 auto; }
+  .ejp-inner-wide { max-width: 1000px; margin: 0 auto; }
+  .ejp-h2 { font-size: 1.6rem; font-weight: 800; color: #1a365d; margin-bottom: 16px; }
+  .ejp-h2-center { text-align: center; }
+  .ejp-p { font-size: 1rem; color: #475569; line-height: 1.8; margin-bottom: 16px; }
+  .ejp-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 32px; }
+  .ejp-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; }
+  .ejp-card-title { font-size: 1rem; font-weight: 800; color: #1a365d; margin-bottom: 12px; }
+  .ejp-card-text { font-size: 14px; color: #475569; line-height: 1.7; }
+  /* Formulaire */
+  .ejp-form-wrap { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; max-width: 640px; margin: 32px auto 0; }
+  .ejp-form-title { font-size: 1.4rem; font-weight: 800; color: #1a365d; text-align: center; margin-bottom: 8px; }
+  .ejp-form-sub { font-size: 14px; color: #64748b; text-align: center; margin-bottom: 24px; }
+  .ejp-field { margin-bottom: 18px; }
+  .ejp-label { display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+  .ejp-input, .ejp-textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px 14px; font-size: 14px; color: #1e293b; box-sizing: border-box; }
+  .ejp-input:focus, .ejp-textarea:focus { outline: 2px solid #2d6a9f; border-color: #2d6a9f; }
+  .ejp-textarea { min-height: 120px; resize: vertical; }
+  .ejp-consent { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: #475569; margin-bottom: 20px; }
+  .ejp-consent input { margin-top: 2px; flex-shrink: 0; }
+  .ejp-consent a { color: #2d6a9f; }
+  .ejp-submit { display: block; width: 100%; background: #1a365d; color: #fff; border: none; border-radius: 50px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .ejp-submit:hover { background: #2d6a9f; }
+</style>
+
+<!-- HERO -->
+<div class="ejp-hero">
+  <h1 class="ejp-h1">Associations partenaires</h1>
+  <p class="ejp-hero-sub">
+    Faites connaître EJ Partners Assurances à vos adhérents : une protection qui s'adapte à leur famille.
+  </p>
+</div>
+
+<!-- RÉASSURANCE -->
+<div style="padding: 0 24px;">
+  <div class="ejp-reassurance">
+    <ul>
+      <li>Accompagnement personnalisé et sans jugement</li>
+      <li>Sur rendez-vous : en ligne, par téléphone ou à domicile</li>
+      <li>Sans engagement</li>
+      <li>Réponse sous 24-48h</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PRÉSENTATION DU PARTENARIAT -->
+<div class="ejp-section">
+  <div class="ejp-inner">
+    <h2 class="ejp-h2">Un partenariat au bénéfice de vos adhérents</h2>
+    <p class="ejp-p">
+      Associations LGBT, de familles monoparentales ou recomposées, de soutien à la parentalité : vos adhérents font
+      face à des réalités familiales que les assureurs classiques connaissent encore mal. En devenant partenaire
+      d'EJ Partners Assurances, vous offrez à vos membres un accès direct à un courtier qui maîtrise ces situations
+      dans le détail, sans jugement et sans qu'ils aient à justifier leur histoire familiale.
+    </p>
+  </div>
+</div>
+
+<!-- FORMATS PROPOSÉS -->
+<div class="ejp-section-gray">
+  <div class="ejp-inner-wide">
+    <h2 class="ejp-h2 ejp-h2-center">Les formats que nous proposons</h2>
+    <div class="ejp-grid-2">
+      <div class="ejp-card">
+        <div class="ejp-card-title">Réunions publiques et ateliers d'information</div>
+        <p class="ejp-card-text">
+          Nous intervenons auprès de vos adhérents, en ligne ou en présentiel, pour présenter de façon claire et
+          sans jargon les solutions d'assurance adaptées à leur situation familiale.
+        </p>
+      </div>
+      <div class="ejp-card">
+        <div class="ejp-card-title">Rendez-vous individualisés</div>
+        <p class="ejp-card-text">
+          Chaque adhérent intéressé peut prendre un rendez-vous personnel avec notre cabinet, en ligne, par
+          téléphone ou à domicile, pour étudier sa situation en toute confidentialité.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ENGAGEMENT SOLIDAIRE -->
+<div class="ejp-section">
+  <div class="ejp-inner">
+    <h2 class="ejp-h2">Un engagement solidaire</h2>
+    <p class="ejp-p">
+      Pour chaque adhérent de l'association partenaire devenu client, EJ Partners Assurances reverse une partie de
+      sa rémunération à l'association, en soutien de ses actions auprès de ses membres. Les modalités précises sont
+      définies ensemble dans une convention de partenariat.
+    </p>
+  </div>
+</div>
+
+<!-- FORMULAIRE -->
+<div class="ejp-section-gray">
+  <div class="ejp-form-wrap">
+    <div class="ejp-form-title">Devenir association partenaire</div>
+    <p class="ejp-form-sub">Présentez-nous votre association, nous reviendrons vers vous sous 24-48h.</p>
+
+    <!-- Remplacer l'action ci-dessous par votre endpoint Formspree -->
+    <form action="https://formspree.io/f/REMPLACER_PAR_VOTRE_ID" method="POST">
+
+      <div class="ejp-field">
+        <label class="ejp-label" for="asso_nom">Nom de l'association *</label>
+        <input class="ejp-input" type="text" id="asso_nom" name="association" required placeholder="Ex : Association Arc-en-ciel" />
+      </div>
+
+      <div class="ejp-field">
+        <label class="ejp-label" for="contact_nom">Nom et prénom du contact *</label>
+        <input class="ejp-input" type="text" id="contact_nom" name="contact_nom" required placeholder="Marie Dupont" />
+      </div>
+
+      <div class="ejp-field">
+        <label class="ejp-label" for="email">Email *</label>
+        <input class="ejp-input" type="email" id="email" name="email" required placeholder="marie@association.fr" />
+      </div>
+
+      <div class="ejp-field">
+        <label class="ejp-label" for="telephone">Téléphone</label>
+        <input class="ejp-input" type="tel" id="telephone" name="telephone" placeholder="06 12 34 56 78" />
+      </div>
+
+      <div class="ejp-field">
+        <label class="ejp-label" for="message">Présentation de votre association et de vos attentes</label>
+        <textarea class="ejp-textarea" id="message" name="message" placeholder="Décrivez votre association, le profil de vos adhérents et ce que vous attendez d'un partenariat…"></textarea>
+      </div>
+
+      <div class="ejp-consent">
+        <input type="checkbox" name="consentement_rgpd" required />
+        <span>
+          J'accepte que ces données soient utilisées par EJ Partners Assurances dans le cadre du traitement de cette
+          demande de partenariat, conformément à la
+          <a href="/politique-de-confidentialite">politique de confidentialité</a>. *
+        </span>
+      </div>
+
+      <button type="submit" class="ejp-submit">Envoyer ma demande de partenariat</button>
+    </form>
+  </div>
+</div>
