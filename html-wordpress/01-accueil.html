@@ -1,0 +1,136 @@
+<!-- ============================================================
+     PAGE : ACCUEIL
+     À coller dans WordPress > Pages > Ajouter > bloc "HTML personnalisé"
+     ============================================================ -->
+
+<style>
+  .ejp-hero { background: #eff6ff; padding: 60px 24px; }
+  .ejp-hero-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+  .ejp-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #c9a227; }
+  .ejp-h1 { font-size: 2.4rem; font-weight: 900; color: #1a365d; margin: 12px 0 20px; line-height: 1.2; }
+  .ejp-h1 span { color: #2d6a9f; }
+  .ejp-lead { font-size: 1.1rem; color: #475569; line-height: 1.7; margin-bottom: 32px; }
+  .ejp-btn-primary { display: inline-block; background: #1a365d; color: #fff !important; border-radius: 50px; padding: 14px 28px; font-size: 14px; font-weight: 700; text-decoration: none !important; margin: 6px; }
+  .ejp-btn-secondary { display: inline-block; border: 2px solid #1a365d; color: #1a365d !important; border-radius: 50px; padding: 12px 28px; font-size: 14px; font-weight: 700; text-decoration: none !important; margin: 6px; }
+  .ejp-reassurance { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: 20px 24px; max-width: 760px; margin: 40px auto; }
+  .ejp-reassurance ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .ejp-reassurance li { font-size: 14px; font-weight: 600; color: #1a365d; }
+  .ejp-reassurance li::before { content: "✓ "; color: #2d6a9f; }
+  .ejp-section { padding: 56px 24px; }
+  .ejp-section-gray { background: #f8fafc; padding: 56px 24px; }
+  .ejp-section-inner { max-width: 1100px; margin: 0 auto; }
+  .ejp-section-title { font-size: 1.8rem; font-weight: 800; color: #1a365d; text-align: center; margin-bottom: 12px; }
+  .ejp-section-sub { font-size: 1rem; color: #64748b; text-align: center; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+  .ejp-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .ejp-card { border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; text-decoration: none !important; display: block; background: #fff; transition: border-color .2s; }
+  .ejp-card:hover { border-color: #2d6a9f; }
+  .ejp-card-title { font-size: 1.1rem; font-weight: 800; color: #1a365d; margin-bottom: 12px; }
+  .ejp-card-text { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 16px; }
+  .ejp-card-link { font-size: 13px; font-weight: 700; color: #2d6a9f; }
+  .ejp-cta-band { background: #1a365d; padding: 60px 24px; text-align: center; }
+  .ejp-cta-band h2 { color: #fff; font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; }
+  .ejp-cta-band p { color: #bfdbfe; margin-bottom: 28px; }
+  .ejp-cta-band a { display: inline-block; background: #fff; color: #1a365d !important; border-radius: 50px; padding: 14px 32px; font-size: 14px; font-weight: 700; text-decoration: none !important; }
+  .ejp-why { max-width: 700px; margin: 0 auto; text-align: center; }
+  .ejp-why p { font-size: 1rem; color: #475569; line-height: 1.8; }
+</style>
+
+<!-- HERO -->
+<div class="ejp-hero">
+  <div class="ejp-hero-inner">
+    <p class="ejp-label">Le cabinet pensé pour les familles modernes</p>
+    <h1 class="ejp-h1">L'assurance qui s'adapte à <span>votre famille</span></h1>
+    <p class="ejp-lead">
+      Parents séparés, familles recomposées, couples et familles LGBT : EJ Partners Assurances est le cabinet de
+      courtage qui conçoit des solutions d'assurance emprunteur, de prévoyance et de transmission réellement
+      adaptées à la diversité des familles d'aujourd'hui.
+    </p>
+    <a href="/contact#rendez-vous" class="ejp-btn-primary">Prendre rendez-vous (en ligne, par téléphone ou à domicile)</a>
+    <a href="/a-propos" class="ejp-btn-secondary">Découvrir notre approche</a>
+  </div>
+</div>
+
+<!-- RÉASSURANCE -->
+<div style="padding: 32px 24px;">
+  <div class="ejp-reassurance">
+    <ul>
+      <li>Accompagnement personnalisé et sans jugement</li>
+      <li>Sur rendez-vous : en ligne, par téléphone ou à domicile</li>
+      <li>Sans engagement</li>
+      <li>Réponse sous 24-48h</li>
+    </ul>
+  </div>
+</div>
+
+<!-- VOS SITUATIONS -->
+<div class="ejp-section">
+  <div class="ejp-section-inner">
+    <h2 class="ejp-section-title">Vos situations</h2>
+    <p class="ejp-section-sub">
+      L'assurance et la protection qui s'adaptent à votre famille, quelle que soit la façon dont elle s'est construite.
+    </p>
+    <div class="ejp-grid-3">
+      <a href="/coparentalite" class="ejp-card">
+        <div class="ejp-card-title">Coparentalité</div>
+        <p class="ejp-card-text">Protégez vos enfants entre deux foyers, sécurisez vos revenus et votre crédit quelle que soit la situation du couple.</p>
+        <div class="ejp-card-link">En savoir plus →</div>
+      </a>
+      <a href="/familles-recomposees" class="ejp-card">
+        <div class="ejp-card-title">Familles recomposées</div>
+        <p class="ejp-card-text">Protégez votre nouveau conjoint et les enfants de chaque union, organisez une transmission équitable.</p>
+        <div class="ejp-card-link">En savoir plus →</div>
+      </a>
+      <a href="/communaute-lgbt" class="ejp-card">
+        <div class="ejp-card-title">Communauté LGBT</div>
+        <p class="ejp-card-text">Protégez votre partenaire et le parent non légalement reconnu, évitez la sur-taxation des couples non mariés.</p>
+        <div class="ejp-card-link">En savoir plus →</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- NOS SOLUTIONS -->
+<div class="ejp-section-gray">
+  <div class="ejp-section-inner">
+    <h2 class="ejp-section-title">Nos 3 solutions</h2>
+    <p class="ejp-section-sub">
+      Des solutions construites autour des réalités juridiques et humaines des familles modernes, là où les assureurs classiques proposent encore des contrats standards souvent inadaptés.
+    </p>
+    <div class="ejp-grid-3">
+      <a href="/assurance-emprunteur" class="ejp-card">
+        <div class="ejp-card-title">Assurance emprunteur</div>
+        <p class="ejp-card-text">Protégez votre crédit immobilier à deux, quel que soit votre statut juridique : mariage, Pacs ou concubinage.</p>
+        <div class="ejp-card-link">En savoir plus →</div>
+      </a>
+      <a href="/prevoyance" class="ejp-card">
+        <div class="ejp-card-title">Prévoyance</div>
+        <p class="ejp-card-text">Protégez votre partenaire et chacun de vos enfants, quelle que soit la façon dont votre famille s'est construite.</p>
+        <div class="ejp-card-link">En savoir plus →</div>
+      </a>
+      <a href="/transmission" class="ejp-card">
+        <div class="ejp-card-title">Transmission</div>
+        <p class="ejp-card-text">Organisez une transmission de patrimoine équitable pour votre partenaire survivant et tous vos enfants.</p>
+        <div class="ejp-card-link">En savoir plus →</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- POURQUOI NOUS -->
+<div class="ejp-section">
+  <div class="ejp-why">
+    <h2 class="ejp-section-title">Pourquoi un courtier pensé pour les familles modernes ?</h2>
+    <p>
+      Les contrats d'assurance standards ne tiennent pas toujours compte des réalités juridiques des couples non
+      mariés, des parents non biologiques ou des familles recomposées. Nous connaissons ces situations dans le détail
+      et construisons avec vous des solutions réellement adaptées à votre famille, telle qu'elle est.
+    </p>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="ejp-cta-band">
+  <h2>Prendre un rendez-vous gratuit</h2>
+  <p>En ligne, par téléphone ou à domicile — sans engagement, réponse sous 24-48h.</p>
+  <a href="/contact#rendez-vous">Prendre rendez-vous (en ligne, par téléphone ou à domicile)</a>
+</div>

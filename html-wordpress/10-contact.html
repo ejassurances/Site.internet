@@ -1,0 +1,168 @@
+<!-- ============================================================
+     PAGE : CONTACT & RENDEZ-VOUS
+     À coller dans WordPress > Pages > Ajouter > bloc "HTML personnalisé"
+     IMPORTANT : remplacer l'action du formulaire par votre endpoint Formspree
+     (ex : https://formspree.io/f/VOTRE_ID)
+     ============================================================ -->
+
+<style>
+  .ejp-hero { background: #eff6ff; padding: 60px 24px; text-align: center; }
+  .ejp-h1 { font-size: 2.2rem; font-weight: 900; color: #1a365d; margin: 0 0 16px; }
+  .ejp-hero-sub { font-size: 1.1rem; color: #475569; max-width: 640px; margin: 0 auto; line-height: 1.7; }
+  .ejp-reassurance { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: 20px 24px; max-width: 760px; margin: 32px auto; }
+  .ejp-reassurance ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .ejp-reassurance li { font-size: 14px; font-weight: 600; color: #1a365d; }
+  .ejp-reassurance li::before { content: "✓ "; color: #2d6a9f; }
+  .ejp-section { padding: 52px 24px; }
+  .ejp-section-gray { background: #f8fafc; padding: 52px 24px; }
+  .ejp-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; max-width: 1060px; margin: 0 auto; }
+  /* Formulaire */
+  .ejp-form { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; }
+  .ejp-form h2 { font-size: 1.3rem; font-weight: 800; color: #1a365d; margin-bottom: 20px; }
+  .ejp-field { margin-bottom: 16px; }
+  .ejp-label { display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+  .ejp-input, .ejp-select, .ejp-textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px 14px; font-size: 14px; color: #1e293b; box-sizing: border-box; }
+  .ejp-input:focus, .ejp-select:focus, .ejp-textarea:focus { outline: 2px solid #2d6a9f; border-color: #2d6a9f; }
+  .ejp-textarea { min-height: 100px; resize: vertical; }
+  .ejp-radios { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
+  .ejp-radio-label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #475569; cursor: pointer; }
+  .ejp-consent { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: #475569; margin: 16px 0; }
+  .ejp-consent input { margin-top: 2px; flex-shrink: 0; }
+  .ejp-consent a { color: #2d6a9f; }
+  .ejp-submit { display: block; width: 100%; background: #1a365d; color: #fff; border: none; border-radius: 50px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; }
+  .ejp-submit:hover { background: #2d6a9f; }
+  /* Coordonnées */
+  .ejp-coords { display: flex; flex-direction: column; gap: 20px; }
+  .ejp-coords-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; }
+  .ejp-coords-box h2 { font-size: 1.1rem; font-weight: 800; color: #1a365d; margin-bottom: 14px; }
+  .ejp-coords-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .ejp-coords-list li { font-size: 14px; color: #475569; }
+  .ejp-coords-list strong { color: #334155; }
+  .ejp-coords-list a { color: #2d6a9f; text-decoration: none; }
+  .ejp-coords-list a:hover { text-decoration: underline; }
+  /* Koalendar */
+  .ejp-agenda { padding: 52px 24px; }
+  .ejp-agenda-inner { max-width: 900px; margin: 0 auto; }
+  .ejp-agenda h2 { font-size: 1.6rem; font-weight: 800; color: #1a365d; text-align: center; margin-bottom: 8px; }
+  .ejp-agenda p { font-size: 1rem; color: #64748b; text-align: center; margin-bottom: 32px; }
+</style>
+
+<!-- HERO -->
+<div class="ejp-hero">
+  <h1 class="ejp-h1">Contact &amp; Rendez-vous</h1>
+  <p class="ejp-hero-sub">En ligne, par téléphone ou à domicile — sur rendez-vous uniquement, du lundi au vendredi.</p>
+</div>
+
+<!-- RÉASSURANCE -->
+<div style="padding: 0 24px;">
+  <div class="ejp-reassurance">
+    <ul>
+      <li>Accompagnement personnalisé et sans jugement</li>
+      <li>Sur rendez-vous : en ligne, par téléphone ou à domicile</li>
+      <li>Sans engagement</li>
+      <li>Réponse sous 24-48h</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FORMULAIRE + COORDONNÉES -->
+<div class="ejp-section">
+  <div class="ejp-grid-2">
+
+    <!-- FORMULAIRE -->
+    <div class="ejp-form">
+      <h2>Envoyez-nous un message</h2>
+
+      <!-- Remplacer l'action ci-dessous par votre endpoint Formspree -->
+      <form action="https://formspree.io/f/REMPLACER_PAR_VOTRE_ID" method="POST">
+
+        <div class="ejp-field">
+          <label class="ejp-label" for="nom">Nom et prénom *</label>
+          <input class="ejp-input" type="text" id="nom" name="nom" required placeholder="Marie Dupont" />
+        </div>
+
+        <div class="ejp-field">
+          <label class="ejp-label" for="email">Email *</label>
+          <input class="ejp-input" type="email" id="email" name="email" required placeholder="marie.dupont@exemple.fr" />
+        </div>
+
+        <div class="ejp-field">
+          <label class="ejp-label" for="telephone">Téléphone *</label>
+          <input class="ejp-input" type="tel" id="telephone" name="telephone" required placeholder="06 12 34 56 78" />
+        </div>
+
+        <div class="ejp-field">
+          <label class="ejp-label" for="besoin">Votre besoin *</label>
+          <select class="ejp-select" id="besoin" name="besoin" required>
+            <option value="">Sélectionnez une option</option>
+            <option value="assurance-emprunteur">Assurance emprunteur</option>
+            <option value="prevoyance">Prévoyance</option>
+            <option value="transmission">Transmission de patrimoine</option>
+            <option value="coparentalite">Coparentalité</option>
+            <option value="famille-recomposee">Famille recomposée</option>
+            <option value="famille-lgbt">Famille LGBT</option>
+            <option value="autre">Autre demande</option>
+          </select>
+        </div>
+
+        <div class="ejp-field">
+          <span class="ejp-label">Type de rendez-vous souhaité *</span>
+          <div class="ejp-radios">
+            <label class="ejp-radio-label"><input type="radio" name="type_rdv" value="en_ligne" required /> En ligne (visio)</label>
+            <label class="ejp-radio-label"><input type="radio" name="type_rdv" value="telephone" /> Par téléphone</label>
+            <label class="ejp-radio-label"><input type="radio" name="type_rdv" value="domicile" /> À domicile</label>
+          </div>
+        </div>
+
+        <div class="ejp-field">
+          <label class="ejp-label" for="message">Message (optionnel)</label>
+          <textarea class="ejp-textarea" id="message" name="message" placeholder="Décrivez brièvement votre situation…"></textarea>
+        </div>
+
+        <div class="ejp-consent">
+          <input type="checkbox" name="consentement_rgpd" required />
+          <span>J'accepte que mes données soient utilisées par EJ Partners Assurances dans le cadre du traitement de ma demande, conformément à la <a href="/politique-de-confidentialite">politique de confidentialité</a>. *</span>
+        </div>
+
+        <button type="submit" class="ejp-submit">Envoyer ma demande de rendez-vous</button>
+      </form>
+    </div>
+
+    <!-- COORDONNÉES -->
+    <div class="ejp-coords">
+      <div class="ejp-coords-box">
+        <h2>Nos coordonnées</h2>
+        <ul class="ejp-coords-list">
+          <li><strong>Cabinet :</strong> EJ Partners Assurances</li>
+          <li><strong>Adresse :</strong> 71 Rue du Docteur Roux, 95600 Eaubonne</li>
+          <li><strong>Téléphone :</strong> <a href="tel:+33669421157">06.69.42.11.57</a></li>
+          <li><strong>Email :</strong> <a href="mailto:contact@ej-assurances.fr">contact@ej-assurances.fr</a></li>
+          <li><strong>Horaires :</strong> Lun-Ven 9h-13h / 14h-19h, sur rendez-vous uniquement</li>
+        </ul>
+      </div>
+      <div class="ejp-coords-box">
+        <h2>Autres contacts</h2>
+        <ul class="ejp-coords-list">
+          <li><strong>Service client :</strong> <a href="mailto:service.client@ej-assurances.fr">service.client@ej-assurances.fr</a></li>
+          <li><strong>Sinistre :</strong> <a href="mailto:sinistre@ej-assurances.fr">sinistre@ej-assurances.fr</a></li>
+          <li><strong>RGPD / conformité :</strong> <a href="mailto:conformite@ej-assurances.fr">conformite@ej-assurances.fr</a></li>
+          <li><strong>Devenir prescripteur :</strong> <a href="mailto:prescripteur@ej-assurances.fr">prescripteur@ej-assurances.fr</a></li>
+          <li><strong>Recrutement :</strong> <a href="mailto:recrutement@ej-assurances.fr">recrutement@ej-assurances.fr</a></li>
+          <li><strong>Espace client :</strong> <a href="https://moncompte.ej-assurances.fr" target="_blank" rel="noopener">moncompte.ej-assurances.fr</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AGENDA KOALENDAR -->
+<div id="rendez-vous" class="ejp-agenda">
+  <div class="ejp-agenda-inner">
+    <h2>Choisissez votre créneau</h2>
+    <p>Réservez directement votre rendez-vous en ligne, par téléphone ou à domicile.</p>
+    <div id="inline-widget-ej-partners-assurances"></div>
+    <script>window.Koalendar=window.Koalendar||function(){(Koalendar.props=Koalendar.props||[]).push(arguments)};</script>
+    <script async src="https://koalendar.com/assets/widget.js"></script>
+    <script>Koalendar('inline', {"url":"https://koalendar.com/e/ej-partners-assurances","selector":"#inline-widget-ej-partners-assurances"});</script>
+  </div>
+</div>
