@@ -13,7 +13,7 @@ export const cabinet = {
     prescripteur: 'prescripteur@ej-assurances.fr',
     recrutement: 'recrutement@ej-assurances.fr',
   },
-  espaceClientUrl: 'https://moncompte.ej-assurances.fr',
+  espaceClientUrl: '/connexion',
   horaires: 'Du lundi au vendredi, 9h00-13h00 et 14h00-19h00, sur rendez-vous uniquement',
   orias: '25 005 812',
   oriasUrl: 'https://www.orias.fr',
