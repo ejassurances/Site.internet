@@ -1,0 +1,112 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Faq from '../components/Faq.astro';
+import Testimonial from '../components/Testimonial.astro';
+
+const faqItems = [
+  {
+    question: "L'orientation sexuelle ou le sexe des partenaires a-t-il un impact sur les contrats proposés ?",
+    answer:
+      "Non, aucun impact légal sur la tarification ou l'acceptation d'un dossier. Nous sélectionnons des partenaires assureurs qui évaluent uniquement sur des critères médicaux et financiers, et nous structurons les contrats pour refléter fidèlement votre réalité familiale.",
+  },
+  {
+    question: 'Comment protéger le parent non légalement reconnu en couple homoparental ?',
+    answer:
+      "Par une désignation nominative dans les clauses bénéficiaires de prévoyance et d'assurance-vie, indépendamment de l'état d'avancement de la reconnaissance légale du lien de filiation (adoption, PMA, GPA).",
+  },
+  {
+    question: 'Proposez-vous un accompagnement spécifique aux couples non mariés ou non pacsés ?',
+    answer:
+      "Oui. En l'absence de mariage ou de Pacs, un partenaire survivant peut être taxé jusqu'à 60% sur l'héritage reçu. Nous adaptons quotités d'assurance emprunteur, clauses bénéficiaires et stratégie de transmission pour limiter cette sur-taxation, quel que soit votre statut juridique.",
+  },
+];
+---
+
+<Layout
+  title="Assurance communauté LGBT | EJ Partners Assurances"
+  description="Assurance emprunteur, prévoyance et transmission pour couples de même sexe et familles homoparentales (PMA, GPA, adoption) : une protection adaptée, sans jugement."
+>
+  <section class="bg-brand-50 px-4 py-14 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Communauté LGBT</h1>
+      <p class="mt-4 text-lg text-slate-600">
+        L'assurance et la protection qui s'adaptent à votre famille, quelle que soit la façon dont elle s'est
+        construite.
+      </p>
+    </div>
+  </section>
+
+  <!-- Situation concrète -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Une situation que nous connaissons bien</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Marc et Julien élèvent ensemble la fille de Marc, née d'une précédente union, et leur fils né par GPA à
+        l'étranger, en cours de reconnaissance en France. Julien s'inquiète : en cas de décès de Marc, sa fille
+        serait-elle protégée ? Et lui, en tant que père non encore reconnu légalement de leur fils, pourrait-il
+        être désigné bénéficiaire d'un contrat pour continuer à subvenir à ses besoins ?
+      </p>
+    </div>
+  </section>
+
+  <!-- Défis -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Les défis spécifiques à votre situation</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Protéger le ou la partenaire et le parent non légalement reconnu.</li>
+        <li>— Sécuriser le partenaire survivant en l'absence de mariage ou de Pacs.</li>
+        <li>— Éviter la sur-taxation des couples non mariés dans la transmission.</li>
+        <li>— Co-emprunter sans discrimination, quel que soit le sexe des partenaires.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Comment la protection s'adapte -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Comment notre protection s'adapte</h2>
+      <p class="mt-4 leading-relaxed text-slate-600">
+        Nous construisons des solutions d'assurance emprunteur, de prévoyance et de transmission de patrimoine
+        réellement adaptées aux couples de même sexe et aux familles homoparentales : couples mariés, pacsés ou
+        en concubinage, parcours de PMA ou GPA, adoption, parent non biologique en cours de reconnaissance légale.
+        Chaque parent et chaque enfant est protégé, sans que vous ayez besoin de justifier votre histoire
+        familiale.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bénéfice -->
+  <section class="bg-slate-50 px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900">Le bénéfice pour vous</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>— Une protection nominative qui ne dépend pas uniquement du lien de filiation légal.</li>
+        <li>— Un partenaire survivant protégé, marié ou non.</li>
+        <li>— Un accompagnement sans jugement, qui connaît vos démarches en détail.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Témoignage -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Ils nous font confiance</h2>
+      <Testimonial
+        quote="On a eu besoin de tout réexpliquer à chaque rendez-vous chez nos précédents assureurs. Avec EJ Partners, on n'a rien eu à justifier : ils connaissaient déjà ces situations."
+        author="Julien, papa dans une famille homoparentale"
+      />
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Questions fréquentes</h2>
+      <Faq items={faqItems} />
+    </div>
+  </section>
+
+  <CtaBanner />
+</Layout>
