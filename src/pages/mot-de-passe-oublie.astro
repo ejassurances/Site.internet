@@ -112,10 +112,24 @@ const siteName = 'EJ Partners Assurances';
 
       if (error) {
         console.error('Password reset error:', error);
-        setStatus(
-          "Impossible d'envoyer le lien. Vérifiez que https://ej-assurances.fr/nouveau-mot-de-passe est autorisée dans Supabase.",
-          'error',
-        );
+
+        if (error.status === 429) {
+          setStatus(
+            'Trop de demandes ont été envoyées en peu de temps. Attendez quelques minutes avant de redemander un lien.',
+            'error',
+          );
+          return;
+        }
+
+        if (error.status === 400 || error.status === 422) {
+          setStatus(
+            "Impossible d'envoyer le lien. Vérifiez que https://ej-assurances.fr/nouveau-mot-de-passe est autorisée dans Supabase.",
+            'error',
+          );
+          return;
+        }
+
+        setStatus("Impossible d'envoyer le lien pour le moment. Réessayez dans quelques minutes.", 'error');
         return;
       }
 
