@@ -104,15 +104,16 @@ const siteName = 'EJ Partners Assurances';
       submitButton.textContent = 'Envoi en cours...';
       setStatus('Préparation du lien sécurisé...');
 
-      const redirectTo = `${window.location.origin}/nouveau-mot-de-passe`;
+      const redirectTo = 'https://ej-assurances.fr/nouveau-mot-de-passe';
       const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
 
       submitButton.disabled = false;
       submitButton.textContent = 'Envoyer le lien de réinitialisation';
 
       if (error) {
+        console.error('Password reset error:', error);
         setStatus(
-          "Impossible d'envoyer le lien. Vérifiez que l'URL de redirection est autorisée dans Supabase.",
+          "Impossible d'envoyer le lien. Vérifiez que https://ej-assurances.fr/nouveau-mot-de-passe est autorisée dans Supabase.",
           'error',
         );
         return;
