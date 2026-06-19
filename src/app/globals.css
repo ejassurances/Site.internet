@@ -1294,3 +1294,500 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   .nav-cta { display: none; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
 }
+
+/* ─── CRM — Fiches Clients 360° ─────────────────────────────────────────── */
+
+/* ── Directory ── */
+.crm-directory { display: flex; flex-direction: column; gap: 24px; }
+
+.crm-directory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.crm-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.crm-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.crm-search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.crm-search {
+  width: 100%;
+  padding: 10px 14px 10px 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-size: 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.crm-search:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(196,167,109,.15);
+}
+
+.crm-filter-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.crm-chip {
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.crm-chip:hover { border-color: var(--accent); color: var(--accent-strong); }
+.crm-chip.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+/* ── Client list rows ── */
+.crm-client-list { display: flex; flex-direction: column; gap: 10px; }
+
+.crm-client-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: box-shadow .15s, border-color .15s;
+}
+
+.crm-client-row:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.crm-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy), var(--navy-soft));
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.crm-client-main { flex: 1; min-width: 0; }
+
+.crm-client-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.crm-client-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.crm-client-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.crm-status-badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+.crm-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.crm-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.crm-client-stats {
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.crm-client-stats div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.crm-client-stats strong {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.crm-client-stats small {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.crm-client-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.crm-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+
+.crm-action-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+
+.crm-action-btn.primary {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+}
+
+.crm-action-btn.primary:hover { background: var(--navy-soft); }
+
+/* ── Fiche 360° ── */
+.client-360 { display: flex; flex-direction: column; gap: 24px; }
+
+.client-360-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 28px 32px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  flex-wrap: wrap;
+}
+
+.client-360-identity { display: flex; gap: 20px; align-items: flex-start; flex: 1; }
+
+.client-360-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy), var(--navy-soft));
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.client-360-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* ── KPIs ── */
+.client-360-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.kpi-card svg { color: var(--accent); flex-shrink: 0; }
+
+.kpi-card div { display: flex; flex-direction: column; gap: 2px; }
+.kpi-card strong { font-size: 22px; font-weight: 800; line-height: 1; }
+.kpi-card small { font-size: 12px; color: var(--muted); }
+
+/* ── Onglets ── */
+.client-360-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.client-360-tabs::-webkit-scrollbar { display: none; }
+
+.client-360-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+
+.client-360-tab:hover { color: var(--ink); }
+.client-360-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+
+/* ── Panel contenu ── */
+.client-360-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  min-height: 300px;
+}
+
+/* ── Synthèse ── */
+.synthese-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.synthese-card {
+  padding: 20px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.synthese-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--navy);
+}
+
+.synthese-card dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 13px; margin: 0; }
+.synthese-card dt { color: var(--muted); font-weight: 600; }
+.synthese-card dd { margin: 0; color: var(--ink); }
+
+/* ── Timeline interactions ── */
+.interaction-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.interaction-timeline::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.interaction-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  position: relative;
+}
+
+.interaction-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  color: var(--accent-strong);
+}
+
+.interaction-body { flex: 1; }
+
+.interaction-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.interaction-header strong { font-size: 14px; }
+
+.interaction-author {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface-soft);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.interaction-date {
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.interaction-summary {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 6px;
+}
+
+.interaction-attachments { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ── Contrats ── */
+.contracts-list { display: flex; flex-direction: column; gap: 12px; }
+
+.contract-card {
+  padding: 20px 24px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.contract-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.contract-card-header > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contract-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  font-size: 13px;
+  margin: 0;
+}
+
+.contract-details dt { color: var(--muted); font-weight: 600; }
+.contract-details dd { margin: 0; }
+
+/* ── Personnes liées ── */
+.persons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.person-card {
+  display: flex;
+  gap: 14px;
+  padding: 18px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  align-items: flex-start;
+}
+
+.person-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  display: grid;
+  place-items: center;
+  color: var(--navy);
+  flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .client-360-kpis { grid-template-columns: repeat(2, 1fr); }
+  .synthese-grid { grid-template-columns: 1fr; }
+  .crm-client-stats { display: none; }
+  .crm-client-actions { flex-direction: row; }
+}
+
+@media (max-width: 640px) {
+  .client-360-hero { flex-direction: column; }
+  .client-360-kpis { grid-template-columns: repeat(2, 1fr); }
+  .crm-client-row { flex-wrap: wrap; }
+  .client-360-panel { padding: 20px 16px; }
+}
