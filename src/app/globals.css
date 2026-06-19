@@ -440,6 +440,36 @@ h2 {
   padding: 22px;
 }
 
+.needs-contact-form {
+  gap: 18px;
+}
+
+.form-section {
+  display: grid;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(7, 23, 37, 0.08);
+}
+
+.form-section:last-of-type {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.form-section .eyebrow {
+  margin-bottom: 0;
+  font-size: 12px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.form-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .contact-form label {
   display: grid;
   gap: 7px;
@@ -462,6 +492,44 @@ h2 {
 .contact-form textarea {
   min-height: 130px;
   resize: vertical;
+}
+
+.checkbox-group {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(7, 23, 37, 0.1);
+  border-radius: 8px;
+  background: rgba(237, 243, 239, 0.48);
+}
+
+.checkbox-group legend {
+  padding: 0 6px;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.checkbox-group label,
+.consent-line {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 9px;
+  color: var(--muted);
+  font-weight: 650;
+  line-height: 1.42;
+}
+
+.checkbox-group input,
+.consent-line input {
+  width: auto;
+  min-height: auto;
+  margin-top: 3px;
+}
+
+.consent-line {
+  font-size: 13px;
 }
 
 .login-form {
@@ -1051,6 +1119,10 @@ h2 {
 
   .side-nav {
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+
+  .form-grid.two {
+    grid-template-columns: 1fr;
   }
 
   .client-row,
