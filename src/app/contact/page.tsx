@@ -15,9 +15,9 @@ export default function ContactPage() {
               reviendra vers vous avec un cadre d&apos;echange confidentiel.
             </p>
             <div className="contact-lines">
-              <span>
-                <Phone size={18} aria-hidden /> 01 00 00 00 00
-              </span>
+              <a href="tel:+33189314029">
+                <Phone size={18} aria-hidden /> 01.89.31.40.29
+              </a>
               <span>
                 <Mail size={18} aria-hidden /> contact@ej-assurances.fr
               </span>

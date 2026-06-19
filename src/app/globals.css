@@ -288,6 +288,7 @@ h2 {
 }
 
 .trust-row,
+.contact-lines a,
 .contact-lines span,
 .workspace-user {
   display: flex;
@@ -305,6 +306,10 @@ h2 {
   gap: 10px;
   margin-top: 28px;
   color: var(--muted);
+}
+
+.contact-lines a {
+  color: inherit;
 }
 
 .contact-form {
