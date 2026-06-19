@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f2eb;
-  --foreground: #151b1d;
-  --muted: #64706c;
+  --background: #f7f5ef;
+  --foreground: #111923;
+  --muted: #65717c;
   --surface: #ffffff;
-  --surface-soft: #edf3ef;
-  --line: #d9ded6;
-  --accent: #0d6559;
-  --accent-strong: #083f3a;
-  --coral: #b96a4e;
-  --gold: #b89a5e;
-  --navy: #071725;
-  --ink: #101a1c;
+  --surface-soft: #f0eee8;
+  --line: #ded9cf;
+  --accent: #c4a76d;
+  --accent-strong: #92763e;
+  --coral: #bd8063;
+  --gold: #d7bf83;
+  --navy: #071827;
+  --navy-soft: #10283d;
+  --ink: #101824;
   --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
 }
@@ -28,8 +29,9 @@ html {
 body {
   margin: 0;
   background:
-    linear-gradient(180deg, rgba(7, 23, 37, 0.055), transparent 420px),
-    radial-gradient(circle at 22% 0%, rgba(184, 154, 94, 0.18), transparent 320px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(247, 245, 239, 0.96) 440px),
+    radial-gradient(circle at 18% 0%, rgba(215, 191, 131, 0.28), transparent 330px),
+    radial-gradient(circle at 86% 14%, rgba(7, 24, 39, 0.08), transparent 360px),
     var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
@@ -56,9 +58,10 @@ textarea {
   gap: 24px;
   min-height: 78px;
   padding: 14px clamp(20px, 4vw, 64px);
-  border-bottom: 1px solid rgba(7, 23, 37, 0.1);
-  background: rgba(245, 242, 235, 0.88);
-  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(7, 24, 39, 0.08);
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 18px 48px rgba(7, 24, 39, 0.04);
 }
 
 .brand {
@@ -97,8 +100,8 @@ textarea {
 
 .public-nav a:hover,
 .login-link:hover {
-  background: rgba(13, 101, 89, 0.08);
-  color: var(--accent-strong);
+  background: rgba(196, 167, 109, 0.14);
+  color: var(--navy);
 }
 
 .login-link,
@@ -116,7 +119,7 @@ textarea {
 .login-link {
   padding: 0 14px;
   border: 1px solid rgba(7, 23, 37, 0.12);
-  background: rgba(255, 255, 255, 0.54);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--ink);
 }
 
@@ -171,7 +174,7 @@ h2 {
 
 .hero-copy {
   max-width: 720px;
-  color: #3f4d4a;
+  color: #46515b;
   font-size: clamp(18px, 2vw, 22px);
   line-height: 1.55;
 }
@@ -185,10 +188,10 @@ h2 {
 
 .hero-proof span,
 .trust-strip span {
-  border: 1px solid rgba(7, 23, 37, 0.1);
+  border: 1px solid rgba(7, 24, 39, 0.09);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.62);
-  color: var(--accent-strong);
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--navy);
   font-size: 13px;
   font-weight: 800;
 }
@@ -211,30 +214,30 @@ h2 {
   background: var(--navy);
   color: white;
   cursor: pointer;
-  box-shadow: 0 14px 32px rgba(7, 23, 37, 0.18);
+  box-shadow: 0 16px 36px rgba(7, 24, 39, 0.2);
 }
 
 .primary-action:hover {
-  background: var(--accent-strong);
+  background: var(--navy-soft);
 }
 
 .secondary-action {
   min-height: 46px;
   padding: 0 18px;
-  border: 1px solid rgba(7, 23, 37, 0.12);
-  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(7, 24, 39, 0.1);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .hero-visual {
   display: grid;
   gap: 16px;
   padding: 22px;
-  border: 1px solid rgba(7, 23, 37, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   background:
-    linear-gradient(145deg, rgba(7, 23, 37, 0.96), rgba(13, 101, 89, 0.88)),
+    linear-gradient(145deg, rgba(7, 24, 39, 0.98), rgba(16, 40, 61, 0.96)),
     var(--surface);
-  box-shadow: 0 28px 70px rgba(7, 23, 37, 0.2);
+  box-shadow: 0 30px 80px rgba(7, 24, 39, 0.22);
 }
 
 .premium-visual {
@@ -265,7 +268,7 @@ h2 {
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   background:
-    radial-gradient(circle, rgba(7, 23, 37, 0.92) 0 54%, transparent 55%),
+    radial-gradient(circle, rgba(7, 24, 39, 0.92) 0 54%, transparent 55%),
     conic-gradient(var(--gold) 0 72%, rgba(255, 255, 255, 0.14) 72% 100%);
 }
 
@@ -313,10 +316,10 @@ h2 {
 .contact-form,
 .metric,
 .module {
-  border: 1px solid rgba(7, 23, 37, 0.1);
+  border: 1px solid rgba(7, 24, 39, 0.08);
   border-radius: 8px;
   background: var(--surface);
-  box-shadow: 0 18px 50px rgba(7, 23, 37, 0.06);
+  box-shadow: 0 18px 54px rgba(7, 24, 39, 0.055);
 }
 
 .visual-card {
@@ -328,7 +331,7 @@ h2 {
 .visual-card svg,
 .value-card svg,
 .trust-row svg {
-  color: var(--accent);
+  color: var(--accent-strong);
 }
 
 .visual-card span,
@@ -383,7 +386,7 @@ h2 {
   grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);
   align-items: start;
   padding: 52px 0 88px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(7, 24, 39, 0.08);
 }
 
 .service-list,
@@ -398,9 +401,9 @@ h2 {
 .service-list li,
 .module li {
   padding: 12px 14px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(7, 24, 39, 0.08);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .trust-panel {
@@ -482,10 +485,10 @@ h2 {
 .contact-form textarea {
   width: 100%;
   min-height: 44px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(7, 24, 39, 0.1);
   border-radius: 8px;
   padding: 10px 12px;
-  background: #fbfbf8;
+  background: #fbfaf7;
   color: var(--foreground);
 }
 
@@ -499,9 +502,9 @@ h2 {
   gap: 10px;
   margin: 0;
   padding: 14px;
-  border: 1px solid rgba(7, 23, 37, 0.1);
+  border: 1px solid rgba(7, 24, 39, 0.09);
   border-radius: 8px;
-  background: rgba(237, 243, 239, 0.48);
+  background: rgba(240, 238, 232, 0.56);
 }
 
 .checkbox-group legend {
@@ -553,8 +556,8 @@ h2 {
   grid-template-columns: 292px minmax(0, 1fr);
   min-height: 100svh;
   background:
-    linear-gradient(180deg, rgba(7, 23, 37, 0.04), transparent 360px),
-    #f6f5f0;
+    linear-gradient(180deg, rgba(215, 191, 131, 0.12), transparent 360px),
+    #f7f5ef;
 }
 
 .sidebar {
@@ -564,7 +567,7 @@ h2 {
   padding: 24px 18px;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   background:
-    linear-gradient(180deg, rgba(13, 101, 89, 0.28), transparent 44%),
+    linear-gradient(180deg, rgba(215, 191, 131, 0.16), transparent 48%),
     var(--navy);
   color: #f7f5f0;
 }
@@ -602,7 +605,7 @@ h2 {
 }
 
 .side-nav a:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.11);
   color: white;
 }
 
@@ -627,11 +630,11 @@ h2 {
 .workspace-user {
   min-height: 42px;
   padding: 0 8px 0 14px;
-  border: 1px solid rgba(7, 23, 37, 0.1);
+  border: 1px solid rgba(7, 24, 39, 0.08);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.76);
   color: var(--muted);
-  box-shadow: 0 12px 30px rgba(7, 23, 37, 0.06);
+  box-shadow: 0 12px 30px rgba(7, 24, 39, 0.055);
 }
 
 .icon-button {
@@ -642,7 +645,7 @@ h2 {
   border: 0;
   border-radius: 8px;
   background: var(--surface-soft);
-  color: var(--accent-strong);
+  color: var(--navy);
   cursor: pointer;
 }
 
@@ -662,7 +665,7 @@ h2 {
   position: absolute;
   inset: 0 auto 0 0;
   width: 4px;
-  background: linear-gradient(180deg, var(--accent), var(--gold));
+  background: linear-gradient(180deg, var(--navy), var(--gold));
 }
 
 .metric span,
@@ -744,7 +747,8 @@ h2 {
   min-height: 170px;
   place-items: center;
   border-radius: 8px;
-  background: #17201d;
+  background:
+    linear-gradient(145deg, var(--navy), var(--navy-soft));
   color: #f7f5f0;
   text-align: center;
 }
@@ -777,10 +781,10 @@ h2 {
   gap: 12px;
   min-height: 58px;
   padding: 0 16px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(7, 24, 39, 0.08);
   border-radius: 8px;
   background: var(--surface);
-  color: var(--accent-strong);
+  color: var(--navy);
   font-weight: 800;
 }
 
@@ -802,7 +806,7 @@ h2 {
 }
 
 .risk-card-header svg {
-  color: var(--accent);
+  color: var(--accent-strong);
 }
 
 .risk-card-header span {
@@ -822,7 +826,7 @@ h2 {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--coral), var(--accent));
+  background: linear-gradient(90deg, var(--gold), var(--navy-soft));
 }
 
 .fpos-panel,
@@ -839,9 +843,9 @@ h2 {
 .module-list div,
 .generated-summary {
   padding: 14px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(7, 24, 39, 0.08);
   border-radius: 8px;
-  background: rgba(247, 245, 240, 0.68);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .module-list small {
@@ -885,7 +889,7 @@ h2 {
   flex: 0 0 auto;
   place-items: center;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--navy);
   color: white;
   font-size: 12px;
   font-weight: 800;
@@ -905,7 +909,7 @@ h2 {
   padding: 0 12px;
   border-radius: 8px;
   background: var(--surface-soft);
-  color: var(--accent-strong);
+  color: var(--navy);
   font-weight: 800;
 }
 
@@ -926,10 +930,10 @@ h2 {
 .assessment-form select,
 .assessment-form textarea {
   width: 100%;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(7, 24, 39, 0.1);
   border-radius: 8px;
   padding: 10px 12px;
-  background: #fbfbf8;
+  background: #fbfaf7;
   color: var(--foreground);
 }
 
@@ -984,9 +988,9 @@ h2 {
 }
 
 .form-success {
-  border: 1px solid rgba(41, 128, 91, 0.25);
-  background: rgba(41, 128, 91, 0.08);
-  color: #1f6d4d;
+  border: 1px solid rgba(196, 167, 109, 0.32);
+  background: rgba(215, 191, 131, 0.13);
+  color: var(--navy);
 }
 
 .form-error {
