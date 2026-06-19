@@ -1,7 +1,17 @@
 import { CalendarDays, Mail, Phone } from "lucide-react";
+import { createContactIntakeAction } from "@/app/actions/contact-intake";
 import { SiteHeader } from "@/components/site-header";
 
-export default function ContactPage() {
+type ContactPageProps = {
+  searchParams: Promise<{
+    success?: string;
+    error?: string;
+  }>;
+};
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const { success, error } = await searchParams;
+
   return (
     <>
       <SiteHeader />
@@ -27,7 +37,17 @@ export default function ContactPage() {
               </span>
             </div>
           </div>
-          <form className="contact-form needs-contact-form">
+          <form className="contact-form needs-contact-form" action={createContactIntakeAction}>
+            {success && (
+              <p className="form-success">
+                Votre demande est enregistree. Une fiche client a ete creee et un lien de connexion vous a ete envoye par email.
+              </p>
+            )}
+            {error && (
+              <p className="form-error">
+                Impossible d'enregistrer la demande pour le moment. Verifiez les informations ou contactez le cabinet.
+              </p>
+            )}
             <section className="form-section">
               <p className="eyebrow">Vos coordonnees</p>
               <div className="form-grid two">
@@ -130,6 +150,10 @@ export default function ContactPage() {
             <label className="consent-line">
               <input type="checkbox" name="consent" required />
               J'accepte d'etre recontacte par EJ Assurances pour analyser ma situation. Les informations transmises restent confidentielles.
+            </label>
+            <label className="consent-line">
+              <input type="checkbox" name="partnerConsent" />
+              J'accepte aussi, si mon besoin le necessite, d'etre recontacte par un partenaire selectionne du cabinet.
             </label>
             <button className="primary-action" type="submit">
               Demander une premiere analyse

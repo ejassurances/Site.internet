@@ -230,6 +230,7 @@ export const dashboardConfig: Record<
       { label: "Mes projets", href: "/client#projets", icon: BriefcaseBusiness },
       { label: "Mes contrats", href: "/client#contrats", icon: FileHeart },
       { label: "Mes documents", href: "/client#documents", icon: ShieldCheck },
+      { label: "Classeur ACPR", href: "/client#classeur-acpr", icon: FileHeart },
       { label: "Messages", href: "/client#messages", icon: MessageSquareText },
     ],
     stats: [
