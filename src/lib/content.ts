@@ -26,58 +26,58 @@ export const publicNav = [
 
 export const expertisePages = {
   "/expertise-coparentalite": {
-    title: "Expertise coparentalite",
-    eyebrow: "Organisation familiale",
+    title: "Coparentalite choisie : proteger chaque parent et chaque enfant",
+    eyebrow: "Familles coparentales",
     description:
-      "Un accompagnement assureur pour clarifier les protections, les beneficiaires et les engagements dans les familles organisees autour de plusieurs parents.",
+      "Quand plusieurs adultes construisent un projet parental, les liens affectifs, financiers et juridiques ne se superposent pas toujours. Nous vous aidons a clarifier les protections utiles avant qu'un accident de vie ne revele les angles morts.",
     highlights: [
-      "Analyse des responsabilites parentales et financieres",
-      "Protection des enfants dans les accords de vie",
-      "Coordination avec notaire, avocat ou conseil patrimonial",
+      "Identifier qui assume quoi pour l'enfant au quotidien",
+      "Proteger le logement, les revenus et les adultes referents",
+      "Coordonner assurance, clauses beneficiaires et conseils juridiques",
     ],
   },
   "/familles-lgbt": {
-    title: "Expertise familles LGBT+",
+    title: "Familles LGBT+ : faire reconnaitre et proteger la famille reelle",
     eyebrow: "Parcours inclusifs",
     description:
-      "Des solutions d'assurance pensees pour les couples LGBT+, les parents sociaux, les familles homoparentales et les parcours de parentalite non standards.",
+      "Couple marie, PACS, concubinage, parent social, adoption, PMA ou famille homoparentale : chaque parcours merite une lecture precise. Le cabinet verifie que les personnes que vous aimez seront bien protegees par vos contrats.",
     highlights: [
-      "Lecture attentive des liens familiaux et patrimoniaux",
-      "Confidentialite des situations personnelles",
-      "Contrats adaptes aux beneficiaires reels",
+      "Confidentialite totale sur les situations personnelles",
+      "Analyse des beneficiaires, capitaux et droits successoraux",
+      "Solutions d'assurance adaptees aux personnes a proteger",
     ],
   },
   "/assurance-emprunteur": {
-    title: "Assurance emprunteur",
+    title: "Assurance emprunteur : proteger le logement familial",
     eyebrow: "Credit immobilier",
     description:
-      "Comparer, securiser et negocier une assurance emprunteur adaptee a votre projet, votre sante, votre budget et votre configuration familiale.",
+      "L'assurance de pret ne sert pas seulement a rassurer la banque. Pour une famille recomposee, LGBT+ ou en concubinage, elle peut devenir une piece centrale de protection du logement et du survivant.",
     highlights: [
-      "Etude des garanties exigees par la banque",
-      "Delegation ou substitution d'assurance",
-      "Suivi des exclusions, quotites et beneficiaires",
+      "Verifier les quotites selon les revenus et la realite du foyer",
+      "Comparer delegation, substitution et garanties exigees",
+      "Anticiper l'impact d'un deces ou d'une invalidite sur le logement",
     ],
   },
   "/prevoyance-familiale": {
-    title: "Prevoyance familiale",
-    eyebrow: "Proteger les proches",
+    title: "Prevoyance familiale : maintenir la vie du foyer",
+    eyebrow: "Revenus et accidents de vie",
     description:
-      "Anticiper les accidents de vie avec des garanties lisibles pour maintenir l'equilibre financier du foyer.",
+      "La prevoyance doit repondre a une question simple : si vos revenus disparaissent demain, qui est fragilise ? Nous construisons les garanties autour des personnes qui dependent reellement de vous.",
     highlights: [
       "Capital deces, invalidite, arret de travail",
-      "Protection du conjoint, coparent ou partenaire",
-      "Priorite aux enfants et personnes dependantes",
+      "Protection du conjoint, partenaire, coparent ou parent social",
+      "Priorite aux enfants et aux personnes dependantes",
     ],
   },
   "/protection-enfants": {
-    title: "Protection des enfants",
-    eyebrow: "Priorite familiale",
+    title: "Protection des enfants : securiser leur avenir concret",
+    eyebrow: "Enfants et parentalite",
     description:
-      "Construire une couverture coherente autour des enfants, de leur quotidien, de leur avenir et des adultes qui les protegent.",
+      "Dans les familles recomposees, homoparentales ou coparentales, tous les enfants ne sont pas proteges de la meme maniere par defaut. Nous aidons a organiser les garanties, les beneficiaires et les documents utiles.",
     highlights: [
-      "Designation et suivi des beneficiaires",
-      "Documents utiles centralises",
-      "Approche coordonnee avec les projets de famille",
+      "Verifier la coherence entre enfants biologiques, adoptes et sociaux",
+      "Designer les bons beneficiaires et les bons representants",
+      "Preparer une protection lisible pour les adultes de confiance",
     ],
   },
 };
@@ -85,17 +85,17 @@ export const expertisePages = {
 export const valueCards = [
   {
     title: "Confidentialite",
-    text: "Des informations sensibles traitees avec discretion, tracabilite et acces limite.",
+    text: "Vos choix familiaux, patrimoniaux et personnels sont traites avec discretion et sans jugement.",
     icon: LockKeyhole,
   },
   {
     title: "Expertise familiale",
-    text: "Une lecture fine des familles coparentales, recomposees, LGBT+ et situations complexes.",
+    text: "Nous savons lire les ecarts entre famille affective, famille juridique et famille heritiere.",
     icon: UsersRound,
   },
   {
-    title: "Conseil utile",
-    text: "Des garanties expliquees simplement, avec des choix documentes et assumables.",
+    title: "Conseil responsable",
+    text: "Chaque recommandation part d'un besoin reel : logement, revenus, enfants, succession ou protection du couple.",
     icon: BadgeCheck,
   },
 ];
@@ -150,7 +150,7 @@ export const dashboardConfig: Record<
     title: "Espace courtier admin",
     nav: [
       { label: "Tableau de bord", href: "/admin", icon: Home },
-      { label: "Family Protection OS", href: "/admin/family-protection-os", icon: ClipboardCheck },
+      { label: "Methode cabinet", href: "/admin/family-protection-os", icon: ClipboardCheck },
       { label: "Clients", href: "/admin#clients", icon: UsersRound },
       { label: "Projets", href: "/admin#projets", icon: BriefcaseBusiness },
       { label: "Contrats", href: "/admin#contrats", icon: FileHeart },
@@ -164,9 +164,9 @@ export const dashboardConfig: Record<
     ],
     sections: [
       {
-        title: "Family Protection OS",
-        description: "Logiciel interne de recueil DDA, scoring familial et production des recommandations.",
-        items: ["Recueil des besoins", "Assurance emprunteur", "Scores de risques", "Validation conformité"],
+        title: "Methode cabinet",
+        description: "Recueil des besoins, analyse familiale et preparation des recommandations conformes.",
+        items: ["Recueil des besoins", "Assurance emprunteur", "Risques familiaux", "Validation conformite"],
       },
       {
         title: "Gestion des clients",
@@ -213,7 +213,7 @@ export const dashboardConfig: Record<
     title: "Espace mandataire",
     nav: [
       { label: "Tableau de bord", href: "/mandataire", icon: Home },
-      { label: "Recueil DDA", href: "/mandataire/recueil-besoins", icon: ClipboardCheck },
+      { label: "Recueil besoins", href: "/mandataire/recueil-besoins", icon: ClipboardCheck },
       { label: "Mes clients", href: "/mandataire#clients", icon: UsersRound },
       { label: "Mes projets", href: "/mandataire#projets", icon: BriefcaseBusiness },
       { label: "Commissions", href: "/mandataire#commissions", icon: Landmark },
@@ -227,8 +227,8 @@ export const dashboardConfig: Record<
     sections: [
       {
         title: "Recueil des besoins",
-        description: "Creation des demandes clients avec collecte DDA et soumission au courtier admin.",
-        items: ["Diagnostic familial", "Assurance emprunteur", "Documents", "Validation cabinet"],
+        description: "Creation des demandes clients autour de la famille, du logement, des revenus et des enfants.",
+        items: ["Situation familiale", "Assurance emprunteur", "Documents", "Validation cabinet"],
       },
       {
         title: "Mes clients",

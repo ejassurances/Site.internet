@@ -76,10 +76,10 @@ export function NeedsAssessmentForm({ clients, lockedClientId }: NeedsAssessment
       <form className="assessment-form" action={formAction}>
         <section>
           <p className="eyebrow">Recueil des besoins</p>
-          <h2>Créer une demande Family Protection OS</h2>
+          <h2>Créer une analyse de protection familiale</h2>
           <p>
-            Ce formulaire structure le besoin client avant analyse. Il prépare la collecte DDA, la
-            cartographie familiale et le parcours assurance emprunteur.
+            Ce recueil aide le cabinet a comprendre la situation familiale, les personnes a proteger,
+            les risques prioritaires et le cas échéant le projet d'assurance emprunteur.
           </p>
         </section>
 
@@ -221,7 +221,7 @@ export function NeedsAssessmentForm({ clients, lockedClientId }: NeedsAssessment
         <div className="fpos-score compact">
           <span>Score estimé</span>
           <strong>{score}</strong>
-          <small>{score < 55 ? "Risque élevé" : score < 75 ? "Risque modéré" : "Protection correcte"}</small>
+          <small>{score < 55 ? "Protection à renforcer" : score < 75 ? "Points à vérifier" : "Protection lisible"}</small>
         </div>
 
         <section>
@@ -231,7 +231,7 @@ export function NeedsAssessmentForm({ clients, lockedClientId }: NeedsAssessment
         </section>
 
         <section>
-          <h3>Structure attendue</h3>
+          <h3>Points analysés par le cabinet</h3>
           <div className="module-list">
             {needSections.map((section) => (
               <div key={section.title}>

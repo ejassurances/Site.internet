@@ -13,7 +13,7 @@ import {
 
 export const fposModules = [
   {
-    title: "Collecte DDA",
+    title: "Recueil des besoins",
     description: "Recueil structure des exigences, besoins, objectifs, priorites et consentements.",
     status: "V1 active",
   },
@@ -33,7 +33,7 @@ export const fposModules = [
     status: "V1 active",
   },
   {
-    title: "Recommandation DDA",
+    title: "Recommandation de conseil",
     description: "Preconisation motivee, alternatives, limites et validation humaine obligatoire.",
     status: "Preparation",
   },

@@ -19,25 +19,25 @@ export function FamilyProtectionWorkspace({ mode }: WorkspaceProps) {
     <div className="fpos-space">
       <section className="fpos-hero">
         <div>
-          <p className="eyebrow">Family Protection OS</p>
-          <h2>{isClient ? "Mon diagnostic familial" : "Copilote DDA interne EJ Assurances"}</h2>
+          <p className="eyebrow">Methode cabinet</p>
+          <h2>{isClient ? "Mon diagnostic familial" : "Analyse familiale et assurantielle"}</h2>
           <p>
             {isClient
               ? "Un parcours guide pour exprimer votre situation familiale, vos objectifs et les personnes que vous souhaitez proteger."
-              : "Un outil interne pour transformer un recueil des besoins en analyse des ecarts, score de risque et recommandation conforme DDA."}
+              : "Un cadre de travail pour relier la situation familiale, les besoins exprimes, les risques detectes et les recommandations du cabinet."}
           </p>
         </div>
         <div className="fpos-score">
-          <span>Family Protection Score</span>
+          <span>Niveau de protection</span>
           <strong>57</strong>
-          <small>Score indicatif V1, a valider par le conseiller</small>
+          <small>Indicateur de travail, a valider par le conseiller</small>
         </div>
       </section>
 
       <section className="fpos-actions">
         <Link href={isClient ? "/client/diagnostic-familial" : "/admin/family-protection-os/recueil"}>
           <ClipboardCheck size={20} aria-hidden />
-          Demarrer un recueil DDA
+          Demarrer un recueil des besoins
           <ArrowRight size={16} aria-hidden />
         </Link>
         <Link href="/assurance-emprunteur">
@@ -82,7 +82,7 @@ export function FamilyProtectionWorkspace({ mode }: WorkspaceProps) {
           </article>
 
           <article className="fpos-panel">
-            <h3>Questions IA du conseiller</h3>
+            <h3>Questions clés du conseiller</h3>
             <ul className="clean-list">
               {advisorQuestions.map((question) => (
                 <li key={question}>
@@ -97,7 +97,7 @@ export function FamilyProtectionWorkspace({ mode }: WorkspaceProps) {
 
       <section className="fpos-columns">
         <article className="fpos-panel">
-          <h3>Workflow DDA</h3>
+          <h3>Parcours d'accompagnement</h3>
           <ol className="timeline-list">
             {ddaWorkflow.map((step) => (
               <li key={step}>{step}</li>
@@ -105,7 +105,7 @@ export function FamilyProtectionWorkspace({ mode }: WorkspaceProps) {
           </ol>
         </article>
         <article className="fpos-panel">
-          <h3>Preuves conformite</h3>
+          <h3>Preuves de conseil</h3>
           <div className="proof-grid">
             {complianceOutputs.map((output) => {
               const Icon = output.icon;

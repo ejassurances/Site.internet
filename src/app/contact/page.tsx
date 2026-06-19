@@ -9,10 +9,11 @@ export default function ContactPage() {
         <section className="page-hero contact-hero">
           <div>
             <p className="eyebrow">Contact / prise de rendez-vous</p>
-            <h1>Parlons de votre situation avec calme et precision.</h1>
+            <h1>Parlons de votre famille et de ce qui doit vraiment etre protege.</h1>
             <p className="hero-copy">
-              Decrivez votre besoin, le contexte familial et les delais importants. EJ Assurances
-              reviendra vers vous avec un cadre d&apos;echange confidentiel.
+              Vous n'avez pas besoin d'avoir deja la bonne solution. Expliquez simplement votre
+              situation, les personnes qui comptent et les questions qui vous inquietent.
+              EJ Assurances vous recontacte dans un cadre confidentiel.
             </p>
             <div className="contact-lines">
               <a href="tel:+33189314029">
@@ -41,16 +42,17 @@ export default function ContactPage() {
                 <option value="" disabled>
                   Choisir un sujet
                 </option>
-                <option>Assurance emprunteur</option>
-                <option>Prevoyance familiale</option>
-                <option>Coparentalite</option>
-                <option>Familles LGBT+</option>
-                <option>Protection des enfants</option>
+                <option>Proteger mon couple ou mon partenaire</option>
+                <option>Proteger mes enfants</option>
+                <option>Famille LGBT+ ou parent social</option>
+                <option>Coparentalite ou famille recomposee</option>
+                <option>Assurance emprunteur / logement</option>
+                <option>Transmission ou succession</option>
               </select>
             </label>
             <label>
               Message
-              <textarea name="message" placeholder="Quelques lignes sur votre situation" />
+              <textarea name="message" placeholder="Qui souhaitez-vous proteger ? Quelle situation voulez-vous securiser ?" />
             </label>
             <button className="primary-action" type="submit">
               Envoyer la demande

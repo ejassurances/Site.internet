@@ -13,7 +13,7 @@ export function ClientDirectory({ clients, basePath }: ClientDirectoryProps) {
       <div className="section-heading">
         <p className="eyebrow">Fichier client</p>
         <h2>Clients et recueils rattachés</h2>
-        <p>Chaque recueil DDA est créé depuis une fiche client et reste consultable dans son dossier.</p>
+        <p>Chaque recueil des besoins est créé depuis une fiche client et reste consultable dans son dossier.</p>
       </div>
 
       <div className="client-list">

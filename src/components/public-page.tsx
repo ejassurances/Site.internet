@@ -40,19 +40,19 @@ export function PublicPage({ title, eyebrow, description, highlights }: PublicPa
 
         <section className="content-band">
           <div>
-            <h2>Une approche sur mesure</h2>
+            <h2>Une approche familiale avant assurantielle</h2>
             <p>
-              EJ Assurances qualifie chaque situation avec une attention particuliere aux personnes
-              protegees, aux liens familiaux reels, aux pieces contractuelles et aux decisions qui
-              auront un impact durable sur le foyer.
+              Avant de parler contrat, nous clarifions les personnes a proteger, les liens qui
+              existent vraiment dans votre foyer, les droits deja acquis et les zones de fragilite.
+              C'est cette lecture qui permet ensuite de choisir des garanties utiles.
             </p>
           </div>
           <div>
-            <h2>Un suivi confidentiel</h2>
+            <h2>Un cadre confidentiel et bienveillant</h2>
             <p>
-              La plateforme prepare un espace documentaire, une messagerie et un journal d&apos;audit
-              afin que les informations sensibles restent accessibles uniquement aux personnes
-              autorisees.
+              Les sujets abordes sont parfois intimes : couple, filiation, succession, argent,
+              sante ou separation. Le cabinet vous accueille sans jugement et documente les choix
+              pour que chaque decision reste claire.
             </p>
           </div>
         </section>

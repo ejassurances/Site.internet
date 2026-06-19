@@ -40,7 +40,7 @@ export function ClientFile({ client, recueilHref }: ClientFileProps) {
           {assessments.map((assessment) => (
             <article className="assessment-row" key={assessment.id}>
               <div>
-                <strong>{assessment.protection_goal || "Recueil DDA"}</strong>
+                <strong>{assessment.protection_goal || "Recueil des besoins"}</strong>
                 <p>
                   {assessment.family_situation || "Situation à compléter"} · {assessment.legal_status || "Statut à compléter"}
                 </p>
