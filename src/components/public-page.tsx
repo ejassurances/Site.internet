@@ -7,9 +7,12 @@ type PublicPageProps = {
   eyebrow: string;
   description: string;
   highlights: string[];
+  examples?: { title: string; text: string }[];
+  checks?: string[];
+  outcome?: string;
 };
 
-export function PublicPage({ title, eyebrow, description, highlights }: PublicPageProps) {
+export function PublicPage({ title, eyebrow, description, highlights, examples = [], checks = [], outcome }: PublicPageProps) {
   return (
     <>
       <SiteHeader />
@@ -56,6 +59,49 @@ export function PublicPage({ title, eyebrow, description, highlights }: PublicPa
             </p>
           </div>
         </section>
+
+        {examples.length > 0 && (
+          <section className="example-section">
+            <div className="section-heading">
+              <p className="eyebrow">Exemples concrets</p>
+              <h2>Des situations que le cabinet rencontre souvent</h2>
+            </div>
+            <div className="example-grid">
+              {examples.map((example) => (
+                <article className="example-card" key={example.title}>
+                  <h3>{example.title}</h3>
+                  <p>{example.text}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {(checks.length > 0 || outcome) && (
+          <section className="content-band detail-band">
+            {checks.length > 0 && (
+              <div>
+                <p className="eyebrow">Ce que nous vérifions</p>
+                <h2>Une analyse utile avant de choisir une solution</h2>
+                <ul className="service-list">
+                  {checks.map((check) => (
+                    <li key={check}>{check}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {outcome && (
+              <div>
+                <p className="eyebrow">Résultat attendu</p>
+                <h2>Une protection plus lisible</h2>
+                <p>{outcome}</p>
+                <Link className="primary-action standalone" href="/contact">
+                  Demander une premiere analyse <ArrowRight size={18} aria-hidden />
+                </Link>
+              </div>
+            )}
+          </section>
+        )}
       </main>
     </>
   );

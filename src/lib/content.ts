@@ -35,6 +35,28 @@ export const expertisePages = {
       "Proteger le logement, les revenus et les adultes referents",
       "Coordonner assurance, clauses beneficiaires et conseils juridiques",
     ],
+    examples: [
+      {
+        title: "Deux foyers, un meme enfant",
+        text: "Deux coparents organisent la vie de l'enfant entre deux logements. L'un finance davantage le quotidien, l'autre porte le credit immobilier. Nous verifions ce qui se passerait si l'un des deux decedait ou ne pouvait plus travailler.",
+      },
+      {
+        title: "Un adulte referent sans statut clair",
+        text: "Un proche participe a l'education et aux depenses, sans etre reconnu comme parent. Nous identifions les limites juridiques et les solutions d'assurance permettant d'eviter une rupture de protection.",
+      },
+      {
+        title: "Projet parental avant achat immobilier",
+        text: "Avant d'acheter ou d'emprunter, nous aidons a choisir les quotites, les garanties et les beneficiaires pour que le logement ne devienne pas un point de tension.",
+      },
+    ],
+    checks: [
+      "Qui depend financierement de chaque adulte ?",
+      "Qui doit pouvoir rester dans le logement ?",
+      "Les clauses beneficiaires correspondent-elles au projet familial ?",
+      "Les enfants seraient-ils proteges en cas de deces, invalidite ou separation ?",
+    ],
+    outcome:
+      "Vous repartez avec une lecture claire des protections a mettre en place : assurance emprunteur, prevoyance, clause beneficiaire, documents utiles ou orientation vers un professionnel du droit.",
   },
   "/familles-lgbt": {
     title: "Familles LGBT+ : faire reconnaitre et proteger la famille reelle",
@@ -46,6 +68,28 @@ export const expertisePages = {
       "Analyse des beneficiaires, capitaux et droits successoraux",
       "Solutions d'assurance adaptees aux personnes a proteger",
     ],
+    examples: [
+      {
+        title: "Parent social tres implique",
+        text: "Un enfant est eleve par deux adultes, mais un seul est reconnu juridiquement. Nous verifions comment proteger l'enfant et l'adulte qui compte dans sa vie, notamment via prevoyance, assurance vie et beneficiaires.",
+      },
+      {
+        title: "Couple non marie proprietaire du logement",
+        text: "Deux partenaires vivent ensemble et remboursent un credit. En cas de deces, le survivant peut se retrouver fragilise. Nous analysons les quotites, le capital deces et les consequences successorales.",
+      },
+      {
+        title: "Famille homoparentale et transmission",
+        text: "Quand la famille affective ne correspond pas parfaitement a la famille heritiere, nous aidons a reperer les ecarts et a preparer les bonnes questions pour le notaire.",
+      },
+    ],
+    checks: [
+      "Les personnes que vous voulez proteger sont-elles bien designees ?",
+      "Le parent social ou partenaire dispose-t-il d'une securite financiere ?",
+      "La fiscalite successorale cree-t-elle un risque particulier ?",
+      "Vos contrats actuels parlent-ils vraiment de votre famille reelle ?",
+    ],
+    outcome:
+      "L'objectif est d'obtenir une protection lisible, respectueuse de votre parcours, avec des contrats coherents avec les personnes qui comptent reellement.",
   },
   "/assurance-emprunteur": {
     title: "Assurance emprunteur : proteger le logement familial",
@@ -57,6 +101,28 @@ export const expertisePages = {
       "Comparer delegation, substitution et garanties exigees",
       "Anticiper l'impact d'un deces ou d'une invalidite sur le logement",
     ],
+    examples: [
+      {
+        title: "Couple en concubinage avec revenus differents",
+        text: "La banque demande une assurance, mais la repartition 50/50 ne protege pas toujours le survivant. Nous regardons les revenus, les charges, la propriete et la capacite a garder le logement.",
+      },
+      {
+        title: "Famille recomposee et achat commun",
+        text: "Chaque adulte a des enfants d'une precedente union. Nous verifions si l'assurance emprunteur, la prevoyance et la succession racontent la meme histoire.",
+      },
+      {
+        title: "Substitution d'assurance trop rapide",
+        text: "Changer d'assurance peut reduire le cout, mais pas au prix d'une garantie moins adaptee. Nous comparons exclusions, quotites, garanties et situation familiale.",
+      },
+    ],
+    checks: [
+      "Qui doit pouvoir conserver le logement en cas de coup dur ?",
+      "Les quotites tiennent-elles compte des revenus et des charges ?",
+      "Les exclusions ou surprimes creent-elles une fragilite ?",
+      "Le contrat protege-t-il seulement la banque ou aussi la famille ?",
+    ],
+    outcome:
+      "Nous recherchons une assurance emprunteur qui securise le credit, mais aussi le projet de vie : logement, partenaire, enfants et equilibre financier.",
   },
   "/prevoyance-familiale": {
     title: "Prevoyance familiale : maintenir la vie du foyer",
@@ -68,6 +134,28 @@ export const expertisePages = {
       "Protection du conjoint, partenaire, coparent ou parent social",
       "Priorite aux enfants et aux personnes dependantes",
     ],
+    examples: [
+      {
+        title: "Un revenu principal dans le foyer",
+        text: "Si une personne porte l'essentiel des charges, un arret de travail ou une invalidite peut tout destabiliser. Nous chiffrons le besoin reel : revenus, credit, enfants, frais courants.",
+      },
+      {
+        title: "Partenaire non protege par le statut familial",
+        text: "Le couple fonctionne comme une famille, mais le droit ne protege pas toujours le partenaire. Nous analysons les garanties deces, rente, capital et designation beneficiaire.",
+      },
+      {
+        title: "Enfants encore jeunes",
+        text: "Le besoin ne se limite pas aux frais immediats. Il faut penser logement, etudes, garde, accompagnement et maintien du niveau de vie.",
+      },
+    ],
+    checks: [
+      "Combien faudrait-il pour maintenir le foyer pendant 1, 3 ou 10 ans ?",
+      "Qui recevrait le capital aujourd'hui ?",
+      "Les enfants ou personnes dependantes sont-ils prioritaires ?",
+      "Les garanties employeur suffisent-elles vraiment ?",
+    ],
+    outcome:
+      "Le cabinet vous aide a construire une prevoyance comprehensible : ni trop faible, ni inutilement excessive, mais adaptee aux personnes qui dependent de vous.",
   },
   "/protection-enfants": {
     title: "Protection des enfants : securiser leur avenir concret",
@@ -79,6 +167,28 @@ export const expertisePages = {
       "Designer les bons beneficiaires et les bons representants",
       "Preparer une protection lisible pour les adultes de confiance",
     ],
+    examples: [
+      {
+        title: "Enfants d'une precedente union",
+        text: "Dans une famille recomposee, proteger le conjoint et les enfants peut demander un equilibre fin. Nous aidons a identifier les tensions possibles entre protection immediate et transmission.",
+      },
+      {
+        title: "Enfant social non heritier",
+        text: "Un enfant peut etre aime, eleve et soutenu sans etre heritier legal. Nous reperons les limites et les pistes possibles : assurance vie, prevoyance, testament ou conseil notarial.",
+      },
+      {
+        title: "Adultes de confiance autour de l'enfant",
+        text: "Certaines familles veulent que plusieurs adultes restent presents si un accident survient. Nous aidons a documenter les intentions et les protections financieres utiles.",
+      },
+    ],
+    checks: [
+      "Tous les enfants a proteger sont-ils identifies dans les contrats ?",
+      "Les beneficiaires sont-ils a jour ?",
+      "Le capital serait-il disponible au bon moment et pour la bonne personne ?",
+      "Faut-il coordonner assurance, testament ou conseil juridique ?",
+    ],
+    outcome:
+      "L'objectif est que les enfants ne soient pas seulement nommes dans les intentions, mais reellement proteges par les contrats, les capitaux et les documents utiles.",
   },
 };
 

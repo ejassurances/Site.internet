@@ -389,6 +389,47 @@ h2 {
   border-top: 1px solid rgba(7, 24, 39, 0.08);
 }
 
+.example-section {
+  display: grid;
+  gap: 22px;
+  padding: 58px 0 76px;
+  border-top: 1px solid rgba(7, 24, 39, 0.08);
+}
+
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.example-card {
+  display: grid;
+  gap: 10px;
+  min-height: 250px;
+  padding: 22px;
+  border: 1px solid rgba(7, 24, 39, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 18px 54px rgba(7, 24, 39, 0.055);
+}
+
+.example-card h3 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.18;
+}
+
+.example-card p,
+.detail-band p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.detail-band {
+  padding-top: 58px;
+}
+
 .service-list,
 .module ul {
   display: grid;
@@ -1107,6 +1148,7 @@ h2 {
   .trust-strip,
   .stats-grid,
   .module-grid,
+  .example-grid,
   .fpos-hero,
   .fpos-columns,
   .assessment-layout,
