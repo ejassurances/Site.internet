@@ -12,10 +12,58 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ej-assurances.fr";
+
 export const metadata: Metadata = {
-  title: "EJ Assurances",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "EJ Partners Assurances — Cabinet expert des familles modernes",
+    template: "%s | EJ Partners Assurances",
+  },
   description:
-    "Plateforme EJ Assurances pour familles, coparentalite, familles LGBT+, assurance emprunteur et prevoyance.",
+    "Cabinet de courtage spécialisé familles LGBT+, coparentalité, familles recomposées. Assurance emprunteur, prévoyance, transmission. Conseil confidentiel et bienveillant.",
+  keywords: [
+    "assurance familles LGBT",
+    "coparentalité assurance",
+    "assurance emprunteur famille recomposée",
+    "prévoyance familiale",
+    "courtier assurance Paris",
+    "EJ Partners Assurances",
+  ],
+  authors: [{ name: "EJ Partners Assurances" }],
+  creator: "EJ Partners Assurances",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: siteUrl,
+    siteName: "EJ Partners Assurances",
+    title: "EJ Partners Assurances — Cabinet expert des familles modernes",
+    description:
+      "Cabinet de courtage spécialisé familles LGBT+, coparentalité, familles recomposées. Assurance emprunteur, prévoyance, transmission.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "EJ Partners Assurances",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EJ Partners Assurances — Cabinet expert des familles modernes",
+    description:
+      "Cabinet de courtage spécialisé familles LGBT+, coparentalité, familles recomposées.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default function RootLayout({
