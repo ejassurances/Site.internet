@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import Link from "next/link";
+import { getFinanceDashboard } from "@/lib/actions/finance";
 import {
   TrendingUp,
   AlertTriangle,
@@ -22,57 +24,7 @@ import { requireRole } from "@/lib/auth";
 
 export const metadata: Metadata = { title: "Finance & Commissions — EJ Partners Admin" };
 
-// ── Données de démo ────────────────────────────────────────────────────────────
-const kpis = [
-  {
-    label: "Commissions encaissées (mois)",
-    value: "4 820 €",
-    trend: "+12%",
-    up: true,
-    icon: Euro,
-    color: "#10b981",
-  },
-  {
-    label: "Commissions attendues",
-    value: "6 340 €",
-    trend: "2 assureurs",
-    up: null,
-    icon: Clock,
-    color: "#3b82f6",
-  },
-  {
-    label: "Impayés détectés",
-    value: "3",
-    trend: "780 € en attente",
-    up: false,
-    icon: AlertTriangle,
-    color: "#ef4444",
-  },
-  {
-    label: "Honoraires facturés (mois)",
-    value: "1 200 €",
-    trend: "+2 factures",
-    up: true,
-    icon: Receipt,
-    color: "#8b5cf6",
-  },
-  {
-    label: "Reversements apporteurs",
-    value: "620 €",
-    trend: "3 apporteurs",
-    up: null,
-    icon: Users,
-    color: "#f59e0b",
-  },
-  {
-    label: "Taux de rapprochement",
-    value: "94%",
-    trend: "+3pts vs mois dernier",
-    up: true,
-    icon: CheckCircle2,
-    color: "#10b981",
-  },
-];
+const fmtEuro = (n: number) => n.toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 
 const modules = [
   {
@@ -125,22 +77,12 @@ const modules = [
   },
 ];
 
-const recentAlerts = [
-  { type: "impaye", assureur: "Generali", contrat: "AE-2024-0312", montant: "320 €", date: "2026-06-01", label: "Commission non reçue" },
-  { type: "taux", assureur: "Allianz", contrat: "PRE-2024-0198", montant: "45 €", date: "2026-05-28", label: "Erreur de taux détectée" },
-  { type: "resilie", assureur: "AXA", contrat: "AE-2023-0089", montant: "415 €", date: "2026-05-15", label: "Contrat résilié non signalé" },
-];
 
-const recentCommissions = [
-  { assureur: "CNP Assurances", type: "Assurance emprunteur", montant: "1 240 €", statut: "encaisse", date: "2026-06-10" },
-  { assureur: "Generali", type: "Prévoyance", montant: "680 €", statut: "encaisse", date: "2026-06-08" },
-  { assureur: "Allianz", type: "Assurance emprunteur", montant: "890 €", statut: "en_attente", date: "2026-06-05" },
-  { assureur: "AXA", type: "Transmission", montant: "560 €", statut: "en_attente", date: "2026-06-01" },
-  { assureur: "Cardif", type: "Prévoyance", montant: "450 €", statut: "encaisse", date: "2026-05-28" },
-];
 
 export default async function FinancePage() {
-  const user = await requireRole(["admin", "courtier"]);
+  const user = await requireRole(["admin", "courtier"]).catch(() => null);
+  if (!user) redirect("/connexion");
+  const dashboard = await getFinanceDashboard();
 
   return (
     <AppShell role={user.role === "courtier" ? "courtier" : "admin"} user={user}>
@@ -166,7 +108,35 @@ export default async function FinancePage() {
 
         {/* ── KPIs ── */}
         <div className="finance-kpis">
-          {kpis.map((kpi) => {
+          {[
+            {
+              label: "Commissions reçues (mois)",
+              value: dashboard ? fmtEuro(dashboard.totalCommissionsRecues) : "—",
+              trend: dashboard ? `Attendu : ${fmtEuro(dashboard.totalCommissionsAttendues)}` : "",
+              up: true, icon: Euro, color: "#10b981",
+            },
+            {
+              label: "Écart commissions",
+              value: dashboard ? fmtEuro(dashboard.ecartCommissions) : "—",
+              trend: dashboard ? `${dashboard.nbImpayesCommissions} ligne${dashboard.nbImpayesCommissions !== 1 ? "s" : ""} à traiter` : "",
+              up: dashboard ? dashboard.ecartCommissions <= 0 : null,
+              icon: dashboard && dashboard.ecartCommissions > 0 ? AlertTriangle : CheckCircle2,
+              color: dashboard && dashboard.ecartCommissions > 0 ? "#ef4444" : "#10b981",
+            },
+            {
+              label: "Honoraires facturés (mois)",
+              value: dashboard ? fmtEuro(dashboard.totalHonorairesFactures) : "—",
+              trend: dashboard ? `${fmtEuro(dashboard.totalHonorairesEncaisses)} encaissés` : "",
+              up: true, icon: Receipt, color: "#8b5cf6",
+            },
+            {
+              label: "Factures en retard",
+              value: dashboard ? String(dashboard.nbFacturesEnRetard) : "—",
+              trend: "Relances à effectuer",
+              up: dashboard ? dashboard.nbFacturesEnRetard === 0 : null,
+              icon: Clock, color: dashboard && dashboard.nbFacturesEnRetard > 0 ? "#ef4444" : "#10b981",
+            },
+          ].map((kpi) => {
             const Icon = kpi.icon;
             return (
               <div key={kpi.label} className="finance-kpi-card">
@@ -200,16 +170,18 @@ export default async function FinancePage() {
               </Link>
             </div>
             <div className="finance-alerts-list">
-              {recentAlerts.map((alert) => (
-                <article key={alert.contrat} className="finance-alert-row">
-                  <div className={`finance-alert-dot ${alert.type}`} aria-hidden />
+              {dashboard && dashboard.alertes.length > 0 ? dashboard.alertes.map((alert) => (
+                <article key={alert.id} className="finance-alert-row">
+                  <div className={`finance-alert-dot ${alert.statut}`} aria-hidden />
                   <div>
-                    <strong>{alert.label}</strong>
-                    <p>{alert.assureur} · {alert.contrat}</p>
+                    <strong>{alert.statut === "impaye" ? "Commission non reçue" : alert.statut === "taux_erreur" ? "Erreur de taux" : "Contrat résilié non signalé"}</strong>
+                    <p>{alert.assureur} · {alert.contrat_ref ?? "—"}</p>
                   </div>
-                  <span className="finance-alert-amount">{alert.montant}</span>
+                  <span className="finance-alert-amount">{alert.ecart != null ? fmtEuro(Math.abs(Number(alert.ecart))) : "—"}</span>
                 </article>
-              ))}
+              )) : (
+                <p style={{ color: "var(--muted)", fontSize: "14px", padding: "12px 0" }}>Aucune alerte en attente.</p>
+              )}
             </div>
           </section>
 
@@ -222,25 +194,14 @@ export default async function FinancePage() {
               </Link>
             </div>
             <div className="finance-commissions-list">
-              {recentCommissions.map((com, i) => (
-                <article key={i} className="finance-commission-row">
-                  <div>
-                    <strong>{com.assureur}</strong>
-                    <p>{com.type}</p>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <strong style={{ color: com.statut === "encaisse" ? "#10b981" : "var(--ink)" }}>{com.montant}</strong>
-                    <span className="crm-status-badge" style={{
-                      background: com.statut === "encaisse" ? "#10b98120" : "#f59e0b20",
-                      color: com.statut === "encaisse" ? "#10b981" : "#f59e0b",
-                      display: "block",
-                      marginTop: "4px",
-                    }}>
-                      {com.statut === "encaisse" ? "Encaissé" : "En attente"}
-                    </span>
-                  </div>
-                </article>
-              ))}
+              <p style={{ color: "var(--muted)", fontSize: "14px", padding: "12px 0" }}>
+                {dashboard && dashboard.totalCommissionsRecues > 0
+                  ? `${fmtEuro(dashboard.totalCommissionsRecues)} reçus ce mois`
+                  : "Aucune commission enregistrée ce mois. Importez un bordereau."}
+              </p>
+              <Link href="/admin/finance/bordereaux" className="primary-action" style={{ display: "inline-flex", marginTop: "8px" }}>
+                <FileSpreadsheet size={16} aria-hidden /> Importer un bordereau
+              </Link>
             </div>
           </section>
         </div>
