@@ -26,6 +26,11 @@ export default function Home() {
               EJ Assurances identifie les ecarts entre votre famille affective, votre famille
               juridique et votre famille heritiere, puis construit les solutions de protection.
             </p>
+            <div className="hero-proof" aria-label="Positionnement cabinet">
+              <span>Confidentiel</span>
+              <span>Inclusif</span>
+              <span>Conforme DDA</span>
+            </div>
             <div className="hero-actions">
               <Link className="primary-action" href="/contact">
                 Faire mon diagnostic gratuit <ArrowRight size={18} aria-hidden />
@@ -35,23 +40,43 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="hero-visual" aria-label="Synthese EJ Assurances">
-            <div className="visual-card">
-              <ShieldCheck size={28} aria-hidden />
-              <strong>Famille affective</strong>
-              <span>Les personnes qui comptent vraiment dans votre vie</span>
+          <div className="hero-visual premium-visual" aria-label="Synthese EJ Assurances">
+            <div className="visual-header">
+              <span>Diagnostic familial</span>
+              <strong>Family Protection Score</strong>
             </div>
-            <div className="visual-card">
-              <FileHeart size={28} aria-hidden />
-              <strong>Famille juridique</strong>
-              <span>Les personnes reconnues par les textes et les contrats</span>
+            <div className="score-ring" aria-hidden>
+              <span>72</span>
+              <small>/100</small>
             </div>
-            <div className="visual-card">
-              <HandHeart size={28} aria-hidden />
-              <strong>Famille heritiere</strong>
-              <span>Les personnes qui recevront ou seront protegees demain</span>
+            <div className="protection-map">
+              <div>
+                <ShieldCheck size={22} aria-hidden />
+                <strong>Affective</strong>
+                <span>Ceux que vous aimez</span>
+              </div>
+              <div>
+                <FileHeart size={22} aria-hidden />
+                <strong>Juridique</strong>
+                <span>Ce que la loi reconnait</span>
+              </div>
+              <div>
+                <HandHeart size={22} aria-hidden />
+                <strong>Heritiere</strong>
+                <span>Ce qui se transmettra</span>
+              </div>
+            </div>
+            <div className="visual-footer">
+              <span>Ecarts detectes</span>
+              <strong>Logement · Revenus · Succession</strong>
             </div>
           </div>
+        </section>
+
+        <section className="trust-strip" aria-label="Preuves de confiance">
+          <span>Cabinet specialise familles LGBT+ et coparentalite</span>
+          <span>Assurance emprunteur, prevoyance, transmission</span>
+          <span>Accompagnement humain, confidentiel et documente</span>
         </section>
 
         <section className="values-grid" aria-label="Engagements">
