@@ -158,9 +158,9 @@ export const dashboardConfig: Record<
       { label: "Parametres", href: "/admin#parametres", icon: ShieldCheck },
     ],
     stats: [
-      { label: "Demandes", value: "8", detail: "a qualifier" },
-      { label: "Clients", value: "24", detail: "portefeuille V1" },
-      { label: "Documents", value: "13", detail: "a valider" },
+      { label: "Cabinet", value: "EJ", detail: "Partners Assurances" },
+      { label: "Contact", value: "01.89", detail: "31.40.29" },
+      { label: "Conformite", value: "OK", detail: "compte admin verifie" },
     ],
     sections: [
       {

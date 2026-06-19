@@ -17,7 +17,8 @@ export function LoginForm() {
 
     const supabase = createSupabaseBrowserClient();
     if (!supabase) {
-      router.push("/client");
+      setError("La connexion sécurisée n'est pas configurée sur cet environnement.");
+      setLoading(false);
       return;
     }
 
@@ -51,7 +52,7 @@ export function LoginForm() {
         {loading ? "Connexion..." : "Se connecter"} <ArrowRight size={18} aria-hidden />
       </button>
       <p className="form-note">
-        Sans variables Supabase locales, ce formulaire ouvre l&apos;espace client de demonstration.
+        Connexion sécurisée par Supabase. Les accès sont réservés aux clients et partenaires autorisés.
       </p>
     </form>
   );

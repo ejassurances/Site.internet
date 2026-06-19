@@ -9,18 +9,11 @@ export type CurrentUser = {
   role: Role;
 };
 
-const fallbackRole: Role = "client";
-
 export async function getCurrentUser(): Promise<CurrentUser | null> {
   const supabase = await createSupabaseServerClient();
 
   if (!supabase) {
-    return {
-      id: "demo-user",
-      email: "demo@ej-assurances.fr",
-      fullName: "Compte demo EJ Assurances",
-      role: fallbackRole,
-    };
+    return null;
   }
 
   const {
@@ -37,7 +30,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     .eq("id", user.id)
     .single();
 
-  const role = (profile?.role as Role | undefined) ?? fallbackRole;
+  const role = (profile?.role as Role | undefined) ?? "client";
 
   return {
     id: user.id,

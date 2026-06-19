@@ -18,7 +18,7 @@ npm run dev
 
 Copier `.env.example` vers `.env.local` puis renseigner les variables Supabase.
 
-Sans variables Supabase locales, l'application active un compte demo pour permettre de parcourir les espaces.
+Sans variables Supabase locales, la connexion sécurisée est désactivée : l'application ne crée plus de compte de démonstration.
 
 ## Routes principales
 
