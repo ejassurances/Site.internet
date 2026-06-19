@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 type PublicPageProps = {
   title: string;
@@ -23,11 +24,11 @@ export function PublicPage({ title, eyebrow, description, highlights, examples =
             <h1>{title}</h1>
             <p className="hero-copy">{description}</p>
             <div className="hero-actions">
-              <Link className="primary-action" href="/contact">
+              <Link className="primary-action" href="/contact#rendez-vous">
                 Prendre rendez-vous <ArrowRight size={18} aria-hidden />
               </Link>
               <Link className="secondary-action" href="/connexion">
-                Acceder a mon espace
+                Accéder à mon espace
               </Link>
             </div>
           </div>
@@ -44,18 +45,18 @@ export function PublicPage({ title, eyebrow, description, highlights, examples =
         <section className="content-band">
           <div>
             <h2>Une approche familiale avant assurantielle</h2>
-            <p>
-              Avant de parler contrat, nous clarifions les personnes a proteger, les liens qui
-              existent vraiment dans votre foyer, les droits deja acquis et les zones de fragilite.
+            <p style={{ color: "var(--muted)", lineHeight: 1.7 }}>
+              Avant de parler contrat, nous clarifions les personnes à protéger, les liens qui
+              existent vraiment dans votre foyer, les droits déjà acquis et les zones de fragilité.
               C'est cette lecture qui permet ensuite de choisir des garanties utiles.
             </p>
           </div>
           <div>
             <h2>Un cadre confidentiel et bienveillant</h2>
-            <p>
-              Les sujets abordes sont parfois intimes : couple, filiation, succession, argent,
-              sante ou separation. Le cabinet vous accueille sans jugement et documente les choix
-              pour que chaque decision reste claire.
+            <p style={{ color: "var(--muted)", lineHeight: 1.7 }}>
+              Les sujets abordés sont parfois intimes : couple, filiation, succession, argent,
+              santé ou séparation. Le cabinet vous accueille sans jugement et documente les choix
+              pour que chaque décision reste claire.
             </p>
           </div>
         </section>
@@ -94,15 +95,16 @@ export function PublicPage({ title, eyebrow, description, highlights, examples =
               <div>
                 <p className="eyebrow">Résultat attendu</p>
                 <h2>Une protection plus lisible</h2>
-                <p>{outcome}</p>
-                <Link className="primary-action standalone" href="/contact">
-                  Demander une premiere analyse <ArrowRight size={18} aria-hidden />
+                <p style={{ color: "var(--muted)", lineHeight: 1.7 }}>{outcome}</p>
+                <Link className="primary-action standalone" href="/contact#rendez-vous">
+                  Demander une première analyse <ArrowRight size={18} aria-hidden />
                 </Link>
               </div>
             )}
           </section>
         )}
       </main>
+      <SiteFooter />
     </>
   );
 }
