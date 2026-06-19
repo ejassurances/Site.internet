@@ -743,6 +743,122 @@ h2 {
   top: 24px;
 }
 
+.field-hint,
+.assessment-preview small {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-success,
+.form-error {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.form-success {
+  border: 1px solid rgba(41, 128, 91, 0.25);
+  background: rgba(41, 128, 91, 0.08);
+  color: #1f6d4d;
+}
+
+.form-error {
+  border: 1px solid rgba(169, 68, 66, 0.25);
+  background: rgba(169, 68, 66, 0.08);
+  color: #9f3734;
+}
+
+.client-directory,
+.client-file {
+  display: grid;
+  gap: 18px;
+}
+
+.section-heading {
+  max-width: 760px;
+}
+
+.section-heading h2,
+.client-file-hero h2 {
+  margin: 4px 0 8px;
+  font-size: clamp(28px, 4vw, 42px);
+}
+
+.section-heading p,
+.client-file-hero p,
+.client-row p,
+.assessment-row p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.client-list,
+.assessment-history {
+  display: grid;
+  gap: 12px;
+}
+
+.client-row,
+.assessment-row,
+.empty-state,
+.client-file-hero {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.client-row,
+.assessment-row,
+.client-file-hero {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.client-row a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+
+.empty-state {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding: 20px;
+  color: var(--muted);
+}
+
+.empty-state strong {
+  color: var(--ink);
+}
+
+.assessment-row span {
+  font-family: var(--font-mono);
+  font-weight: 900;
+  color: var(--accent-strong);
+}
+
+.assessment-row small {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-weight: 800;
+}
+
 @media (max-width: 980px) {
   .site-header,
   .workspace-header {
@@ -782,6 +898,13 @@ h2 {
 
   .side-nav {
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+
+  .client-row,
+  .assessment-row,
+  .client-file-hero {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 

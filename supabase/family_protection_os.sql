@@ -158,6 +158,12 @@ create table if not exists public.ai_analysis_runs (
   created_at timestamptz not null default now()
 );
 
+alter table public.clients add column if not exists full_name text;
+alter table public.clients add column if not exists email text;
+alter table public.clients add column if not exists phone text;
+
+create index if not exists needs_assessments_client_id_idx on public.needs_assessments(client_id);
+
 create trigger touch_needs_assessments
   before update on public.needs_assessments
   for each row execute function app_private.touch_updated_at();
@@ -209,6 +215,7 @@ to authenticated
 with check (
   app_private.is_staff()
   or exists (select 1 from public.mandataires m where m.id = needs_assessments.mandataire_id and m.profile_id = auth.uid())
+  or exists (select 1 from public.clients c where c.id = needs_assessments.client_id and c.profile_id = auth.uid())
 );
 
 create policy "Staff and assigned users update assessments"
