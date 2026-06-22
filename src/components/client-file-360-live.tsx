@@ -11,8 +11,8 @@ import { deleteInteraction, deleteRelatedPerson } from "@/lib/actions/interactio
 import {
   FileText, Users, MessageSquare, Phone, Mail, Calendar, Video,
   StickyNote, Plus, Trash2, Shield, ChevronDown, ChevronUp,
-  Building2, Euro, User, MapPin, Tag, X, CheckCircle2,
-  Clock, AlertCircle
+  Building2, Euro, User, MapPin, Tag, Edit3,
+  Clock, CheckCircle2, AlertCircle, ArrowRight
 } from "lucide-react";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -80,11 +80,11 @@ type Props = {
 };
 
 const TABS = [
-  { id: "synthese", label: "Synthèse", icon: Shield },
-  { id: "interactions", label: "Interactions", icon: MessageSquare },
-  { id: "contrats", label: "Contrats", icon: FileText },
-  { id: "personnes", label: "Personnes liées", icon: Users },
-  { id: "notes", label: "Notes", icon: StickyNote },
+  { id: "synthese",      label: "Synthèse",         icon: Shield },
+  { id: "interactions",  label: "Interactions",      icon: MessageSquare },
+  { id: "contrats",      label: "Contrats",          icon: FileText },
+  { id: "personnes",     label: "Famille",           icon: Users },
+  { id: "notes",         label: "Notes",             icon: StickyNote },
 ] as const;
 
 const INTERACTION_ICONS: Record<string, React.ElementType> = {
@@ -92,12 +92,17 @@ const INTERACTION_ICONS: Record<string, React.ElementType> = {
   note: StickyNote, sms: MessageSquare, document: FileText,
 };
 
-const CONTRACT_STATUS: Record<string, { label: string; className: string }> = {
-  draft: { label: "Brouillon", className: "status-badge status-draft" },
-  active: { label: "Actif", className: "status-badge status-active" },
-  pending_signature: { label: "En attente de signature", className: "status-badge status-pending" },
-  terminated: { label: "Résilié", className: "status-badge status-inactive" },
-  archived: { label: "Archivé", className: "status-badge status-archived" },
+const INTERACTION_COLORS: Record<string, string> = {
+  appel: "#3b82f6", email: "#8b5cf6", rdv: "#10b981",
+  visio: "#06b6d4", note: "#f59e0b", sms: "#ec4899", document: "#6b7280",
+};
+
+const CONTRACT_STATUS: Record<string, { label: string; color: string; bg: string }> = {
+  draft:              { label: "Brouillon",            color: "#6b7280", bg: "#f3f4f6" },
+  active:             { label: "Actif",                color: "#065f46", bg: "#d1fae5" },
+  pending_signature:  { label: "En attente signature", color: "#1e40af", bg: "#dbeafe" },
+  terminated:         { label: "Résilié",              color: "#991b1b", bg: "#fee2e2" },
+  archived:           { label: "Archivé",              color: "#374151", bg: "#e5e7eb" },
 };
 
 const RELATION_LABELS: Record<string, string> = {
@@ -106,6 +111,21 @@ const RELATION_LABELS: Record<string, string> = {
   parent_social: "Parent social",
   co_parent: "Co-parent",
   autre: "Autre",
+};
+
+const RELATION_COLORS: Record<string, string> = {
+  conjoint: "linear-gradient(135deg,#b8860b,#d4a017)",
+  enfant: "linear-gradient(135deg,#1a4a3a,#2d7a5f)",
+  parent_social: "linear-gradient(135deg,#1e3a5f,#2d5a8e)",
+  co_parent: "linear-gradient(135deg,#4a1a6b,#7c3aed)",
+  autre: "linear-gradient(135deg,#374151,#6b7280)",
+};
+
+const STATUT_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
+  prospect: { label: "Prospect",     color: "#92400e", bg: "#fef3c7" },
+  actif:    { label: "Client actif", color: "#065f46", bg: "#d1fae5" },
+  en_cours: { label: "En cours",     color: "#1e40af", bg: "#dbeafe" },
+  inactif:  { label: "Inactif",      color: "#6b7280", bg: "#f3f4f6" },
 };
 
 export function ClientFile360Live({ clientId, initialData }: Props) {
@@ -119,125 +139,214 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
   const { client, tags, related_persons, interactions, contracts } = initialData;
   const activeContracts = contracts.filter((c) => c.status === "active");
   const score = (client.score_protection as number | undefined) ?? 0;
+  const statut_client = (client.statut_client as string | undefined) ?? "prospect";
+  const statusCfg = STATUT_CONFIG[statut_client] ?? STATUT_CONFIG.prospect;
 
-  const handleDeleteContract = async (contractId: string) => {
-    if (!confirm("Supprimer ce contrat ? Cette action est irréversible.")) return;
-    await deleteContract(contractId, clientId);
+  const handleDeleteContract = async (id: string) => {
+    if (!confirm("Supprimer ce contrat ?")) return;
+    await deleteContract(id, clientId);
     router.refresh();
   };
 
-  const handleDeleteInteraction = async (interactionId: string) => {
+  const handleDeleteInteraction = async (id: string) => {
     if (!confirm("Supprimer cette interaction ?")) return;
-    await deleteInteraction(interactionId, clientId);
+    await deleteInteraction(id, clientId);
     router.refresh();
   };
 
-  const handleDeletePerson = async (personId: string) => {
+  const handleDeletePerson = async (id: string) => {
     if (!confirm("Supprimer cette personne liée ?")) return;
-    await deleteRelatedPerson(personId, clientId);
+    await deleteRelatedPerson(id, clientId);
     router.refresh();
   };
 
-  const formatDate = (d?: string | null) =>
-    d ? new Date(d).toLocaleDateString("fr-FR") : "—";
-
-  const formatEuro = (n?: number | null) =>
+  const fmt = (d?: string | null) =>
+    d ? new Date(d).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" }) : "—";
+  const fmtEuro = (n?: number | null) =>
     n != null ? n.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) : "—";
+  const initials = (name: string) => name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
 
   return (
-    <div className="client-360-container">
+    <div className="cf360">
+
+      {/* ── Hero Header ── */}
+      <div className="cf360-hero">
+        <div className="cf360-hero-avatar">
+          {initials(client.full_name ?? "?")}
+        </div>
+        <div className="cf360-hero-info">
+          <div className="cf360-hero-name-row">
+            <h2 className="cf360-hero-name">{client.full_name ?? "Client sans nom"}</h2>
+            <span
+              className="cf360-hero-status"
+              style={{ background: statusCfg.bg, color: statusCfg.color }}
+            >
+              {statusCfg.label}
+            </span>
+          </div>
+          <div className="cf360-hero-meta">
+            {client.email && (
+              <a href={`mailto:${client.email}`} className="cf360-hero-meta-item">
+                <Mail size={13} aria-hidden /> {client.email as string}
+              </a>
+            )}
+            {client.phone && (
+              <a href={`tel:${client.phone}`} className="cf360-hero-meta-item">
+                <Phone size={13} aria-hidden /> {client.phone as string}
+              </a>
+            )}
+            {client.family_context && (
+              <span className="cf360-hero-meta-item cf360-hero-context">
+                {client.family_context as string}
+              </span>
+            )}
+          </div>
+          {tags.length > 0 && (
+            <div className="cf360-hero-tags">
+              {tags.map((tag) => (
+                <span key={tag} className="cf360-hero-tag">{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="cf360-hero-actions">
+          <Link href={`/admin/clients/${clientId}/modifier`} className="cf360-edit-btn">
+            <Edit3 size={14} aria-hidden /> Modifier
+          </Link>
+        </div>
+      </div>
+
       {/* ── KPIs ── */}
-      <div className="client-360-kpis">
-        <div className="kpi-card">
-          <FileText size={20} aria-hidden />
-          <span className="kpi-value">{activeContracts.length}</span>
-          <span className="kpi-label">Contrats actifs</span>
+      <div className="cf360-kpis">
+        <div className="cf360-kpi">
+          <div className="cf360-kpi-icon" style={{ background: "#dbeafe", color: "#1e40af" }}>
+            <FileText size={18} aria-hidden />
+          </div>
+          <div>
+            <span className="cf360-kpi-val">{activeContracts.length}</span>
+            <span className="cf360-kpi-lbl">Contrats actifs</span>
+          </div>
         </div>
-        <div className="kpi-card">
-          <MessageSquare size={20} aria-hidden />
-          <span className="kpi-value">{interactions.length}</span>
-          <span className="kpi-label">Interactions</span>
+        <div className="cf360-kpi">
+          <div className="cf360-kpi-icon" style={{ background: "#d1fae5", color: "#065f46" }}>
+            <MessageSquare size={18} aria-hidden />
+          </div>
+          <div>
+            <span className="cf360-kpi-val">{interactions.length}</span>
+            <span className="cf360-kpi-lbl">Interactions</span>
+          </div>
         </div>
-        <div className="kpi-card">
-          <Users size={20} aria-hidden />
-          <span className="kpi-value">{related_persons.length}</span>
-          <span className="kpi-label">Personnes liées</span>
+        <div className="cf360-kpi">
+          <div className="cf360-kpi-icon" style={{ background: "#fef3c7", color: "#92400e" }}>
+            <Users size={18} aria-hidden />
+          </div>
+          <div>
+            <span className="cf360-kpi-val">{related_persons.length}</span>
+            <span className="cf360-kpi-lbl">Personnes liées</span>
+          </div>
         </div>
-        <div className="kpi-card kpi-score">
-          <Shield size={20} aria-hidden />
-          <span className="kpi-value">{score}/100</span>
-          <span className="kpi-label">Score protection</span>
+        <div className="cf360-kpi">
+          <div className="cf360-kpi-icon" style={{ background: score >= 70 ? "#d1fae5" : score >= 40 ? "#fef3c7" : "#fee2e2", color: score >= 70 ? "#065f46" : score >= 40 ? "#92400e" : "#991b1b" }}>
+            <Shield size={18} aria-hidden />
+          </div>
+          <div>
+            <span className="cf360-kpi-val">{score}<small>/100</small></span>
+            <span className="cf360-kpi-lbl">Score protection</span>
+          </div>
         </div>
       </div>
 
       {/* ── Onglets ── */}
-      <div className="client-360-tabs">
-        {TABS.map(({ id, label, icon: Icon }) => (
-          <button
-            key={id}
-            className={`tab-btn${activeTab === id ? " active" : ""}`}
-            onClick={() => setActiveTab(id)}
-          >
-            <Icon size={15} aria-hidden /> {label}
-          </button>
-        ))}
+      <div className="cf360-tabs-wrap">
+        <nav className="cf360-tabs">
+          {TABS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              className={`cf360-tab${activeTab === id ? " cf360-tab--active" : ""}`}
+              onClick={() => setActiveTab(id)}
+            >
+              <Icon size={14} aria-hidden />
+              <span>{label}</span>
+              {id === "contrats" && contracts.length > 0 && (
+                <span className="cf360-tab-badge">{contracts.length}</span>
+              )}
+              {id === "interactions" && interactions.length > 0 && (
+                <span className="cf360-tab-badge">{interactions.length}</span>
+              )}
+              {id === "personnes" && related_persons.length > 0 && (
+                <span className="cf360-tab-badge">{related_persons.length}</span>
+              )}
+            </button>
+          ))}
+        </nav>
       </div>
 
-      <div className="client-360-tab-content">
+      {/* ── Contenu des onglets ── */}
+      <div className="cf360-panel">
 
-        {/* ── SYNTHÈSE ── */}
+        {/* SYNTHÈSE */}
         {activeTab === "synthese" && (
-          <div className="tab-synthese">
-            <div className="synthese-grid">
-              <div className="synthese-card">
-                <h3><User size={16} aria-hidden /> Identité</h3>
-                <dl>
-                  <dt>Nom</dt><dd>{client.full_name ?? "—"}</dd>
-                  <dt>Email</dt><dd>{client.email ? <a href={`mailto:${client.email}`}>{client.email}</a> : "—"}</dd>
-                  <dt>Téléphone</dt><dd>{client.phone ? <a href={`tel:${client.phone}`}>{client.phone}</a> : "—"}</dd>
-                  <dt>Date de naissance</dt><dd>{formatDate(client.date_naissance as string | undefined)}</dd>
+          <div className="cf360-synthese">
+            <div className="cf360-synthese-grid">
+              <div className="cf360-info-card">
+                <div className="cf360-info-card-header">
+                  <User size={15} aria-hidden />
+                  <span>Identité</span>
+                </div>
+                <dl className="cf360-dl">
+                  <dt>Nom complet</dt><dd>{client.full_name ?? "—"}</dd>
+                  <dt>Date de naissance</dt><dd>{fmt(client.date_naissance as string | undefined)}</dd>
                   <dt>Situation familiale</dt><dd>{(client.situation_familiale as string | undefined) ?? "—"}</dd>
-                  <dt>Statut</dt><dd>{(client.statut_client as string | undefined) ?? "prospect"}</dd>
-                </dl>
-              </div>
-              <div className="synthese-card">
-                <h3><MapPin size={16} aria-hidden /> Adresse</h3>
-                <dl>
-                  <dt>Adresse</dt><dd>{(client.adresse as string | undefined) ?? "—"}</dd>
-                  <dt>Code postal</dt><dd>{(client.code_postal as string | undefined) ?? "—"}</dd>
-                  <dt>Ville</dt><dd>{(client.ville as string | undefined) ?? "—"}</dd>
                   <dt>Source</dt><dd>{(client.source_acquisition as string | undefined) ?? "—"}</dd>
                 </dl>
               </div>
-              <div className="synthese-card synthese-card-full">
-                <h3><Tag size={16} aria-hidden /> Tags</h3>
-                {tags.length > 0 ? (
-                  <div className="crm-client-tags">
-                    {tags.map((tag) => <span key={tag} className="crm-tag">{tag}</span>)}
-                  </div>
-                ) : (
-                  <p className="empty-hint">Aucun tag — <Link href={`/admin/clients/${clientId}/modifier`}>Modifier la fiche</Link></p>
-                )}
+
+              <div className="cf360-info-card">
+                <div className="cf360-info-card-header">
+                  <MapPin size={15} aria-hidden />
+                  <span>Coordonnées</span>
+                </div>
+                <dl className="cf360-dl">
+                  <dt>Email</dt>
+                  <dd>{client.email ? <a href={`mailto:${client.email}`}>{client.email as string}</a> : "—"}</dd>
+                  <dt>Téléphone</dt>
+                  <dd>{client.phone ? <a href={`tel:${client.phone}`}>{client.phone as string}</a> : "—"}</dd>
+                  <dt>Adresse</dt><dd>{(client.adresse as string | undefined) ?? "—"}</dd>
+                  <dt>Ville</dt>
+                  <dd>
+                    {(client.code_postal as string | undefined) && (client.ville as string | undefined)
+                      ? `${client.code_postal as string} ${client.ville as string}`
+                      : (client.ville as string | undefined) ?? "—"}
+                  </dd>
+                </dl>
               </div>
+
               {client.family_context && (
-                <div className="synthese-card synthese-card-full">
-                  <h3>Contexte familial</h3>
-                  <p>{client.family_context as string}</p>
+                <div className="cf360-info-card cf360-info-card--full">
+                  <div className="cf360-info-card-header">
+                    <Users size={15} aria-hidden />
+                    <span>Contexte familial</span>
+                  </div>
+                  <p className="cf360-context-text">{client.family_context as string}</p>
                 </div>
               )}
             </div>
 
             {/* Contrats actifs en résumé */}
             {activeContracts.length > 0 && (
-              <div className="synthese-contracts">
-                <h3><FileText size={16} aria-hidden /> Contrats actifs</h3>
-                <div className="contracts-summary">
+              <div className="cf360-synthese-section">
+                <div className="cf360-section-header">
+                  <CheckCircle2 size={15} style={{ color: "#10b981" }} aria-hidden />
+                  <span>Contrats actifs</span>
+                </div>
+                <div className="cf360-contracts-summary">
                   {activeContracts.map((c) => (
-                    <div key={c.id} className="contract-summary-item">
-                      <CheckCircle2 size={14} className="text-green" aria-hidden />
-                      <span>{c.contract_type}</span>
-                      <span className="contract-insurer">{c.insurer_name}</span>
-                      {c.prime_annuelle && <span className="contract-prime">{formatEuro(c.prime_annuelle)}/an</span>}
+                    <div key={c.id} className="cf360-contract-summary-item">
+                      <span className="cf360-contract-summary-type">{c.contract_type}</span>
+                      <span className="cf360-contract-summary-insurer">{c.insurer_name ?? "—"}</span>
+                      {c.prime_annuelle && (
+                        <span className="cf360-contract-summary-prime">{fmtEuro(c.prime_annuelle)}/an</span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -246,30 +355,53 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
 
             {/* Dernière interaction */}
             {interactions.length > 0 && (
-              <div className="synthese-last-interaction">
-                <h3><MessageSquare size={16} aria-hidden /> Dernière interaction</h3>
-                <div className="interaction-item">
-                  <span className="interaction-type-badge">{interactions[0].type}</span>
-                  <span className="interaction-titre">{interactions[0].titre}</span>
-                  <span className="interaction-date">{formatDate(interactions[0].created_at)}</span>
+              <div className="cf360-synthese-section">
+                <div className="cf360-section-header">
+                  <MessageSquare size={15} style={{ color: "#3b82f6" }} aria-hidden />
+                  <span>Dernière interaction</span>
+                </div>
+                <div className="cf360-last-interaction">
+                  <span
+                    className="cf360-interaction-type-pill"
+                    style={{ background: `${INTERACTION_COLORS[interactions[0].type] ?? "#6b7280"}20`, color: INTERACTION_COLORS[interactions[0].type] ?? "#6b7280" }}
+                  >
+                    {interactions[0].type}
+                  </span>
+                  <span className="cf360-last-interaction-title">{interactions[0].titre}</span>
+                  <span className="cf360-last-interaction-date">{fmt(interactions[0].created_at)}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Tags */}
+            {tags.length > 0 && (
+              <div className="cf360-synthese-section">
+                <div className="cf360-section-header">
+                  <Tag size={15} aria-hidden />
+                  <span>Tags</span>
+                </div>
+                <div className="cf360-tags-wrap">
+                  {tags.map((tag) => (
+                    <span key={tag} className="cf360-tag">{tag}</span>
+                  ))}
                 </div>
               </div>
             )}
           </div>
         )}
 
-        {/* ── INTERACTIONS ── */}
+        {/* INTERACTIONS */}
         {activeTab === "interactions" && (
-          <div className="tab-interactions">
-            <div className="tab-header-actions">
-              <h3>Historique des interactions ({interactions.length})</h3>
-              <button className="primary-action" onClick={() => setShowInteractionForm(!showInteractionForm)}>
-                <Plus size={15} aria-hidden /> Ajouter
+          <div className="cf360-tab-content">
+            <div className="cf360-tab-toolbar">
+              <span className="cf360-tab-count">{interactions.length} interaction{interactions.length !== 1 ? "s" : ""}</span>
+              <button className="cf360-add-btn" onClick={() => setShowInteractionForm(!showInteractionForm)}>
+                <Plus size={14} aria-hidden /> Ajouter
               </button>
             </div>
 
             {showInteractionForm && (
-              <div className="inline-form-card">
+              <div className="cf360-inline-form">
                 <InteractionForm
                   clientId={clientId}
                   onSuccess={() => { setShowInteractionForm(false); router.refresh(); }}
@@ -279,41 +411,68 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
             )}
 
             {interactions.length === 0 ? (
-              <div className="empty-state-small">
-                <MessageSquare size={32} aria-hidden />
-                <p>Aucune interaction enregistrée. Ajoutez le premier contact.</p>
+              <div className="cf360-empty">
+                <MessageSquare size={36} aria-hidden />
+                <p>Aucune interaction enregistrée.</p>
+                <button className="cf360-add-btn" onClick={() => setShowInteractionForm(true)}>
+                  <Plus size={14} aria-hidden /> Ajouter la première interaction
+                </button>
               </div>
             ) : (
-              <div className="interactions-timeline">
+              <div className="cf360-timeline">
                 {interactions.map((interaction) => {
                   const Icon = INTERACTION_ICONS[interaction.type] ?? StickyNote;
+                  const color = INTERACTION_COLORS[interaction.type] ?? "#6b7280";
                   const isExpanded = expandedInteraction === interaction.id;
                   return (
-                    <div key={interaction.id} className="interaction-timeline-item">
-                      <div className="interaction-timeline-icon">
-                        <Icon size={14} aria-hidden />
+                    <div key={interaction.id} className="cf360-timeline-item">
+                      <div className="cf360-timeline-line" aria-hidden />
+                      <div
+                        className="cf360-timeline-dot"
+                        style={{ background: `${color}20`, color, borderColor: `${color}40` }}
+                      >
+                        <Icon size={13} aria-hidden />
                       </div>
-                      <div className="interaction-timeline-content">
-                        <div className="interaction-header" onClick={() => setExpandedInteraction(isExpanded ? null : interaction.id)}>
-                          <span className={`interaction-type-badge badge-${interaction.type}`}>{interaction.type}</span>
-                          <span className="interaction-titre">{interaction.titre}</span>
-                          <span className="interaction-meta">
-                            {formatDate(interaction.created_at)}
-                            {interaction.duree_minutes && ` · ${interaction.duree_minutes} min`}
-                          </span>
-                          {interaction.contenu && (
-                            isExpanded ? <ChevronUp size={14} aria-hidden /> : <ChevronDown size={14} aria-hidden />
-                          )}
-                          <button
-                            className="icon-btn danger"
-                            onClick={(e) => { e.stopPropagation(); handleDeleteInteraction(interaction.id); }}
-                            aria-label="Supprimer l'interaction"
+                      <div className="cf360-timeline-content">
+                        <div
+                          className="cf360-timeline-header"
+                          onClick={() => setExpandedInteraction(isExpanded ? null : interaction.id)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => e.key === "Enter" && setExpandedInteraction(isExpanded ? null : interaction.id)}
+                        >
+                          <span
+                            className="cf360-interaction-type-pill"
+                            style={{ background: `${color}15`, color }}
                           >
-                            <Trash2 size={13} aria-hidden />
-                          </button>
+                            {interaction.type}
+                          </span>
+                          <span className="cf360-timeline-title">{interaction.titre}</span>
+                          <div className="cf360-timeline-meta">
+                            <span className="cf360-timeline-date">
+                              <Clock size={11} aria-hidden /> {fmt(interaction.created_at)}
+                            </span>
+                            {interaction.duree_minutes && (
+                              <span className="cf360-timeline-duration">{interaction.duree_minutes} min</span>
+                            )}
+                          </div>
+                          <div className="cf360-timeline-actions">
+                            {interaction.contenu && (
+                              isExpanded
+                                ? <ChevronUp size={13} aria-hidden />
+                                : <ChevronDown size={13} aria-hidden />
+                            )}
+                            <button
+                              className="cf360-delete-btn"
+                              onClick={(e) => { e.stopPropagation(); handleDeleteInteraction(interaction.id); }}
+                              aria-label="Supprimer"
+                            >
+                              <Trash2 size={12} aria-hidden />
+                            </button>
+                          </div>
                         </div>
                         {isExpanded && interaction.contenu && (
-                          <div className="interaction-contenu">{interaction.contenu}</div>
+                          <div className="cf360-timeline-body">{interaction.contenu}</div>
                         )}
                       </div>
                     </div>
@@ -324,18 +483,18 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
           </div>
         )}
 
-        {/* ── CONTRATS ── */}
+        {/* CONTRATS */}
         {activeTab === "contrats" && (
-          <div className="tab-contrats">
-            <div className="tab-header-actions">
-              <h3>Contrats ({contracts.length})</h3>
-              <button className="primary-action" onClick={() => setShowContractForm(!showContractForm)}>
-                <Plus size={15} aria-hidden /> Nouveau contrat
+          <div className="cf360-tab-content">
+            <div className="cf360-tab-toolbar">
+              <span className="cf360-tab-count">{contracts.length} contrat{contracts.length !== 1 ? "s" : ""}</span>
+              <button className="cf360-add-btn" onClick={() => setShowContractForm(!showContractForm)}>
+                <Plus size={14} aria-hidden /> Nouveau contrat
               </button>
             </div>
 
             {showContractForm && (
-              <div className="inline-form-card">
+              <div className="cf360-inline-form">
                 <ContractForm
                   mode="create"
                   clientId={clientId}
@@ -346,50 +505,74 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
             )}
 
             {contracts.length === 0 ? (
-              <div className="empty-state-small">
-                <FileText size={32} aria-hidden />
-                <p>Aucun contrat enregistré. Créez le premier contrat de ce client.</p>
+              <div className="cf360-empty">
+                <FileText size={36} aria-hidden />
+                <p>Aucun contrat enregistré.</p>
+                <button className="cf360-add-btn" onClick={() => setShowContractForm(true)}>
+                  <Plus size={14} aria-hidden /> Créer le premier contrat
+                </button>
               </div>
             ) : (
-              <div className="contracts-list">
+              <div className="cf360-contracts-list">
                 {contracts.map((contract) => {
-                  const statusInfo = CONTRACT_STATUS[contract.status] ?? CONTRACT_STATUS.draft;
+                  const s = CONTRACT_STATUS[contract.status] ?? CONTRACT_STATUS.draft;
                   return (
-                    <div key={contract.id} className="contract-card">
-                      <div className="contract-card-header">
-                        <div>
-                          <span className="contract-type">{contract.contract_type}</span>
-                          <span className={statusInfo.className}>{statusInfo.label}</span>
+                    <div key={contract.id} className="cf360-contract-card">
+                      <div className="cf360-contract-card-top">
+                        <div className="cf360-contract-card-left">
+                          <div className="cf360-contract-icon">
+                            <FileText size={16} aria-hidden />
+                          </div>
+                          <div>
+                            <span className="cf360-contract-type">{contract.contract_type}</span>
+                            <span className="cf360-contract-insurer">
+                              <Building2 size={11} aria-hidden /> {contract.insurer_name ?? "—"}
+                            </span>
+                          </div>
                         </div>
-                        <button
-                          className="icon-btn danger"
-                          onClick={() => handleDeleteContract(contract.id)}
-                          aria-label="Supprimer le contrat"
-                        >
-                          <Trash2 size={14} aria-hidden />
-                        </button>
+                        <div className="cf360-contract-card-right">
+                          <span
+                            className="cf360-contract-status"
+                            style={{ background: s.bg, color: s.color }}
+                          >
+                            {s.label}
+                          </span>
+                          <button
+                            className="cf360-delete-btn"
+                            onClick={() => handleDeleteContract(contract.id)}
+                            aria-label="Supprimer le contrat"
+                          >
+                            <Trash2 size={13} aria-hidden />
+                          </button>
+                        </div>
                       </div>
-                      <dl className="contract-details">
-                        <dt><Building2 size={12} aria-hidden /> Assureur</dt>
-                        <dd>{contract.insurer_name ?? "—"}</dd>
-                        <dt><FileText size={12} aria-hidden /> N° contrat</dt>
-                        <dd>{contract.contract_number ?? "—"}</dd>
-                        <dt><Clock size={12} aria-hidden /> Date d'effet</dt>
-                        <dd>{formatDate(contract.effective_date)}</dd>
-                        <dt><Euro size={12} aria-hidden /> Prime annuelle</dt>
-                        <dd>{formatEuro(contract.prime_annuelle)}</dd>
-                        <dt>Commission</dt>
-                        <dd>
-                          {contract.taux_commission ? `${contract.taux_commission}%` : "—"}
-                          {contract.montant_commission_annuel ? ` (${formatEuro(contract.montant_commission_annuel)}/an)` : ""}
-                        </dd>
+                      <div className="cf360-contract-details">
+                        <div className="cf360-contract-detail-item">
+                          <span className="cf360-detail-label">N° contrat</span>
+                          <span className="cf360-detail-val">{contract.contract_number ?? "—"}</span>
+                        </div>
+                        <div className="cf360-contract-detail-item">
+                          <span className="cf360-detail-label">Date d'effet</span>
+                          <span className="cf360-detail-val">{fmt(contract.effective_date)}</span>
+                        </div>
+                        <div className="cf360-contract-detail-item">
+                          <span className="cf360-detail-label">Prime annuelle</span>
+                          <span className="cf360-detail-val cf360-detail-prime">{fmtEuro(contract.prime_annuelle)}</span>
+                        </div>
+                        <div className="cf360-contract-detail-item">
+                          <span className="cf360-detail-label">Commission</span>
+                          <span className="cf360-detail-val">
+                            {contract.taux_commission ? `${contract.taux_commission}%` : "—"}
+                            {contract.montant_commission_annuel ? ` · ${fmtEuro(contract.montant_commission_annuel)}/an` : ""}
+                          </span>
+                        </div>
                         {contract.beneficiaires && (
-                          <>
-                            <dt>Bénéficiaires</dt>
-                            <dd>{contract.beneficiaires}</dd>
-                          </>
+                          <div className="cf360-contract-detail-item cf360-contract-detail-full">
+                            <span className="cf360-detail-label">Bénéficiaires</span>
+                            <span className="cf360-detail-val">{contract.beneficiaires}</span>
+                          </div>
                         )}
-                      </dl>
+                      </div>
                     </div>
                   );
                 })}
@@ -398,18 +581,18 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
           </div>
         )}
 
-        {/* ── PERSONNES LIÉES ── */}
+        {/* PERSONNES LIÉES */}
         {activeTab === "personnes" && (
-          <div className="tab-personnes">
-            <div className="tab-header-actions">
-              <h3>Personnes liées ({related_persons.length})</h3>
-              <button className="primary-action" onClick={() => setShowPersonForm(!showPersonForm)}>
-                <Plus size={15} aria-hidden /> Ajouter
+          <div className="cf360-tab-content">
+            <div className="cf360-tab-toolbar">
+              <span className="cf360-tab-count">{related_persons.length} personne{related_persons.length !== 1 ? "s" : ""} liée{related_persons.length !== 1 ? "s" : ""}</span>
+              <button className="cf360-add-btn" onClick={() => setShowPersonForm(!showPersonForm)}>
+                <Plus size={14} aria-hidden /> Ajouter
               </button>
             </div>
 
             {showPersonForm && (
-              <div className="inline-form-card">
+              <div className="cf360-inline-form">
                 <RelatedPersonForm
                   clientId={clientId}
                   onSuccess={() => { setShowPersonForm(false); router.refresh(); }}
@@ -419,42 +602,52 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
             )}
 
             {related_persons.length === 0 ? (
-              <div className="empty-state-small">
-                <Users size={32} aria-hidden />
+              <div className="cf360-empty">
+                <Users size={36} aria-hidden />
                 <p>Aucune personne liée. Ajoutez le conjoint, les enfants ou les co-parents.</p>
+                <button className="cf360-add-btn" onClick={() => setShowPersonForm(true)}>
+                  <Plus size={14} aria-hidden /> Ajouter une personne
+                </button>
               </div>
             ) : (
-              <div className="persons-grid">
+              <div className="cf360-persons-grid">
                 {related_persons.map((person) => (
-                  <div key={person.id} className="person-card">
-                    <div className="person-card-header">
-                      <div className="person-avatar">{person.full_name.charAt(0).toUpperCase()}</div>
-                      <div>
-                        <span className="person-name">{person.full_name}</span>
-                        <span className="person-relation">{RELATION_LABELS[person.type_relation] ?? person.type_relation}</span>
+                  <div key={person.id} className="cf360-person-card">
+                    <div className="cf360-person-card-header">
+                      <div
+                        className="cf360-person-avatar"
+                        style={{ background: RELATION_COLORS[person.type_relation] ?? RELATION_COLORS.autre }}
+                      >
+                        {person.full_name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="cf360-person-info">
+                        <span className="cf360-person-name">{person.full_name}</span>
+                        <span className="cf360-person-relation">
+                          {RELATION_LABELS[person.type_relation] ?? person.type_relation}
+                        </span>
                       </div>
                       <button
-                        className="icon-btn danger"
+                        className="cf360-delete-btn"
                         onClick={() => handleDeletePerson(person.id)}
-                        aria-label="Supprimer la personne"
+                        aria-label="Supprimer"
                       >
-                        <Trash2 size={13} aria-hidden />
+                        <Trash2 size={12} aria-hidden />
                       </button>
                     </div>
-                    <dl className="person-details">
+                    <div className="cf360-person-details">
                       {person.date_naissance && (
-                        <><dt>Naissance</dt><dd>{formatDate(person.date_naissance)}</dd></>
+                        <span><Calendar size={11} aria-hidden /> {fmt(person.date_naissance)}</span>
                       )}
                       {person.email && (
-                        <><dt>Email</dt><dd><a href={`mailto:${person.email}`}>{person.email}</a></dd></>
+                        <a href={`mailto:${person.email}`}><Mail size={11} aria-hidden /> {person.email}</a>
                       )}
                       {person.phone && (
-                        <><dt>Tél.</dt><dd><a href={`tel:${person.phone}`}>{person.phone}</a></dd></>
+                        <a href={`tel:${person.phone}`}><Phone size={11} aria-hidden /> {person.phone}</a>
                       )}
-                      {person.notes && (
-                        <><dt>Notes</dt><dd>{person.notes}</dd></>
-                      )}
-                    </dl>
+                    </div>
+                    {person.notes && (
+                      <p className="cf360-person-notes">{person.notes}</p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -462,21 +655,24 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
           </div>
         )}
 
-        {/* ── NOTES ── */}
+        {/* NOTES */}
         {activeTab === "notes" && (
-          <div className="tab-notes">
-            <div className="tab-header-actions">
-              <h3>Notes internes</h3>
-              <Link href={`/admin/clients/${clientId}/modifier`} className="secondary-action">
-                Modifier les notes
+          <div className="cf360-tab-content">
+            <div className="cf360-tab-toolbar">
+              <span className="cf360-tab-count">Notes internes</span>
+              <Link href={`/admin/clients/${clientId}/modifier`} className="cf360-add-btn">
+                <Edit3 size={14} aria-hidden /> Modifier
               </Link>
             </div>
             {client.notes ? (
-              <div className="notes-content">{client.notes as string}</div>
+              <div className="cf360-notes-content">{client.notes as string}</div>
             ) : (
-              <div className="empty-state-small">
-                <StickyNote size={32} aria-hidden />
-                <p>Aucune note interne. <Link href={`/admin/clients/${clientId}/modifier`}>Ajouter une note</Link></p>
+              <div className="cf360-empty">
+                <StickyNote size={36} aria-hidden />
+                <p>Aucune note interne.</p>
+                <Link href={`/admin/clients/${clientId}/modifier`} className="cf360-add-btn">
+                  <Edit3 size={14} aria-hidden /> Ajouter une note
+                </Link>
               </div>
             )}
           </div>
