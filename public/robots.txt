@@ -1,0 +1,54 @@
+User-agent: *
+Allow: /
+
+# Pages privées exclues de l'indexation
+Disallow: /admin
+Disallow: /admin/
+Disallow: /espace-client
+Disallow: /client
+Disallow: /client/
+Disallow: /mandataire
+Disallow: /mandataire/
+Disallow: /prescripteur
+Disallow: /prescripteur/
+Disallow: /connexion
+Disallow: /auth
+Disallow: /auth/
+Disallow: /api
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /mon-compte
+
+# Crawlers IA explicitement autorisés
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Gemini
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Sitemap
+Sitemap: https://www.ej-assurances.fr/sitemap.xml

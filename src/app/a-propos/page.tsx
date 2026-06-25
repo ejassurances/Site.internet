@@ -3,11 +3,22 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Heart, Shield, Users } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { StructuredData, organizationSchema, breadcrumbSchema, webPageSchema } from "@/components/seo/structured-data";
+
+const pageUrl = "https://www.ej-assurances.fr/a-propos";
 
 export const metadata: Metadata = {
-  title: "À propos — EJ Partners Assurances",
+  title: "À propos d'EJ Assurances — Cabinet de courtage familles modernes",
   description:
-    "Découvrez EJ Partners Assurances, cabinet de courtage spécialisé dans l'accompagnement des familles modernes : LGBT+, coparentalité, familles recomposées.",
+    "EJ Assurances est un cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles recomposées, coparentalité et couples LGBT.",
+  alternates: { canonical: pageUrl },
+  openGraph: {
+    title: "À propos d'EJ Assurances — Cabinet de courtage familles modernes",
+    description:
+      "EJ Assurances est un cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles recomposées, coparentalité et couples LGBT.",
+    url: pageUrl,
+    type: "website",
+  },
 };
 
 const valeurs = [
@@ -31,6 +42,9 @@ const valeurs = [
 export default function AProposPage() {
   return (
     <>
+      <StructuredData data={organizationSchema} />
+      <StructuredData data={webPageSchema({ url: pageUrl, name: "À propos d'EJ Assurances", description: "Cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles modernes." })} />
+      <StructuredData data={breadcrumbSchema([{ name: "Accueil", url: "https://www.ej-assurances.fr/" }, { name: "À propos", url: pageUrl }])} />
       <SiteHeader />
       <main className="public-main">
         {/* Hero */}

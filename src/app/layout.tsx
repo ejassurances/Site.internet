@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { StructuredData, organizationSchema, websiteSchema } from "@/components/seo/structured-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,13 +22,19 @@ export const metadata: Metadata = {
     template: "%s | EJ Partners Assurances",
   },
   description:
-    "Cabinet de courtage spécialisé familles LGBT+, coparentalité, familles recomposées. Assurance emprunteur, prévoyance, transmission. Conseil confidentiel et bienveillant.",
+    "Cabinet de courtage en assurances spécialisé dans l'assurance emprunteur et la protection des familles modernes : familles recomposées, coparentalité, couples LGBT. Conseil personnalisé, indépendant et confidentiel.",
   keywords: [
+    "assurance emprunteur",
+    "assurance de prêt immobilier",
+    "délégation assurance emprunteur",
+    "loi Lemoine",
     "assurance familles LGBT",
     "coparentalité assurance",
     "assurance emprunteur famille recomposée",
-    "prévoyance familiale",
-    "courtier assurance Paris",
+    "quotité assurance emprunteur",
+    "changer assurance emprunteur",
+    "courtier assurance emprunteur",
+    "EJ Assurances",
     "EJ Partners Assurances",
   ],
   authors: [{ name: "EJ Partners Assurances" }],
@@ -73,7 +80,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <StructuredData data={organizationSchema} />
+        <StructuredData data={websiteSchema} />
+        {children}
+      </body>
     </html>
   );
 }

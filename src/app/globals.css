@@ -2905,3 +2905,451 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   .ia-copilot-page { padding: 16px; }
   .ia-module-page { padding: 16px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   GEO PAGES — Pages piliers SEO/GEO
+   ═══════════════════════════════════════════════════════════ */
+
+.geo-page {
+  background: var(--bg);
+  min-height: 100vh;
+  padding: clamp(24px, 4vw, 48px) 0 80px;
+}
+
+.geo-page-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 32px);
+}
+
+.geo-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+
+.geo-breadcrumb a {
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.geo-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.geo-h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.25;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.geo-intro {
+  font-size: 1.08rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.geo-content {
+  color: var(--fg);
+}
+
+.geo-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 40px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gold);
+  display: inline-block;
+}
+
+.geo-content p {
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+
+.geo-key-points {
+  background: linear-gradient(135deg, rgba(27,42,74,0.04), rgba(200,160,80,0.06));
+  border: 1px solid rgba(200,160,80,0.25);
+  border-left: 4px solid var(--gold);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin: 40px 0;
+}
+
+.geo-key-points h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 14px;
+  border: none;
+  padding: 0;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.geo-key-points ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.geo-key-points li {
+  padding-left: 20px;
+  position: relative;
+  color: var(--fg);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.geo-key-points li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.geo-related {
+  margin: 48px 0 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.geo-related h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px;
+  border: none;
+  padding: 0;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.geo-related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.geo-related-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(27,42,74,0.06);
+  border: 1px solid rgba(27,42,74,0.12);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--navy);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.geo-related-links a:hover {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+}
+
+.geo-cta {
+  background: linear-gradient(135deg, var(--navy), var(--navy-soft));
+  border-radius: 12px;
+  padding: 32px 36px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.geo-cta p {
+  color: rgba(247,245,240,0.8);
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.geo-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.geo-cta-link:hover {
+  background: #d4a820;
+  transform: translateY(-1px);
+}
+
+/* Services grid (page à propos) */
+.geo-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 20px 0 32px;
+}
+
+.geo-service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.geo-service-card:hover {
+  border-color: var(--navy);
+  box-shadow: 0 4px 12px rgba(27,42,74,0.1);
+}
+
+.geo-service-card strong {
+  color: var(--navy);
+  font-size: 0.95rem;
+}
+
+.geo-service-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FAQ SECTION — Accordéon
+   ═══════════════════════════════════════════════════════════ */
+
+.faq-section {
+  margin: 48px 0 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.faq-section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 24px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--navy);
+  transition: background 0.15s;
+}
+
+.faq-question:hover {
+  background: rgba(27,42,74,0.03);
+}
+
+.faq-item--open .faq-question {
+  background: rgba(27,42,74,0.04);
+  color: var(--navy);
+}
+
+.faq-chevron {
+  flex-shrink: 0;
+  color: var(--gold);
+  transition: transform 0.2s;
+}
+
+.faq-item--open .faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 22px 18px;
+  background: rgba(27,42,74,0.02);
+}
+
+.faq-answer p {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GUIDES — Liste et articles
+   ═══════════════════════════════════════════════════════════ */
+
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.guide-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s;
+}
+
+.guide-card:hover {
+  border-color: var(--navy);
+  box-shadow: 0 8px 24px rgba(27,42,74,0.1);
+  transform: translateY(-2px);
+}
+
+.guide-card-category {
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.guide-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  padding: 16px 20px 8px;
+  line-height: 1.4;
+}
+
+.guide-card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.guide-card-title a:hover {
+  color: var(--gold);
+}
+
+.guide-card-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+  padding: 0 20px 16px;
+  flex: 1;
+}
+
+.guide-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-top: 1px solid var(--line);
+  background: rgba(27,42,74,0.02);
+}
+
+.guide-card-footer time {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.guide-card-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.guide-card-link:hover {
+  color: var(--gold);
+}
+
+/* Article de guide */
+.geo-article {
+  max-width: 860px;
+}
+
+.geo-article-header {
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.geo-article-category {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.geo-article-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.geo-article-body h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 40px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--gold);
+  display: inline-block;
+}
+
+.geo-article-body p {
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+
