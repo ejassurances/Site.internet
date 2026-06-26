@@ -150,7 +150,7 @@ const clientModules = [
 ];
 
 export function AppShell({ role, user, children }: AppShellProps) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const isAdmin = role === "admin" || role === "courtier";
 
   return (
