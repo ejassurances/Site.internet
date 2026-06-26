@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Définir les règles de gouvernance des agents IA.
+Définir les règles de gouvernance des agents IA utilisés dans le CRM EJ Assurances, y compris lorsque les agents assistent les mandataires connectés à leur propre Google Workspace.
 
 ## Principe fondamental
 
@@ -21,24 +21,41 @@ Rôles pouvant utiliser l'IA selon périmètre :
 
 Agents envisagés :
 
-- commercial ;
-- relation client ;
-- email ;
-- sinistre ;
-- conformité ;
+- assistant commercial ;
+- assistant relation client ;
+- assistant email ;
+- assistant sinistre ;
+- assistant conformité ;
 - synthèse documentaire.
 
-## Tâches interdites
+## Agents IA du mandataire
+
+Les agents IA du mandataire peuvent aider à :
+
+- lire et résumer les emails liés à EJ Assurances ;
+- préparer des réponses ;
+- identifier les urgences ;
+- suivre les demandes ;
+- relancer le client ;
+- relancer la compagnie ;
+- relancer le cabinet ;
+- préparer le devoir de conseil ;
+- détecter les éléments manquants ;
+- remonter les demandes sensibles.
+
+## Garde-fous IA
 
 L'IA ne doit jamais :
 
+- envoyer un email sans validation humaine ;
 - donner un conseil personnalisé directement au client ;
+- modifier un contrat ;
 - valider un devoir de conseil ;
-- décider d'une souscription ;
-- modifier un contrat seule ;
-- transmettre une recommandation sans validation ;
-- traiter une réclamation sensible sans humain ;
-- contourner les droits d'accès.
+- prendre une décision de souscription ;
+- accéder à des emails non liés à EJ Assurances ;
+- analyser des données sans finalité métier claire ;
+- contourner les droits d'accès ;
+- transmettre une recommandation sans validation.
 
 ## Validation humaine obligatoire
 
@@ -50,20 +67,51 @@ Validation requise pour :
 - modification contractuelle ;
 - réponse à réclamation ;
 - décision sur sinistre ;
-- document réglementaire.
+- document réglementaire ;
+- devoir de conseil ;
+- brouillon destiné au client.
+
+## Supervision cabinet admin
+
+Le cabinet admin doit pouvoir visualiser les actions IA liées à l'activité EJ Assurances :
+
+- agents utilisés ;
+- brouillons générés ;
+- résumés produits ;
+- relances préparées ;
+- escalades ;
+- demandes sensibles détectées ;
+- validations humaines ;
+- erreurs ou alertes ;
+- journaux d'audit.
+
+Le cabinet admin ne doit pas voir les analyses IA portant sur des données non liées à EJ Assurances.
 
 ## Journalisation
 
 Chaque action IA doit conserver :
 
 - utilisateur demandeur ;
+- rôle de l'utilisateur ;
 - agent utilisé ;
 - version de prompt ;
-- données utilisées ;
+- périmètre métier ;
+- données utilisées ou références minimisées ;
 - résultat ;
-- validation ;
+- statut de validation ;
 - date ;
-- statut.
+- action finale ;
+- éventuelle escalade humaine.
+
+## Minimisation des données
+
+Principes :
+
+- utiliser uniquement les données nécessaires ;
+- exclure les emails non liés ;
+- pseudonymiser lorsque possible ;
+- limiter l'exposition des pièces sensibles ;
+- conserver uniquement les traces utiles à la conformité.
 
 ## Contrôle qualité
 
@@ -74,7 +122,9 @@ Prévoir :
 - échantillonnage ;
 - signalement d'erreur ;
 - désactivation d'un agent ;
-- gestion des versions.
+- gestion des versions ;
+- revue des prompts ;
+- contrôle des escalades.
 
 ## Points ouverts
 
@@ -82,4 +132,5 @@ Prévoir :
 - fréquence d'audit ;
 - seuils d'escalade ;
 - politique de conservation des logs IA ;
-- processus de validation des prompts.
+- processus de validation des prompts ;
+- règles de filtrage des données Workspace.
