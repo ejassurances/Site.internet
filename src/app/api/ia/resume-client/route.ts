@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing OPENAI_API_KEY environment variable");
+  }
+  return new OpenAI({ apiKey });
+}
 
 type Contract = { product_type: string; insurer: string; status: string; annual_premium: number; start_date: string };
 type RelatedPerson = { relation: string; first_name: string; last_name: string; date_of_birth: string };
@@ -68,7 +74,7 @@ Réponds UNIQUEMENT en JSON valide avec cette structure exacte:
 
 Les 5 points doivent couvrir: situation actuelle, contrats en place, besoins non couverts, historique relationnel, point d'attention.`;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAIClient().chat.completions.create({
       model: "gpt-4o",
       messages: [
         { role: "system", content: systemPrompt },

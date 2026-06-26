@@ -2,7 +2,13 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing OPENAI_API_KEY environment variable");
+  }
+  return new OpenAI({ apiKey });
+}
 
 type ClientRow = { id: string; first_name: string; last_name: string; email: string; family_context: string | null; marital_status: string | null; status: string };
 type ContractRow = { client_id: string; product_type: string; status: string };
@@ -77,7 +83,7 @@ Pour chaque client avec des opportunités, génère une analyse. Réponds UNIQUE
 Le score (0-100) représente l'urgence/potentiel: 80+ = très prioritaire, 60-79 = prioritaire, <60 = à surveiller.
 Inclure seulement les clients avec au moins une opportunité réelle. Maximum 20 clients.`;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAIClient().chat.completions.create({
       model: "gpt-4o",
       messages: [
         { role: "system", content: systemPrompt },

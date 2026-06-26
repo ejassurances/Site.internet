@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing OPENAI_API_KEY environment variable");
+  }
+  return new OpenAI({ apiKey });
+}
 
 type Contract = { product_type: string; insurer: string; contract_number: string; status: string; annual_premium: number; commission_rate: number };
 type Interaction = { date: string; type: string; summary: string; outcome: string };
@@ -87,7 +93,7 @@ RÈGLES IMPORTANTES:
 
 ${crmContext ? `DONNÉES CRM DISPONIBLES:\n${crmContext}` : ""}`;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAIClient().chat.completions.create({
       model: "gpt-4o",
       messages: [
         { role: "system", content: systemPrompt },

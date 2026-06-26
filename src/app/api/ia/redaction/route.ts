@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing OPENAI_API_KEY environment variable");
+  }
+  return new OpenAI({ apiKey });
+}
 
 const PROMPTS: Record<string, (fields: Record<string, string>) => string> = {
   email_commercial: (f) => `Rédige un email commercial professionnel et chaleureux pour présenter une solution d'assurance.
@@ -67,7 +73,7 @@ Tu rédiges des documents professionnels pour un cabinet de courtage spécialis�
 Tes textes sont toujours: sans fautes, professionnels, empathiques, adaptés au contexte familial spécifique.
 Tu réponds UNIQUEMENT avec le texte du document, sans commentaire ni explication.`;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAIClient().chat.completions.create({
       model: "gpt-4o",
       messages: [
         { role: "system", content: systemPrompt },
