@@ -1,6 +1,12 @@
 import { ShieldCheck } from "lucide-react";
+import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { LoginForm } from "./login-form";
+
+export const metadata: Metadata = {
+  title: "Connexion — EJ Assurances",
+  robots: { index: false, follow: false },
+};
 
 export default function ConnexionPage() {
   return (
