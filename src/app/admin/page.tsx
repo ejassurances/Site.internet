@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { requireRole } from "@/lib/auth";
 import { getAccessibleClients } from "@/lib/clients";
+import { getEmprunteurStats } from "@/lib/actions/emprunteur";
 
 const adminModuleCards = [
   {
@@ -65,7 +66,10 @@ const adminModuleCards = [
 
 export default async function AdminDashboardPage() {
   const user = await requireRole(["admin", "courtier"]);
-  const clients = await getAccessibleClients(user);
+  const [clients, emprunteurStats] = await Promise.all([
+    getAccessibleClients(user),
+    getEmprunteurStats(),
+  ]);
 
   return (
     <AppShell role={user.role === "courtier" ? "courtier" : "admin"} user={user}>
@@ -118,6 +122,18 @@ export default async function AdminDashboardPage() {
           ))}
         </div>
       </section>
+
+      {/* Alerte prospects emprunteur */}
+      {emprunteurStats.non_convertis > 0 && (
+        <Link href="/admin/emprunteur" className="emprunteur-alert-banner">
+          <span className="emprunteur-alert-dot" aria-hidden />
+          <span>
+            <strong>{emprunteurStats.non_convertis} nouveau{emprunteurStats.non_convertis > 1 ? "x" : ""} dossier{emprunteurStats.non_convertis > 1 ? "s" : ""} emprunteur</strong>
+            {" "}en attente de traitement
+          </span>
+          <ChevronRight size={16} aria-hidden />
+        </Link>
+      )}
 
       {/* Accès rapide clients */}
       {clients.length > 0 && (
