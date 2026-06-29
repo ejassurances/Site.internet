@@ -1,7 +1,11 @@
 import { Resend } from "resend";
 
-// Initialisation du client Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Client initialisé à la demande pour éviter l'erreur de build si RESEND_API_KEY absent
+function getResend(): Resend {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error("RESEND_API_KEY manquante");
+  return new Resend(key);
+}
 
 // Adresse expéditeur — doit correspondre à un domaine vérifié dans Resend
 const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL ?? "EJ Partners Assurances <contact@ej-assurances.fr>";
@@ -192,7 +196,7 @@ export async function sendContactConfirmation(data: ContactConfirmationData): Pr
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: [data.email],
       subject: "Votre demande a bien été reçue — EJ Partners Assurances",
@@ -290,7 +294,7 @@ export async function sendAdminNotification(data: AdminNotificationData): Promis
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: [ADMIN_EMAIL],
       subject: `🔔 Nouveau contact : ${data.fullName} — ${data.need ?? "Demande générale"}`,
@@ -372,7 +376,7 @@ export async function sendClientInvitation(data: ClientInvitationData): Promise<
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: [data.email],
       subject: "Votre espace client EJ Partners Assurances est prêt",
@@ -436,7 +440,7 @@ export async function sendClientRelance(data: ClientRelanceData): Promise<EmailR
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: FROM_ADDRESS,
       to: [data.email],
       subject: data.subject,
