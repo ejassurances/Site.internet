@@ -1,7 +1,7 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, CheckCircle, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, CheckCircle, Eye, EyeOff, Loader2 } from "lucide-react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export function ResetPasswordForm() {
@@ -10,6 +10,27 @@ export function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null);
   const [showPwd, setShowPwd] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
+
+  useEffect(() => {
+    const supabase = createSupabaseBrowserClient();
+    if (!supabase) return;
+
+    // Écoute l'événement PASSWORD_RECOVERY déclenché automatiquement
+    // quand Supabase détecte le token dans l'URL au chargement de la page
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setSessionReady(true);
+      }
+    });
+
+    // Vérifie aussi si une session existe déjà (token déjà échangé)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setSessionReady(true);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -65,6 +86,15 @@ export function ResetPasswordForm() {
         <a href="/connexion" className="btn-secondary">
           Se connecter maintenant
         </a>
+      </div>
+    );
+  }
+
+  if (!sessionReady) {
+    return (
+      <div className="forgot-success" style={{ textAlign: "center" }}>
+        <Loader2 size={36} className="spin" style={{ margin: "0 auto 16px", display: "block", color: "var(--accent-strong)" }} />
+        <p>Vérification du lien en cours…</p>
       </div>
     );
   }
