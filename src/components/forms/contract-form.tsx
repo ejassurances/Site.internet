@@ -63,6 +63,7 @@ export function ContractForm({ mode, clientId, initialData, onSuccess, onCancel 
     prime_annuelle: initialData?.prime_annuelle ?? undefined,
     prime_mensuelle: initialData?.prime_mensuelle ?? undefined,
     taux_commission: initialData?.taux_commission ?? undefined,
+    economies_realisees: initialData?.economies_realisees ?? undefined,
     beneficiaires: initialData?.beneficiaires ?? "",
     notes: initialData?.notes ?? "",
   });
@@ -96,7 +97,7 @@ export function ContractForm({ mode, clientId, initialData, onSuccess, onCancel 
       const result =
         mode === "create"
           ? await createContract(form)
-          : await updateContract(initialData!.id!, form);
+          : await updateContract(initialData!.id!, form, initialData?.status);
 
       if (!result.success) {
         setError(result.error ?? "Une erreur est survenue.");
@@ -220,6 +221,25 @@ export function ContractForm({ mode, clientId, initialData, onSuccess, onCancel 
           <div className="form-calc-result">
             <Calculator size={14} aria-hidden />
             Commission annuelle calculée : <strong>{commissionCalculee} €</strong>
+          </div>
+        )}
+        {form.contract_type === "Assurance emprunteur" && (
+          <div className="form-field" style={{ marginTop: "12px" }}>
+            <label htmlFor="economies_realisees" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              💰 Économies réalisées pour le client (€)
+              <span style={{ fontSize: "12px", color: "var(--muted)", fontWeight: 400 }}>
+                — mis à jour sur le site public à l'activation
+              </span>
+            </label>
+            <input
+              id="economies_realisees"
+              type="number"
+              step="1"
+              min="0"
+              placeholder="Ex : 4500"
+              value={form.economies_realisees ?? ""}
+              onChange={(e) => set("economies_realisees", parseFloat(e.target.value) || undefined)}
+            />
           </div>
         )}
       </fieldset>
