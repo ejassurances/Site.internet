@@ -18,23 +18,23 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ej-assurances.f
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "EJ Partners Assurances — Cabinet expert des familles modernes",
+    default: "EJ Partners Assurances — Assurance Emprunteur & Protection Familles Modernes",
     template: "%s | EJ Partners Assurances",
   },
   description:
-    "Cabinet de courtage en assurances spécialisé dans l'assurance emprunteur et la protection des familles modernes : familles recomposées, coparentalité, couples LGBT. Conseil personnalisé, indépendant et confidentiel.",
+    "Cabinet expert en assurance emprunteur (objectif 100 000 € d'économies cumulées) et en protection des familles modernes : coparentalité, familles recomposées, couples LGBT+. Courtier indépendant, conseil bienveillant et confidentiel.",
   keywords: [
     "assurance emprunteur",
     "assurance de prêt immobilier",
+    "économies assurance emprunteur",
     "délégation assurance emprunteur",
     "loi Lemoine",
-    "assurance familles LGBT",
-    "coparentalité assurance",
-    "assurance emprunteur famille recomposée",
-    "quotité assurance emprunteur",
     "changer assurance emprunteur",
-    "courtier assurance emprunteur",
-    "EJ Assurances",
+    "courtier assurance emprunteur indépendant",
+    "coparentalité assurance",
+    "assurance familles LGBT",
+    "assurance emprunteur famille recomposée",
+    "protection familles modernes",
     "EJ Partners Assurances",
   ],
   authors: [{ name: "EJ Partners Assurances" }],
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: siteUrl,
     siteName: "EJ Partners Assurances",
-    title: "EJ Partners Assurances — Cabinet expert des familles modernes",
+    title: "EJ Partners Assurances — Assurance Emprunteur & Protection Familles Modernes",
     description:
-      "Cabinet de courtage spécialisé familles LGBT+, coparentalité, familles recomposées. Assurance emprunteur, prévoyance, transmission.",
+      "Cabinet expert en assurance emprunteur (objectif 100 000 € d'économies cumulées) et en protection des familles modernes : coparentalité, couples LGBT+, familles recomposées.",
     images: [
       {
         url: "/og-image.png",
@@ -58,9 +58,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "EJ Partners Assurances — Cabinet expert des familles modernes",
+    title: "EJ Partners Assurances — Assurance Emprunteur & Protection Familles Modernes",
     description:
-      "Cabinet de courtage spécialisé familles LGBT+, coparentalité, familles recomposées.",
+      "Cabinet expert en assurance emprunteur (objectif 100 000 € d'économies cumulées) et en protection des familles modernes.",
     images: ["/og-image.png"],
   },
   robots: {
