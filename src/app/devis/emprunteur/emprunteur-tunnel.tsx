@@ -67,9 +67,15 @@ export function EmprunteurTunnel() {
   // Step 3: Credits
   const [credits, setCredits] = useState<CreditForm[]>([emptyCredit()]);
 
-  const supabase = createSupabaseBrowserClient();
+  const supabaseClient = createSupabaseBrowserClient();
 
-  const setId = <K extends keyof typeof identity>(k: K, v: string) =>
+  if (!supabaseClient) {
+    return <div className="tunnel-wrapper"><p>Service temporairement indisponible.</p></div>;
+  }
+
+  const supabase = supabaseClient;
+
+  const setId =<K extends keyof typeof identity>(k: K, v: string) =>
     setIdentity((prev: typeof identity) => ({ ...prev, [k]: v }));
 
   const setCredit = (i: number, k: keyof CreditForm, v: string | File | null) =>
