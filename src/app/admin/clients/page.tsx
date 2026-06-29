@@ -48,22 +48,35 @@ function getAvatarGradient(name: string): string {
   return gradients[idx];
 }
 
+const CONTACT_TYPE_TABS = [
+  { value: "", label: "Tous", icon: "👥" },
+  { value: "prospect", label: "Prospects", icon: "🎯" },
+  { value: "client", label: "Clients", icon: "⭐" },
+  { value: "partenaire", label: "Partenaires", icon: "🤝" },
+  { value: "prescripteur", label: "Prescripteurs", icon: "📣" },
+];
+
 export default async function AdminClientsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string; statut?: string }>;
+  searchParams: Promise<{ search?: string; statut?: string; type?: string }>;
 }) {
   const user = await requireRole(["admin", "courtier"]).catch(() => null);
   if (!user) redirect("/connexion");
 
   const params = await searchParams;
-  const clients = await getClientsList({ search: params.search, statut: params.statut });
+  const clients = await getClientsList({
+    search: params.search,
+    statut: params.statut,
+    contact_type: params.type || undefined,
+  });
 
   const stats = {
     total: clients.length,
-    actifs: clients.filter((c) => (c as { statut_client?: string }).statut_client === "actif").length,
-    prospects: clients.filter((c) => (c as { statut_client?: string }).statut_client === "prospect").length,
-    enCours: clients.filter((c) => (c as { statut_client?: string }).statut_client === "en_cours").length,
+    clients: clients.filter((c) => (c as { contact_type?: string }).contact_type === "client").length,
+    prospects: clients.filter((c) => (c as { contact_type?: string }).contact_type === "prospect").length,
+    partenaires: clients.filter((c) => (c as { contact_type?: string }).contact_type === "partenaire").length,
+    prescripteurs: clients.filter((c) => (c as { contact_type?: string }).contact_type === "prescripteur").length,
   };
 
   return (
@@ -101,16 +114,16 @@ export default async function AdminClientsPage({
           </div>
           <div className="crm-kpi-item crm-kpi-actif">
             <div className="crm-kpi-icon-wrap">
-              <TrendingUp size={20} aria-hidden />
+              <Star size={20} aria-hidden />
             </div>
             <div>
-              <span className="crm-kpi-num">{stats.actifs}</span>
-              <span className="crm-kpi-lbl">Clients actifs</span>
+              <span className="crm-kpi-num">{stats.clients}</span>
+              <span className="crm-kpi-lbl">Clients</span>
             </div>
           </div>
           <div className="crm-kpi-item crm-kpi-prospect">
             <div className="crm-kpi-icon-wrap">
-              <Star size={20} aria-hidden />
+              <TrendingUp size={20} aria-hidden />
             </div>
             <div>
               <span className="crm-kpi-num">{stats.prospects}</span>
@@ -122,10 +135,24 @@ export default async function AdminClientsPage({
               <FileText size={20} aria-hidden />
             </div>
             <div>
-              <span className="crm-kpi-num">{stats.enCours}</span>
-              <span className="crm-kpi-lbl">En cours</span>
+              <span className="crm-kpi-num">{stats.partenaires + stats.prescripteurs}</span>
+              <span className="crm-kpi-lbl">Partenaires & prescripteurs</span>
             </div>
           </div>
+        </div>
+
+        {/* ── Onglets par type de contact ── */}
+        <div className="crm-type-tabs">
+          {CONTACT_TYPE_TABS.map((tab) => (
+            <Link
+              key={tab.value}
+              href={`/admin/clients${tab.value ? `?type=${tab.value}` : ""}`}
+              className={`crm-type-tab ${(params.type ?? "") === tab.value ? "crm-type-tab--active" : ""}`}
+            >
+              <span>{tab.icon}</span>
+              <span>{tab.label}</span>
+            </Link>
+          ))}
         </div>
 
         {/* ── Barre de recherche & filtres ── */}
@@ -150,9 +177,10 @@ export default async function AdminClientsPage({
               <option value="inactif">Inactif</option>
             </select>
           </div>
+          {params.type && <input type="hidden" name="type" value={params.type} />}
           <button type="submit" className="crm-filter-btn">Rechercher</button>
           {(params.search || params.statut) && (
-            <Link href="/admin/clients" className="crm-reset-btn">✕ Réinitialiser</Link>
+            <Link href={`/admin/clients${params.type ? `?type=${params.type}` : ""}`} className="crm-reset-btn">✕ Réinitialiser</Link>
           )}
         </form>
 
@@ -176,7 +204,12 @@ export default async function AdminClientsPage({
           <div className="crm-clients-grid">
             {clients.map((client) => {
               const statut_client = (client as { statut_client?: string }).statut_client ?? "prospect";
+              const contact_type = (client as { contact_type?: string }).contact_type ?? "prospect";
               const statusCfg = STATUT_CONFIG[statut_client] ?? STATUT_CONFIG.prospect;
+              const contactTypeLabel: Record<string, string> = {
+                prospect: "🎯 Prospect", client: "⭐ Client",
+                partenaire: "🤝 Partenaire", prescripteur: "📣 Prescripteur",
+              };
               const tags: { tag: string }[] = (client as { client_tags?: { tag: string }[] }).client_tags ?? [];
               const contracts: { id: string; status: string }[] =
                 (client as { contracts?: { id: string; status: string }[] }).contracts ?? [];
@@ -198,16 +231,19 @@ export default async function AdminClientsPage({
                     >
                       {name.charAt(0).toUpperCase()}
                     </div>
-                    <span
-                      className="crm-tile-status"
-                      style={{ background: statusCfg.bg, color: statusCfg.color }}
-                    >
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "4px" }}>
+                      <span className="crm-tile-contact-type">{contactTypeLabel[contact_type] ?? contact_type}</span>
                       <span
-                        className="crm-tile-status-dot"
-                        style={{ background: statusCfg.dot }}
-                      />
-                      {statusCfg.label}
-                    </span>
+                        className="crm-tile-status"
+                        style={{ background: statusCfg.bg, color: statusCfg.color }}
+                      >
+                        <span
+                          className="crm-tile-status-dot"
+                          style={{ background: statusCfg.dot }}
+                        />
+                        {statusCfg.label}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Nom + contexte */}

@@ -16,6 +16,7 @@ export type ClientFormData = {
   situation_familiale?: string;
   family_context?: string;
   statut_client?: "prospect" | "actif" | "en_cours" | "inactif";
+  contact_type?: "prospect" | "client" | "partenaire" | "prescripteur";
   source_acquisition?: string;
   notes?: string;
   tags?: string[];
@@ -37,6 +38,7 @@ export async function createClient(data: ClientFormData): Promise<ActionResult> 
       ...clientData,
       assigned_courtier_id: user.id,
       statut_client: clientData.statut_client ?? "prospect",
+      contact_type: clientData.contact_type ?? "prospect",
     })
     .select("id")
     .single();
@@ -146,6 +148,7 @@ export async function getClient360(clientId: string) {
 export async function getClientsList(opts?: {
   search?: string;
   statut?: string;
+  contact_type?: string;
   tag?: string;
 }) {
   await requireRole(["admin", "courtier"]);
@@ -155,7 +158,7 @@ export async function getClientsList(opts?: {
   let query = supabase
     .from("clients")
     .select(`
-      id, full_name, email, phone, statut_client, family_context,
+      id, full_name, email, phone, statut_client, contact_type, family_context,
       created_at, score_protection,
       client_tags(tag),
       contracts(id, contract_type, status, insurer_name)
@@ -169,6 +172,9 @@ export async function getClientsList(opts?: {
   }
   if (opts?.statut && opts.statut !== "Tous") {
     query = query.eq("statut_client", opts.statut);
+  }
+  if (opts?.contact_type) {
+    query = query.eq("contact_type", opts.contact_type);
   }
 
   const { data, error } = await query;

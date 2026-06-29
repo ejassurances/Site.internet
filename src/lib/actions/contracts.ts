@@ -18,9 +18,31 @@ export type ContractFormData = {
   prime_annuelle?: number;
   prime_mensuelle?: number;
   taux_commission?: number;
+  economies_realisees?: number;
   beneficiaires?: string;
   notes?: string;
 };
+
+// ── Mise à jour du compteur public d'économies ────────────────────────────────
+async function incrementEconomiesEmprunteur(supabase: NonNullable<Awaited<ReturnType<typeof createSupabaseServerClient>>>, montant: number) {
+  const { data: stats } = await supabase
+    .from("cabinet_stats")
+    .select("economies_emprunteur_euros")
+    .eq("id", "singleton")
+    .single();
+
+  const current = stats?.economies_emprunteur_euros ?? 0;
+
+  await supabase
+    .from("cabinet_stats")
+    .update({
+      economies_emprunteur_euros: current + montant,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", "singleton");
+
+  revalidatePath("/");
+}
 
 // ── Créer un contrat ───────────────────────────────────────────────────────────
 export async function createContract(data: ContractFormData): Promise<ActionResult> {
@@ -28,7 +50,6 @@ export async function createContract(data: ContractFormData): Promise<ActionResu
   const supabase = await createSupabaseServerClient();
   if (!supabase) return { success: false, error: "Connexion Supabase non disponible." };
 
-  // Calcul automatique de la commission annuelle
   const montant_commission_annuel =
     data.prime_annuelle && data.taux_commission
       ? (data.prime_annuelle * data.taux_commission) / 100
@@ -46,13 +67,27 @@ export async function createContract(data: ContractFormData): Promise<ActionResu
 
   if (error) return { success: false, error: error.message };
 
+  // Si contrat emprunteur actif avec économies renseignées → mise à jour compteur public
+  if (
+    data.status === "active" &&
+    data.contract_type === "Assurance emprunteur" &&
+    data.economies_realisees &&
+    data.economies_realisees > 0
+  ) {
+    await incrementEconomiesEmprunteur(supabase, data.economies_realisees);
+  }
+
   revalidatePath(`/admin/clients/${data.client_id}`);
   revalidatePath("/admin/clients");
   return { success: true, id: contract.id };
 }
 
 // ── Mettre à jour un contrat ───────────────────────────────────────────────────
-export async function updateContract(contractId: string, data: Partial<ContractFormData>): Promise<ActionResult> {
+export async function updateContract(
+  contractId: string,
+  data: Partial<ContractFormData>,
+  previousStatus?: string
+): Promise<ActionResult> {
   await requireRole(["admin", "courtier"]);
   const supabase = await createSupabaseServerClient();
   if (!supabase) return { success: false, error: "Connexion Supabase non disponible." };
@@ -68,6 +103,17 @@ export async function updateContract(contractId: string, data: Partial<ContractF
     .eq("id", contractId);
 
   if (error) return { success: false, error: error.message };
+
+  // Si le contrat vient de passer à "active" et est de type emprunteur avec économies
+  const justActivated = previousStatus !== "active" && data.status === "active";
+  if (
+    justActivated &&
+    data.contract_type === "Assurance emprunteur" &&
+    data.economies_realisees &&
+    data.economies_realisees > 0
+  ) {
+    await incrementEconomiesEmprunteur(supabase, data.economies_realisees);
+  }
 
   if (data.client_id) revalidatePath(`/admin/clients/${data.client_id}`);
   return { success: true };
@@ -97,7 +143,7 @@ export async function getContractsList(opts?: { clientId?: string; status?: stri
     .select(`
       id, contract_number, insurer_name, contract_type, status,
       effective_date, end_date, prime_annuelle, taux_commission,
-      montant_commission_annuel, beneficiaires, notes, created_at,
+      montant_commission_annuel, economies_realisees, beneficiaires, notes, created_at,
       clients(id, full_name, email)
     `)
     .order("created_at", { ascending: false });

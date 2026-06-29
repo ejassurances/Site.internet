@@ -67,6 +67,7 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
     situation_familiale: initialData?.situation_familiale ?? "",
     family_context: initialData?.family_context ?? "",
     statut_client: initialData?.statut_client ?? "prospect",
+    contact_type: initialData?.contact_type ?? "prospect",
     source_acquisition: initialData?.source_acquisition ?? "",
     notes: initialData?.notes ?? "",
     tags: selectedTags,
@@ -138,11 +139,20 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
             />
           </div>
           <div className="form-field">
-            <label htmlFor="statut_client">Statut</label>
+            <label htmlFor="contact_type">Type de contact</label>
+            <select id="contact_type" value={form.contact_type} onChange={(e) => set("contact_type", e.target.value as "prospect" | "client" | "partenaire" | "prescripteur")}>
+              <option value="prospect">🎯 Prospect</option>
+              <option value="client">⭐ Client</option>
+              <option value="partenaire">🤝 Partenaire</option>
+              <option value="prescripteur">📣 Prescripteur</option>
+            </select>
+          </div>
+          <div className="form-field">
+            <label htmlFor="statut_client">Statut du dossier</label>
             <select id="statut_client" value={form.statut_client} onChange={(e) => set("statut_client", e.target.value as "prospect" | "actif" | "en_cours" | "inactif")}>
-              <option value="prospect">Prospect</option>
+              <option value="prospect">En prospection</option>
               <option value="en_cours">En cours</option>
-              <option value="actif">Client actif</option>
+              <option value="actif">Actif</option>
               <option value="inactif">Inactif</option>
             </select>
           </div>

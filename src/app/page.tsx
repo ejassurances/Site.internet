@@ -19,6 +19,7 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { StructuredData, organizationSchema } from "@/components/seo/structured-data";
+import { EconomiesCounter } from "@/components/economies-counter";
 
 export const metadata: Metadata = {
   title: "EJ Partners Assurances — Assurance Emprunteur & Protection Familles Modernes",
@@ -311,6 +312,11 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* ── Compteur économies ── */}
+        <section style={{ padding: "0 0 64px" }}>
+          <EconomiesCounter />
         </section>
 
         {/* ── CTA final ── */}
