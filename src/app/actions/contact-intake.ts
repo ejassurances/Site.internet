@@ -2,6 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { createSupabaseServiceClient } from "@/lib/supabase/server";
+import {
+  sendContactConfirmation,
+  sendAdminNotification,
+} from "@/lib/email/resend";
 
 const DER_PATH = "/documents/der-ej-assurances.html";
 
@@ -56,6 +60,11 @@ export async function createContactIntakeAction(formData: FormData) {
   }
 
   if (!profileId) {
+    // Même sans compte Supabase, on envoie les emails de confirmation
+    await Promise.allSettled([
+      sendContactConfirmation({ fullName, email, phone, need, message }),
+      sendAdminNotification({ fullName, email, phone, need, familySituation, urgency, message }),
+    ]);
     redirect("/contact?error=invite");
   }
 
@@ -155,6 +164,12 @@ export async function createContactIntakeAction(formData: FormData) {
     subject: "Votre espace EJ Assurances",
     body: "Votre demande a ete recue. Un lien de connexion vous a ete envoye par email. Votre DER est disponible dans le Classeur ACPR.",
   });
+
+  // ── Envoi des emails via Resend (en parallèle, non bloquant) ──
+  await Promise.allSettled([
+    sendContactConfirmation({ fullName, email, phone, need, message }),
+    sendAdminNotification({ fullName, email, phone, need, familySituation, urgency, message }),
+  ]);
 
   redirect("/contact?success=client-created");
 }
