@@ -51,6 +51,11 @@ export function LoginForm() {
       <button className="primary-action" type="submit" disabled={loading}>
         {loading ? "Connexion..." : "Se connecter"} <ArrowRight size={18} aria-hidden />
       </button>
+      <p className="form-note" style={{ textAlign: "center" }}>
+        <a href="/connexion/mot-de-passe-oublie" style={{ color: "var(--accent-strong)", textDecoration: "underline" }}>
+          Mot de passe oublié ?
+        </a>
+      </p>
       <p className="form-note">
         Connexion sécurisée par Supabase. Les accès sont réservés aux clients et partenaires autorisés.
       </p>
