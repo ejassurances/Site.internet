@@ -3881,6 +3881,8 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   text-align: center;
   padding: 60px 20px;
   color: var(--text-muted);
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    CENTRE DOCUMENTAIRE
    ═══════════════════════════════════════════════════════════════════════════ */
