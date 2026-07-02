@@ -4,7 +4,8 @@ import { requireRole } from "@/lib/auth";
 import { AppShell } from "@/components/app-shell";
 import { getClient360 } from "@/lib/actions/clients";
 import { ClientFile360Live } from "@/components/client-file-360-live";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ clientId: string }> }) {
   const { clientId } = await params;
@@ -26,6 +27,17 @@ export default async function AdminClientPage({
   const data = await getClient360(clientId);
   if (!data) notFound();
 
+  const supabase = await createSupabaseServerClient();
+  let emprunteurDossierId: string | null = null;
+  if (supabase) {
+    const { data: dos } = await supabase
+      .from("emprunteur_dossiers")
+      .select("id")
+      .eq("client_id", clientId)
+      .maybeSingle();
+    emprunteurDossierId = dos?.id ?? null;
+  }
+
   return (
     <AppShell role={user.role === "courtier" ? "courtier" : "admin"} user={user}>
       <div className="admin-page-header">
@@ -46,6 +58,14 @@ export default async function AdminClientPage({
           </Link>
         </div>
       </div>
+
+      {emprunteurDossierId && (
+        <Link href="/admin/emprunteur" className="emprunteur-source-banner">
+          <FileText size={15} aria-hidden />
+          <span>Ce client provient du tunnel Assurance Emprunteur</span>
+          <span className="emprunteur-source-link">Voir le dossier →</span>
+        </Link>
+      )}
 
       <ClientFile360Live
         clientId={clientId}
