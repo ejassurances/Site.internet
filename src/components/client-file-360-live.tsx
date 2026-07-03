@@ -6,13 +6,15 @@ import { useRouter } from "next/navigation";
 import { ContractForm } from "@/components/forms/contract-form";
 import { InteractionForm } from "@/components/forms/interaction-form";
 import { RelatedPersonForm } from "@/components/forms/related-person-form";
+import { ClientProjectWorkflow } from "@/components/client-project-workflow";
 import { deleteContract } from "@/lib/actions/contracts";
 import { deleteInteraction, deleteRelatedPerson } from "@/lib/actions/interactions";
+import type { BorrowerProject } from "@/lib/project-workflow";
 import {
   FileText, Users, MessageSquare, Phone, Mail, Calendar, Video,
   StickyNote, Plus, Trash2, Shield, ChevronDown, ChevronUp,
-  Building2, Euro, User, MapPin, Tag, Edit3,
-  Clock, CheckCircle2, AlertCircle, ArrowRight
+  Building2, User, MapPin, Tag, Edit3,
+  Clock, CheckCircle2, BriefcaseBusiness
 } from "lucide-react";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -76,11 +78,13 @@ type Props = {
     related_persons: RelatedPerson[];
     interactions: Interaction[];
     contracts: Contract[];
+    projects: BorrowerProject[];
   };
 };
 
 const TABS = [
   { id: "synthese",      label: "Synthèse",         icon: Shield },
+  { id: "projets",       label: "Projets",           icon: BriefcaseBusiness },
   { id: "interactions",  label: "Interactions",      icon: MessageSquare },
   { id: "contrats",      label: "Contrats",          icon: FileText },
   { id: "personnes",     label: "Famille",           icon: Users },
@@ -136,7 +140,7 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
   const [showPersonForm, setShowPersonForm] = useState(false);
   const [expandedInteraction, setExpandedInteraction] = useState<string | null>(null);
 
-  const { client, tags, related_persons, interactions, contracts } = initialData;
+  const { client, tags, related_persons, interactions, contracts, projects } = initialData;
   const activeContracts = contracts.filter((c) => c.status === "active");
   const score = (client.score_protection as number | undefined) ?? 0;
   const statut_client = (client.statut_client as string | undefined) ?? "prospect";
@@ -270,6 +274,9 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
               {id === "contrats" && contracts.length > 0 && (
                 <span className="cf360-tab-badge">{contracts.length}</span>
               )}
+              {id === "projets" && projects.length > 0 && (
+                <span className="cf360-tab-badge">{projects.length}</span>
+              )}
               {id === "interactions" && interactions.length > 0 && (
                 <span className="cf360-tab-badge">{interactions.length}</span>
               )}
@@ -387,6 +394,13 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* PROJETS */}
+        {activeTab === "projets" && (
+          <div className="cf360-tab-content">
+            <ClientProjectWorkflow clientId={clientId} projects={projects} />
           </div>
         )}
 
