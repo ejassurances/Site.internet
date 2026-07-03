@@ -1,7 +1,7 @@
-import { AppShell } from "@/components/app-shell";
-import { AcprDocument, ClientAcprFolder } from "@/components/client-acpr-folder";
+import { AcprDocument } from "@/components/client-acpr-folder";
 import { requireRole } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { ClientDashboard } from "./ClientDashboard";
 
 export default async function ClientDashboardPage() {
   const user = await requireRole(["client"]);
@@ -9,7 +9,11 @@ export default async function ClientDashboardPage() {
   let acprDocuments: AcprDocument[] = [];
 
   if (supabase) {
-    const { data: client } = await supabase.from("clients").select("id").eq("profile_id", user.id).maybeSingle();
+    const { data: client } = await supabase
+      .from("clients")
+      .select("id")
+      .eq("profile_id", user.id)
+      .maybeSingle();
 
     if (client) {
       const { data } = await supabase
@@ -23,9 +27,5 @@ export default async function ClientDashboardPage() {
     }
   }
 
-  return (
-    <AppShell role="client" user={user}>
-      <ClientAcprFolder documents={acprDocuments} />
-    </AppShell>
-  );
+  return <ClientDashboard acprDocuments={acprDocuments} user={user} />;
 }
