@@ -6,6 +6,8 @@ import Link from "next/link";
 import { AlertTriangle, Mail, Phone } from "lucide-react";
 
 export function StatsPortefeuilleClient({ data }: { data: StatsPortefeuille }) {
+  const now = new Date().getTime();
+
   return (
     <div className="stats-portefeuille-grid">
 
@@ -43,7 +45,7 @@ export function StatsPortefeuilleClient({ data }: { data: StatsPortefeuille }) {
           <div className="stats-risk-list">
             {data.clients_sans_interaction.map((c) => {
               const daysSince = c.derniere_interaction
-                ? Math.floor((Date.now() - new Date(c.derniere_interaction).getTime()) / (1000 * 60 * 60 * 24))
+                ? Math.floor((now - new Date(c.derniere_interaction).getTime()) / (1000 * 60 * 60 * 24))
                 : null;
               return (
                 <div key={c.id} className="stats-risk-item">

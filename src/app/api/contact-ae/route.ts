@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createSupabaseServiceClient } from "@/lib/supabase/server"
 
 export async function POST(req: NextRequest) {
   try {
+    const supabase = createSupabaseServiceClient()
+    if (!supabase) {
+      return NextResponse.json({ error: "Configuration Supabase manquante" }, { status: 500 })
+    }
+
     const body = await req.json()
     const { prenom, nom, email, telephone, date_naissance, adresse, situation, employeur, revenus, montant_credit, duree_credit, assureur_actuel, motif } = body
 

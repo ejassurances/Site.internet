@@ -26,6 +26,13 @@ const SUGGESTIONS = [
   "Analyse les opportunités de cross-selling ce mois-ci",
 ];
 
+let messageSequence = 0;
+
+function createMessageId(suffix = "") {
+  messageSequence += 1;
+  return `msg_${messageSequence}${suffix}`;
+}
+
 export function CopilotChat({ userName }: { userName: string }) {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -52,7 +59,7 @@ export function CopilotChat({ userName }: { userName: string }) {
     setInput("");
 
     const userMsg: Message = {
-      id: Date.now().toString(),
+      id: createMessageId(),
       role: "user",
       content: userText,
       timestamp: new Date(),
@@ -75,7 +82,7 @@ export function CopilotChat({ userName }: { userName: string }) {
       });
       const data = await res.json();
       const assistantMsg: Message = {
-        id: Date.now().toString() + "_a",
+        id: createMessageId("_a"),
         role: "assistant",
         content: data.response || "Je n'ai pas pu traiter votre demande.",
         timestamp: new Date(),
@@ -85,7 +92,7 @@ export function CopilotChat({ userName }: { userName: string }) {
     } catch {
       setMessages((prev) =>
         prev.filter((m) => m.id !== "loading").concat({
-          id: Date.now().toString() + "_err",
+          id: createMessageId("_err"),
           role: "assistant",
           content: "Une erreur est survenue. Vérifiez que la clé API OpenAI est configurée sur Vercel.",
           timestamp: new Date(),

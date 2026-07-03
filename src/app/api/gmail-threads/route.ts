@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createSupabaseServiceClient } from "@/lib/supabase/server"
 
 async function getOAuthToken() {
   const res = await fetch("https://oauth2.googleapis.com/token", {
@@ -24,6 +19,11 @@ async function getOAuthToken() {
 
 export async function GET(req: NextRequest) {
   try {
+    const supabase = createSupabaseServiceClient()
+    if (!supabase) {
+      return NextResponse.json({ error: "Configuration Supabase manquante" }, { status: 500 })
+    }
+
     const { searchParams } = new URL(req.url)
     const clientId = searchParams.get("client_id")
     const clientEmail = searchParams.get("email")

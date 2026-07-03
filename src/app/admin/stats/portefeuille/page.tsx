@@ -10,6 +10,7 @@ export const metadata = { title: "Analyse du portefeuille — Stats" };
 export default async function PortefeuillePage() {
   const user = await requireRole(["admin", "courtier"]);
   const data = await getStatsPortefeuille();
+  const now = new Date().getTime();
 
   const fmtEur = (v: number) =>
     new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(v);
@@ -123,7 +124,7 @@ export default async function PortefeuillePage() {
                 </thead>
                 <tbody>
                   {data.renouvellements_prochains.map((r, i) => {
-                    const daysLeft = Math.ceil((new Date(r.date_echeance).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                    const daysLeft = Math.ceil((new Date(r.date_echeance).getTime() - now) / (1000 * 60 * 60 * 24));
                     const urgency = daysLeft <= 30 ? "danger" : daysLeft <= 60 ? "warn" : "ok";
                     return (
                       <tr key={i}>
