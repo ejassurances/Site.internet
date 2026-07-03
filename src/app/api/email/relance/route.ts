@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { sendClientRelance } from "@/lib/email/resend";
+import { sendClientRelance } from "@/lib/email/gmail";
 
 export async function POST(req: NextRequest) {
   // Vérification de l'authentification admin
