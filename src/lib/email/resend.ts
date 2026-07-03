@@ -1,10 +1,11 @@
-import { Resend } from "resend";
-
 // Client initialisé à la demande pour éviter l'erreur de build si RESEND_API_KEY absent
-function getResend(): Resend {
+async function getResend(): Promise<any> {
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new Error("RESEND_API_KEY manquante");
-  return new Resend(key);
+  // Import dynamique pour éviter que bundlers/plateformes sans dépendance statique échouent
+  const mod = await import('resend');
+  const ResendCtor = mod?.Resend ?? mod?.default ?? mod;
+  return new ResendCtor(key);
 }
 
 // Adresse expéditeur — doit correspondre à un domaine vérifié dans Resend
