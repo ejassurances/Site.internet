@@ -3,17 +3,14 @@
 import { useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { AcprDocument, ClientAcprFolder } from "@/components/client-acpr-folder";
+import { CurrentUser } from "@/lib/auth";
 import { ShieldCheck, FolderOpen, FileCheck, Lock, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 
 type Tab = "documents" | "conformite";
 
 interface Props {
   acprDocuments: AcprDocument[];
-  user: {
-    id: string;
-    email?: string;
-    user_metadata?: Record<string, unknown>;
-  };
+  user: CurrentUser;
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -78,7 +75,7 @@ function SectionCard({
 }
 
 function Row({ label, sub, right, last = false }: {
-  label: string; sub?: string; right?: React.ReactNode; last?: boolean;
+  label: string; sub?: React.ReactNode; right?: React.ReactNode; last?: boolean;
 }) {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",

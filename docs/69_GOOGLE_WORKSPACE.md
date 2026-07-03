@@ -73,6 +73,23 @@ Principes :
 - séparation entre données cabinet et données personnelles ;
 - conformité RGPD.
 
+## Configuration technique de base
+
+Le site dispose désormais d’un point d’entrée de configuration prêt à l’emploi :
+
+- endpoint API : `/api/google/workspace`
+- variables d’environnement à renseigner : `GOOGLE_WORKSPACE_CLIENT_ID`, `GOOGLE_WORKSPACE_CLIENT_SECRET`, `GOOGLE_WORKSPACE_REDIRECT_URI`, `GOOGLE_WORKSPACE_SCOPES`, `GOOGLE_WORKSPACE_DOMAIN`
+
+## Procédure d’activation Google Workspace
+
+1. Créer un projet dans Google Cloud Console.
+2. Activer l’API Google People API et l’API Google OAuth2.
+3. Créer des identifiants OAuth 2.0 Client ID.
+4. Ajouter l’URI de redirection : `https://www.ej-assurances.fr/api/google/callback`.
+5. Ajouter les scopes demandés : `openid`, `email`, `profile`, `https://www.googleapis.com/auth/gmail.readonly`, `https://www.googleapis.com/auth/drive.readonly`, `https://www.googleapis.com/auth/calendar.readonly`.
+6. Ajouter les variables d’environnement dans l’environnement du site.
+7. Vérifier l’accès depuis l’interface d’administration.
+
 ## Points ouverts
 
 - mode d'authentification Google ;

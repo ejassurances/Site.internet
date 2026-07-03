@@ -1,23 +1,190 @@
-Préface — Charte Fondatrice d'EJ Assurances
+# 000 — Charte Fondatrice d'EJ Assurances
 
-Cette Charte Fondatrice est le document le plus important d'EJ Assurances.
+| **Document**  | Charte Fondatrice                                                  |
+| ------------- | ------------------------------------------------------------------ |
+| Version       | 1.0                                                                |
+| Statut        | Document fondateur                                                 |
+| Propriétaire  | Direction Générale                                                 |
+| Applicabilité | Ensemble du cabinet, de la plateforme et des futurs collaborateurs |
 
-Elle ne décrit ni un site internet, ni un logiciel, ni une organisation. Elle exprime ce que nous sommes, ce en quoi nous croyons et les principes qui guideront chacune de nos décisions.
+---
 
-Chez EJ Assurances, nous considérons que l'assurance n'est pas une finalité. Elle est un moyen parmi d'autres de protéger les personnes, les familles et leurs projets de vie.
+# Préface
 
-Nous croyons que chaque famille est unique. Il n'existe pas un seul modèle familial, mais une multitude de parcours, d'histoires et de réalités. Couples, parents, familles recomposées, familles en coparentalité, familles homoparentales, parents isolés ou proches aidants : chacun mérite d'être écouté, compris et accompagné avec le même respect.
+La présente Charte Fondatrice constitue le document le plus important d'EJ Assurances.
 
-Notre ambition n'est pas seulement de distribuer des contrats d'assurance. Nous voulons construire une relation durable fondée sur la confiance, la pédagogie et la qualité du conseil. Nous souhaitons que chaque personne comprenne les solutions qui lui sont proposées et puisse faire des choix éclairés.
+Elle ne décrit ni une application, ni un site internet, ni un logiciel.
 
-Nous sommes convaincus que la technologie doit rester au service de l'humain. Les outils numériques, les automatisations et les intelligences artificielles doivent permettre de libérer du temps pour renforcer la qualité de l'accompagnement, jamais pour déshumaniser la relation.
+Elle décrit la raison d'être de notre entreprise.
 
-Cette Charte s'adresse à toutes celles et ceux qui contribuent à EJ Assurances : dirigeants, collaborateurs, mandataires, partenaires, prestataires techniques et, demain, aux systèmes d'intelligence artificielle qui assisteront nos équipes dans le respect des règles qui y sont définies.
+Toutes les décisions, qu'elles soient humaines, organisationnelles, commerciales ou technologiques, doivent rester fidèles aux principes énoncés dans cette Charte.
 
-Elle constitue notre référence commune. Chaque évolution de la plateforme, chaque processus, chaque contenu, chaque innovation et chaque décision importante devront être cohérents avec les principes qu'elle énonce.
+Les technologies évolueront.
 
-Notre objectif est simple : construire, année après année, une organisation capable d'accompagner les familles avec exigence, humanité et responsabilité, tout en s'adaptant aux évolutions de la société, de la réglementation et des technologies.
+Les produits évolueront.
 
-Cette Charte est le point de départ de cette ambition.
+Les réglementations évolueront.
 
+Notre manière d'accompagner les familles, elle, doit rester fidèle à cette vision.
 
+---
+
+# Pourquoi EJ Assurances existe
+
+EJ Assurances est né d'une conviction simple :
+
+Chaque famille mérite d'être protégée selon sa propre réalité.
+
+Il n'existe pas une seule manière de construire une famille.
+
+Chaque histoire est différente.
+
+Chaque parcours est unique.
+
+Notre rôle consiste à comprendre cette réalité afin d'apporter des solutions adaptées, compréhensibles et durables.
+
+Nous ne considérons jamais un contrat comme une finalité.
+
+Nous considérons chaque contrat comme un moyen de protéger un projet de vie.
+
+---
+
+# Notre vision
+
+Nous voulons devenir la référence française de la protection familiale.
+
+Non pas par la taille de notre cabinet.
+
+Mais par la qualité de notre accompagnement.
+
+Par notre exigence.
+
+Par notre capacité à innover.
+
+Par la confiance que nous inspirons.
+
+Par la qualité de notre conseil.
+
+Par la pédagogie que nous apportons à chaque famille.
+
+---
+
+# Notre mission
+
+Notre mission est d'accompagner durablement les familles dans les grandes étapes de leur vie.
+
+Nous souhaitons permettre à chacun de comprendre les risques auxquels il est exposé, les protections existantes et les solutions qui peuvent être mises en œuvre.
+
+Nous croyons que la meilleure décision est toujours une décision comprise.
+
+---
+
+# Notre vision de la famille
+
+Pour EJ Assurances, il n'existe pas de modèle unique de famille.
+
+Nous accompagnons toutes les situations familiales avec la même exigence de qualité, de respect et de confidentialité.
+
+Nous accordons une attention particulière aux familles confrontées à des situations nécessitant un accompagnement spécifique, notamment :
+
+* la coparentalité ;
+* les familles recomposées ;
+* les familles monoparentales ;
+* les situations de séparation ;
+* les projets de transmission ;
+* les évolutions patrimoniales.
+
+Notre objectif est de comprendre la situation familiale afin d'apporter une protection adaptée.
+
+---
+
+# Notre vision du conseil
+
+Nous croyons qu'un bon conseil commence par une bonne compréhension.
+
+Nous privilégions toujours :
+
+* l'écoute ;
+* la pédagogie ;
+* la transparence ;
+* la disponibilité.
+
+Le client doit être capable de comprendre les solutions proposées afin de prendre une décision éclairée.
+
+---
+
+# Notre vision de la technologie
+
+Nous considérons la technologie comme un accélérateur de qualité.
+
+Jamais comme un substitut à la relation humaine.
+
+Chaque innovation doit permettre :
+
+* de simplifier le travail des professionnels ;
+* d'améliorer le suivi des familles ;
+* de renforcer la qualité des échanges ;
+* de réduire les tâches administratives répétitives.
+
+La technologie doit libérer du temps.
+
+Ce temps doit être consacré à l'accompagnement humain.
+
+---
+
+# Notre vision de l'intelligence artificielle
+
+Les intelligences artificielles d'EJ Assurances sont des collaborateurs numériques.
+
+Leur mission est d'assister les équipes.
+
+Jamais de remplacer leur responsabilité.
+
+Les agents IA peuvent :
+
+* préparer ;
+* analyser ;
+* résumer ;
+* organiser ;
+* relancer ;
+* assister.
+
+Ils n'ont jamais vocation à délivrer seuls un conseil personnalisé engageant le cabinet.
+
+---
+
+# Notre engagement
+
+Nous nous engageons à :
+
+* protéger les intérêts des familles ;
+* respecter les exigences réglementaires ;
+* préserver la confidentialité des informations ;
+* maintenir un haut niveau d'exigence professionnelle ;
+* améliorer continuellement nos pratiques.
+
+---
+
+# Notre ambition
+
+Nous voulons construire une organisation capable de durer.
+
+Une entreprise qui puisse évoluer avec les technologies sans perdre son identité.
+
+Une entreprise qui transmettra ses valeurs à ses collaborateurs, à ses partenaires et aux générations futures.
+
+Notre ambition n'est pas uniquement de développer un cabinet de courtage.
+
+Notre ambition est de construire une référence en matière de protection familiale.
+
+---
+
+# Notre héritage
+
+Nous souhaitons que chaque collaborateur, chaque partenaire et chaque futur dirigeant puisse comprendre pourquoi EJ Assurances existe.
+
+Cette Charte est le premier chapitre de cette histoire.
+
+Elle constitue le socle de toutes les décisions futures.
+
+Elle engage l'ensemble de celles et ceux qui contribuent au développement d'EJ Assurances.

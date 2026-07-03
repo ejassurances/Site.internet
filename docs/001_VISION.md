@@ -1,141 +1,185 @@
-# 00 — Vision EJ Assurances
+# 001 — Vision d'EJ Assurances
 
-## Vision globale
+| **Document** | Vision d'EJ Assurances |
+| ------------ | ---------------------- |
+| Version      | 1.0                    |
+| Statut       | Document stratégique   |
+| Propriétaire | Direction Générale     |
+| Horizon      | 10 ans                 |
 
-EJ Assurances n’est pas seulement un cabinet de courtage en assurances.
+---
 
-EJ Assurances a vocation à devenir une référence française de la protection familiale.
+# Préambule
 
-La plateforme ej-assurances.fr doit être pensée comme un actif stratégique du cabinet : un espace de confiance, de pédagogie, d’accompagnement et de conversion.
+La vision d'EJ Assurances définit l'entreprise que nous souhaitons construire.
 
-## Positionnement central
+Elle ne décrit pas uniquement des objectifs commerciaux.
 
-EJ Assurances est :
+Elle décrit l'impact que nous souhaitons avoir sur les familles, les professionnels, les partenaires et notre secteur d'activité.
 
-**Le cabinet expert de la protection familiale.**
+Chaque décision stratégique doit contribuer à rapprocher EJ Assurances de cette vision.
 
-## Expertise signature
+---
 
-L’expertise signature du cabinet est :
+# Notre ambition
 
-**La protection des familles en coparentalité.**
+Nous voulons devenir la référence française de la protection familiale.
 
-La coparentalité doit être fortement mise en avant dans l’ensemble de la plateforme, sans pour autant limiter le cabinet uniquement à cette cible.
+Cette ambition ne repose ni sur la taille du cabinet, ni sur le nombre de contrats distribués.
 
-## Mission
+Elle repose sur la qualité de notre accompagnement, notre expertise, notre capacité d'innovation et la confiance que nous inspirons.
 
-Aider chaque famille à comprendre ses risques, prendre les bonnes décisions et protéger ceux qu’elle aime.
+Notre objectif est qu'une famille, un partenaire ou un professionnel identifie naturellement EJ Assurances comme un acteur de référence lorsqu'il est question de protection familiale.
 
-## Promesse
+---
 
-Chez EJ Assurances, l’assurance n’est pas une finalité.
+# Notre vision de la protection familiale
 
-L’assurance est un outil au service de la protection familiale.
+Nous considérons que la protection familiale dépasse largement le cadre de l'assurance.
 
-## Familles accompagnées
+Elle consiste à accompagner les familles dans toutes les grandes étapes de leur vie.
 
-La plateforme doit s’adresser notamment :
+Notre approche couvre notamment :
 
-* aux couples ;
-* aux parents ;
-* aux familles en coparentalité ;
-* aux parents séparés ;
-* aux familles recomposées ;
-* aux parents isolés ;
-* aux couples LGBT+ ;
-* aux familles homoparentales ;
-* aux indépendants ;
-* aux dirigeants ;
-* aux familles qui veulent protéger leurs enfants ;
-* aux familles qui veulent préparer leur avenir.
+* la constitution d'un foyer ;
+* l'acquisition d'un bien immobilier ;
+* la protection des revenus ;
+* la prévoyance ;
+* l'assurance vie ;
+* la préparation de la retraite ;
+* la transmission du patrimoine ;
+* les situations de séparation ;
+* la coparentalité ;
+* les familles recomposées ;
+* les accidents de la vie.
 
-## Domaines d’expertise
+Nous voulons construire une approche globale où chaque décision contribue à sécuriser le parcours de vie de nos clients.
 
-Les principaux domaines d’expertise à mettre en avant sont :
+---
 
-* protection familiale ;
-* coparentalité ;
-* assurance emprunteur ;
-* prévoyance ;
-* assurance vie ;
-* retraite ;
-* transmission ;
-* protection des enfants ;
-* familles recomposées ;
-* couples LGBT+ ;
-* homoparentalité.
+# Notre vision de la plateforme
 
-## Ambition éditoriale
+Nous ne développons pas un simple site internet.
 
-Le site ne doit pas être un simple site vitrine.
+Nous construisons une plateforme de gestion de la relation client dédiée aux professionnels de l'assurance.
 
-Il doit devenir un centre de référence sur la protection familiale, avec :
+Cette plateforme doit réunir dans un environnement unique :
 
-* guides ;
-* articles ;
-* actualités ;
-* fiches pratiques ;
-* FAQ ;
-* glossaire ;
-* études de cas ;
-* outils ;
-* diagnostics.
+* le site institutionnel ;
+* le CRM métier ;
+* les espaces clients ;
+* les espaces mandataires ;
+* les espaces collaborateurs ;
+* les espaces prescripteurs ;
+* la bibliothèque documentaire ;
+* les workflows métiers ;
+* les agents IA ;
+* les outils de conformité.
 
-## Ambition SEO et IA
+Chaque module doit fonctionner comme une partie d'un ensemble cohérent.
 
-Le site doit être structuré pour être compris par :
+---
 
-* Google ;
-* Bing ;
-* ChatGPT ;
-* Claude ;
-* Gemini ;
-* Perplexity ;
-* Manus ;
-* les moteurs de recherche classiques ;
-* les moteurs de réponse IA.
+# Notre vision de l'expérience client
 
-Cela implique :
+Nous voulons que chaque client bénéficie d'un accompagnement simple, compréhensible et transparent.
 
-* contenus longs et structurés ;
-* données structurées ;
-* FAQ ;
-* maillage interne ;
-* sitemap ;
-* robots.txt ;
-* llms.txt ;
-* llms-full.txt ;
-* catégories éditoriales claires ;
-* pages piliers ;
-* contenus de référence.
+Le client doit toujours savoir :
 
-## Ton éditorial
+* où en est son dossier ;
+* quelles actions sont attendues de lui ;
+* quels documents ont été transmis ;
+* qui est son interlocuteur ;
+* quelles sont les prochaines étapes.
 
-Le ton doit être :
+Notre objectif est de réduire le stress administratif et de renforcer la confiance.
 
-* professionnel ;
-* humain ;
-* rassurant ;
-* inclusif ;
-* pédagogique ;
-* confidentiel ;
-* clair ;
-* non jugeant.
+---
 
-Le site ne doit jamais donner l’impression de vendre des contrats à tout prix.
+# Notre vision des professionnels
 
-Il doit d’abord donner l’impression d’aider les familles à comprendre, choisir et se protéger.
+Nous souhaitons offrir aux courtiers, mandataires et collaborateurs un environnement de travail qui leur permette de consacrer davantage de temps au conseil qu'à l'administratif.
 
-## Principe stratégique
+Chaque évolution de la plateforme doit contribuer à :
 
-Le visiteur doit d’abord se reconnaître dans une situation de vie.
+* automatiser les tâches répétitives ;
+* sécuriser la conformité ;
+* améliorer la qualité du suivi ;
+* faciliter la collaboration ;
+* réduire le risque d'erreur.
 
-Ensuite seulement, il découvre les solutions d’assurance adaptées.
+---
 
-On ne part pas du produit.
+# Notre vision des partenaires
 
-On part de la famille.
+Nous souhaitons construire des relations durables avec les compagnies d'assurance, les grossistes, les banques, les mutuelles et l'ensemble de nos partenaires.
 
-## Phrase directrice
+La plateforme devra favoriser une circulation fluide de l'information tout en respectant les exigences réglementaires et la confidentialité des données.
 
-Parce qu’il n’existe pas une seule façon de faire famille, il ne devrait pas exister une seule façon de la protéger.
+---
+
+# Notre vision de l'intelligence artificielle
+
+Nous croyons que l'intelligence artificielle représente une évolution majeure de notre métier.
+
+Nous souhaitons l'utiliser pour :
+
+* améliorer la qualité de service ;
+* réduire les délais de traitement ;
+* assister les équipes ;
+* améliorer la conformité ;
+* faciliter la gestion documentaire ;
+* accompagner les professionnels dans leurs tâches quotidiennes.
+
+L'IA doit toujours rester un outil d'assistance.
+
+Elle ne remplace jamais la responsabilité humaine.
+
+---
+
+# Notre vision de la conformité
+
+Nous voulons faire de la conformité un avantage concurrentiel.
+
+Les exigences ACPR, DDA et RGPD ne doivent pas être perçues comme des contraintes mais comme des garanties de qualité, de sécurité et de confiance.
+
+Notre plateforme intégrera ces exigences dès sa conception.
+
+---
+
+# Notre vision de l'innovation
+
+Nous privilégions les innovations qui apportent une valeur réelle aux utilisateurs.
+
+Chaque nouvelle fonctionnalité devra répondre à trois critères :
+
+* être utile ;
+* être conforme ;
+* être durable.
+
+Nous refusons les innovations purement technologiques qui n'améliorent pas concrètement l'expérience des utilisateurs.
+
+---
+
+# Notre vision de la croissance
+
+Notre développement reposera sur quatre piliers :
+
+* l'excellence du conseil ;
+* la confiance de nos clients ;
+* la qualité de notre plateforme ;
+* la transmission de nos connaissances.
+
+Notre ambition est de construire une entreprise capable de grandir sans perdre son identité.
+
+---
+
+# Notre engagement pour l'avenir
+
+Nous voulons bâtir une entreprise qui continue d'innover tout en restant fidèle à ses valeurs.
+
+Nous souhaitons transmettre à nos collaborateurs, partenaires et futurs dirigeants une organisation solide, documentée et tournée vers l'avenir.
+
+Notre vision ne consiste pas uniquement à développer EJ Assurances.
+
+Elle consiste à contribuer durablement à l'évolution de la protection familiale en France.

@@ -3,7 +3,7 @@ async function getResend(): Promise<any> {
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new Error("RESEND_API_KEY manquante");
   // Import dynamique pour éviter que bundlers/plateformes sans dépendance statique échouent
-  const mod = await import('resend');
+  const mod = await import('resend') as any;
   const ResendCtor = mod?.Resend ?? mod?.default ?? mod;
   return new ResendCtor(key);
 }
@@ -197,7 +197,8 @@ export async function sendContactConfirmation(data: ContactConfirmationData): Pr
   `;
 
   try {
-    const result = await getResend().emails.send({
+    const client = await getResend();
+    const result = await client.emails.send({
       from: FROM_ADDRESS,
       to: [data.email],
       subject: "Votre demande a bien été reçue — EJ Partners Assurances",
@@ -295,7 +296,8 @@ export async function sendAdminNotification(data: AdminNotificationData): Promis
   `;
 
   try {
-    const result = await getResend().emails.send({
+    const client = await getResend();
+    const result = await client.emails.send({
       from: FROM_ADDRESS,
       to: [ADMIN_EMAIL],
       subject: `🔔 Nouveau contact : ${data.fullName} — ${data.need ?? "Demande générale"}`,
@@ -377,7 +379,8 @@ export async function sendClientInvitation(data: ClientInvitationData): Promise<
   `;
 
   try {
-    const result = await getResend().emails.send({
+    const client = await getResend();
+    const result = await client.emails.send({
       from: FROM_ADDRESS,
       to: [data.email],
       subject: "Votre espace client EJ Partners Assurances est prêt",
@@ -441,7 +444,8 @@ export async function sendClientRelance(data: ClientRelanceData): Promise<EmailR
   `;
 
   try {
-    const result = await getResend().emails.send({
+    const client = await getResend();
+    const result = await client.emails.send({
       from: FROM_ADDRESS,
       to: [data.email],
       subject: data.subject,

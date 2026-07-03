@@ -145,13 +145,11 @@ export default function LcbFtPage() {
 
   return (
     <AdminModulePage
-      icon={<Shield size={20} />}
-      title="LCB-FT â Screening &amp; Gel des avoirs"
+      emoji="🛡️"
+      title="LCB-FT – Screening & Gel des avoirs"
       description="Lutte contre le Blanchiment de Capitaux et le Financement du Terrorisme"
-      breadcrumbs={[
-        { label: "ConformitÃ©", href: "/admin/conformite" },
-        { label: "LCB-FT" },
-      ]}
+      parentHref="/admin/conformite"
+      parentLabel="Conformité"
     >
       {/* KPI banner */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "24px" }}>
