@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireRole } from "@/lib/auth";
 import { AppShell } from "@/components/app-shell";
 import { getClient360 } from "@/lib/actions/clients";
+import { getClientProjects } from "@/lib/actions/projects";
 import { ClientFile360Live } from "@/components/client-file-360-live";
 import { ArrowLeft, FileText } from "lucide-react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -26,6 +27,7 @@ export default async function AdminClientPage({
 
   const data = await getClient360(clientId);
   if (!data) notFound();
+  const projects = await getClientProjects(clientId);
 
   const supabase = await createSupabaseServerClient();
   let emprunteurDossierId: string | null = null;
@@ -69,7 +71,7 @@ export default async function AdminClientPage({
 
       <ClientFile360Live
         clientId={clientId}
-        initialData={data}
+        initialData={{ ...data, projects }}
       />
     </AppShell>
   );

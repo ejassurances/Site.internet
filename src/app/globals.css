@@ -3138,3 +3138,78 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 }
 .stats-ranking-label { font-size: 13px; font-weight: 700; color: var(--navy); display: block; }
 .stats-ranking-sub { font-size: 11px; color: #8a9ba8; }
+
+/* Client project workflow */
+.client-project-workflow { display: grid; gap: 18px; }
+.project-workflow-hero, .project-current-card, .project-empty-notice, .project-documents-gate {
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+}
+.project-workflow-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 360px); gap: 18px; align-items: start; }
+.project-workflow-hero h3, .project-documents-header h3 { margin: 0 0 8px; color: var(--navy); font-size: 20px; }
+.project-workflow-hero p, .project-documents-header p, .project-empty-notice p, .project-automation-grid p, .project-step p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.project-create-form { display: grid; gap: 10px; }
+.project-create-form label { display: grid; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.project-create-form input { border: 1.5px solid var(--line); border-radius: 9px; padding: 10px 12px; color: var(--ink); font-size: 14px; }
+.project-current-card, .project-empty-notice { display: flex; justify-content: space-between; gap: 14px; align-items: center; }
+.project-current-card span, .project-current-card small { display: block; color: var(--muted); font-size: 12px; font-weight: 700; }
+.project-current-card strong { display: block; margin: 4px 0; color: var(--navy); font-size: 18px; }
+.project-action-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-action-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--navy);
+  padding: 8px 11px;
+  font-weight: 800;
+  font-size: 12px;
+}
+.project-empty-notice { justify-content: flex-start; }
+.project-empty-notice svg, .project-documents-header svg, .project-automation-grid svg { color: var(--accent-strong); flex-shrink: 0; }
+.project-empty-notice strong { color: var(--navy); }
+.project-workflow-grid { display: grid; gap: 12px; }
+.project-step { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 12px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 16px; }
+.project-step-index { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: rgba(30,58,95,.08); color: var(--navy); font-weight: 900; font-size: 13px; }
+.project-step--blocked { border-color: rgba(185, 28, 28, .35); background: #fff8f6; }
+.project-step--done { border-color: rgba(16, 94, 70, .28); }
+.project-step-title { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px; }
+.project-step-title h4 { margin: 0; color: var(--navy); font-size: 15px; }
+.project-step-title span { border-radius: 999px; background: rgba(30,58,95,.08); color: var(--navy); padding: 4px 8px; font-size: 11px; font-weight: 900; white-space: nowrap; }
+.project-step--blocked .project-step-title span { background: #fee2e2; color: #991b1b; }
+.project-step--done .project-step-title span { background: #d1fae5; color: #065f46; }
+.project-step-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.project-step-lists div { display: flex; flex-wrap: wrap; gap: 6px; }
+.project-step-lists small { width: 100%; color: var(--muted); font-size: 11px; font-weight: 900; text-transform: uppercase; }
+.project-step-lists b, .project-document-list span { border-radius: 999px; background: rgba(30,58,95,.08); color: var(--navy); padding: 4px 8px; font-size: 11px; }
+.project-documents-header { display: flex; justify-content: space-between; gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 14px; }
+.project-document-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.project-document-list article { display: grid; gap: 8px; border: 1px solid var(--line); border-radius: 11px; background: var(--bg); padding: 12px; }
+.project-document-list article div { display: flex; align-items: center; gap: 8px; color: var(--navy); }
+.project-document-list small { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.project-automation-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.project-automation-grid article { border: 1.5px solid var(--line); border-radius: 13px; background: var(--surface); padding: 15px; }
+.project-automation-grid h4 { margin: 10px 0 6px; color: var(--navy); font-size: 14px; }
+.assessment-borrower-block { display: grid; gap: 15px; border: 1.5px solid rgba(30,58,95,.18); border-radius: 14px; background: rgba(30,58,95,.035); padding: 18px; }
+.assessment-borrower-block h3 { margin: 0 0 6px; color: var(--navy); font-size: 18px; }
+.assessment-borrower-block p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.assessment-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+
+@media (max-width: 900px) {
+  .project-workflow-hero, .project-step-lists, .project-document-list, .assessment-field-grid { grid-template-columns: 1fr; }
+  .project-current-card { align-items: flex-start; flex-direction: column; }
+  .project-automation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .project-automation-grid { grid-template-columns: 1fr; }
+}

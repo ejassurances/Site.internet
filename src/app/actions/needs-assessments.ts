@@ -52,6 +52,18 @@ function computeScore(formData: FormData) {
   };
 }
 
+function numericValue(formData: FormData, key: string) {
+  const raw = String(formData.get(key) ?? "").replace(",", ".").trim();
+  if (!raw) return null;
+  const value = Number(raw);
+  return Number.isFinite(value) ? value : null;
+}
+
+function integerValue(formData: FormData, key: string) {
+  const value = numericValue(formData, key);
+  return value === null ? null : Math.trunc(value);
+}
+
 export async function createNeedsAssessmentAction(
   _previousState: NeedsAssessmentActionState,
   formData: FormData,
@@ -71,6 +83,10 @@ export async function createNeedsAssessmentAction(
   const legalStatus = String(formData.get("legalStatus") ?? "");
   const protectionGoal = String(formData.get("protectionGoal") ?? "");
   const mortgageProject = String(formData.get("mortgageProject") ?? "");
+  const borrowerDocumentsReady =
+    has(formData, "loanOfferReceived") &&
+    has(formData, "amortizationScheduleReceived") &&
+    has(formData, "identityReceived");
 
   if (user.role === "client" && !clientId) {
     const { data: client } = await supabase.from("clients").select("id").eq("profile_id", user.id).maybeSingle();
@@ -143,9 +159,32 @@ export async function createNeedsAssessmentAction(
     await supabase.from("borrower_insurance_requests").insert({
       assessment_id: assessment.id,
       loan_type: mortgageProject,
+      bank_name: String(formData.get("bankName") ?? "") || null,
+      loan_amount: numericValue(formData, "loanAmount"),
+      loan_duration_months: integerValue(formData, "loanDurationMonths"),
+      borrowers_count: integerValue(formData, "borrowersCount"),
+      insured_quotities: {
+        borrower_one: integerValue(formData, "borrowerOneQuotity"),
+        borrower_two: integerValue(formData, "borrowerTwoQuotity"),
+      },
+      current_insurer: String(formData.get("currentInsurer") ?? "") || null,
+      current_annual_premium: numericValue(formData, "currentAnnualPremium"),
       requested_guarantees: ["Décès", "PTIA", "ITT", "IPT"],
       delegation_or_substitution: mortgageProject.includes("Substitution") ? "substitution" : "delegation",
     });
+
+    if (!borrowerDocumentsReady) {
+      await supabase.from("risk_findings").insert({
+        assessment_id: assessment.id,
+        risk_category: "documents_emprunteur",
+        risk_label: "Pieces emprunteur obligatoires manquantes",
+        risk_score: 85,
+        severity: "high",
+        explanation: "Le recueil emprunteur ne peut pas etre valide sans offre de pret, tableau d'amortissement et piece d'identite.",
+        consequence: "Bloquer la validation metier et demander les pieces via email, espace client ou import Gmail.",
+        detected_by: "workflow",
+      });
+    }
   }
 
   if (selectedRisks.length > 0) {

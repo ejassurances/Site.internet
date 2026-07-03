@@ -11,6 +11,17 @@ type AssessmentState = {
   legalStatus: string;
   protectionGoal: string;
   mortgageProject: string;
+  bankName: string;
+  loanAmount: string;
+  loanDurationMonths: string;
+  borrowersCount: string;
+  currentInsurer: string;
+  currentAnnualPremium: string;
+  borrowerOneQuotity: string;
+  borrowerTwoQuotity: string;
+  loanOfferReceived: boolean;
+  amortizationScheduleReceived: boolean;
+  identityReceived: boolean;
   advisorNotes: string;
   heirsMismatch: boolean;
   socialParent: boolean;
@@ -35,6 +46,17 @@ function createInitialState(clients: AssessmentClientOption[], lockedClientId?: 
     legalStatus: "Concubinage",
     protectionGoal: "Protéger le logement et les enfants",
     mortgageProject: "Aucun projet immédiat",
+    bankName: "",
+    loanAmount: "",
+    loanDurationMonths: "",
+    borrowersCount: "2",
+    currentInsurer: "",
+    currentAnnualPremium: "",
+    borrowerOneQuotity: "100",
+    borrowerTwoQuotity: "100",
+    loanOfferReceived: false,
+    amortizationScheduleReceived: false,
+    identityReceived: false,
     advisorNotes: "",
     heirsMismatch: true,
     socialParent: false,
@@ -61,6 +83,9 @@ export function NeedsAssessmentForm({ clients, lockedClientId }: NeedsAssessment
 
     return Math.max(18, 100 - risks * 14);
   }, [form]);
+
+  const isBorrowerProject = form.mortgageProject !== "Aucun projet immédiat";
+  const documentsReady = form.loanOfferReceived && form.amortizationScheduleReceived && form.identityReceived;
 
   function update<K extends keyof AssessmentState>(key: K, value: AssessmentState[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -152,6 +177,74 @@ export function NeedsAssessmentForm({ clients, lockedClientId }: NeedsAssessment
             <option>SCI / projet patrimonial</option>
           </select>
         </label>
+
+        {isBorrowerProject && (
+          <div className="assessment-borrower-block">
+            <div>
+              <h3>Informations du crédit à assurer</h3>
+              <p>
+                Le client, le courtier ou un MIA peuvent compléter ces champs. Les informations enregistrées
+                seront réutilisées pour les devis, la fiche conseil et le lien de souscription.
+              </p>
+            </div>
+
+            <div className="assessment-field-grid">
+              <label>
+                Banque
+                <input name="bankName" value={form.bankName} onChange={(event) => update("bankName", event.target.value)} />
+              </label>
+              <label>
+                Montant du crédit
+                <input name="loanAmount" inputMode="decimal" value={form.loanAmount} onChange={(event) => update("loanAmount", event.target.value)} />
+              </label>
+              <label>
+                Durée en mois
+                <input name="loanDurationMonths" inputMode="numeric" value={form.loanDurationMonths} onChange={(event) => update("loanDurationMonths", event.target.value)} />
+              </label>
+              <label>
+                Nombre d'emprunteurs
+                <input name="borrowersCount" inputMode="numeric" value={form.borrowersCount} onChange={(event) => update("borrowersCount", event.target.value)} />
+              </label>
+              <label>
+                Assureur actuel
+                <input name="currentInsurer" value={form.currentInsurer} onChange={(event) => update("currentInsurer", event.target.value)} />
+              </label>
+              <label>
+                Prime annuelle actuelle
+                <input name="currentAnnualPremium" inputMode="decimal" value={form.currentAnnualPremium} onChange={(event) => update("currentAnnualPremium", event.target.value)} />
+              </label>
+              <label>
+                Quotité emprunteur 1
+                <input name="borrowerOneQuotity" inputMode="numeric" value={form.borrowerOneQuotity} onChange={(event) => update("borrowerOneQuotity", event.target.value)} />
+              </label>
+              <label>
+                Quotité emprunteur 2
+                <input name="borrowerTwoQuotity" inputMode="numeric" value={form.borrowerTwoQuotity} onChange={(event) => update("borrowerTwoQuotity", event.target.value)} />
+              </label>
+            </div>
+
+            <fieldset>
+              <legend>Pièces obligatoires avant validation</legend>
+              <label>
+                <input name="loanOfferReceived" type="checkbox" checked={form.loanOfferReceived} onChange={(event) => update("loanOfferReceived", event.target.checked)} />
+                Offre de prêt ajoutée au dossier
+              </label>
+              <label>
+                <input name="amortizationScheduleReceived" type="checkbox" checked={form.amortizationScheduleReceived} onChange={(event) => update("amortizationScheduleReceived", event.target.checked)} />
+                Tableau d'amortissement ajouté au dossier
+              </label>
+              <label>
+                <input name="identityReceived" type="checkbox" checked={form.identityReceived} onChange={(event) => update("identityReceived", event.target.checked)} />
+                Pièce d'identité présente
+              </label>
+              <p className={documentsReady ? "form-success" : "form-error"}>
+                {documentsReady
+                  ? "Recueil prêt à être vérifié : les pièces bloquantes sont présentes."
+                  : "Validation métier bloquée : offre de prêt, tableau d'amortissement et pièce d'identité doivent être rattachés."}
+              </p>
+            </fieldset>
+          </div>
+        )}
 
         <fieldset>
           <legend>Risques pressentis</legend>
