@@ -5,7 +5,7 @@ import { createSupabaseServiceClient } from "@/lib/supabase/server";
 import {
   sendContactConfirmation,
   sendAdminNotification,
-} from "@/lib/email/resend";
+} from "@/lib/email/gmail";
 
 const DER_PATH = "/documents/der-ej-assurances.html";
 
