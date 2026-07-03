@@ -15,8 +15,9 @@ import {
   UserCheck,
 } from "lucide-react";
 import { AdminModulePage } from "@/components/admin-module-page";
+import { computeLcbftScore, type LcbftInput } from "@/lib/compliance/lcbft-scoring";
 
-type RiskLevel = "faible" | "standard" | "renforce" | "alerte";
+type RiskLevel = "faible" | "standard" | "renforce" | "critique";
 type CheckStatus = "conforme" | "a_revoir" | "alerte" | "a_faire";
 
 type ComplianceCase = {
@@ -29,6 +30,7 @@ type ComplianceCase = {
   nextReview: string;
   controls: string[];
   note: string;
+  scoring: LcbftInput;
 };
 
 const cases: ComplianceCase[] = [
@@ -42,6 +44,7 @@ const cases: ComplianceCase[] = [
     nextReview: "2027-06-28",
     controls: ["Identité", "Bénéficiaire effectif", "PPE", "Gel des avoirs"],
     note: "Entrée en relation conforme, justificatifs présents dans le classeur ACPR.",
+    scoring: { amountAboveThreshold: true, digitalOnboarding: true },
   },
   {
     id: "LCB-002",
@@ -53,6 +56,7 @@ const cases: ComplianceCase[] = [
     nextReview: "2026-09-14",
     controls: ["Origine des fonds", "Cohérence patrimoniale", "PPE"],
     note: "Vigilance renforcée à documenter avant recommandation définitive.",
+    scoring: { lifeInsuranceOrCapitalization: true, sourceOfFundsMissing: true, amountAboveThreshold: true, inconsistentProfile: true },
   },
   {
     id: "LCB-003",
@@ -64,17 +68,19 @@ const cases: ComplianceCase[] = [
     nextReview: "Avant souscription",
     controls: ["Identité", "PPE", "Gel des avoirs"],
     note: "Contrôle à lancer avant tout passage en souscription.",
+    scoring: { missingIdentityDocument: true, missingProofOfAddress: true, digitalOnboarding: true },
   },
   {
     id: "LCB-004",
     client: "Dossier signalé par mandataire",
     profile: "Souscription avec incohérence documentaire",
-    risk: "alerte",
+    risk: "critique",
     status: "alerte",
     lastCheck: "2026-07-02",
     nextReview: "Immédiat",
     controls: ["Gel des avoirs", "Origine des fonds", "Escalade conformité"],
     note: "Aucune décision automatique. Revue courtier responsable avant toute suite.",
+    scoring: { sanctionsPotentialMatch: true, sourceOfFundsComplex: true, unusualTransaction: true, inconsistentProfile: true },
   },
 ];
 
@@ -113,7 +119,7 @@ const riskCopy: Record<RiskLevel, string> = {
   faible: "Faible",
   standard: "Standard",
   renforce: "Renforcé",
-  alerte: "Alerte",
+  critique: "Critique",
 };
 
 const statusCopy: Record<CheckStatus, string> = {
@@ -133,21 +139,23 @@ export default function LcbFtPage() {
 
   const filteredCases = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return cases.filter((item) => {
+    return cases.map((item) => ({ ...item, score: computeLcbftScore(item.scoring) })).filter((item) => {
       const matchText =
         !needle ||
         item.client.toLowerCase().includes(needle) ||
         item.profile.toLowerCase().includes(needle) ||
         item.id.toLowerCase().includes(needle);
-      const matchRisk = riskFilter === "tous" || item.risk === riskFilter;
+      const matchRisk = riskFilter === "tous" || item.score.level === riskFilter;
       return matchText && matchRisk;
     });
   }, [query, riskFilter]);
 
+  const scoredCases = cases.map((item) => ({ ...item, score: computeLcbftScore(item.scoring) }));
+
   const stats = {
     total: cases.length,
     alertes: cases.filter((item) => item.status === "alerte").length,
-    renforces: cases.filter((item) => item.risk === "renforce").length,
+    renforces: scoredCases.filter((item) => item.score.level === "renforce" || item.score.level === "critique").length,
     aFaire: cases.filter((item) => item.status === "a_faire" || item.status === "a_revoir").length,
   };
 
@@ -226,7 +234,7 @@ export default function LcbFtPage() {
           />
         </div>
         <div className="lcb-filter" aria-label="Filtrer par niveau de risque">
-          {(["tous", "faible", "standard", "renforce", "alerte"] as const).map((level) => (
+            {(["tous", "faible", "standard", "renforce", "critique"] as const).map((level) => (
             <button
               key={level}
               type="button"
@@ -253,7 +261,8 @@ export default function LcbFtPage() {
               <tr>
                 <th>Dossier</th>
                 <th>Profil</th>
-                <th>Risque</th>
+                <th>Score</th>
+                <th>Vigilance</th>
                 <th>Statut</th>
                 <th>Contrôles</th>
                 <th>Revue</th>
@@ -267,7 +276,11 @@ export default function LcbFtPage() {
                     <span>{item.id}</span>
                   </td>
                   <td>{item.profile}</td>
-                  <td><span className={badgeClass("lcb-risk", item.risk)}>{riskCopy[item.risk]}</span></td>
+                  <td>
+                    <strong>{item.score.score}/100</strong>
+                    <span>{item.score.decision.replaceAll("_", " ")}</span>
+                  </td>
+                  <td><span className={badgeClass("lcb-risk", item.score.level)}>{riskCopy[item.score.level]}</span></td>
                   <td><span className={badgeClass("lcb-status", item.status)}>{statusCopy[item.status]}</span></td>
                   <td>
                     <div className="lcb-chip-list">
@@ -278,13 +291,41 @@ export default function LcbFtPage() {
                     <div className="lcb-review">
                       <Clock size={13} aria-hidden />
                       <span>Dernier : {item.lastCheck}</span>
-                      <span>Prochain : {item.nextReview}</span>
+                      <span>{item.score.reviewFrequency}</span>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      <section className="lcb-table-card">
+        <div className="lcb-table-card__header">
+          <div>
+            <h3>Automatisations déclenchées par le score</h3>
+            <p>Le score ne valide pas le dossier : il déclenche des contrôles, tâches, blocages et escalades.</p>
+          </div>
+          <Gauge size={20} aria-hidden />
+        </div>
+        <div className="lcb-automation-grid">
+          {scoredCases.map((item) => (
+            <article key={item.id}>
+              <div>
+                <strong>{item.client}</strong>
+                <span>{item.score.score}/100 - {riskCopy[item.score.level]}</span>
+              </div>
+              <ul>
+                {item.score.automations.map((automation) => (
+                  <li key={automation.id}>
+                    <b>{automation.label}</b>
+                    <span>{automation.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -311,12 +352,12 @@ export default function LcbFtPage() {
         </article>
         <article>
           <AlertTriangle size={20} aria-hidden />
-          <h3>Points à brancher en V2</h3>
+          <h3>Automatisation V2</h3>
           <ul>
             <li>Tables Supabase `compliance_checks` et `audit_logs`.</li>
             <li>Connecteur listes PPE / sanctions.</li>
             <li>Scoring dynamique selon typologie produit.</li>
-            <li>Exports classeur ACPR et preuves de contrôle.</li>
+            <li>Blocage workflow si score critique ou pièces KYC absentes.</li>
           </ul>
         </article>
       </section>
