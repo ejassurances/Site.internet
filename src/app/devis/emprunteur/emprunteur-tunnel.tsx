@@ -42,6 +42,57 @@ const TYPES_BIEN = [
   "Investissement locatif",
 ];
 
+type FileInputProps = {
+  label: string;
+  file: File | null;
+  onChange: (f: File | null) => void;
+  accept?: string;
+  required?: boolean;
+};
+
+function FileInput({
+  label,
+  file,
+  onChange,
+  accept = ".pdf,.jpg,.jpeg,.png",
+  required,
+}: FileInputProps) {
+  return (
+    <div className="form-field">
+      <label>
+        {label} {required && <span className="required">*</span>}
+      </label>
+      <div className={`file-drop ${file ? "file-drop--filled" : ""}`}>
+        {file ? (
+          <div className="file-drop__info">
+            <span className="file-drop__name">{file.name}</span>
+            <button
+              type="button"
+              className="file-drop__remove"
+              onClick={() => onChange(null)}
+              aria-label="Supprimer"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ) : (
+          <label className="file-drop__label">
+            <Upload size={18} aria-hidden />
+            <span>Cliquer pour choisir un fichier</span>
+            <span className="file-drop__hint">PDF, JPG ou PNG</span>
+            <input
+              type="file"
+              accept={accept}
+              style={{ display: "none" }}
+              onChange={(e) => onChange(e.target.files?.[0] ?? null)}
+            />
+          </label>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function EmprunteurTunnel() {
   const [step, setStep] = useState<Step>(1);
   const [dossierId, setDossierId] = useState<string | null>(null);
@@ -217,53 +268,6 @@ export function EmprunteurTunnel() {
   };
 
   // ── File input component ──
-  const FileInput = ({
-    label,
-    file,
-    onChange,
-    accept = ".pdf,.jpg,.jpeg,.png",
-    required,
-  }: {
-    label: string;
-    file: File | null;
-    onChange: (f: File | null) => void;
-    accept?: string;
-    required?: boolean;
-  }) => (
-    <div className="form-field">
-      <label>
-        {label} {required && <span className="required">*</span>}
-      </label>
-      <div className={`file-drop ${file ? "file-drop--filled" : ""}`}>
-        {file ? (
-          <div className="file-drop__info">
-            <span className="file-drop__name">{file.name}</span>
-            <button
-              type="button"
-              className="file-drop__remove"
-              onClick={() => onChange(null)}
-              aria-label="Supprimer"
-            >
-              <X size={14} />
-            </button>
-          </div>
-        ) : (
-          <label className="file-drop__label">
-            <Upload size={18} aria-hidden />
-            <span>Cliquer pour choisir un fichier</span>
-            <span className="file-drop__hint">PDF, JPG ou PNG</span>
-            <input
-              type="file"
-              accept={accept}
-              style={{ display: "none" }}
-              onChange={(e) => onChange(e.target.files?.[0] ?? null)}
-            />
-          </label>
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <div className="tunnel-wrapper">
       {/* Progress bar */}
