@@ -2,127 +2,88 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
-  ShieldCheck,
-  Home,
-  Users,
-  TrendingDown,
-  CheckCircle,
-  CheckCircle2,
-  Star,
-  Clock,
-  Euro,
-  HeartHandshake,
-  Scale,
   Baby,
   CalendarDays,
+  CheckCircle2,
+  Euro,
+  FileCheck2,
+  HeartHandshake,
+  Home,
+  LockKeyhole,
+  Scale,
+  ShieldCheck,
+  Sparkles,
+  Users,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { StructuredData, organizationSchema } from "@/components/seo/structured-data";
-import { EconomiesCounter } from "@/components/economies-counter";
 
 export const metadata: Metadata = {
-  title: "EJ Partners Assurances — Assurance Emprunteur & Protection Familles Modernes",
+  title: "EJ Partners Assurances - Cabinet expert en protection familiale",
   description:
-    "Cabinet expert en assurance emprunteur (objectif 100 000 € d'économies cumulées) et en protection des familles modernes : coparentalité, familles recomposées, couples LGBT+. Conseil indépendant, bienveillant et confidentiel.",
+    "EJ Partners Assurances accompagne les familles en coparentalite, familles LGBT+, familles recomposees et emprunteurs dans la protection des personnes qui comptent vraiment.",
   alternates: { canonical: "https://www.ej-assurances.fr" },
 };
 
-const savingsStats = [
-  { value: "100 000 €", label: "d'économies cumulées visées", icon: Euro },
-  { value: "48 h", label: "délai moyen de réponse", icon: Clock },
-  { value: "30+", label: "compagnies comparées", icon: Star },
-  { value: "100 %", label: "indépendant & sans conflit", icon: CheckCircle },
-];
-
-const expertiseCards = [
+const familyAxes = [
   {
-    icon: Home,
-    color: "var(--navy)",
-    tag: "Expertise N°1",
-    title: "Assurance Emprunteur",
-    pitch: "Objectif 100 000 € d'économies cumulées pour nos clients propriétaires.",
-    points: [
-      "Délégation d'assurance sur mesure",
-      "Loi Lemoine : changement sans frais ni délai",
-      "Situations médicales complexes acceptées",
-      "Co-emprunteurs multiples & familles atypiques",
-    ],
-    cta: "Calculer mon économie",
-    href: "/assurance-emprunteur",
-    ctaHref: "/contact#rendez-vous",
-  },
-  {
-    icon: Users,
-    color: "var(--gold)",
-    tag: "Expertise N°2",
-    title: "Protection des Familles Modernes",
-    pitch: "Coparentalité, familles recomposées, couples LGBT+ : vos proches méritent une vraie protection.",
-    points: [
-      "Coparentalité choisie & co-parentalité",
-      "Familles homoparentales & couples LGBT+",
-      "Familles recomposées & parents sociaux",
-      "Prévoyance & transmission sur mesure",
-    ],
-    cta: "Analyser ma situation",
-    href: "/coparentalite",
-    ctaHref: "/contact#rendez-vous",
-  },
-];
-
-const whyUs = [
-  {
-    icon: TrendingDown,
-    title: "Moins cher, vraiment",
-    text: "Nous comparons 30+ compagnies pour trouver la couverture optimale au meilleur tarif. Notre objectif affiché : 100 000 € d'économies cumulées pour nos clients.",
-  },
-  {
+    title: "Famille affective",
+    text: "Les personnes que vous aimez, celles qui vivent réellement votre quotidien et que vous souhaitez protéger.",
     icon: HeartHandshake,
-    title: "Familles modernes, notre spécialité",
-    text: "Coparentalité, LGBT+, familles recomposées : nous connaissons les subtilités juridiques et assurantielles que les généralistes ignorent.",
   },
   {
+    title: "Famille juridique",
+    text: "Les personnes reconnues par le droit : conjoint, partenaire, enfants, autorité parentale, héritiers réservataires.",
     icon: Scale,
-    title: "Indépendant & transparent",
-    text: "Courtier indépendant, nous n'avons aucun intérêt à vous orienter vers une compagnie plutôt qu'une autre. Seul votre intérêt guide notre conseil.",
   },
   {
-    icon: ShieldCheck,
-    title: "Conformité DDA garantie",
-    text: "Recueil des besoins systématique, devoir de conseil documenté, suivi post-souscription. Votre protection est notre priorité légale et éthique.",
+    title: "Famille héritière",
+    text: "Les personnes qui recevront effectivement votre patrimoine si rien n'est organisé.",
+    icon: FileCheck2,
   },
 ];
 
-const processSteps = [
+const situations = [
+  "Vous élevez un enfant avec un parent social non reconnu juridiquement.",
+  "Vous vivez en couple sans mariage et vous achetez un logement ensemble.",
+  "Vous avez des enfants d'une précédente union et un nouveau conjoint à protéger.",
+  "Vous voulez que votre assurance emprunteur couvre le vrai risque familial.",
+  "Vous souhaitez sécuriser la transmission sans laisser vos proches seuls face aux règles par défaut.",
+];
+
+const expertise = [
   {
-    num: "01",
-    title: "Analyse gratuite",
-    text: "En 30 minutes, nous analysons votre contrat actuel et identifions les économies possibles ou les lacunes de protection.",
+    title: "Coparentalité et parentalité choisie",
+    text: "Nous identifions les angles morts : parent social, autorité parentale, décès d'un coparent, financement des enfants, organisation du logement.",
+    href: "/expertise-coparentalite",
+    icon: Baby,
   },
   {
-    num: "02",
-    title: "Comparaison sur mesure",
-    text: "Nous interrogeons 30+ compagnies et construisons une sélection adaptée à votre profil, votre famille et votre projet.",
+    title: "Familles LGBT+",
+    text: "Nous accompagnons les couples et parents LGBT+ avec une lecture assurantielle, patrimoniale et documentaire adaptée aux situations réelles.",
+    href: "/familles-lgbt",
+    icon: Users,
   },
   {
-    num: "03",
-    title: "Mise en place sans stress",
-    text: "Nous gérons toutes les démarches administratives. Vous signez, nous nous occupons du reste — résiliation de l'ancien contrat incluse.",
+    title: "Familles recomposées",
+    text: "Nous aidons à protéger le conjoint, les enfants de chaque branche familiale et les équilibres patrimoniaux sensibles.",
+    href: "/familles-recomposees",
+    icon: HeartHandshake,
   },
   {
-    num: "04",
-    title: "Suivi dans la durée",
-    text: "Votre situation évolue (naissance, séparation, promotion) : nous réévaluons votre protection chaque année.",
+    title: "Assurance emprunteur",
+    text: "Nous optimisons le coût et la qualité de couverture en tenant compte du crédit, du couple, des enfants et de la réalité familiale.",
+    href: "/assurance-emprunteur",
+    icon: Home,
   },
 ];
 
-const checklistEmprunteur = [
-  "Vous avez un crédit immobilier en cours",
-  "Vous n'avez jamais renégocié votre assurance",
-  "Votre banque vous a imposé son contrat groupe",
-  "Vous êtes en famille recomposée ou coparentalité",
-  "Vous avez un antécédent médical",
-  "Vous êtes en couple non marié",
+const method = [
+  "Recueil des besoins et situation familiale réelle.",
+  "Analyse des écarts entre affectif, juridique et héritier.",
+  "Cartographie des risques : logement, revenus, enfants, décès, invalidité, transmission.",
+  "Recommandations documentées, conformes DDA et validées humainement.",
 ];
 
 export default function HomePage() {
@@ -131,231 +92,145 @@ export default function HomePage() {
       <StructuredData data={organizationSchema} />
       <SiteHeader />
       <main className="public-main">
-
-        {/* ── Hero double expertise ── */}
-        <section className="home-hero reposition-hero">
-          <div className="reposition-hero-content">
-            <div className="hero-proof">
-              <span>🏠 Assurance Emprunteur</span>
-              <span>👨‍👩‍👧 Familles Modernes</span>
-              <span>✦ Cabinet Indépendant</span>
-            </div>
+        <section className="ej-hero">
+          <div className="ej-hero__content">
+            <p className="eyebrow">Cabinet expert en protection familiale</p>
             <h1>
-              Deux expertises.{" "}
-              <span className="hero-h1-accent">Un seul cabinet.</span>
+              Protéger les personnes qui comptent vraiment.
             </h1>
             <p className="hero-copy">
-              EJ Partners Assurances est le cabinet de référence pour{" "}
-              <strong>réduire le coût de votre assurance emprunteur</strong> et pour{" "}
-              <strong>protéger les familles modernes</strong> — coparentalité, couples LGBT+,
-              familles recomposées — avec des solutions vraiment adaptées à votre réalité.
+              EJ Partners Assurances accompagne les familles en coparentalité, les familles LGBT+,
+              les familles recomposées et les emprunteurs dans les situations où le droit, l'assurance
+              et la vie réelle ne protègent pas toujours les mêmes personnes.
             </p>
-            <div className="hero-savings-badge">
-              <Euro size={18} aria-hidden />
-              <span>
-                Objectif <strong>100 000 €</strong> d'économies cumulées pour nos clients
-              </span>
-            </div>
-            <div className="hero-actions">
+            <div className="ej-hero__actions">
               <Link className="primary-action" href="/contact#rendez-vous">
                 <CalendarDays size={17} aria-hidden />
-                Prendre rendez-vous
+                Demander un diagnostic
               </Link>
-              <Link className="secondary-action" href="/assurance-emprunteur">
-                Calculer mon économie
+              <Link className="secondary-action" href="/expertise-coparentalite">
+                Comprendre notre expertise
+                <ArrowRight size={16} aria-hidden />
               </Link>
             </div>
-          </div>
-
-          {/* Compteur d'économies visuel */}
-          <div className="hero-savings-visual" aria-label="Objectif économies cabinet">
-            <div className="savings-header">
-              <TrendingDown size={18} aria-hidden />
-              <span>Compteur d'économies cabinet</span>
-            </div>
-            <div className="savings-counter">
-              <span className="savings-amount">100 000 €</span>
-              <span className="savings-label">d'économies cumulées visées</span>
-            </div>
-            <div className="savings-breakdown">
-              <div>
-                <strong>Assurance emprunteur</strong>
-                <span>Jusqu'à 70 % d'économie vs contrat bancaire</span>
-              </div>
-              <div>
-                <strong>Loi Lemoine</strong>
-                <span>Changement sans délai ni frais de résiliation</span>
-              </div>
-              <div>
-                <strong>Familles modernes</strong>
-                <span>Protection des proches non reconnus par défaut</span>
-              </div>
-            </div>
-            <div className="savings-footer">
-              <Baby size={14} aria-hidden />
-              <span>Coparentalité · LGBT+ · Familles recomposées</span>
+            <div className="ej-trust-row" aria-label="Engagements cabinet">
+              <span><ShieldCheck size={14} aria-hidden /> Courtier inscrit ORIAS</span>
+              <span><LockKeyhole size={14} aria-hidden /> Approche confidentielle</span>
+              <span><FileCheck2 size={14} aria-hidden /> DDA, RGPD, LCB-FT</span>
             </div>
           </div>
-        </section>
 
-        {/* ── Stats strip ── */}
-        <section className="stats-strip" aria-label="Chiffres clés cabinet">
-          {savingsStats.map((s) => {
-            const Icon = s.icon;
-            return (
-              <div key={s.label} className="stat-item">
-                <Icon size={20} aria-hidden />
-                <strong>{s.value}</strong>
-                <span>{s.label}</span>
-              </div>
-            );
-          })}
-        </section>
-
-        {/* ── Deux expertises maîtresses ── */}
-        <section className="expertise-duo-section">
-          <div className="section-heading">
-            <p className="eyebrow">Nos deux expertises maîtresses</p>
-            <h2>Spécialistes là où les généralistes s'arrêtent</h2>
-            <p style={{ color: "var(--muted)", marginTop: "8px", maxWidth: "560px", margin: "8px auto 0" }}>
-              Nous avons fait le choix de l'excellence dans deux domaines précis plutôt que la médiocrité dans dix.
-            </p>
-          </div>
-          <div className="expertise-duo-grid">
-            {expertiseCards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <article key={card.title} className="expertise-duo-card">
-                  <div className="expertise-duo-header" style={{ background: card.color }}>
-                    <div className="expertise-duo-tag">{card.tag}</div>
-                    <Icon size={36} aria-hidden color="white" />
-                    <h2>{card.title}</h2>
-                    <p>{card.pitch}</p>
-                  </div>
-                  <div className="expertise-duo-body">
-                    <ul>
-                      {card.points.map((pt) => (
-                        <li key={pt}>
-                          <CheckCircle size={15} aria-hidden />
-                          <span>{pt}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="expertise-duo-actions">
-                      <Link href={card.ctaHref} className="primary-action" style={{ fontSize: "0.88rem", padding: "10px 18px" }}>
-                        {card.cta} <ArrowRight size={14} aria-hidden />
-                      </Link>
-                      <Link href={card.href} className="secondary-action" style={{ fontSize: "0.85rem" }}>
-                        En savoir plus
-                      </Link>
+          <aside className="ej-diagnostic-card" aria-label="Diagnostic familial EJ Assurances">
+            <div className="ej-diagnostic-card__header">
+              <Sparkles size={18} aria-hidden />
+              <span>Diagnostic familial</span>
+            </div>
+            <h2>Les personnes que vous aimez sont-elles celles qui seront protégées ?</h2>
+            <div className="ej-axis-list">
+              {familyAxes.map((axis) => {
+                const Icon = axis.icon;
+                return (
+                  <div key={axis.title} className="ej-axis-item">
+                    <Icon size={18} aria-hidden />
+                    <div>
+                      <strong>{axis.title}</strong>
+                      <p>{axis.text}</p>
                     </div>
                   </div>
-                </article>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          </aside>
         </section>
 
-        {/* ── Checklist emprunteur ── */}
-        <section className="checklist-section">
+        <section className="ej-situation-band">
           <div className="section-heading">
-            <p className="eyebrow">Êtes-vous concerné ?</p>
-            <h2>Vous devriez nous appeler si…</h2>
+            <p className="eyebrow">Pourquoi agir</p>
+            <h2>Les règles par défaut ne connaissent pas toujours votre famille.</h2>
+            <p>
+              Notre rôle est de traduire votre réalité familiale en protections concrètes :
+              assurance, prévoyance, clause bénéficiaire, documents, devoir de conseil et suivi.
+            </p>
           </div>
-          <div className="checklist-grid">
-            {checklistEmprunteur.map((item) => (
-              <div key={item} className="checklist-item">
-                <CheckCircle2 size={20} aria-hidden />
+          <div className="ej-situation-list">
+            {situations.map((item) => (
+              <div key={item} className="ej-situation-item">
+                <CheckCircle2 size={18} aria-hidden />
                 <span>{item}</span>
               </div>
             ))}
           </div>
-          <div style={{ textAlign: "center", marginTop: "32px" }}>
-            <Link className="primary-action" href="/contact#rendez-vous">
-              Oui, je veux une analyse gratuite <ArrowRight size={16} aria-hidden />
-            </Link>
-          </div>
         </section>
 
-        {/* ── Pourquoi nous ── */}
-        <section className="why-us-section">
+        <section className="ej-expertise-section">
           <div className="section-heading">
-            <p className="eyebrow">Pourquoi nous choisir</p>
-            <h2>Un cabinet qui s'engage sur des résultats</h2>
+            <p className="eyebrow">Expertises</p>
+            <h2>Un cabinet spécialisé dans les familles que les modèles standards comprennent mal.</h2>
           </div>
-          <div className="values-grid">
-            {whyUs.map((item) => {
-              const Icon = item.icon;
+          <div className="ej-expertise-grid">
+            {expertise.map((card) => {
+              const Icon = card.icon;
               return (
-                <article key={item.title} className="value-card">
-                  <Icon size={24} aria-hidden />
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
+                <Link key={card.title} href={card.href} className="ej-expertise-card">
+                  <Icon size={22} aria-hidden />
+                  <h3>{card.title}</h3>
+                  <p>{card.text}</p>
+                  <span>Voir l'expertise <ArrowRight size={14} aria-hidden /></span>
+                </Link>
               );
             })}
           </div>
         </section>
 
-        {/* ── Notre processus ── */}
-        <section className="process-section">
-          <div className="section-heading">
-            <p className="eyebrow">Notre méthode</p>
-            <h2>De l'analyse à la protection en 4 étapes</h2>
+        <section className="ej-method-section">
+          <div>
+            <p className="eyebrow">Méthode cabinet</p>
+            <h2>Une approche assurantielle, patrimoniale et conforme.</h2>
+            <p>
+              Nous ne partons pas d'un produit. Nous partons de votre famille, de vos volontés et
+              des conséquences concrètes si un accident de vie survient demain.
+            </p>
           </div>
-          <div className="process-grid">
-            {processSteps.map((step) => (
-              <div key={step.num} className="process-step">
-                <div className="process-num">{step.num}</div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
+          <ol className="ej-method-list">
+            {method.map((step, index) => (
+              <li key={step}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                {step}
+              </li>
             ))}
+          </ol>
+        </section>
+
+        <section className="ej-products-band">
+          <div className="ej-product-card">
+            <Euro size={22} aria-hidden />
+            <h3>Assurance emprunteur</h3>
+            <p>Comparer, améliorer les garanties, réduire le coût et sécuriser les co-emprunteurs.</p>
+          </div>
+          <div className="ej-product-card">
+            <ShieldCheck size={22} aria-hidden />
+            <h3>Prévoyance familiale</h3>
+            <p>Protéger les revenus, le conjoint, les enfants, le parent social et le logement.</p>
+          </div>
+          <div className="ej-product-card">
+            <Scale size={22} aria-hidden />
+            <h3>Transmission</h3>
+            <p>Préparer les clauses, bénéficiaires et solutions qui respectent votre volonté.</p>
           </div>
         </section>
 
-        {/* ── Compteur économies ── */}
-        <section style={{ padding: "0 0 64px" }}>
-          <EconomiesCounter />
-        </section>
-
-        {/* ── CTA final ── */}
-        <section
-          style={{
-            margin: "0 0 80px",
-            padding: "clamp(36px, 5vw, 64px) clamp(24px, 5vw, 64px)",
-            borderRadius: "var(--radius)",
-            background: "linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%)",
-            color: "white",
-            textAlign: "center",
-          }}
-        >
-          <p className="eyebrow" style={{ color: "var(--gold)" }}>Analyse gratuite</p>
-          <h2 style={{ color: "white", maxWidth: "640px", margin: "8px auto 16px" }}>
-            30 minutes pour identifier vos économies et protéger votre famille.
-          </h2>
-          <p style={{ color: "rgba(247,245,240,.7)", maxWidth: "520px", margin: "0 auto 32px", lineHeight: 1.6 }}>
-            Rendez-vous en cabinet, par téléphone ou en visio. Premier échange gratuit et sans engagement.
+        <section className="ej-final-cta">
+          <p className="eyebrow">Premier échange confidentiel</p>
+          <h2>Faisons le point sur votre famille, vos contrats et vos angles morts.</h2>
+          <p>
+            Le diagnostic permet de comprendre ce qui est déjà protégé, ce qui ne l'est pas encore,
+            et les décisions à prioriser.
           </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
-            <Link
-              className="primary-action"
-              href="/contact#rendez-vous"
-              style={{ background: "var(--gold)", color: "var(--navy)" }}
-            >
-              <CalendarDays size={17} aria-hidden />
-              Prendre rendez-vous en ligne
-            </Link>
-            <Link
-              className="secondary-action"
-              href="/a-propos"
-              style={{ background: "rgba(255,255,255,.12)", border: "1px solid rgba(255,255,255,.2)", color: "white" }}
-            >
-              Découvrir le cabinet
-            </Link>
-          </div>
+          <Link className="primary-action" href="/contact#rendez-vous">
+            <CalendarDays size={17} aria-hidden />
+            Prendre rendez-vous
+          </Link>
         </section>
-
       </main>
       <SiteFooter />
     </>

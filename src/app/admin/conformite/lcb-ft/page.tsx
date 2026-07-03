@@ -1,357 +1,325 @@
 "use client";
 
-import { useState } from "react";
-import { AlertTriangle, Shield, Search, Clock, CheckCircle, XCircle, RefreshCw, User, FileText, Globe } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  AlertTriangle,
+  Clock,
+  FileSearch,
+  Gauge,
+  Landmark,
+  ListChecks,
+  LockKeyhole,
+  Search,
+  ShieldAlert,
+  ShieldCheck,
+  UserCheck,
+} from "lucide-react";
 import { AdminModulePage } from "@/components/admin-module-page";
-import { requireRole } from "@/lib/auth";
 
-// âââ Types âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-type ScreeningResult = "conforme" | "alerte" | "en_cours" | "non_verifie";
+type RiskLevel = "faible" | "standard" | "renforce" | "alerte";
+type CheckStatus = "conforme" | "a_revoir" | "alerte" | "a_faire";
 
-interface PPECheck {
+type ComplianceCase = {
   id: string;
-  client_name: string;
-  client_email: string;
-  check_date: string;
-  resultat: ScreeningResult;
-  sources: string[];
-  note?: string;
-}
+  client: string;
+  profile: string;
+  risk: RiskLevel;
+  status: CheckStatus;
+  lastCheck: string;
+  nextReview: string;
+  controls: string[];
+  note: string;
+};
 
-interface GelAvoirs {
-  id: string;
-  client_name: string;
-  check_date: string;
-  listes_verifiees: string[];
-  resultat: ScreeningResult;
-}
-
-// âââ Mock data (Ã  remplacer par appel Supabase) ââââââââââââââââââââââââââââââ
-const MOCK_PPE: PPECheck[] = [
+const cases: ComplianceCase[] = [
   {
-    id: "1",
-    client_name: "Jean Dupont",
-    client_email: "jean.dupont@email.fr",
-    check_date: "2025-01-15",
-    resultat: "conforme",
-    sources: ["Bases PPE FR", "Bases UE"],
-    note: "Aucune correspondance dÃ©tectÃ©e",
+    id: "LCB-001",
+    client: "Dossier emprunteur - couple non marié",
+    profile: "Assurance emprunteur, co-emprunteurs, résidence principale",
+    risk: "standard",
+    status: "conforme",
+    lastCheck: "2026-06-28",
+    nextReview: "2027-06-28",
+    controls: ["Identité", "Bénéficiaire effectif", "PPE", "Gel des avoirs"],
+    note: "Entrée en relation conforme, justificatifs présents dans le classeur ACPR.",
   },
   {
-    id: "2",
-    client_name: "Marie Martin",
-    client_email: "marie.martin@email.fr",
-    check_date: "2025-02-08",
-    resultat: "conforme",
-    sources: ["Bases PPE FR", "Bases UE", "Bases ONU"],
+    id: "LCB-002",
+    client: "Famille recomposée - transmission sensible",
+    profile: "Assurance vie, clauses bénéficiaires, patrimoine familial",
+    risk: "renforce",
+    status: "a_revoir",
+    lastCheck: "2026-06-14",
+    nextReview: "2026-09-14",
+    controls: ["Origine des fonds", "Cohérence patrimoniale", "PPE"],
+    note: "Vigilance renforcée à documenter avant recommandation définitive.",
   },
   {
-    id: "3",
-    client_name: "Pierre Leblanc",
-    client_email: "pierre.leblanc@email.fr",
-    check_date: "2025-03-12",
-    resultat: "alerte",
-    sources: ["Bases PPE FR"],
-    note: "Correspondance partielle dÃ©tectÃ©e â vÃ©rification manuelle requise",
+    id: "LCB-003",
+    client: "Prospect protection revenus",
+    profile: "Prévoyance individuelle, revenus indépendants",
+    risk: "faible",
+    status: "a_faire",
+    lastCheck: "Non réalisé",
+    nextReview: "Avant souscription",
+    controls: ["Identité", "PPE", "Gel des avoirs"],
+    note: "Contrôle à lancer avant tout passage en souscription.",
   },
   {
-    id: "4",
-    client_name: "Sophie Bernard",
-    client_email: "sophie.bernard@email.fr",
-    check_date: "2025-04-01",
-    resultat: "en_cours",
-    sources: [],
+    id: "LCB-004",
+    client: "Dossier signalé par mandataire",
+    profile: "Souscription avec incohérence documentaire",
+    risk: "alerte",
+    status: "alerte",
+    lastCheck: "2026-07-02",
+    nextReview: "Immédiat",
+    controls: ["Gel des avoirs", "Origine des fonds", "Escalade conformité"],
+    note: "Aucune décision automatique. Revue courtier responsable avant toute suite.",
   },
 ];
 
-const MOCK_GEL: GelAvoirs[] = [
+const obligations = [
   {
-    id: "1",
-    client_name: "Jean Dupont",
-    check_date: "2025-01-15",
-    listes_verifiees: ["TrÃ©sor FR", "UE", "ONU", "OFAC"],
-    resultat: "conforme",
+    title: "Identification et connaissance client",
+    text: "Collecter les éléments KYC utiles, vérifier l'identité, comprendre la situation et conserver les justificatifs nécessaires.",
+    icon: UserCheck,
   },
   {
-    id: "2",
-    client_name: "Marie Martin",
-    check_date: "2025-02-08",
-    listes_verifiees: ["TrÃ©sor FR", "UE", "ONU"],
-    resultat: "conforme",
+    title: "Évaluation du risque",
+    text: "Attribuer un niveau de vigilance selon le client, le produit, le pays, l'origine des fonds, le canal et les signaux atypiques.",
+    icon: Gauge,
   },
   {
-    id: "3",
-    client_name: "Pierre Leblanc",
-    check_date: "2025-03-12",
-    listes_verifiees: ["TrÃ©sor FR", "UE"],
-    resultat: "alerte",
+    title: "PPE et gel des avoirs",
+    text: "Contrôler les personnes politiquement exposées et les listes de sanctions avant l'entrée en relation et lors des revues.",
+    icon: ShieldAlert,
   },
   {
-    id: "4",
-    client_name: "Sophie Bernard",
-    check_date: "2025-04-01",
-    listes_verifiees: [],
-    resultat: "non_verifie",
+    title: "Traçabilité conformité",
+    text: "Historiser les contrôles, preuves, décisions humaines, alertes, documents consultés et éventuelles escalades.",
+    icon: FileSearch,
   },
 ];
 
-// âââ Composants ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-function ResultBadge({ result }: { result: ScreeningResult }) {
-  const map: Record<ScreeningResult, { label: string; color: string; bg: string; icon: typeof CheckCircle }> = {
-    conforme:    { label: "Conforme",     color: "#10B981", bg: "rgba(16,185,129,.1)",  icon: CheckCircle   },
-    alerte:      { label: "Alerte",       color: "#EF4444", bg: "rgba(239,68,68,.1)",   icon: XCircle       },
-    en_cours:    { label: "En cours",     color: "#3B82F6", bg: "rgba(59,130,246,.1)",  icon: RefreshCw     },
-    non_verifie: { label: "Non vÃ©rifiÃ©",  color: "#F59E0B", bg: "rgba(245,158,11,.1)",  icon: AlertTriangle },
-  };
-  const { label, color, bg, icon: Icon } = map[result];
-  return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px",
-      padding: "4px 10px", borderRadius: "999px", background: bg,
-      color, fontSize: "12px", fontWeight: 700 }}>
-      <Icon size={11} aria-hidden /> {label}
-    </span>
-  );
-}
+const workflow = [
+  "Recueil des informations client et justificatifs utiles.",
+  "Qualification du risque LCB-FT selon la situation et le produit.",
+  "Contrôle PPE, sanctions, gel des avoirs et cohérence documentaire.",
+  "Validation humaine avant recommandation, souscription ou escalade.",
+  "Archivage des preuves dans le classeur ACPR et journal d'audit.",
+];
 
-type TabId = "ppe" | "gel" | "statistiques";
+const riskCopy: Record<RiskLevel, string> = {
+  faible: "Faible",
+  standard: "Standard",
+  renforce: "Renforcé",
+  alerte: "Alerte",
+};
+
+const statusCopy: Record<CheckStatus, string> = {
+  conforme: "Conforme",
+  a_revoir: "À revoir",
+  alerte: "Alerte",
+  a_faire: "À faire",
+};
+
+function badgeClass(prefix: string, value: string) {
+  return `${prefix} ${prefix}--${value}`;
+}
 
 export default function LcbFtPage() {
-  const [tab, setTab] = useState<TabId>("ppe");
-  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
+  const [riskFilter, setRiskFilter] = useState<RiskLevel | "tous">("tous");
 
-  const filteredPPE = MOCK_PPE.filter(
-    (r) =>
-      r.client_name.toLowerCase().includes(search.toLowerCase()) ||
-      r.client_email.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const filteredGel = MOCK_GEL.filter((r) =>
-    r.client_name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCases = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return cases.filter((item) => {
+      const matchText =
+        !needle ||
+        item.client.toLowerCase().includes(needle) ||
+        item.profile.toLowerCase().includes(needle) ||
+        item.id.toLowerCase().includes(needle);
+      const matchRisk = riskFilter === "tous" || item.risk === riskFilter;
+      return matchText && matchRisk;
+    });
+  }, [query, riskFilter]);
 
   const stats = {
-    total: MOCK_PPE.length,
-    conformes: MOCK_PPE.filter((r) => r.resultat === "conforme").length,
-    alertes: MOCK_PPE.filter((r) => r.resultat === "alerte").length,
-    en_cours: MOCK_PPE.filter((r) => r.resultat === "en_cours").length,
-    non_verifies: MOCK_PPE.filter((r) => r.resultat === "non_verifie").length,
+    total: cases.length,
+    alertes: cases.filter((item) => item.status === "alerte").length,
+    renforces: cases.filter((item) => item.risk === "renforce").length,
+    aFaire: cases.filter((item) => item.status === "a_faire" || item.status === "a_revoir").length,
   };
-
-  const tabs: { id: TabId; label: string; icon: typeof Shield }[] = [
-    { id: "ppe",          label: "Screening PPE",    icon: User       },
-    { id: "gel",          label: "Gel des avoirs",   icon: Globe      },
-    { id: "statistiques", label: "Statistiques",     icon: FileText   },
-  ];
 
   return (
     <AdminModulePage
-      emoji="🛡️"
-      title="LCB-FT – Screening & Gel des avoirs"
-      description="Lutte contre le Blanchiment de Capitaux et le Financement du Terrorisme"
+      emoji="LCB"
+      title="LCB-FT, PPE et gel des avoirs"
+      description="Pilotage de la vigilance client, des contrôles réglementaires et des preuves de conformité."
       parentHref="/admin/conformite"
       parentLabel="Conformité"
     >
-      {/* KPI banner */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "24px" }}>
-        {[
-          { label: "Total vÃ©rifiÃ©s",  value: stats.total,           color: "var(--navy)"  },
-          { label: "Conformes",       value: stats.conformes,      color: "#10B981"       },
-          { label: "Alertes",         value: stats.alertes,        color: "#EF4444"       },
-          { label: "Non vÃ©rifiÃ©s",    value: stats.non_verifies,   color: "#F59E0B"       },
-        ].map((kpi) => (
-          <div key={kpi.label} style={{ padding: "16px", border: "1px solid var(--line)",
-            borderRadius: "var(--radius-sm)", background: "var(--surface)",
-            boxShadow: "var(--shadow-sm)" }}>
-            <p style={{ margin: "0 0 4px", fontSize: "12px", fontWeight: 700,
-              color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>
-              {kpi.label}
-            </p>
-            <p style={{ margin: 0, fontSize: "28px", fontWeight: 900, color: kpi.color, lineHeight: 1 }}>
-              {kpi.value}
-            </p>
-          </div>
-        ))}
-      </div>
+      <section className="lcb-hero">
+        <div>
+          <p className="eyebrow">Priorité conformité</p>
+          <h2>Un contrôle LCB-FT doit être documenté avant toute souscription sensible.</h2>
+          <p>
+            Cette V1 pose le cadre métier : niveau de vigilance, contrôles PPE et gel des avoirs,
+            preuves, revue humaine et journalisation. Elle évite de laisser la conformité dans un
+            simple tableau décoratif.
+          </p>
+        </div>
+        <div className="lcb-hero__notice">
+          <LockKeyhole size={20} aria-hidden />
+          <strong>Garde-fou</strong>
+          <span>L'IA peut alerter et préparer une synthèse, mais ne valide jamais une conformité LCB-FT.</span>
+        </div>
+      </section>
 
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: "4px", marginBottom: "20px", padding: "4px",
-        background: "rgba(7,24,39,.04)", borderRadius: "10px", width: "fit-content" }}>
-        {tabs.map(({ id, label, icon: Icon }) => (
-          <button key={id} onClick={() => setTab(id)} style={{
-            display: "flex", alignItems: "center", gap: "7px", padding: "7px 14px",
-            borderRadius: "8px", border: "none",
-            background: tab === id ? "white" : "transparent",
-            color: tab === id ? "var(--navy)" : "var(--muted)",
-            fontWeight: tab === id ? 700 : 600, fontSize: "13px", cursor: "pointer",
-            boxShadow: tab === id ? "0 1px 4px rgba(7,24,39,.1)" : "none",
-            transition: "all .15s",
-          }}>
-            <Icon size={14} aria-hidden /> {label}
-          </button>
-        ))}
-      </div>
+      <section className="lcb-kpis" aria-label="Indicateurs LCB-FT">
+        <div><strong>{stats.total}</strong><span>Dossiers suivis</span></div>
+        <div><strong>{stats.alertes}</strong><span>Alertes ouvertes</span></div>
+        <div><strong>{stats.renforces}</strong><span>Vigilances renforcées</span></div>
+        <div><strong>{stats.aFaire}</strong><span>Actions à traiter</span></div>
+      </section>
 
-      {/* Search (PPE + Gel tabs) */}
-      {tab !== "statistiques" && (
-        <div style={{ position: "relative", marginBottom: "16px", maxWidth: "400px" }}>
-          <Search size={15} style={{ position: "absolute", left: "12px", top: "50%",
-            transform: "translateY(-50%)", color: "var(--muted)" }} aria-hidden />
+      <section className="lcb-grid">
+        {obligations.map((item) => {
+          const Icon = item.icon;
+          return (
+            <article key={item.title} className="lcb-card">
+              <Icon size={20} aria-hidden />
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          );
+        })}
+      </section>
+
+      <section className="lcb-workflow">
+        <div>
+          <p className="eyebrow">Workflow cabinet</p>
+          <h2>Vigilance proportionnée au risque.</h2>
+          <p>
+            Le niveau de vigilance doit être adapté à la situation du client, au produit distribué,
+            aux montants, au canal d'entrée en relation et aux incohérences éventuelles.
+          </p>
+        </div>
+        <ol>
+          {workflow.map((step, index) => (
+            <li key={step}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {step}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="lcb-toolbar">
+        <div className="lcb-search">
+          <Search size={16} aria-hidden />
           <input
-            type="text"
-            placeholder="Rechercher un clientâ¦"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ width: "100%", height: "38px", paddingLeft: "36px", paddingRight: "12px",
-              border: "1px solid var(--line)", borderRadius: "var(--radius-sm)",
-              background: "var(--surface)", fontSize: "14px", outline: "none" }}
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Rechercher un dossier, profil ou identifiant"
           />
         </div>
-      )}
+        <div className="lcb-filter" aria-label="Filtrer par niveau de risque">
+          {(["tous", "faible", "standard", "renforce", "alerte"] as const).map((level) => (
+            <button
+              key={level}
+              type="button"
+              className={riskFilter === level ? "active" : ""}
+              onClick={() => setRiskFilter(level)}
+            >
+              {level === "tous" ? "Tous" : riskCopy[level]}
+            </button>
+          ))}
+        </div>
+      </section>
 
-      {/* Tab: PPE 
-  {tab === "ppe" && (
-        <div style={{ border: "1px solid var(--line)", borderRadius: "var(--radius)",
-          background: "var(--surface)", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+      <section className="lcb-table-card">
+        <div className="lcb-table-card__header">
+          <div>
+            <h3>Dossiers de vigilance</h3>
+            <p>Vue métier à relier ensuite aux fiches clients, projets et classeur ACPR.</p>
+          </div>
+          <ListChecks size={20} aria-hidden />
+        </div>
+        <div className="lcb-table-wrap">
+          <table className="lcb-table">
             <thead>
-              <tr style={{ background: "rgba(7,24,39,.03)", borderBottom: "1px solid var(--line)" }}>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>Client</th>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>Date</th>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>Sources</th>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>RÃ©sultat</th>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>Note</th>
+              <tr>
+                <th>Dossier</th>
+                <th>Profil</th>
+                <th>Risque</th>
+                <th>Statut</th>
+                <th>Contrôles</th>
+                <th>Revue</th>
               </tr>
             </thead>
             <tbody>
-              {filteredPPE.map((row, i) => (
-                <tr key={row.id}
-                  style={{ borderBottom: i < filteredPPE.length - 1 ? "1px solid var(--line)" : "none",
-                    background: row.resultat === "alerte" ? "rgba(239,68,68,.02)" : undefined }}>
-                  <td style={{ padding: "12px 16px" }}>
-                    <p style={{ margin: 0, fontWeight: 600 }}>{row.client_name}</p>
-                    <p style={{ margin: 0, fontSize: "12px", color: "var(--muted)" }}>{row.client_email}</p>
+              {filteredCases.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    <strong>{item.client}</strong>
+                    <span>{item.id}</span>
                   </td>
-                  <td style={{ padding: "12px 16px", color: "var(--muted)", fontSize: "13px" }}>
-                    <Clock size={12} style={{ display: "inline", marginRight: "4px", verticalAlign: "middle" }} aria-hidden />
-                    {new Date(row.check_date).toLocaleDateString("fr-FR")}
-                  </td>
-                  <td style={{ padding: "12px 16px" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
-                      {row.sources.map((s) => (
-                        <span key={s} style={{ padding: "2px 7px", background: "rgba(59,130,246,.08)",
-                          color: "#3B82F6", borderRadius: "4px", fontSize: "11px", fontWeight: 700 }}>
-                          {s}
-                        </span>
-                      ))}
-                      {row.sources.length === 0 && <span style={{ color: "var(--muted)", fontSize: "12px" }}>â</span>}
+                  <td>{item.profile}</td>
+                  <td><span className={badgeClass("lcb-risk", item.risk)}>{riskCopy[item.risk]}</span></td>
+                  <td><span className={badgeClass("lcb-status", item.status)}>{statusCopy[item.status]}</span></td>
+                  <td>
+                    <div className="lcb-chip-list">
+                      {item.controls.map((control) => <span key={control}>{control}</span>)}
                     </div>
                   </td>
-                  <td style={{ padding: "12px 16px" }}>
-                    <ResultBadge result={row.resultat} />
-                  </td>
-                  <td style={{ padding: "12px 16px", color: "var(--muted)", fontSize: "13px", maxWidth: "200px" }}>
-                    {row.note ?? "â"}
+                  <td>
+                    <div className="lcb-review">
+                      <Clock size={13} aria-hidden />
+                      <span>Dernier : {item.lastCheck}</span>
+                      <span>Prochain : {item.nextReview}</span>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      )}
+      </section>
 
-      {/* Tab: Gel des avoirs */}
-      {tab === "gel" && (
-        <div style={{ border: "1px solid var(--line)", borderRadius: "var(--radius)",
-          background: "var(--surface)", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
-            <thead>
-              <tr style={{ background: "rgba(7,24,39,.03)", borderBottom: "1px solid var(--line)" }}>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>Client</th>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>Date</th>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>Listes vÃ©rifiÃ©es</th>
-                <th style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700,
-                  fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", letterSpacing: ".05em" }}>RÃ©sultat</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredGel.map((row, i) => (
-                <tr key={row.id}
-                  style={{ borderBottom: i < filteredGel.length - 1 ? "1px solid var(--line)" : "none",
-                    background: row.resultat === "alerte" ? "rgba(239,68,68,.02)" : undefined }}>
-                  <td style={{ padding: "12px 16px", fontWeight: 600 }}>{row.client_name}</td>
-                  <td style={{ padding: "12px 16px", color: "var(--muted)", fontSize: "13px" }}>
-                    {new Date(row.check_date).toLocaleDateString("fr-FR")}
-                  </td>
-                  <td style={{ padding: "12px 16px" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
-                      {row.listes_verifiees.map((l) => (
-                        <span key={l} style={{ padding: "2px 7px", background: "rgba(139,92,246,.08)",
-                          color: "#8B5CF6", borderRadius: "4px", fontSize: "11px", fontWeight: 700 }}>
-                          {l}
-                        </span>
-                      ))}
-                      {row.listes_verifiees.length === 0 && <span style={{ color: "var(--muted)", fontSize: "12px" }}>Non lancÃ©</span>}
-                    </div>
-                  </td>
-                  <td style={{ padding: "12px 16px" }}>
-                    <ResultBadge result={row.resultat} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Tab: Statistiques */}
-      {tab === "statistiques" && (
-        <div style={{ display: "grid", gap: "20px" }}>
-          <div style={{ padding: "24px", border: "1px solid var(--line)", borderRadius: "var(--radius)",
-            background: "var(--surface)", boxShadow: "var(--shadow-sm)" }}>
-            <h3 style={{ margin: "0 0 16px", fontSize: "16px" }}>Tableau de bord LCB-FT</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              {[
-                { label: "Taux de conformitÃ© PPE",             value: `${Math.round((stats.conformes / stats.total) * 100)}%`, color: "#10B981" },
-                { label: "Alertes actives",                     value: stats.alertes.toString(),                                   color: "#EF4444" },
-                { label: "Dossiers en cours de vÃ©rification",   value: stats.en_cours.toString(),                                  color: "#3B82F6" },
-                { label: "Dossiers sans vÃ©rification",          value: stats.non_verifies.toString(),                              color: "#F59E0B" },
-              ].map((item) => (
-                <div key={item.label} style={{ padding: "14px 16px", border: "1px solid var(--line)",
-                  borderRadius: "var(--radius-sm)", background: "var(--surface-soft)" }}>
-                  <p style={{ margin: "0 0 4px", fontSize: "13px", color: "var(--muted)" }}>{item.label}</p>
-                  <p style={{ margin: 0, fontSize: "24px", fontWeight: 800, color: item.color }}>{item.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ padding: "20px", border: "1px solid rgba(245,158,11,.3)",
-            borderRadius: "var(--radius)", background: "rgba(245,158,11,.05)" }}>
-            <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-              <AlertTriangle size={18} color="#F59E0B" style={{ flexShrink: 0, marginTop: "2px" }} aria-hidden />
-              <div>
-                <p style={{ margin: "0 0 4px", fontWeight: 700, color: "#92400e", fontSize: "14px" }}>
-                  Rappel rÃ©glementaire
-                </p>
-                <p style={{ margin: 0, fontSize: "13px", color: "#92400e", lineHeight: 1.6 }}>
-                  Les screenings PPE et gel des avoirs doivent Ãªtre renouvelÃ©s lors de chaque
-                  nouvelle entrÃ©e en relation ET pÃ©riodiquement (au minimum annuellement) pour
-                  les clients existants. Tout soupÃ§on doit faire l&apos;objet d&apos;une
-                  dÃ©claration Ã  Tracfin (Art. L.561-15 CMF).
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <section className="lcb-proof-grid">
+        <article>
+          <ShieldCheck size={20} aria-hidden />
+          <h3>Preuves à conserver</h3>
+          <ul>
+            <li>Pièces KYC et justificatifs utiles.</li>
+            <li>Résultat PPE, sanctions et gel des avoirs.</li>
+            <li>Score de risque et justification.</li>
+            <li>Décision humaine, date, auteur et commentaire.</li>
+          </ul>
+        </article>
+        <article>
+          <Landmark size={20} aria-hidden />
+          <h3>Escalade et Tracfin</h3>
+          <ul>
+            <li>Blocage automatique des actions sensibles en cas d'alerte.</li>
+            <li>Revue du courtier responsable avant toute décision.</li>
+            <li>Journalisation de l'analyse et des sources utilisées.</li>
+            <li>Procédure de déclaration de soupçon hors automatisme IA.</li>
+          </ul>
+        </article>
+        <article>
+          <AlertTriangle size={20} aria-hidden />
+          <h3>Points à brancher en V2</h3>
+          <ul>
+            <li>Tables Supabase `compliance_checks` et `audit_logs`.</li>
+            <li>Connecteur listes PPE / sanctions.</li>
+            <li>Scoring dynamique selon typologie produit.</li>
+            <li>Exports classeur ACPR et preuves de contrôle.</li>
+          </ul>
+        </article>
+      </section>
     </AdminModulePage>
   );
 }
