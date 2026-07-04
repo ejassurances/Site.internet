@@ -9,14 +9,14 @@ export const metadata: Metadata = {
 
 export default function SimulateurPage() {
   return (
-    <main className="min-h-screen bg-[#07111E] px-4 py-16 text-[#F0F4F8] sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#F6F9FC] px-4 py-16 text-[#0F172A] sm:px-6 lg:px-8">
       <section className="mx-auto max-w-7xl">
         <div className="mb-10 max-w-3xl">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#3B82F6]">Simulateur</p>
-          <h1 className="mt-4 text-4xl font-black leading-tight text-white sm:text-6xl">
+          <h1 className="mt-4 text-4xl font-black leading-tight text-[#0F172A] sm:text-6xl">
             Estimez votre <span className="text-gradient">assurance emprunteur</span>.
           </h1>
-          <p className="mt-5 text-lg leading-8 text-[#94A3B8]">
+          <p className="mt-5 text-lg leading-8 text-[#475569]">
             Renseignez les informations principales de votre prêt pour obtenir une première estimation.
             Le cabinet affine ensuite le résultat avec les garanties, quotités et documents du dossier.
           </p>

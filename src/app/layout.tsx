@@ -71,13 +71,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={inter.variable}>
-      <body className="min-h-screen bg-[#07111E] text-[#F0F4F8] antialiased">
+      <body className="min-h-screen bg-[#F6F9FC] text-[#0F172A] antialiased">
         <StructuredData data={organizationSchema} />
         <StructuredData data={websiteSchema} />
 
-        <header className="sticky top-0 z-50 border-b border-[#1E3A5F] bg-[#0D1B2A]/95 backdrop-blur-xl">
+        <header className="sticky top-0 z-50 border-b border-[#D8E2F0] bg-[#FFFFFF]/95 backdrop-blur-xl">
           <nav className="mx-auto flex min-h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-            <Link href="/" className="text-lg font-black tracking-tight text-white">
+            <Link href="/" className="text-lg font-black tracking-tight text-[#0F172A]">
               EJ <span className="text-gradient">Assurances</span>
             </Link>
             <div className="hidden items-center gap-1 md:flex">
@@ -85,13 +85,13 @@ export default function RootLayout({
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-lg px-3 py-2 text-sm font-semibold text-[#94A3B8] transition hover:bg-[#112240] hover:text-white"
+                  className="rounded-lg px-3 py-2 text-sm font-semibold text-[#475569] transition hover:bg-[#EEF4FF] hover:text-[#0F172A]"
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
-            <Link href="/connexion" className="btn-primary px-4 py-2 text-sm">
+            <Link href="/connexion" className="btn-primary px-4 py-2 text-sm text-white">
               Espace client
             </Link>
           </nav>
@@ -99,17 +99,17 @@ export default function RootLayout({
 
         {children}
 
-        <footer className="border-t border-[#1E3A5F] bg-[#0D1B2A]">
-          <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-[#94A3B8] sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+        <footer className="border-t border-[#D8E2F0] bg-[#FFFFFF]">
+          <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-[#475569] sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
             <p>© {new Date().getFullYear()} EJ Assurances. Tous droits reserves.</p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/mentions-legales" className="transition hover:text-white">
+              <Link href="/mentions-legales" className="transition hover:text-[#0F172A]">
                 Mentions legales
               </Link>
-              <Link href="/confidentialite" className="transition hover:text-white">
+              <Link href="/confidentialite" className="transition hover:text-[#0F172A]">
                 Confidentialite
               </Link>
-              <Link href="/contact" className="transition hover:text-white">
+              <Link href="/contact" className="transition hover:text-[#0F172A]">
                 Contact
               </Link>
             </div>
