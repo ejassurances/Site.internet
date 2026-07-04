@@ -1,233 +1,149 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Baby,
-  CalendarDays,
-  CheckCircle2,
-  Euro,
-  FileCheck2,
-  HeartHandshake,
-  Home,
-  LockKeyhole,
-  PiggyBank,
-  Scale,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { StructuredData, organizationSchema } from "@/components/seo/structured-data";
+import { ArrowRight, BadgeCheck, ClipboardCheck, FileCheck2, ShieldCheck, TrendingUp } from "lucide-react";
 
+/* Page d'accueil publique : positionnement courtier assurance emprunteur en thème Navy Fintech. */
 export const metadata: Metadata = {
-  title: "EJ Partners Assurances - Assurance emprunteur, parent social, assurance-vie",
+  title: "Votre courtier en assurance emprunteur",
   description:
-    "Cabinet specialise en assurance emprunteur, protection du lien parent social/enfant et creation de patrimoine financier via l'assurance-vie.",
+    "EJ Assurances compare, analyse et sécurise votre assurance emprunteur avec une approche moderne, conforme et personnalisée.",
   alternates: { canonical: "https://www.ej-assurances.fr" },
 };
 
-const familyAxes = [
+const stats = [
+  { value: "+500", label: "clients accompagnés" },
+  { value: "15 ans", label: "d'expérience métier" },
+  { value: "98%", label: "satisfaction client" },
+];
+
+const services = [
   {
-    title: "Famille affective",
-    text: "Les personnes que vous aimez, celles qui vivent votre quotidien et que vous souhaitez proteger.",
-    icon: HeartHandshake,
+    title: "Assurance emprunteur",
+    description: "Comparer les garanties, optimiser les quotités et réduire le coût de votre assurance de prêt.",
+    icon: ShieldCheck,
   },
   {
-    title: "Famille juridique",
-    text: "Les personnes reconnues par le droit : conjoint, partenaire, enfants, autorite parentale, heritiers.",
-    icon: Scale,
+    title: "Prévoyance",
+    description: "Protéger les revenus, le logement et les proches en cas d'arrêt de travail, invalidité ou décès.",
+    icon: TrendingUp,
   },
   {
-    title: "Famille heritiere",
-    text: "Les personnes qui recevront vraiment votre patrimoine si rien n'est organise.",
+    title: "Conformité",
+    description: "Un accompagnement documenté : DDA, devoir de conseil, traçabilité et documents contractuels.",
     icon: FileCheck2,
   },
 ];
 
-const pillars = [
-  {
-    title: "Assurance emprunteur avec simulateur",
-    text: "Comparer les garanties, reduire le cout du contrat, ajuster les quotites et securiser les co-emprunteurs avec une lecture familiale du risque.",
-    href: "/devis/emprunteur",
-    cta: "Lancer le simulateur",
-    icon: Home,
-  },
-  {
-    title: "Parent social et enfant",
-    text: "Proteger le lien affectif, financier et familial lorsque le droit ne reconnait pas automatiquement le role du parent social.",
-    href: "/parent-social-enfant",
-    cta: "Comprendre les risques",
-    icon: Baby,
-  },
-  {
-    title: "Assurance-vie et patrimoine",
-    text: "Construire un patrimoine financier, preparer la transmission et aligner la clause beneficiaire avec la famille reelle.",
-    href: "/assurance-vie-patrimoine",
-    cta: "Construire mon patrimoine",
-    icon: PiggyBank,
-  },
-];
-
-const situations = [
-  "Vous avez un credit immobilier ou un projet d'achat.",
-  "Vous voulez savoir si votre assurance emprunteur est trop chere ou mal calibree.",
-  "Vous elevez un enfant avec un parent social non reconnu juridiquement.",
-  "Vous voulez proteger un enfant, un conjoint, un coparent ou un proche choisi.",
-  "Vous souhaitez creer un capital financier et organiser votre transmission avec l'assurance-vie.",
-];
-
-const method = [
-  "Recueillir les besoins et la situation familiale reelle.",
-  "Identifier les ecarts entre famille affective, juridique et heritiere.",
-  "Mesurer les risques : logement, revenus, enfant, deces, invalidite, transmission.",
-  "Proposer des solutions documentees, conformes DDA et validees humainement.",
+const process = [
+  { step: "1", title: "Simulation", text: "Vous renseignez votre prêt, votre âge et vos besoins de garanties." },
+  { step: "2", title: "Analyse", text: "Nous comparons les garanties, exclusions, quotités et économies possibles." },
+  { step: "3", title: "Souscription", text: "Nous préparons le dossier, la fiche conseil et le suivi jusqu'à validation." },
 ];
 
 export default function HomePage() {
   return (
-    <>
-      <StructuredData data={organizationSchema} />
-      <SiteHeader />
-      <main className="public-main">
-        <section className="ej-hero">
-          <div className="ej-hero__content">
-            <p className="eyebrow">Cabinet expert en protection familiale</p>
-            <h1>Assurer le pret, proteger l'enfant, construire le patrimoine.</h1>
-            <p className="hero-copy">
-              EJ Partners Assurances traite trois sujets prioritaires : l'assurance emprunteur avec
-              simulation, la protection du lien entre le parent social et l'enfant, et la creation
-              d'un patrimoine financier notamment grace a l'assurance-vie.
-            </p>
-            <div className="ej-hero__actions">
-              <Link className="primary-action" href="/devis/emprunteur">
-                <Euro size={17} aria-hidden />
-                Lancer le simulateur emprunteur
-              </Link>
-              <Link className="secondary-action" href="/contact#rendez-vous">
-                <CalendarDays size={17} aria-hidden />
-                Demander un diagnostic
-              </Link>
+    <main className="bg-[#07111E] text-[#F0F4F8]">
+      <section className="section-hero px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <div className="mb-6 flex flex-wrap gap-3">
+              <span className="navy-badge"><BadgeCheck size={14} aria-hidden /> Conforme ORIAS</span>
+              <span className="navy-badge"><ClipboardCheck size={14} aria-hidden /> Conseil documenté</span>
             </div>
-            <div className="ej-trust-row" aria-label="Engagements cabinet">
-              <span><ShieldCheck size={14} aria-hidden /> Courtier inscrit ORIAS</span>
-              <span><LockKeyhole size={14} aria-hidden /> Approche confidentielle</span>
-              <span><FileCheck2 size={14} aria-hidden /> DDA, RGPD, LCB-FT</span>
+            <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight text-white sm:text-6xl lg:text-7xl">
+              Votre courtier en <span className="text-gradient">assurance emprunteur</span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#94A3B8]">
+              EJ Assurances vous aide à sécuriser votre prêt immobilier, réduire le coût de votre assurance
+              et choisir des garanties réellement adaptées à votre situation.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/simulateur" className="btn-primary inline-flex items-center justify-center gap-2">
+                Simuler mon taux <ArrowRight size={18} aria-hidden />
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-lg border border-[#1E3A5F] bg-[#112240] px-6 py-3 font-semibold text-white transition hover:border-[#3B82F6]"
+              >
+                Nous contacter
+              </Link>
             </div>
           </div>
 
-          <aside className="ej-diagnostic-card" aria-label="Diagnostic familial EJ Assurances">
-            <div className="ej-diagnostic-card__header">
-              <Sparkles size={18} aria-hidden />
-              <span>Diagnostic familial</span>
-            </div>
-            <h2>Les personnes que vous aimez sont-elles celles qui seront protegees ?</h2>
-            <div className="ej-axis-list">
-              {familyAxes.map((axis) => {
-                const Icon = axis.icon;
-                return (
-                  <div key={axis.title} className="ej-axis-item">
-                    <Icon size={18} aria-hidden />
-                    <div>
-                      <strong>{axis.title}</strong>
-                      <p>{axis.text}</p>
-                    </div>
-                  </div>
-                );
-              })}
+          <aside className="glass-card p-6 shadow-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#94A3B8]">Analyse rapide</p>
+            <div className="mt-6 space-y-4">
+              {["Capital à assurer", "Garanties décès / PTIA / ITT", "Quotités co-emprunteurs", "Économies potentielles"].map((item) => (
+                <div key={item} className="flex items-center justify-between rounded-lg border border-[#1E3A5F] bg-[#112240] p-4">
+                  <span className="text-sm text-[#F0F4F8]">{item}</span>
+                  <ShieldCheck className="text-[#3B82F6]" size={18} aria-hidden />
+                </div>
+              ))}
             </div>
           </aside>
-        </section>
+        </div>
+      </section>
 
-        <section className="ej-situation-band">
-          <div className="section-heading">
-            <p className="eyebrow">Pourquoi agir</p>
-            <h2>Les contrats standards ne connaissent pas toujours votre famille.</h2>
-            <p>
-              Notre role est de traduire votre realite familiale en protections concretes :
-              assurance, prevoyance, assurance-vie, clause beneficiaire, documents et devoir de conseil.
-            </p>
-          </div>
-          <div className="ej-situation-list">
-            {situations.map((item) => (
-              <div key={item} className="ej-situation-item">
-                <CheckCircle2 size={18} aria-hidden />
-                <span>{item}</span>
-              </div>
+      <section className="mx-auto grid max-w-7xl gap-4 px-4 py-14 sm:px-6 md:grid-cols-3 lg:px-8">
+        {stats.map((stat) => (
+          <article key={stat.label} className="glass-card p-6 text-center">
+            <strong className="block text-4xl font-black text-white">{stat.value}</strong>
+            <span className="mt-2 block text-sm font-semibold text-[#94A3B8]">{stat.label}</span>
+          </article>
+        ))}
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mb-10 max-w-2xl">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#3B82F6]">Services</p>
+          <h2 className="mt-3 text-3xl font-black text-gradient sm:text-4xl">Un accompagnement complet pour votre prêt.</h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-3">
+          {services.map((service) => {
+            const Icon = service.icon;
+            return (
+              <article key={service.title} className="glass-card p-6">
+                <div className="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-[#112240] text-[#3B82F6]">
+                  <Icon size={24} aria-hidden />
+                </div>
+                <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                <p className="mt-3 leading-7 text-[#94A3B8]">{service.description}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="glass-card p-6 sm:p-8">
+          <h2 className="text-3xl font-black text-gradient">Un process clair, de la simulation à la souscription.</h2>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {process.map((item) => (
+              <article key={item.step} className="rounded-xl border border-[#1E3A5F] bg-[#112240] p-5">
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] font-black text-white">
+                  {item.step}
+                </span>
+                <h3 className="mt-5 text-lg font-bold text-white">{item.title}</h3>
+                <p className="mt-2 leading-7 text-[#94A3B8]">{item.text}</p>
+              </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="ej-expertise-section">
-          <div className="section-heading">
-            <p className="eyebrow">Les 3 sujets du cabinet</p>
-            <h2>Un site centre sur les decisions qui changent vraiment la protection familiale.</h2>
-          </div>
-          <div className="ej-expertise-grid">
-            {pillars.map((card) => {
-              const Icon = card.icon;
-              return (
-                <Link key={card.title} href={card.href} className="ej-expertise-card">
-                  <Icon size={22} aria-hidden />
-                  <h3>{card.title}</h3>
-                  <p>{card.text}</p>
-                  <span>{card.cta} <ArrowRight size={14} aria-hidden /></span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="ej-method-section">
+      <section className="px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 rounded-2xl border border-[#1E3A5F] bg-[#0D1B2A] p-8 shadow-[0_0_30px_rgba(59,130,246,0.15)] md:flex-row md:items-center">
           <div>
-            <p className="eyebrow">Methode cabinet</p>
-            <h2>Une approche assurantielle, patrimoniale et conforme.</h2>
-            <p>
-              Nous ne partons pas d'un produit. Nous partons de votre famille, de vos volontes et
-              des consequences concretes si un accident de vie survient demain.
+            <h2 className="text-3xl font-black text-white">Démarrer votre simulation en quelques minutes.</h2>
+            <p className="mt-3 max-w-2xl text-[#94A3B8]">
+              Obtenez une première estimation et préparez votre dossier avec un courtier.
             </p>
           </div>
-          <ol className="ej-method-list">
-            {method.map((step, index) => (
-              <li key={step}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                {step}
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="ej-products-band">
-          <div className="ej-product-card">
-            <Euro size={22} aria-hidden />
-            <h3>Simuler le pret</h3>
-            <p>Comparer le contrat bancaire, les garanties, les quotites et les economies possibles.</p>
-          </div>
-          <div className="ej-product-card">
-            <Baby size={22} aria-hidden />
-            <h3>Proteger l'enfant</h3>
-            <p>Documenter le role du parent social et creer une protection financiere adaptee.</p>
-          </div>
-          <div className="ej-product-card">
-            <PiggyBank size={22} aria-hidden />
-            <h3>Creer un patrimoine</h3>
-            <p>Utiliser l'assurance-vie pour epargner, transmettre et proteger les proches choisis.</p>
-          </div>
-        </section>
-
-        <section className="ej-final-cta">
-          <p className="eyebrow">Premier echange confidentiel</p>
-          <h2>Faisons le point sur votre pret, votre famille et votre patrimoine.</h2>
-          <p>
-            Le diagnostic permet de comprendre ce qui est deja protege, ce qui ne l'est pas encore,
-            et les decisions a prioriser.
-          </p>
-          <Link className="primary-action" href="/contact#rendez-vous">
-            <CalendarDays size={17} aria-hidden />
-            Prendre rendez-vous
+          <Link href="/simulateur" className="btn-primary inline-flex shrink-0 items-center justify-center gap-2">
+            Démarrer ma simulation <ArrowRight size={18} aria-hidden />
           </Link>
-        </section>
-      </main>
-      <SiteFooter />
-    </>
+        </div>
+      </section>
+    </main>
   );
 }
