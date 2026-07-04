@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { CalendarDays, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { createContactIntakeAction } from "@/app/actions/contact-intake";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 
+/* Page contact : formulaire courtier assurance emprunteur en glass-card Navy Fintech. */
 export const metadata: Metadata = {
-  title: "Contact & Rendez-vous — EJ Partners Assurances",
-  description:
-    "Prenez rendez-vous avec EJ Partners Assurances. Formulaire de contact, prise de rendez-vous en ligne via Koalendar. Cabinet spécialisé familles modernes.",
+  title: "Contact",
+  description: "Contactez EJ Assurances pour une analyse de votre assurance emprunteur.",
 };
 
 type ContactPageProps = {
@@ -21,189 +19,89 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   const { success, error } = await searchParams;
 
   return (
-    <>
-      <SiteHeader />
-      <main className="public-main">
-        {/* ── Hero formulaire ── */}
-        <section className="page-hero contact-hero">
-          <div>
-            <p className="eyebrow">Contact / prise de rendez-vous</p>
-            <h1>Parlons de votre famille et de ce qui doit vraiment être protégé.</h1>
-            <p className="hero-copy">
-              Vous n'avez pas besoin d'avoir déjà la bonne solution. Expliquez simplement votre
-              situation, les personnes qui comptent et les questions qui vous inquiètent.
-              EJ Assurances vous recontacte dans un cadre confidentiel.
+    <main className="min-h-screen bg-[#07111E] px-4 py-16 text-[#F0F4F8] sm:px-6 lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+        <div className="pt-4">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#3B82F6]">Contact</p>
+          <h1 className="mt-4 text-4xl font-black leading-tight text-white sm:text-6xl">
+            Parlons de votre <span className="text-gradient">assurance emprunteur</span>.
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-8 text-[#94A3B8]">
+            Expliquez-nous votre prêt, votre situation et votre objectif. Le cabinet vous recontacte
+            pour vérifier les garanties, le coût et les prochaines étapes.
+          </p>
+          <div className="mt-8 grid gap-3 text-[#94A3B8]">
+            <a href="tel:+33189314029" className="flex items-center gap-3 transition hover:text-white">
+              <Phone size={18} aria-hidden /> 01.89.31.40.29
+            </a>
+            <a href="mailto:contact@ej-assurances.fr" className="flex items-center gap-3 transition hover:text-white">
+              <Mail size={18} aria-hidden /> contact@ej-assurances.fr
+            </a>
+          </div>
+        </div>
+
+        <form action={createContactIntakeAction} className="glass-card grid gap-5 p-6 sm:p-8">
+          {success && (
+            <p className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-200">
+              Votre demande est enregistrée. Le cabinet revient vers vous rapidement.
             </p>
-            <div className="contact-lines">
-              <a href="tel:+33189314029">
-                <Phone size={18} aria-hidden /> 01.89.31.40.29
-              </a>
-              <span>
-                <Mail size={18} aria-hidden /> contact@ej-assurances.fr
-              </span>
-              <span>
-                <CalendarDays size={18} aria-hidden /> Rendez-vous cabinet, téléphone ou visio
-              </span>
-            </div>
+          )}
+          {error && (
+            <p className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm font-semibold text-red-200">
+              Impossible d'enregistrer la demande pour le moment. Vous pouvez aussi nous contacter par téléphone.
+            </p>
+          )}
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2 text-sm font-semibold text-[#94A3B8]">
+              Nom
+              <input name="name" required className="navy-input" placeholder="Votre nom" />
+            </label>
+            <label className="grid gap-2 text-sm font-semibold text-[#94A3B8]">
+              Prénom
+              <input name="firstName" className="navy-input" placeholder="Votre prénom" />
+            </label>
           </div>
 
-          <form className="contact-form needs-contact-form" action={createContactIntakeAction}>
-            {success && (
-              <p className="form-success">
-                Votre demande est enregistrée. Une fiche client a été créée et un lien de connexion vous a été envoyé par email.
-              </p>
-            )}
-            {error && (
-              <p className="form-error">
-                Impossible d'enregistrer la demande pour le moment. Vérifiez les informations ou contactez le cabinet.
-              </p>
-            )}
-
-            <section className="form-section">
-              <p className="eyebrow">Vos coordonnées</p>
-              <div className="form-grid two">
-                <label>
-                  Nom complet *
-                  <input name="name" placeholder="Votre nom" required />
-                </label>
-                <label>
-                  Téléphone
-                  <input name="phone" type="tel" placeholder="01.23.45.67.89" />
-                </label>
-              </div>
-              <label>
-                Email *
-                <input name="email" type="email" placeholder="vous@exemple.fr" required />
-              </label>
-            </section>
-
-            <section className="form-section">
-              <p className="eyebrow">Votre situation familiale</p>
-              <div className="form-grid two">
-                <label>
-                  Situation principale
-                  <select name="familySituation" defaultValue="">
-                    <option value="" disabled>Choisir une situation</option>
-                    <option>Couple marié ou pacsé</option>
-                    <option>Concubinage</option>
-                    <option>Famille LGBT+</option>
-                    <option>Coparentalité choisie</option>
-                    <option>Famille recomposée</option>
-                    <option>Parent social / enfant social</option>
-                    <option>Autre situation familiale</option>
-                  </select>
-                </label>
-                <label>
-                  Degré d'urgence
-                  <select name="urgency" defaultValue="">
-                    <option value="" disabled>Choisir</option>
-                    <option>Simple question</option>
-                    <option>Projet en cours</option>
-                    <option>Décision à prendre rapidement</option>
-                    <option>Situation sensible ou urgente</option>
-                  </select>
-                </label>
-              </div>
-            </section>
-
-            <section className="form-section">
-              <p className="eyebrow">Personnes à protéger</p>
-              <fieldset className="checkbox-group">
-                <legend>Qui souhaitez-vous sécuriser en priorité ?</legend>
-                <label>
-                  <input type="checkbox" name="protectPartner" />
-                  Mon conjoint, partenaire ou compagnon/compagne
-                </label>
-                <label>
-                  <input type="checkbox" name="protectChildren" />
-                  Mes enfants
-                </label>
-                <label>
-                  <input type="checkbox" name="protectSocialParent" />
-                  Un parent social ou une personne non reconnue juridiquement
-                </label>
-                <label>
-                  <input type="checkbox" name="protectHome" />
-                  Le logement familial
-                </label>
-              </fieldset>
-            </section>
-
-            <section className="form-section">
-              <p className="eyebrow">Votre besoin</p>
-              <label>
-                Sujet prioritaire
-                <select name="need" defaultValue="">
-                  <option value="" disabled>Choisir un sujet</option>
-                  <option>Protéger mon couple ou mon partenaire</option>
-                  <option>Protéger mes enfants</option>
-                  <option>Famille LGBT+ ou parent social</option>
-                  <option>Coparentalité ou famille recomposée</option>
-                  <option>Assurance emprunteur / logement</option>
-                  <option>Transmission ou succession</option>
-                </select>
-              </label>
-              <label>
-                Type de rendez-vous souhaité
-                <select name="rdvType" defaultValue="">
-                  <option value="" disabled>Choisir</option>
-                  <option>Visio (en ligne)</option>
-                  <option>Téléphone</option>
-                  <option>Cabinet à Paris</option>
-                </select>
-              </label>
-              <label>
-                Ce que vous voulez éviter
-                <textarea
-                  name="message"
-                  placeholder="Exemple : que mon partenaire ne soit pas protégé, que mes enfants soient fragilisés, que le logement soit bloqué..."
-                />
-              </label>
-            </section>
-
-            <label className="consent-line">
-              <input type="checkbox" name="consent" required />
-              J'accepte d'être recontacté(e) par EJ Assurances pour analyser ma situation. Les informations transmises restent confidentielles et ne seront pas partagées sans mon accord. *
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2 text-sm font-semibold text-[#94A3B8]">
+              Email
+              <input name="email" type="email" required className="navy-input" placeholder="vous@exemple.fr" />
             </label>
-            <label className="consent-line">
-              <input type="checkbox" name="partnerConsent" />
-              J'accepte aussi, si mon besoin le nécessite, d'être recontacté(e) par un partenaire sélectionné du cabinet (notaire, avocat, conseiller patrimonial).
+            <label className="grid gap-2 text-sm font-semibold text-[#94A3B8]">
+              Téléphone
+              <input name="phone" type="tel" className="navy-input" placeholder="01.89.31.40.29" />
             </label>
+          </div>
 
-            <button className="primary-action" type="submit" style={{ width: "100%" }}>
-              Demander une première analyse
-            </button>
-          </form>
-        </section>
+          <label className="grid gap-2 text-sm font-semibold text-[#94A3B8]">
+            Montant du prêt
+            <input name="loanAmount" inputMode="decimal" className="navy-input" placeholder="Ex. 320000" />
+          </label>
 
-        {/* ── Agenda Koalendar ── */}
-        <section className="koalendar-section" id="rendez-vous" aria-label="Prise de rendez-vous en ligne">
-          <p className="eyebrow">Agenda en ligne</p>
-          <h2>Réservez directement un créneau dans l'agenda du cabinet</h2>
-          <p>
-            Choisissez le créneau qui vous convient. Rendez-vous en visio, par téléphone ou en cabinet à Paris.
-          </p>
-          {/* Koalendar Inline Embed Start */}
-          <div id="inline-widget-ej-partners-assurances"></div>
-          {/* Koalendar Inline Embed End */}
-        </section>
+          <label className="grid gap-2 text-sm font-semibold text-[#94A3B8]">
+            Message
+            <textarea
+              name="message"
+              className="navy-input min-h-36 resize-y"
+              placeholder="Votre projet, votre banque, votre assurance actuelle, vos délais..."
+            />
+          </label>
 
-        {/* Scripts Koalendar — chargés côté client */}
-      </main>
-      <SiteFooter />
+          <input type="hidden" name="familySituation" value="Assurance emprunteur" />
+          <input type="hidden" name="need" value="Assurance emprunteur / logement" />
+          <input type="hidden" name="urgency" value="Projet en cours" />
 
-      {/* Koalendar scripts avec is:inline équivalent Next.js */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `window.Koalendar=window.Koalendar||function(){(Koalendar.props=Koalendar.props||[]).push(arguments)};`,
-        }}
-      />
-      <script async src="https://koalendar.com/assets/widget.js" />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `Koalendar('inline', {"url":"https://koalendar.com/e/ej-partners-assurances","selector":"#inline-widget-ej-partners-assurances"});`,
-        }}
-      />
-    </>
+          <label className="flex gap-3 text-sm leading-6 text-[#94A3B8]">
+            <input name="consent" type="checkbox" required className="mt-1 size-4 accent-[#3B82F6]" />
+            J'accepte d'être recontacté par EJ Assurances au sujet de ma demande.
+          </label>
+
+          <button type="submit" className="btn-primary mt-2 w-full">
+            Envoyer ma demande
+          </button>
+        </form>
+      </section>
+    </main>
   );
 }
