@@ -5,7 +5,7 @@ import { createContactIntakeAction } from "@/app/actions/contact-intake";
 /* Page contact : formulaire courtier assurance emprunteur en glass-card Navy Fintech. */
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contactez EJ Assurances pour une analyse de votre assurance emprunteur.",
+  description: "Contactez EJ Assurances pour une analyse assurance emprunteur ou transmission parent social enfant.",
 };
 
 type ContactPageProps = {
@@ -24,11 +24,11 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
         <div className="pt-4">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#3B82F6]">Contact</p>
           <h1 className="mt-4 text-4xl font-black leading-tight text-white sm:text-6xl">
-            Parlons de votre <span className="text-gradient">assurance emprunteur</span>.
+            Parlons de votre <span className="text-gradient">protection familiale</span>.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-[#94A3B8]">
-            Expliquez-nous votre prêt, votre situation et votre objectif. Le cabinet vous recontacte
-            pour vérifier les garanties, le coût et les prochaines étapes.
+            Expliquez-nous votre prêt, votre situation familiale ou votre enjeu de transmission.
+            Le cabinet vous recontacte pour identifier les risques et les prochaines étapes.
           </p>
           <div className="mt-8 grid gap-3 text-[#94A3B8]">
             <a href="tel:+33189314029" className="flex items-center gap-3 transition hover:text-white">
@@ -75,7 +75,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
           </div>
 
           <label className="grid gap-2 text-sm font-semibold text-[#94A3B8]">
-            Montant du prêt
+            Montant du prêt ou patrimoine concerné
             <input name="loanAmount" inputMode="decimal" className="navy-input" placeholder="Ex. 320000" />
           </label>
 
@@ -84,12 +84,12 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
             <textarea
               name="message"
               className="navy-input min-h-36 resize-y"
-              placeholder="Votre projet, votre banque, votre assurance actuelle, vos délais..."
+              placeholder="Votre projet, votre banque, votre assurance actuelle, ou votre situation de parent social / enfant à protéger..."
             />
           </label>
 
-          <input type="hidden" name="familySituation" value="Assurance emprunteur" />
-          <input type="hidden" name="need" value="Assurance emprunteur / logement" />
+          <input type="hidden" name="familySituation" value="Diagnostic protection familiale" />
+          <input type="hidden" name="need" value="Assurance emprunteur ou transmission parent social" />
           <input type="hidden" name="urgency" value="Projet en cours" />
 
           <label className="flex gap-3 text-sm leading-6 text-[#94A3B8]">

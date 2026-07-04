@@ -15,16 +15,19 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ej-assurances.f
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "EJ Assurances - Courtier assurance emprunteur",
+    default: "EJ Assurances - Assurance emprunteur et protection des familles",
     template: "%s | EJ Assurances",
   },
   description:
-    "EJ Assurances accompagne les emprunteurs avec une approche claire, conforme et personnalisée de l'assurance de prêt.",
+    "EJ Assurances accompagne les emprunteurs et les familles atypiques dans la protection du pret, du patrimoine et de la transmission aux enfants.",
   keywords: [
     "assurance emprunteur",
     "courtier assurance emprunteur",
     "simulateur assurance emprunteur",
-    "conformité DDA",
+    "parent social succession",
+    "transmission enfant parent social",
+    "famille recomposee succession",
+    "conformite DDA",
     "EJ Assurances",
   ],
   authors: [{ name: "EJ Assurances" }],
@@ -34,14 +37,14 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: siteUrl,
     siteName: "EJ Assurances",
-    title: "EJ Assurances - Courtier assurance emprunteur",
-    description: "Simulation, analyse et accompagnement en assurance emprunteur.",
+    title: "EJ Assurances - Assurance emprunteur et protection des familles",
+    description: "Assurance emprunteur, protection du parent social, transmission et conseil documente.",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "EJ Assurances" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "EJ Assurances - Courtier assurance emprunteur",
-    description: "Simulation, analyse et accompagnement en assurance emprunteur.",
+    title: "EJ Assurances - Assurance emprunteur et protection des familles",
+    description: "Assurance emprunteur, protection du parent social, transmission et conseil documente.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -54,9 +57,10 @@ export const metadata: Metadata = {
 
 const navigationLinks = [
   { label: "Accueil", href: "/" },
-  { label: "Services", href: "/assurance-emprunteur" },
+  { label: "Assurance emprunteur", href: "/assurance-emprunteur" },
+  { label: "Parent social", href: "/parent-social-enfant" },
   { label: "Simulateur", href: "/simulateur" },
-  { label: "Conformité", href: "/conformite" },
+  { label: "Conformite", href: "/conformite" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -97,13 +101,13 @@ export default function RootLayout({
 
         <footer className="border-t border-[#1E3A5F] bg-[#0D1B2A]">
           <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-[#94A3B8] sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-            <p>© {new Date().getFullYear()} EJ Assurances. Tous droits réservés.</p>
+            <p>© {new Date().getFullYear()} EJ Assurances. Tous droits reserves.</p>
             <div className="flex flex-wrap gap-4">
               <Link href="/mentions-legales" className="transition hover:text-white">
-                Mentions légales
+                Mentions legales
               </Link>
               <Link href="/confidentialite" className="transition hover:text-white">
-                Confidentialité
+                Confidentialite
               </Link>
               <Link href="/contact" className="transition hover:text-white">
                 Contact
