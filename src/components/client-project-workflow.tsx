@@ -4,18 +4,26 @@ import { useActionState } from "react";
 import {
   CheckCircle2,
   ClipboardCheck,
+  ExternalLink,
   FileSignature,
   FileText,
   Inbox,
   LockKeyhole,
   Mail,
   PenLine,
+  PlayCircle,
   Send,
   UploadCloud,
 } from "lucide-react";
-import { createBorrowerProjectAction, type ProjectActionState } from "@/lib/actions/projects";
 import {
-  borrowerRequiredDocuments,
+  createBorrowerProjectAction,
+  saveBorrowerNeedsAction,
+  updateBorrowerWorkflowAction,
+  type ProjectActionState,
+} from "@/lib/actions/projects";
+import {
+  getBorrowerDocumentRequirements,
+  getBorrowerProjectProgress,
   getBorrowerWorkflow,
   type BorrowerProject,
   type ProjectStepStatus,
@@ -49,9 +57,19 @@ const statusClass: Record<ProjectStepStatus, string> = {
 
 export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkflowProps) {
   const [actionState, formAction, isPending] = useActionState(createBorrowerProjectAction, initialState);
+  const [needsState, needsFormAction, isSavingNeeds] = useActionState(saveBorrowerNeedsAction, initialState);
   const borrowerProjects = projects.filter((project) => project.project_type === "assurance_emprunteur");
   const activeProject = borrowerProjects[0] ?? null;
   const workflow = getBorrowerWorkflow(activeProject);
+  const documentRequirements = getBorrowerDocumentRequirements(activeProject);
+  const progress = getBorrowerProjectProgress(activeProject);
+  const needs = activeProject?.project_borrower_needs?.[0] ?? null;
+  const deliveries = activeProject?.project_deliveries ?? [];
+  const signatures = activeProject?.project_signatures ?? [];
+  const imports = activeProject?.project_email_imports?.filter((item) => !item.excluded) ?? [];
+  const requiredDocumentsReady = documentRequirements
+    .filter((document) => document.requiredForValidation)
+    .every((document) => document.status === "received" || document.status === "validated");
 
   return (
     <div className="client-project-workflow">
@@ -87,11 +105,14 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
           <div>
             <span>Projet actif</span>
             <strong>{activeProject.title}</strong>
-            <small>Statut CRM : {activeProject.status}</small>
+            <small>Statut CRM : {activeProject.status} - progression {progress.done}/{progress.total}</small>
+          </div>
+          <div className="project-progress-meter" aria-label={`Progression ${progress.percent}%`}>
+            <span style={{ width: `${progress.percent}%` }} />
           </div>
           <div className="project-action-row">
-            <button type="button"><Mail size={14} aria-hidden /> Envoyer par mail</button>
-            <button type="button"><Send size={14} aria-hidden /> Publier espace client</button>
+            <button type="button"><Mail size={14} aria-hidden /> Email + espace client</button>
+            <button type="button"><Send size={14} aria-hidden /> Signature client</button>
             <button type="button"><Inbox size={14} aria-hidden /> Import Gmail</button>
           </div>
         </section>
@@ -102,6 +123,145 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
             <strong>Aucun projet emprunteur rattache.</strong>
             <p>Creer un projet depuis cette fiche pour initialiser les etapes, documents et signatures.</p>
           </div>
+        </section>
+      )}
+
+      {activeProject && (
+        <section className="project-needs-card">
+          <div className="project-documents-header">
+            <div>
+              <h3>Recueil des besoins emprunteur</h3>
+              <p>
+                Les donnees saisies ici alimentent les devis, la fiche conseil et la souscription.
+                Le recueil ne peut pas etre valide sans l'offre de pret, le tableau d'amortissement et la piece d'identite.
+              </p>
+            </div>
+            <ClipboardCheck size={22} aria-hidden />
+          </div>
+
+          <form action={needsFormAction} className="project-needs-form">
+            <input type="hidden" name="projectId" value={activeProject.id} />
+            <input type="hidden" name="clientId" value={clientId} />
+            <div className="project-needs-grid">
+              <label>
+                Banque
+                <input name="bankName" defaultValue={needs?.bank_name ?? ""} placeholder="Banque preteuse" />
+              </label>
+              <label>
+                Type d'operation
+                <select name="operationType" defaultValue={needs?.delegation_or_substitution ?? "Substitution assurance emprunteur"}>
+                  <option>Delegation assurance emprunteur</option>
+                  <option>Substitution assurance emprunteur</option>
+                  <option>Renegociation / optimisation</option>
+                </select>
+              </label>
+              <label>
+                Montant emprunte
+                <input name="loanAmount" type="number" min="0" defaultValue={needs?.loan_amount ?? ""} />
+              </label>
+              <label>
+                Duree en mois
+                <input name="loanDurationMonths" type="number" min="0" defaultValue={needs?.loan_duration_months ?? ""} />
+              </label>
+              <label>
+                Capital restant du
+                <input name="remainingCapital" type="number" min="0" defaultValue={needs?.remaining_capital ?? ""} />
+              </label>
+              <label>
+                Prime annuelle actuelle
+                <input name="currentAnnualPremium" type="number" min="0" defaultValue={needs?.current_annual_premium ?? ""} />
+              </label>
+              <label>
+                Date debut pret
+                <input name="loanStartDate" type="date" defaultValue={needs?.loan_start_date ?? ""} />
+              </label>
+              <label>
+                Date fin pret
+                <input name="loanEndDate" type="date" defaultValue={needs?.loan_end_date ?? ""} />
+              </label>
+              <label>
+                Assureur actuel
+                <input name="currentInsurer" defaultValue={needs?.current_insurer ?? ""} placeholder="Banque, CNP, Cardif..." />
+              </label>
+              <label>
+                Quotite emprunteur 1
+                <input
+                  name="borrowerQuotity"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue={Number(needs?.requested_quotities?.borrower ?? 100)}
+                />
+              </label>
+              <label>
+                Quotite co-emprunteur
+                <input
+                  name="coBorrowerQuotity"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue={Number(needs?.requested_quotities?.coBorrower ?? 0)}
+                />
+              </label>
+              <label>
+                Objectif client
+                <textarea
+                  name="objective"
+                  defaultValue={needs?.objective ?? ""}
+                  placeholder="Economiser, securiser le logement, adapter les quotites, changer d'assurance..."
+                />
+              </label>
+            </div>
+
+            <div className="project-guarantee-row">
+              {["Deces", "PTIA", "ITT", "IPT", "IPP", "Perte emploi"].map((guarantee) => (
+                <label key={guarantee} className="project-check-pill">
+                  <input
+                    type="checkbox"
+                    name="guarantees"
+                    value={guarantee}
+                    defaultChecked={(needs?.requested_guarantees ?? ["Deces", "PTIA", "ITT", "IPT"]).includes(guarantee)}
+                  />
+                  {guarantee}
+                </label>
+              ))}
+            </div>
+
+            <div className="project-doc-checks">
+              <label>
+                <input type="checkbox" name="loanOfferReady" defaultChecked={documentRequirements.find((d) => d.key === "loan_offer")?.status !== "missing"} />
+                Offre de pret recue
+              </label>
+              <label>
+                <input type="checkbox" name="amortizationReady" defaultChecked={documentRequirements.find((d) => d.key === "amortization_schedule")?.status !== "missing"} />
+                Tableau d'amortissement recu
+              </label>
+              <label>
+                <input type="checkbox" name="identityReady" defaultChecked={documentRequirements.find((d) => d.key === "identity")?.status !== "missing"} />
+                Piece d'identite recue
+              </label>
+            </div>
+
+            <label className="project-notes-field">
+              Notes conseiller / MIA
+              <textarea name="advisorNotes" defaultValue={needs?.advisor_notes ?? ""} />
+            </label>
+
+            <div className="project-form-footer">
+              <p className={requiredDocumentsReady ? "form-success" : "form-error"}>
+                {requiredDocumentsReady
+                  ? "Pieces obligatoires presentes : le recueil peut passer en validation."
+                  : "Validation bloquee : pieces obligatoires manquantes."}
+              </p>
+              <button className="cf360-add-btn" type="submit" disabled={isSavingNeeds}>
+                <ClipboardCheck size={14} aria-hidden />
+                {isSavingNeeds ? "Enregistrement..." : "Enregistrer le recueil"}
+              </button>
+            </div>
+            {needsState.message && (
+              <p className={needsState.status === "success" ? "form-success" : "form-error"}>{needsState.message}</p>
+            )}
+          </form>
         </section>
       )}
 
@@ -125,6 +285,44 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
                   {step.channels.map((item) => <b key={item}>{item}</b>)}
                 </div>
               </div>
+              {activeProject && (
+                <form action={updateBorrowerWorkflowAction} className="project-step-actions">
+                  <input type="hidden" name="projectId" value={activeProject.id} />
+                  <input type="hidden" name="clientId" value={clientId} />
+                  <input type="hidden" name="stepKey" value={step.key} />
+                  {step.key === "subscription" && (
+                    <input name="subscriptionLink" placeholder="Lien de souscription compagnie" />
+                  )}
+                  {step.key === "advice" && (
+                    <input name="clientComment" placeholder="Commentaire client eventuel" />
+                  )}
+                  {step.status === "todo" && (
+                    <button name="workflowAction" value="start" type="submit">
+                      <PlayCircle size={13} aria-hidden /> Demarrer
+                    </button>
+                  )}
+                  {(step.key === "mission" || step.key === "advice" || step.key === "subscription") && step.status !== "done" && (
+                    <button name="workflowAction" value="send" type="submit">
+                      <Send size={13} aria-hidden /> Envoyer
+                    </button>
+                  )}
+                  {(step.key === "mission" || step.key === "advice") && step.status !== "done" && (
+                    <button name="workflowAction" value="sign" type="submit">
+                      <FileSignature size={13} aria-hidden /> Signer
+                    </button>
+                  )}
+                  {step.key !== "activation" && step.status !== "done" && (
+                    <button name="workflowAction" value="complete" type="submit">
+                      <CheckCircle2 size={13} aria-hidden /> Valider
+                    </button>
+                  )}
+                  {step.key === "activation" && step.status !== "done" && (
+                    <button name="workflowAction" value="activate" type="submit">
+                      <CheckCircle2 size={13} aria-hidden /> Activer dossier
+                    </button>
+                  )}
+                </form>
+              )}
             </div>
           </article>
         ))}
@@ -139,18 +337,43 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
           <LockKeyhole size={22} aria-hidden />
         </div>
         <div className="project-document-list">
-          {borrowerRequiredDocuments.map((document) => (
+          {documentRequirements.map((document) => (
             <article key={document.key}>
               <div>
                 {document.requiredForValidation ? <LockKeyhole size={15} aria-hidden /> : <FileText size={15} aria-hidden />}
                 <strong>{document.label}</strong>
               </div>
-              <span>{document.requiredForValidation ? "Bloquant" : "Complementaire"}</span>
+              <span>{document.requiredForValidation ? "Bloquant" : "Complementaire"} - {document.status}</span>
               <small>{document.acceptedSources.join(" / ")}</small>
             </article>
           ))}
         </div>
       </section>
+
+      {activeProject && (
+        <section className="project-traceability-grid">
+          <article>
+            <h4>Envois</h4>
+            {deliveries.length > 0 ? deliveries.slice(0, 4).map((delivery) => (
+              <p key={delivery.id}>{delivery.delivery_type} - {delivery.channel} - {delivery.status}</p>
+            )) : <p>Aucun envoi journalise.</p>}
+          </article>
+          <article>
+            <h4>Signatures</h4>
+            {signatures.length > 0 ? signatures.slice(0, 4).map((signature) => (
+              <p key={signature.id}>{signature.signature_type} - {signature.status}</p>
+            )) : <p>Aucune signature en attente.</p>}
+          </article>
+          <article>
+            <h4>Imports Gmail</h4>
+            {imports.length > 0 ? imports.slice(0, 4).map((item) => (
+              <p key={item.id}>
+                <ExternalLink size={12} aria-hidden /> {item.subject ?? "Email rattache"} ({item.attachment_count} piece(s))
+              </p>
+            )) : <p>Aucun email rattache au projet.</p>}
+          </article>
+        </section>
+      )}
 
       <section className="project-automation-grid">
         <article>

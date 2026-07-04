@@ -3,12 +3,29 @@
 import { revalidatePath } from "next/cache";
 import { requireRole } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { borrowerRequiredDocuments, borrowerWorkflowSteps, type BorrowerProject } from "@/lib/project-workflow";
+import {
+  borrowerRequiredDocuments,
+  borrowerWorkflowSteps,
+  type BorrowerProject,
+  type ProjectStepKey,
+  type ProjectStepStatus,
+} from "@/lib/project-workflow";
 
 export type ProjectActionState = {
   status: "idle" | "success" | "error";
   message: string;
   projectId?: string;
+};
+
+type WorkflowAction = "start" | "send" | "sign" | "complete" | "block" | "activate";
+
+const workflowActionLabels: Record<WorkflowAction, string> = {
+  start: "Etape demarree.",
+  send: "Element envoye au client par email et espace client.",
+  sign: "Signature client enregistree.",
+  complete: "Etape validee.",
+  block: "Etape mise en attente.",
+  activate: "Dossier active.",
 };
 
 export async function getClientProjects(clientId: string): Promise<BorrowerProject[]> {
@@ -18,7 +35,15 @@ export async function getClientProjects(clientId: string): Promise<BorrowerProje
 
   const { data, error } = await supabase
     .from("projects")
-    .select("id, client_id, title, project_type, status, sensitive_context, created_at, updated_at")
+    .select(`
+      id, client_id, title, project_type, status, workflow_stage, workflow_data, sensitive_context, created_at, updated_at,
+      project_workflow_steps(id, project_id, step_key, label, status, position, delivery_channels, requirements, completed_at, completed_by),
+      project_document_requirements(id, project_id, document_key, label, required_for_validation, status, position, accepted_sources, document_id, source, source_metadata, validated_at, validated_by),
+      project_borrower_needs(id, project_id, client_id, completion_source, status, bank_name, loan_amount, loan_duration_months, remaining_capital, loan_start_date, loan_end_date, current_insurer, current_annual_premium, requested_quotities, requested_guarantees, delegation_or_substitution, objective, known_data, missing_data, validation_blockers, client_comment, advisor_notes),
+      project_deliveries(id, project_id, delivery_type, channel, status, subject, body, sent_at, created_at),
+      project_signatures(id, project_id, signature_type, status, client_comment, requested_at, signed_at),
+      project_email_imports(id, project_id, gmail_thread_id, from_email, subject, received_at, ai_summary, attachment_count, excluded)
+    `)
     .eq("client_id", clientId)
     .order("created_at", { ascending: false });
 
@@ -99,6 +124,15 @@ export async function createBorrowerProjectAction(
     })),
   );
 
+  await supabase.from("project_borrower_needs").insert({
+    project_id: project.id,
+    client_id: clientId,
+    completed_by: user.id,
+    completion_source: "courtier",
+    status: "documents_missing",
+    objective: "Comparer ou substituer l'assurance emprunteur en securisant les garanties du pret.",
+  });
+
   await supabase.from("audit_logs").insert({
     actor_id: user.id,
     action: "project.created_from_client_file",
@@ -120,4 +154,300 @@ export async function createBorrowerProjectAction(
     message: "Projet assurance emprunteur cree et rattache a la fiche client.",
     projectId: project.id,
   };
+}
+
+export async function saveBorrowerNeedsAction(
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+
+  if (!supabase) {
+    return { status: "error", message: "Supabase n'est pas configure pour enregistrer le recueil." };
+  }
+
+  const projectId = String(formData.get("projectId") ?? "");
+  const clientId = String(formData.get("clientId") ?? "");
+
+  if (!projectId || !clientId) {
+    return { status: "error", message: "Projet ou fiche client manquant." };
+  }
+
+  const numberOrNull = (value: FormDataEntryValue | null) => {
+    const parsed = Number(String(value ?? "").replace(",", "."));
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  };
+
+  const loanAmount = numberOrNull(formData.get("loanAmount"));
+  const loanDurationMonths = numberOrNull(formData.get("loanDurationMonths"));
+  const remainingCapital = numberOrNull(formData.get("remainingCapital"));
+  const currentAnnualPremium = numberOrNull(formData.get("currentAnnualPremium"));
+  const loanOfferReady = formData.get("loanOfferReady") === "on";
+  const amortizationReady = formData.get("amortizationReady") === "on";
+  const identityReady = formData.get("identityReady") === "on";
+
+  const blockers = [
+    !loanOfferReady ? "offre_pret_manquante" : null,
+    !amortizationReady ? "tableau_amortissement_manquant" : null,
+    !identityReady ? "piece_identite_manquante" : null,
+  ].filter(Boolean) as string[];
+
+  const needsStatus = blockers.length === 0 ? "ready_for_validation" : "documents_missing";
+  const stepStatus: ProjectStepStatus = blockers.length === 0 ? "in_progress" : "blocked";
+
+  const { error } = await supabase.from("project_borrower_needs").upsert(
+    {
+      project_id: projectId,
+      client_id: clientId,
+      completed_by: user.id,
+      completion_source: "courtier",
+      status: needsStatus,
+      bank_name: String(formData.get("bankName") ?? "").trim() || null,
+      loan_amount: loanAmount,
+      loan_duration_months: loanDurationMonths,
+      remaining_capital: remainingCapital,
+      loan_start_date: String(formData.get("loanStartDate") ?? "") || null,
+      loan_end_date: String(formData.get("loanEndDate") ?? "") || null,
+      current_insurer: String(formData.get("currentInsurer") ?? "").trim() || null,
+      current_annual_premium: currentAnnualPremium,
+      delegation_or_substitution: String(formData.get("operationType") ?? "").trim() || null,
+      objective: String(formData.get("objective") ?? "").trim() || null,
+      advisor_notes: String(formData.get("advisorNotes") ?? "").trim() || null,
+      requested_quotities: {
+        borrower: numberOrNull(formData.get("borrowerQuotity")),
+        coBorrower: numberOrNull(formData.get("coBorrowerQuotity")),
+      },
+      requested_guarantees: formData.getAll("guarantees").map(String),
+      validation_blockers: blockers,
+      missing_data: { loanOfferReady, amortizationReady, identityReady },
+    },
+    { onConflict: "project_id" },
+  );
+
+  if (error) {
+    return { status: "error", message: error.message };
+  }
+
+  await Promise.all([
+    updateDocumentGate(supabase, projectId, "loan_offer", loanOfferReady ? "received" : "missing", user.id, "recueil_besoins"),
+    updateDocumentGate(
+      supabase,
+      projectId,
+      "amortization_schedule",
+      amortizationReady ? "received" : "missing",
+      user.id,
+      "recueil_besoins",
+    ),
+    updateDocumentGate(supabase, projectId, "identity", identityReady ? "received" : "missing", user.id, "recueil_besoins"),
+    supabase
+      .from("project_workflow_steps")
+      .update({ status: stepStatus, updated_at: new Date().toISOString() })
+      .eq("project_id", projectId)
+      .eq("step_key", "needs"),
+    supabase
+      .from("projects")
+      .update({
+        status: blockers.length === 0 ? "in_progress" : "waiting_documents",
+        workflow_stage: "recueil_besoins",
+        workflow_data: {
+          last_needs_update: new Date().toISOString(),
+          validation_blockers: blockers,
+        },
+      })
+      .eq("id", projectId),
+    supabase.from("audit_logs").insert({
+      actor_id: user.id,
+      action: "borrower_needs.saved",
+      target_table: "projects",
+      target_id: projectId,
+      metadata: { client_id: clientId, status: needsStatus, blockers },
+    }),
+  ]);
+
+  revalidatePath(`/admin/clients/${clientId}`);
+  revalidatePath("/admin/emprunteur");
+
+  return {
+    status: "success",
+    message:
+      blockers.length === 0
+        ? "Recueil enregistre. Les pieces obligatoires sont presentes, la feuille de mission peut etre envoyee."
+        : "Recueil enregistre. La validation reste bloquee tant que les pieces obligatoires ne sont pas ajoutees.",
+    projectId,
+  };
+}
+
+export async function updateBorrowerWorkflowAction(formData: FormData) {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return;
+
+  const projectId = String(formData.get("projectId") ?? "");
+  const clientId = String(formData.get("clientId") ?? "");
+  const stepKey = String(formData.get("stepKey") ?? "") as ProjectStepKey;
+  const action = String(formData.get("workflowAction") ?? "complete") as WorkflowAction;
+  const subscriptionLink = String(formData.get("subscriptionLink") ?? "").trim();
+  const clientComment = String(formData.get("clientComment") ?? "").trim();
+
+  if (!projectId || !clientId || !stepKey) return;
+
+  const nextStatus = getNextStepStatus(action);
+  const completed = nextStatus === "done";
+  const now = new Date().toISOString();
+
+  await supabase
+    .from("project_workflow_steps")
+    .update({
+      status: nextStatus,
+      completed_at: completed ? now : null,
+      completed_by: completed ? user.id : null,
+      updated_at: now,
+    })
+    .eq("project_id", projectId)
+    .eq("step_key", stepKey);
+
+  if (action === "send") {
+    await createDeliveryForStep(supabase, projectId, clientId, stepKey, user.id, subscriptionLink);
+  }
+
+  if (action === "send" && (stepKey === "mission" || stepKey === "advice")) {
+    await supabase.from("project_signatures").insert({
+      project_id: projectId,
+      client_id: clientId,
+      signature_type: stepKey === "mission" ? "feuille_mission" : "fiche_conseil",
+      status: "pending",
+      client_comment: clientComment || null,
+      created_by: user.id,
+    });
+  }
+
+  if (action === "sign" && (stepKey === "mission" || stepKey === "advice")) {
+    await supabase
+      .from("project_signatures")
+      .update({ status: "signed", signed_at: now, client_comment: clientComment || null })
+      .eq("project_id", projectId)
+      .eq("signature_type", stepKey === "mission" ? "feuille_mission" : "fiche_conseil")
+      .eq("status", "pending");
+  }
+
+  if (action === "activate") {
+    await supabase
+      .from("projects")
+      .update({
+        status: "signed",
+        workflow_stage: "activation_dossier",
+        workflow_data: { activated_at: now, activated_by: user.id },
+      })
+      .eq("id", projectId);
+  } else {
+    await supabase
+      .from("projects")
+      .update({ workflow_stage: getWorkflowStage(stepKey), updated_at: now })
+      .eq("id", projectId);
+  }
+
+  await supabase.from("audit_logs").insert({
+    actor_id: user.id,
+    action: `borrower_workflow.${action}`,
+    target_table: "projects",
+    target_id: projectId,
+    metadata: {
+      client_id: clientId,
+      step_key: stepKey,
+      subscription_link: subscriptionLink || null,
+      message: workflowActionLabels[action],
+    },
+  });
+
+  revalidatePath(`/admin/clients/${clientId}`);
+  revalidatePath("/admin/emprunteur");
+}
+
+async function updateDocumentGate(
+  supabase: NonNullable<Awaited<ReturnType<typeof createSupabaseServerClient>>>,
+  projectId: string,
+  documentKey: string,
+  status: "missing" | "received" | "validated" | "rejected",
+  userId: string,
+  source: string,
+) {
+  return supabase
+    .from("project_document_requirements")
+    .update({
+      status,
+      source,
+      validated_at: status === "validated" ? new Date().toISOString() : null,
+      validated_by: status === "validated" ? userId : null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("project_id", projectId)
+    .eq("document_key", documentKey);
+}
+
+function getNextStepStatus(action: WorkflowAction): ProjectStepStatus {
+  if (action === "start") return "in_progress";
+  if (action === "send") return "waiting_client";
+  if (action === "block") return "blocked";
+  return "done";
+}
+
+function getWorkflowStage(stepKey: ProjectStepKey) {
+  const stages: Record<ProjectStepKey, string> = {
+    needs: "recueil_besoins",
+    mission: "feuille_mission",
+    quotes: "devis",
+    advice: "fiche_conseil",
+    subscription: "lien_souscription",
+    validation: "validation_compagnie",
+    activation: "activation_dossier",
+  };
+
+  return stages[stepKey];
+}
+
+async function createDeliveryForStep(
+  supabase: NonNullable<Awaited<ReturnType<typeof createSupabaseServerClient>>>,
+  projectId: string,
+  clientId: string,
+  stepKey: ProjectStepKey,
+  userId: string,
+  subscriptionLink: string,
+) {
+  const deliveryByStep: Partial<Record<ProjectStepKey, { type: string; subject: string; body: string }>> = {
+    mission: {
+      type: "feuille_mission",
+      subject: "Votre feuille de mission EJ Assurances",
+      body: "La feuille de mission est disponible pour signature dans votre espace client.",
+    },
+    advice: {
+      type: "fiche_conseil",
+      subject: "Votre fiche conseil assurance emprunteur",
+      body: "Votre fiche conseil DDA est disponible pour lecture, commentaire et signature.",
+    },
+    subscription: {
+      type: "lien_souscription",
+      subject: "Votre lien de souscription assurance emprunteur",
+      body: subscriptionLink
+        ? `Votre lien de souscription : ${subscriptionLink}`
+        : "Le lien de souscription sera rattache au dossier des reception.",
+    },
+  };
+
+  const delivery = deliveryByStep[stepKey];
+  if (!delivery) return;
+
+  await supabase.from("project_deliveries").insert(
+    ["email", "espace_client"].map((channel) => ({
+      project_id: projectId,
+      client_id: clientId,
+      delivery_type: delivery.type,
+      channel,
+      status: "sent",
+      subject: delivery.subject,
+      body: delivery.body,
+      sent_at: new Date().toISOString(),
+      created_by: userId,
+    })),
+  );
 }
