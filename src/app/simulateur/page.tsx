@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { SimulateurClient } from "./simulateur-client";
 
-/* Page simulateur : iframe Magnolia en marque blanche pour comparer l'assurance emprunteur. */
+/* Page simulateur : outil natif EJ Assurances pour comparer l'assurance emprunteur. */
 export const metadata: Metadata = {
   title: "Simulateur assurance emprunteur",
-  description: "Comparez votre assurance emprunteur avec le simulateur EJ Assurances.",
+  description: "Simulez votre assurance emprunteur et estimez les economies potentielles avec EJ Assurances.",
 };
 
 export default function SimulateurPage() {
@@ -16,20 +17,11 @@ export default function SimulateurPage() {
             Comparez votre <span className="text-gradient">assurance emprunteur</span>.
           </h1>
           <p className="mt-5 text-lg leading-8 text-[#475569]">
-            Utilisez le simulateur pour obtenir une premiere comparaison. Le cabinet peut ensuite
-            analyser les garanties, les quotites et les documents de votre dossier.
+            Renseignez les informations principales de votre pret pour obtenir une premiere estimation.
+            Le cabinet affine ensuite le resultat avec les garanties, quotites et documents du dossier.
           </p>
         </div>
-
-        <div className="glass-card overflow-hidden p-2 shadow-[0_0_30px_rgba(59,130,246,0.12)]">
-          <iframe
-            src="https://www.magnolia.fr/comparer-assurance-pret-immobilier?utm_source=33594&whiteLabel=true&platform=direct"
-            title="Simulateur assurance emprunteur EJ Assurances"
-            className="h-[780px] w-full rounded-lg border-0 md:h-[880px]"
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
-        </div>
+        <SimulateurClient />
       </section>
     </main>
   );
