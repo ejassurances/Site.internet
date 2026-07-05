@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import {
   createBorrowerProjectAction,
+  createScooterProjectAction,
   saveBorrowerNeedsAction,
   updateBorrowerWorkflowAction,
   type ProjectActionState,
@@ -57,8 +58,10 @@ const statusClass: Record<ProjectStepStatus, string> = {
 
 export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkflowProps) {
   const [actionState, formAction, isPending] = useActionState(createBorrowerProjectAction, initialState);
+  const [scooterState, scooterFormAction, isCreatingScooter] = useActionState(createScooterProjectAction, initialState);
   const [needsState, needsFormAction, isSavingNeeds] = useActionState(saveBorrowerNeedsAction, initialState);
   const borrowerProjects = projects.filter((project) => project.project_type === "assurance_emprunteur");
+  const scooterProjects = projects.filter((project) => project.project_type === "assurance_trottinette");
   const activeProject = borrowerProjects[0] ?? null;
   const workflow = getBorrowerWorkflow(activeProject);
   const documentRequirements = getBorrowerDocumentRequirements(activeProject);
@@ -98,7 +101,40 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
             </p>
           )}
         </form>
+        <form action={scooterFormAction} className="project-create-form">
+          <input type="hidden" name="clientId" value={clientId} />
+          <label>
+            Nom du projet
+            <input name="projectTitle" defaultValue="Assurance trottinette" />
+          </label>
+          <button className="cf360-add-btn" type="submit" disabled={isCreatingScooter}>
+            <ClipboardCheck size={14} aria-hidden />
+            {isCreatingScooter ? "Creation..." : "Creer un projet trottinette"}
+          </button>
+          {scooterState.message && (
+            <p className={scooterState.status === "success" ? "form-success" : "form-error"}>
+              {scooterState.message}
+            </p>
+          )}
+        </form>
       </section>
+
+      {scooterProjects.length > 0 && (
+        <section className="project-current-card">
+          <div>
+            <span>Projet trottinette</span>
+            <strong>{scooterProjects[0].title}</strong>
+            <small>
+              Statut CRM : {scooterProjects[0].status} - recueil 25 km/h et extension foyer a completer
+            </small>
+          </div>
+          <div className="project-action-row">
+            <button type="button"><ClipboardCheck size={14} aria-hidden /> Recueil besoins</button>
+            <button type="button"><UploadCloud size={14} aria-hidden /> Pieces Drive</button>
+            <button type="button"><Send size={14} aria-hidden /> Devis / souscription</button>
+          </div>
+        </section>
+      )}
 
       {activeProject ? (
         <section className="project-current-card">

@@ -156,6 +156,108 @@ export async function createBorrowerProjectAction(
   };
 }
 
+export async function createScooterProjectAction(
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+
+  if (!supabase) {
+    return { status: "error", message: "Supabase n'est pas configure pour creer le projet." };
+  }
+
+  const clientId = String(formData.get("clientId") ?? "");
+  const projectTitle = String(formData.get("projectTitle") ?? "Assurance trottinette").trim();
+
+  if (!clientId) {
+    return { status: "error", message: "Fiche client manquante." };
+  }
+
+  const { data: client } = await supabase
+    .from("clients")
+    .select("id, full_name, email")
+    .eq("id", clientId)
+    .maybeSingle();
+
+  if (!client) {
+    return { status: "error", message: "Client introuvable ou inaccessible." };
+  }
+
+  const { data: project, error } = await supabase
+    .from("projects")
+    .insert({
+      client_id: clientId,
+      assigned_courtier_id: user.id,
+      title: projectTitle || `Assurance trottinette - ${client.full_name ?? client.email ?? "client"}`,
+      project_type: "assurance_trottinette",
+      status: "waiting_documents",
+      workflow_stage: "recueil_besoins",
+      sensitive_context:
+        "Recueil trottinette a completer : verifier limitation 25 km/h et extension si utilisation par d'autres membres du foyer fiscal.",
+      workflow_data: {
+        required_questions: ["max_speed_limited_25", "used_by_household_members"],
+        expected_folder_prefix: "DOX_TROT",
+      },
+    })
+    .select("id")
+    .single();
+
+  if (error || !project) {
+    return { status: "error", message: error?.message ?? "Impossible de creer le projet trottinette." };
+  }
+
+  await supabase.from("scooter_insurance_needs").insert({
+    client_id: clientId,
+    project_id: project.id,
+    status: "draft",
+    owner_full_name: client.full_name,
+    owner_email: client.email,
+    collected_by: user.id,
+  });
+
+  await supabase.from("drive_sync_events").insert({
+    event_type: "drive.project_folder_requested",
+    client_id: clientId,
+    project_id: project.id,
+    status: "queued",
+    created_by: user.id,
+    payload: {
+      product_code: "TROT",
+      expected_folder_pattern: "DOX_TROT_Prenom_NOM",
+      subfolders: [
+        "01 - Identite KYC",
+        "02 - Recueil des besoins",
+        "03 - Devis",
+        "04 - Fiche conseil",
+        "05 - Contrat",
+        "06 - Echanges",
+      ],
+    },
+  });
+
+  await supabase.from("audit_logs").insert({
+    actor_id: user.id,
+    action: "project.scooter_created_from_client_file",
+    target_table: "projects",
+    target_id: project.id,
+    metadata: {
+      client_id: clientId,
+      project_type: "assurance_trottinette",
+      initial_status: "waiting_documents",
+    },
+  });
+
+  revalidatePath(`/admin/clients/${clientId}`);
+  revalidatePath("/admin/workflows/trottinette");
+
+  return {
+    status: "success",
+    message: "Projet assurance trottinette cree et rattache a la fiche client.",
+    projectId: project.id,
+  };
+}
+
 export async function saveBorrowerNeedsAction(
   _previousState: ProjectActionState,
   formData: FormData,
