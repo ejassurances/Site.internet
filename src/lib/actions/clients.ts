@@ -24,32 +24,82 @@ export type ClientFormData = {
 
 export type ActionResult = { success: boolean; error?: string; id?: string };
 
+function emptyToNull(value?: string) {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : null;
+}
+
+function normalizeClientPayload(data: ClientFormData) {
+  return {
+    full_name: data.full_name.trim(),
+    email: emptyToNull(data.email)?.toLowerCase() ?? null,
+    phone: emptyToNull(data.phone),
+    date_naissance: emptyToNull(data.date_naissance),
+    adresse: emptyToNull(data.adresse),
+    code_postal: emptyToNull(data.code_postal),
+    ville: emptyToNull(data.ville),
+    situation_familiale: emptyToNull(data.situation_familiale),
+    family_context: emptyToNull(data.family_context),
+    statut_client: data.statut_client ?? "prospect",
+    contact_type: data.contact_type ?? "prospect",
+    source_acquisition: emptyToNull(data.source_acquisition),
+    notes: emptyToNull(data.notes),
+  };
+}
+
+function formatClientError(message: string) {
+  if (message.includes("invalid input syntax for type date")) {
+    return "La date de naissance est invalide. Laissez le champ vide ou selectionnez une vraie date.";
+  }
+
+  if (message.includes("violates check constraint")) {
+    return "Une valeur de statut ou de type de contact n'est pas acceptee par Supabase.";
+  }
+
+  if (message.includes("row-level security") || message.includes("permission denied")) {
+    return "Supabase refuse l'enregistrement. Verifiez que votre compte a bien le role admin ou courtier.";
+  }
+
+  if (message.includes("schema cache") || message.includes("Could not find")) {
+    return "La base Supabase n'est pas synchronisee avec le code. Il faut appliquer les migrations CRM.";
+  }
+
+  return message;
+}
+
 // ── Créer un client ────────────────────────────────────────────────────────────
 export async function createClient(data: ClientFormData): Promise<ActionResult> {
   const user = await requireRole(["admin", "courtier"]);
   const supabase = await createSupabaseServerClient();
   if (!supabase) return { success: false, error: "Connexion Supabase non disponible." };
 
-  const { tags, ...clientData } = data;
+  if (!data.full_name.trim()) {
+    return { success: false, error: "Le nom complet est obligatoire." };
+  }
+
+  const clientData = normalizeClientPayload(data);
+  const tags = data.tags?.map((tag) => tag.trim()).filter(Boolean) ?? [];
 
   const { data: client, error } = await supabase
     .from("clients")
     .insert({
       ...clientData,
       assigned_courtier_id: user.id,
-      statut_client: clientData.statut_client ?? "prospect",
-      contact_type: clientData.contact_type ?? "prospect",
     })
     .select("id")
     .single();
 
-  if (error) return { success: false, error: error.message };
+  if (error) return { success: false, error: formatClientError(error.message) };
 
   // Insérer les tags
-  if (tags && tags.length > 0) {
-    await supabase.from("client_tags").insert(
+  if (tags.length > 0) {
+    const { error: tagError } = await supabase.from("client_tags").insert(
       tags.map((tag) => ({ client_id: client.id, tag }))
     );
+
+    if (tagError) {
+      return { success: true, id: client.id, error: "La fiche client a ete creee, mais certains tags n'ont pas pu etre ajoutes." };
+    }
   }
 
   revalidatePath("/admin/clients");
@@ -62,14 +112,19 @@ export async function updateClient(clientId: string, data: ClientFormData): Prom
   const supabase = await createSupabaseServerClient();
   if (!supabase) return { success: false, error: "Connexion Supabase non disponible." };
 
-  const { tags, ...clientData } = data;
+  if (!data.full_name.trim()) {
+    return { success: false, error: "Le nom complet est obligatoire." };
+  }
+
+  const clientData = normalizeClientPayload(data);
+  const tags = data.tags?.map((tag) => tag.trim()).filter(Boolean);
 
   const { error } = await supabase
     .from("clients")
     .update(clientData)
     .eq("id", clientId);
 
-  if (error) return { success: false, error: error.message };
+  if (error) return { success: false, error: formatClientError(error.message) };
 
   // Remplacer les tags
   if (tags !== undefined) {

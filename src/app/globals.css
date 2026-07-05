@@ -1258,6 +1258,15 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   .lcb-search {
     max-width: none;
   }
+
+  .admin-client-create-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-create-rail {
+    position: static;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 640px) {
@@ -1278,6 +1287,28 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   .lcb-proof-grid,
   .lcb-automation-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-create-rail,
+  .form-grid-2,
+  .form-tag-input {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-client-form-intro {
+    flex-direction: column;
+  }
+
+  .admin-client-form .form-section,
+  .admin-client-form .form-error-banner {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+
+  .admin-client-form-intro,
+  .admin-client-form .form-actions {
+    padding-left: 18px;
+    padding-right: 18px;
   }
 
   .ej-method-list li {
@@ -1878,6 +1909,208 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .field-hint, .assessment-preview small { color: var(--muted); font-size: 13px; }
 
 .form-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Admin client creation */
+.admin-client-create-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(30,58,95,.12);
+  border-radius: 18px;
+  padding: 26px;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(59,130,246,.16), transparent 30%),
+    linear-gradient(135deg, rgba(255,255,255,.96), rgba(241,245,249,.88));
+  box-shadow: 0 20px 60px rgba(15,23,42,.08);
+}
+
+.admin-client-create-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.admin-create-rail {
+  position: sticky;
+  top: 22px;
+  display: grid;
+  gap: 12px;
+}
+
+.admin-create-rail article {
+  border: 1px solid rgba(30,58,95,.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,.9);
+  padding: 16px;
+  box-shadow: 0 16px 45px rgba(15,23,42,.06);
+}
+
+.admin-create-rail svg { color: var(--accent-strong); }
+.admin-create-rail h2 { margin: 10px 0 5px; color: var(--navy); font-size: 15px; }
+.admin-create-rail p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+
+.admin-form-container--client {
+  border: 1px solid rgba(30,58,95,.12);
+  border-radius: 18px;
+  background: rgba(255,255,255,.94);
+  box-shadow: 0 24px 70px rgba(15,23,42,.09);
+  overflow: hidden;
+}
+
+.admin-client-form {
+  display: grid;
+  gap: 0;
+  padding: 0;
+}
+
+.admin-client-form-intro {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 24px 26px;
+  border-bottom: 1px solid rgba(30,58,95,.1);
+  background:
+    linear-gradient(135deg, rgba(7,17,30,.96), rgba(15,39,68,.94));
+  color: white;
+}
+
+.admin-client-form-intro h2 { margin: 3px 0 8px; font-size: 24px; letter-spacing: 0; }
+.admin-client-form-intro p { margin: 0; color: rgba(240,244,248,.78); font-size: 14px; line-height: 1.55; max-width: 720px; }
+.admin-client-form-intro .eyebrow { color: rgba(255,255,255,.62); margin: 0; }
+.admin-client-form-intro > span {
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  padding: 8px 11px;
+  background: rgba(255,255,255,.08);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.admin-client-form .form-error-banner {
+  margin: 18px 26px 0;
+  border: 1px solid rgba(185,28,28,.18);
+  border-radius: 12px;
+  background: #fff1f2;
+  color: #991b1b;
+  padding: 12px 14px;
+  font-weight: 750;
+}
+
+.admin-client-form .form-section {
+  margin: 0 26px;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(30,58,95,.1);
+}
+
+.admin-client-form .form-section legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.form-field label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.required { color: #b91c1c; }
+
+.admin-client-form input,
+.admin-client-form select,
+.admin-client-form textarea {
+  width: 100%;
+  min-height: 46px;
+  border: 1.5px solid rgba(30,58,95,.14);
+  border-radius: 11px;
+  background: #f8fafc;
+  color: var(--ink);
+  padding: 11px 13px;
+  font-size: 14px;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+
+.admin-client-form textarea { resize: vertical; min-height: 104px; line-height: 1.55; }
+
+.admin-client-form input:focus,
+.admin-client-form select:focus,
+.admin-client-form textarea:focus {
+  outline: none;
+  border-color: rgba(59,130,246,.7);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.12);
+}
+
+.form-tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.form-tag-input {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.form-selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.crm-tag.selected {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(59,130,246,.2);
+  border-radius: 999px;
+  background: rgba(59,130,246,.1);
+  color: var(--navy);
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.crm-tag.selected button {
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.admin-client-form .form-actions {
+  position: sticky;
+  bottom: 0;
+  justify-content: flex-end;
+  padding: 18px 26px;
+  border-top: 1px solid rgba(30,58,95,.1);
+  background: rgba(255,255,255,.88);
+  backdrop-filter: blur(12px);
+}
+
+.spin { animation: spin .85s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* âââ Client Directory âââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 .client-directory, .client-file { display: grid; gap: 18px; }
