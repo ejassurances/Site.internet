@@ -3,11 +3,15 @@ import { AppShell } from "@/components/app-shell";
 import { requireRole } from "@/lib/auth";
 import {
   approveDriveCandidateAction,
+  createDriveDocumentSyncAction,
   createDriveImportCandidateAction,
   getDriveImportCandidates,
+  getDriveNomenclatureRules,
+  getDriveSyncedDocuments,
   rejectDriveCandidateAction,
+  requestContractFolderRenameAction,
 } from "@/lib/actions/drive-imports";
-import { CheckCircle2, FolderSync, Plus, ShieldAlert, XCircle } from "lucide-react";
+import { CheckCircle2, FileCheck2, FolderSync, Plus, ShieldAlert, XCircle } from "lucide-react";
 
 export const metadata = { title: "Import Drive vers CRM - EJ Assurances" };
 
@@ -22,11 +26,20 @@ const statusLabels: Record<string, string> = {
 
 export default async function DriveImportPage() {
   const user = await requireRole(["admin", "courtier"]);
-  const candidates = await getDriveImportCandidates();
+  const [candidates, documents, rules] = await Promise.all([
+    getDriveImportCandidates(),
+    getDriveSyncedDocuments(),
+    getDriveNomenclatureRules(),
+  ]);
 
   async function addCandidate(formData: FormData) {
     "use server";
     await createDriveImportCandidateAction({ status: "idle", message: "" }, formData);
+  }
+
+  async function addDocument(formData: FormData) {
+    "use server";
+    await createDriveDocumentSyncAction({ status: "idle", message: "" }, formData);
   }
 
   return (
@@ -45,8 +58,8 @@ export default async function DriveImportPage() {
             <p className="eyebrow">Google Drive vers CRM</p>
             <h1>Creer une fiche client depuis un dossier Drive</h1>
             <p>
-              Un dossier cree ou duplique dans Drive peut devenir une fiche CRM candidate. Le cabinet valide, puis le CRM
-              rattache le dossier et demande la creation des sous-dossiers standards.
+              Les dossiers et documents crees dans Drive remontent dans le CRM avec une nomenclature controlee. Le CRM
+              peut aussi demander la creation des sous-dossiers et le renommage DOX vers CTT lors du passage en contrat.
             </p>
           </div>
           <div className="ops-hero-badge">
@@ -63,7 +76,16 @@ export default async function DriveImportPage() {
             </div>
             <label>
               Nom du dossier
-              <input name="folderName" placeholder="Client - Marie Martin - marie@email.fr" required />
+              <input name="folderName" placeholder="DOX_ADP_Marie_MARTIN" required />
+            </label>
+            <label>
+              Type de produit
+              <select name="productCode" defaultValue="">
+                <option value="">Detecter depuis le nom</option>
+                <option value="ADP">ADP - Assurance de pret</option>
+                <option value="PREV">PREV - Prevoyance</option>
+                <option value="TROT">TROT - Trottinette</option>
+              </select>
             </label>
             <label>
               ID ou URL du dossier Drive
@@ -83,9 +105,46 @@ export default async function DriveImportPage() {
             </div>
             <ul className="ops-list">
               <li>Le CRM reste la source de verite.</li>
-              <li>Drive cree seulement un candidat a valider.</li>
-              <li>Un email deja connu marque le dossier comme doublon possible.</li>
-              <li>Les sous-dossiers sont demandes apres validation cabinet.</li>
+              <li>Dossier projet : DOX_ADP_Prenom_NOM, DOX_PREV_Prenom_NOM ou DOX_TROT_Prenom_NOM.</li>
+              <li>Contrat actif : le dossier doit devenir CTT_ADP/PREV/TROT_Prenom_NOM.</li>
+              <li>Piece d'identite : CNI_Prenom_NOM.</li>
+              <li>Justificatif de domicile : Domicile_Nom_Prenom.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="ops-grid ops-grid--two">
+          <form action={addDocument} className="ops-card ops-form">
+            <div className="ops-card-title">
+              <FileCheck2 size={18} aria-hidden />
+              <h2>Synchroniser un document Drive</h2>
+            </div>
+            <label>
+              Nom du fichier
+              <input name="fileName" placeholder="CNI_Marie_MARTIN.pdf" required />
+            </label>
+            <label>
+              ID ou URL du fichier Drive
+              <input name="fileIdOrUrl" placeholder="https://drive.google.com/file/d/..." required />
+            </label>
+            <label>
+              ID ou URL du dossier parent
+              <input name="folderIdOrUrl" placeholder="Optionnel" />
+            </label>
+            <button className="btn-primary" type="submit">Synchroniser le document</button>
+          </form>
+
+          <div className="ops-card">
+            <div className="ops-card-title">
+              <ShieldAlert size={18} aria-hidden />
+              <h2>Nomenclature active</h2>
+            </div>
+            <ul className="ops-list">
+              {rules.map((rule) => (
+                <li key={rule.code}>
+                  <strong>{rule.pattern}</strong> - {rule.label}
+                </li>
+              ))}
             </ul>
           </div>
         </section>
@@ -127,6 +186,7 @@ export default async function DriveImportPage() {
                       {statusLabels[candidate.status] ?? candidate.status}
                     </span>
                     <small>Sous-dossiers : {candidate.subfolders_status}</small>
+                    {candidate.contract_folder_name && <small>Contrat : {candidate.contract_folder_name}</small>}
                   </div>
                   <div className="ops-actions">
                     <form action={approveDriveCandidateAction}>
@@ -135,12 +195,67 @@ export default async function DriveImportPage() {
                         <CheckCircle2 size={16} aria-hidden />
                       </button>
                     </form>
+                    {candidate.status === "linked" && candidate.contract_folder_name && (
+                      <form action={requestContractFolderRenameAction}>
+                        <input type="hidden" name="candidateId" value={candidate.id} />
+                        <button type="submit" className="ops-icon-action" title="Transformer DOX en CTT">
+                          CTT
+                        </button>
+                      </form>
+                    )}
                     <form action={rejectDriveCandidateAction}>
                       <input type="hidden" name="candidateId" value={candidate.id} />
                       <button type="submit" className="ops-icon-action ops-icon-action--danger" title="Rejeter">
                         <XCircle size={16} aria-hidden />
                       </button>
                     </form>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+
+        <section className="ops-card">
+          <div className="ops-section-header">
+            <div>
+              <p className="eyebrow">Documents synchronises</p>
+              <h2>Pieces detectees dans Drive</h2>
+            </div>
+            <span className="ops-count">{documents.length} fichier(s)</span>
+          </div>
+
+          <div className="ops-table">
+            <div className="ops-table-row ops-table-head">
+              <span>Document</span>
+              <span>Type</span>
+              <span>Nomenclature</span>
+              <span>Statut</span>
+            </div>
+            {documents.length === 0 ? (
+              <div className="ops-empty">Aucun document Drive synchronise pour le moment.</div>
+            ) : (
+              documents.map((document) => (
+                <div key={document.id} className="ops-table-row">
+                  <div>
+                    <strong>{document.file_name}</strong>
+                    <small>{document.google_drive_file_id}</small>
+                    {document.file_url && (
+                      <a href={document.file_url} target="_blank" rel="noreferrer">Ouvrir dans Drive</a>
+                    )}
+                  </div>
+                  <div>
+                    <strong>{document.document_type}</strong>
+                    <small>{document.document_rule_code ?? "Regle non reconnue"}</small>
+                  </div>
+                  <div>
+                    <span className={`ops-status ops-status--${document.nomenclature_status}`}>
+                      {document.nomenclature_status}
+                    </span>
+                    <small>{document.sync_direction}</small>
+                  </div>
+                  <div>
+                    <span className={`ops-status ops-status--${document.status}`}>{document.status}</span>
                   </div>
                 </div>
               ))

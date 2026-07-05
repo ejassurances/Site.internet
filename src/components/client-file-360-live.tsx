@@ -74,6 +74,16 @@ type RelatedPerson = {
   notes?: string | null;
 };
 
+type DriveDocument = {
+  id: string;
+  file_name: string;
+  file_url?: string | null;
+  document_type: string;
+  nomenclature_status: string;
+  status: string;
+  detected_at: string;
+};
+
 type Props = {
   clientId: string;
   initialData: {
@@ -83,6 +93,7 @@ type Props = {
     interactions: Interaction[];
     contracts: Contract[];
     projects: BorrowerProject[];
+    drive_documents?: DriveDocument[];
   };
 };
 
@@ -91,6 +102,7 @@ const TABS = [
   { id: "projets",       label: "Projets",           icon: BriefcaseBusiness },
   { id: "interactions",  label: "Interactions",      icon: MessageSquare },
   { id: "contrats",      label: "Contrats",          icon: FileText },
+  { id: "documents",     label: "Documents",         icon: FileText },
   { id: "personnes",     label: "Famille",           icon: Users },
   { id: "notes",         label: "Notes",             icon: StickyNote },
 ] as const;
@@ -144,7 +156,7 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
   const [showPersonForm, setShowPersonForm] = useState(false);
   const [expandedInteraction, setExpandedInteraction] = useState<string | null>(null);
 
-  const { client, tags, related_persons, interactions, contracts, projects } = initialData;
+  const { client, tags, related_persons, interactions, contracts, projects, drive_documents = [] } = initialData;
   const activeContracts = contracts.filter((c) => c.status === "active");
   const score = (client.score_protection as number | undefined) ?? 0;
   const statut_client = (client.statut_client as string | undefined) ?? "prospect";
@@ -283,6 +295,9 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
               <span>{label}</span>
               {id === "contrats" && contracts.length > 0 && (
                 <span className="cf360-tab-badge">{contracts.length}</span>
+              )}
+              {id === "documents" && drive_documents.length > 0 && (
+                <span className="cf360-tab-badge">{drive_documents.length}</span>
               )}
               {id === "projets" && projects.length > 0 && (
                 <span className="cf360-tab-badge">{projects.length}</span>
@@ -502,6 +517,38 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
                     </div>
                   );
                 })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "documents" && (
+          <div className="cf360-section">
+            <div className="cf360-section-header">
+              <FileText size={15} aria-hidden />
+              <span>Documents synchronises Drive</span>
+            </div>
+            {drive_documents.length === 0 ? (
+              <div className="cf360-empty">
+                Aucun document Drive rattache a cette fiche client pour le moment.
+              </div>
+            ) : (
+              <div className="cf360-list">
+                {drive_documents.map((document) => (
+                  <div key={document.id} className="cf360-list-item">
+                    <div>
+                      <strong>{document.file_name}</strong>
+                      <small>
+                        {document.document_type} - nomenclature {document.nomenclature_status} - {fmt(document.detected_at)}
+                      </small>
+                    </div>
+                    {document.file_url && (
+                      <a className="cf360-add-btn" href={document.file_url} target="_blank" rel="noreferrer">
+                        Ouvrir Drive
+                      </a>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </div>

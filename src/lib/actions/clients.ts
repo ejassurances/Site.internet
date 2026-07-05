@@ -287,7 +287,7 @@ export async function getClient360(clientId: string) {
   const supabase = await createSupabaseServerClient();
   if (!supabase) return null;
 
-  const [clientRes, tagsRes, relatedRes, interactionsRes, contractsRes] = await Promise.all([
+  const [clientRes, tagsRes, relatedRes, interactionsRes, contractsRes, driveDocsRes] = await Promise.all([
     supabase
       .from("clients")
       .select("*")
@@ -313,6 +313,11 @@ export async function getClient360(clientId: string) {
       .select("*")
       .eq("client_id", clientId)
       .order("created_at", { ascending: false }),
+    supabase
+      .from("drive_synced_documents")
+      .select("*")
+      .eq("client_id", clientId)
+      .order("detected_at", { ascending: false }),
   ]);
 
   if (clientRes.error) return null;
@@ -323,6 +328,7 @@ export async function getClient360(clientId: string) {
     related_persons: relatedRes.data ?? [],
     interactions: interactionsRes.data ?? [],
     contracts: contractsRes.data ?? [],
+    drive_documents: driveDocsRes.data ?? [],
   };
 }
 
