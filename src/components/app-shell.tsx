@@ -21,6 +21,8 @@ import {
   Settings,
   Bell,
   Search,
+  Building2,
+  Bike,
 } from "lucide-react";
 import { CurrentUser } from "@/lib/auth";
 import { Role } from "@/lib/content";
@@ -42,6 +44,7 @@ const adminModules = [
     links: [
       { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard },
       { label: "Clients", href: "/admin/clients", icon: Users },
+      { label: "Partenaires", href: "/admin/partenaires", icon: Building2 },
       { label: "Contacts & Prospects", href: "/admin/crm/contacts", icon: Users },
       { label: "Agenda & RDV", href: "/admin/crm/agenda", icon: LayoutDashboard },
       { label: "Tâches", href: "/admin/crm/taches", icon: FileText },
@@ -58,6 +61,7 @@ const adminModules = [
       { label: "Pipeline commercial", href: "/admin/vente/pipeline", icon: TrendingUp },
       { label: "Leads entrants", href: "/admin/vente/leads", icon: TrendingUp },
       { label: "Devis & Propositions", href: "/admin/vente/devis", icon: FileText },
+      { label: "Import Drive vers CRM", href: "/admin/vente/ged/import-drive", icon: FolderOpen },
       { label: "GED — Documents", href: "/admin/vente/ged", icon: FolderOpen },
       { label: "Méthode cabinet", href: "/admin/family-protection-os", icon: ShieldCheck },
     ],
@@ -71,6 +75,7 @@ const adminModules = [
     description: "Automatisations, processus, statuts",
     links: [
       { label: "Mes workflows", href: "/admin/workflows", icon: Zap },
+      { label: "Assurance trottinette", href: "/admin/workflows/trottinette", icon: Bike },
       { label: "Automatisations", href: "/admin/workflows/automatisations", icon: Zap },
       { label: "Statuts de dossier", href: "/admin/workflows/statuts", icon: FileText },
       { label: "Modèles de documents", href: "/admin/workflows/templates", icon: FileText },
