@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient, createSupabaseServiceClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -23,6 +23,10 @@ export type ClientFormData = {
 };
 
 export type ActionResult = { success: boolean; error?: string; id?: string };
+export type InviteClientActionState = {
+  status: "idle" | "success" | "error";
+  message: string;
+};
 
 function emptyToNull(value?: string) {
   const trimmed = value?.trim();
@@ -155,6 +159,129 @@ export async function deleteClient(clientId: string): Promise<ActionResult> {
 }
 
 // ── Récupérer un client avec toutes ses données 360° ─────────────────────────
+export async function inviteClientToPortalAction(
+  _previousState: InviteClientActionState,
+  formData: FormData,
+): Promise<InviteClientActionState> {
+  const actor = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+  const serviceSupabase = createSupabaseServiceClient();
+
+  if (!supabase || !serviceSupabase) {
+    return { status: "error", message: "Configuration Supabase service manquante pour envoyer l'invitation." };
+  }
+
+  const clientId = String(formData.get("clientId") ?? "");
+
+  if (!clientId) {
+    return { status: "error", message: "Fiche client manquante." };
+  }
+
+  const { data: client, error: clientError } = await supabase
+    .from("clients")
+    .select("id, full_name, email, profile_id, supabase_user_id")
+    .eq("id", clientId)
+    .maybeSingle();
+
+  if (clientError || !client) {
+    return { status: "error", message: "Client introuvable ou inaccessible." };
+  }
+
+  const email = String(client.email ?? "").trim().toLowerCase();
+
+  if (!email) {
+    return { status: "error", message: "Ajoutez une adresse email sur la fiche client avant d'envoyer l'invitation." };
+  }
+
+  const fullName = String(client.full_name ?? "Client EJ Assurances");
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    "https://www.ej-assurances.fr";
+  const redirectTo = `${siteUrl.replace(/\/$/, "")}/connexion/nouveau-mot-de-passe`;
+
+  let linkedUserId = String(client.profile_id ?? client.supabase_user_id ?? "");
+  let mode: "invite" | "reset" = linkedUserId ? "reset" : "invite";
+
+  if (linkedUserId) {
+    const { error: resetError } = await serviceSupabase.auth.resetPasswordForEmail(email, { redirectTo });
+    if (resetError) return { status: "error", message: resetError.message };
+  } else {
+    const { data: inviteData, error: inviteError } = await serviceSupabase.auth.admin.inviteUserByEmail(email, {
+      data: {
+        role: "client",
+        client_id: clientId,
+        full_name: fullName,
+      },
+      redirectTo,
+    });
+
+    if (inviteError) {
+      if (inviteError.message.toLowerCase().includes("already")) {
+        mode = "reset";
+        const { error: resetError } = await serviceSupabase.auth.resetPasswordForEmail(email, { redirectTo });
+        if (resetError) return { status: "error", message: resetError.message };
+      } else {
+        return { status: "error", message: inviteError.message };
+      }
+    }
+
+    linkedUserId = inviteData?.user?.id ?? "";
+  }
+
+  if (linkedUserId) {
+    await serviceSupabase.from("users").upsert({ id: linkedUserId, email }, { onConflict: "id" });
+
+    const { data: existingProfile } = await serviceSupabase
+      .from("profiles")
+      .select("id")
+      .eq("id", linkedUserId)
+      .maybeSingle();
+
+    if (!existingProfile) {
+      await serviceSupabase.from("profiles").insert({
+        id: linkedUserId,
+        role: "client",
+        full_name: fullName,
+      });
+    }
+
+    await serviceSupabase
+      .from("clients")
+      .update({
+        profile_id: linkedUserId,
+        supabase_user_id: linkedUserId,
+        invite_sent_at: new Date().toISOString(),
+      })
+      .eq("id", clientId);
+  } else {
+    await serviceSupabase
+      .from("clients")
+      .update({ invite_sent_at: new Date().toISOString() })
+      .eq("id", clientId);
+  }
+
+  await serviceSupabase.from("audit_logs").insert({
+    actor_id: actor.id,
+    action: mode === "invite" ? "client.portal_invite_sent" : "client.portal_password_link_sent",
+    target_table: "clients",
+    target_id: clientId,
+    metadata: {
+      email,
+      redirect_to: redirectTo,
+      linked_profile_id: linkedUserId || null,
+    },
+  });
+
+  revalidatePath(`/admin/clients/${clientId}`);
+  revalidatePath("/admin/clients");
+
+  return {
+    status: "success",
+    message: mode === "invite" ? `Invitation envoyee a ${email}.` : `Lien d'acces envoye a ${email}.`,
+  };
+}
+
 export async function getClient360(clientId: string) {
   await requireRole(["admin", "courtier"]);
   const supabase = await createSupabaseServerClient();

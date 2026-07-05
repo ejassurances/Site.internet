@@ -7,6 +7,7 @@ import { ContractForm } from "@/components/forms/contract-form";
 import { InteractionForm } from "@/components/forms/interaction-form";
 import { RelatedPersonForm } from "@/components/forms/related-person-form";
 import { ClientProjectWorkflow } from "@/components/client-project-workflow";
+import { ClientPortalInviteButton } from "@/components/client-portal-invite-button";
 import { deleteContract } from "@/lib/actions/contracts";
 import { deleteInteraction, deleteRelatedPerson } from "@/lib/actions/interactions";
 import type { BorrowerProject } from "@/lib/project-workflow";
@@ -33,6 +34,9 @@ type Client = Record<string, unknown> & {
   ville?: string;
   source_acquisition?: string;
   score_protection?: number;
+  profile_id?: string | null;
+  supabase_user_id?: string | null;
+  invite_sent_at?: string | null;
 };
 
 type Contract = {
@@ -214,6 +218,12 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
           )}
         </div>
         <div className="cf360-hero-actions">
+          <ClientPortalInviteButton
+            clientId={clientId}
+            email={client.email}
+            inviteSentAt={client.invite_sent_at}
+            hasPortalAccount={Boolean(client.profile_id || client.supabase_user_id)}
+          />
           <Link href={`/admin/clients/${clientId}/modifier`} className="cf360-edit-btn">
             <Edit3 size={14} aria-hidden /> Modifier
           </Link>
