@@ -3157,7 +3157,7 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 
 /* Client project workflow */
 .client-project-workflow { display: grid; gap: 18px; }
-.project-workflow-hero, .project-current-card, .project-empty-notice, .project-documents-gate {
+.project-workflow-hero, .project-current-card, .project-empty-notice, .project-documents-gate, .project-needs-card {
   background: var(--surface);
   border: 1.5px solid var(--line);
   border-radius: 14px;
@@ -3177,6 +3177,8 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .project-current-card, .project-empty-notice { display: flex; justify-content: space-between; gap: 14px; align-items: center; }
 .project-current-card span, .project-current-card small { display: block; color: var(--muted); font-size: 12px; font-weight: 700; }
 .project-current-card strong { display: block; margin: 4px 0; color: var(--navy); font-size: 18px; }
+.project-progress-meter { flex: 1 1 180px; height: 9px; border-radius: 999px; background: rgba(30,58,95,.09); overflow: hidden; min-width: 160px; }
+.project-progress-meter span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); }
 .project-action-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .project-action-row button {
   display: inline-flex;
@@ -3193,6 +3195,46 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .project-empty-notice { justify-content: flex-start; }
 .project-empty-notice svg, .project-documents-header svg, .project-automation-grid svg { color: var(--accent-strong); flex-shrink: 0; }
 .project-empty-notice strong { color: var(--navy); }
+.project-needs-card { display: grid; gap: 16px; }
+.project-needs-form { display: grid; gap: 14px; }
+.project-needs-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.project-needs-grid label, .project-notes-field {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .035em;
+}
+.project-needs-grid input, .project-needs-grid select, .project-needs-grid textarea, .project-step-actions input, .project-notes-field textarea {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 650;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.project-needs-grid textarea { min-height: 86px; resize: vertical; grid-row: span 2; }
+.project-notes-field textarea { min-height: 78px; resize: vertical; }
+.project-guarantee-row, .project-doc-checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-check-pill, .project-doc-checks label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid rgba(30,58,95,.16);
+  border-radius: 999px;
+  background: rgba(30,58,95,.05);
+  color: var(--navy);
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 850;
+}
+.project-form-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .project-workflow-grid { display: grid; gap: 12px; }
 .project-step { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 12px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 16px; }
 .project-step-index { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: rgba(30,58,95,.08); color: var(--navy); font-weight: 900; font-size: 13px; }
@@ -3207,11 +3249,33 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .project-step-lists div { display: flex; flex-wrap: wrap; gap: 6px; }
 .project-step-lists small { width: 100%; color: var(--muted); font-size: 11px; font-weight: 900; text-transform: uppercase; }
 .project-step-lists b, .project-document-list span { border-radius: 999px; background: rgba(30,58,95,.08); color: var(--navy); padding: 4px 8px; font-size: 11px; }
+.project-step-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.project-step-actions input { flex: 1 1 220px; padding: 8px 10px; }
+.project-step-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid rgba(30,58,95,.18);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--navy);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+.project-step-actions button:last-child {
+  background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(139,92,246,.12));
+  border-color: rgba(59,130,246,.25);
+}
 .project-documents-header { display: flex; justify-content: space-between; gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 14px; }
 .project-document-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .project-document-list article { display: grid; gap: 8px; border: 1px solid var(--line); border-radius: 11px; background: var(--bg); padding: 12px; }
 .project-document-list article div { display: flex; align-items: center; gap: 8px; color: var(--navy); }
 .project-document-list small { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.project-traceability-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.project-traceability-grid article { border: 1.5px solid var(--line); border-radius: 13px; background: var(--surface); padding: 15px; }
+.project-traceability-grid h4 { margin: 0 0 10px; color: var(--navy); font-size: 14px; }
+.project-traceability-grid p { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .project-automation-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
 .project-automation-grid article { border: 1.5px solid var(--line); border-radius: 13px; background: var(--surface); padding: 15px; }
 .project-automation-grid h4 { margin: 10px 0 6px; color: var(--navy); font-size: 14px; }
@@ -3221,7 +3285,7 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .assessment-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 
 @media (max-width: 900px) {
-  .project-workflow-hero, .project-step-lists, .project-document-list, .assessment-field-grid { grid-template-columns: 1fr; }
+  .project-workflow-hero, .project-step-lists, .project-document-list, .project-needs-grid, .project-traceability-grid, .assessment-field-grid { grid-template-columns: 1fr; }
   .project-current-card { align-items: flex-start; flex-direction: column; }
   .project-automation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
