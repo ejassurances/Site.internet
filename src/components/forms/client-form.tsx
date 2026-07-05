@@ -2,33 +2,34 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Mail, MapPin, Save, Tag, User, X, Loader2 } from "lucide-react";
 import { createClient, updateClient, type ClientFormData } from "@/lib/actions/clients";
-import { User, Mail, Phone, MapPin, Tag, X, Save, Loader2 } from "lucide-react";
 
 const TAGS_DISPONIBLES = [
   "Famille LGBT+",
-  "Coparentalité",
-  "Famille recomposée",
+  "Coparentalite",
+  "Famille recomposee",
   "Famille homoparentale",
+  "Parent social",
   "Assurance emprunteur",
-  "Prévoyance",
+  "Prevoyance",
   "Transmission",
-  "VIP",
-  "À relancer",
+  "Assurance-vie",
+  "A relancer",
   "Prescripteur",
   "Association partenaire",
 ];
 
 const SITUATIONS_FAMILIALES = [
-  "Célibataire",
+  "Celibataire",
   "En couple",
-  "Marié(e)",
-  "Pacsé(e)",
-  "Divorcé(e)",
-  "Veuf/Veuve",
+  "Marie(e)",
+  "Pacse(e)",
+  "Divorce(e)",
+  "Veuf / Veuve",
   "Famille monoparentale",
-  "Famille recomposée",
-  "Coparentalité",
+  "Famille recomposee",
+  "Coparentalite",
   "Union libre",
 ];
 
@@ -36,10 +37,10 @@ const SOURCES = [
   "Site internet",
   "Recommandation client",
   "Association partenaire",
-  "Réseau social",
+  "Reseau social",
   "Apporteur d'affaires",
   "Mandataire",
-  "Salon / Événement",
+  "Salon / Evenement",
   "Autre",
 ];
 
@@ -73,34 +74,34 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
     tags: selectedTags,
   });
 
-  const set = (field: keyof ClientFormData, value: string) =>
+  const set = (field: keyof ClientFormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
 
   const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+    setSelectedTags((prev) => (
+      prev.includes(tag) ? prev.filter((item) => item !== tag) : [...prev, tag]
+    ));
   };
 
   const addCustomTag = () => {
-    const t = tagInput.trim();
-    if (t && !selectedTags.includes(t)) {
-      setSelectedTags((prev) => [...prev, t]);
+    const tag = tagInput.trim();
+    if (tag && !selectedTags.includes(tag)) {
+      setSelectedTags((prev) => [...prev, tag]);
     }
     setTagInput("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     setError(null);
 
     const payload: ClientFormData = { ...form, tags: selectedTags };
 
     startTransition(async () => {
-      const result =
-        mode === "create"
-          ? await createClient(payload)
-          : await updateClient(initialData!.id!, payload);
+      const result = mode === "create"
+        ? await createClient(payload)
+        : await updateClient(initialData!.id!, payload);
 
       if (!result.success) {
         setError(result.error ?? "Une erreur est survenue.");
@@ -109,23 +110,36 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
 
       if (onSuccess && result.id) {
         onSuccess(result.id);
-      } else {
-        router.push(result.id ? `/admin/clients/${result.id}` : "/admin/clients");
+        return;
       }
+
+      router.refresh();
+      router.push(result.id ? `/admin/clients/${result.id}` : "/admin/clients");
     });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="client-form">
+    <form onSubmit={handleSubmit} className="client-form admin-client-form">
+      <div className="admin-client-form-intro">
+        <div>
+          <p className="eyebrow">CRM EJ Assurances</p>
+          <h2>{mode === "create" ? "Creer une fiche exploitable" : "Mettre a jour la fiche"}</h2>
+          <p>
+            Renseignez les informations utiles au suivi commercial, au conseil et aux obligations
+            de tracabilite. Les details pourront etre completes progressivement.
+          </p>
+        </div>
+        <span>{mode === "create" ? "Nouvelle fiche" : "Edition fiche"}</span>
+      </div>
+
       {error && (
         <div className="form-error-banner">
           <X size={16} aria-hidden /> {error}
         </div>
       )}
 
-      {/* ── Identité ── */}
       <fieldset className="form-section">
-        <legend><User size={16} aria-hidden /> Identité</legend>
+        <legend><User size={16} aria-hidden /> Identite</legend>
         <div className="form-grid-2">
           <div className="form-field">
             <label htmlFor="full_name">Nom complet <span className="required">*</span></label>
@@ -135,21 +149,29 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
               required
               placeholder="Ex : Famille Martin-Dupont"
               value={form.full_name}
-              onChange={(e) => set("full_name", e.target.value)}
+              onChange={(event) => set("full_name", event.target.value)}
             />
           </div>
           <div className="form-field">
             <label htmlFor="contact_type">Type de contact</label>
-            <select id="contact_type" value={form.contact_type} onChange={(e) => set("contact_type", e.target.value as "prospect" | "client" | "partenaire" | "prescripteur")}>
-              <option value="prospect">🎯 Prospect</option>
-              <option value="client">⭐ Client</option>
-              <option value="partenaire">🤝 Partenaire</option>
-              <option value="prescripteur">📣 Prescripteur</option>
+            <select
+              id="contact_type"
+              value={form.contact_type}
+              onChange={(event) => set("contact_type", event.target.value)}
+            >
+              <option value="prospect">Prospect</option>
+              <option value="client">Client</option>
+              <option value="partenaire">Partenaire</option>
+              <option value="prescripteur">Prescripteur</option>
             </select>
           </div>
           <div className="form-field">
             <label htmlFor="statut_client">Statut du dossier</label>
-            <select id="statut_client" value={form.statut_client} onChange={(e) => set("statut_client", e.target.value as "prospect" | "actif" | "en_cours" | "inactif")}>
+            <select
+              id="statut_client"
+              value={form.statut_client}
+              onChange={(event) => set("statut_client", event.target.value)}
+            >
               <option value="prospect">En prospection</option>
               <option value="en_cours">En cours</option>
               <option value="actif">Actif</option>
@@ -158,77 +180,120 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
           </div>
           <div className="form-field">
             <label htmlFor="date_naissance">Date de naissance</label>
-            <input id="date_naissance" type="date" value={form.date_naissance} onChange={(e) => set("date_naissance", e.target.value)} />
+            <input
+              id="date_naissance"
+              type="date"
+              value={form.date_naissance}
+              onChange={(event) => set("date_naissance", event.target.value)}
+            />
           </div>
           <div className="form-field">
             <label htmlFor="situation_familiale">Situation familiale</label>
-            <select id="situation_familiale" value={form.situation_familiale} onChange={(e) => set("situation_familiale", e.target.value)}>
-              <option value="">Sélectionner…</option>
-              {SITUATIONS_FAMILIALES.map((s) => <option key={s} value={s}>{s}</option>)}
+            <select
+              id="situation_familiale"
+              value={form.situation_familiale}
+              onChange={(event) => set("situation_familiale", event.target.value)}
+            >
+              <option value="">Selectionner...</option>
+              {SITUATIONS_FAMILIALES.map((situation) => (
+                <option key={situation} value={situation}>{situation}</option>
+              ))}
             </select>
           </div>
         </div>
       </fieldset>
 
-      {/* ── Coordonnées ── */}
       <fieldset className="form-section">
-        <legend><Mail size={16} aria-hidden /> Coordonnées</legend>
+        <legend><Mail size={16} aria-hidden /> Coordonnees</legend>
         <div className="form-grid-2">
           <div className="form-field">
             <label htmlFor="email">Email</label>
-            <input id="email" type="email" placeholder="contact@exemple.fr" value={form.email} onChange={(e) => set("email", e.target.value)} />
+            <input
+              id="email"
+              type="email"
+              placeholder="contact@exemple.fr"
+              value={form.email}
+              onChange={(event) => set("email", event.target.value)}
+            />
           </div>
           <div className="form-field">
-            <label htmlFor="phone">Téléphone</label>
-            <input id="phone" type="tel" placeholder="06 00 00 00 00" value={form.phone} onChange={(e) => set("phone", e.target.value)} />
+            <label htmlFor="phone">Telephone</label>
+            <input
+              id="phone"
+              type="tel"
+              placeholder="06 00 00 00 00"
+              value={form.phone}
+              onChange={(event) => set("phone", event.target.value)}
+            />
           </div>
         </div>
       </fieldset>
 
-      {/* ── Adresse ── */}
       <fieldset className="form-section">
         <legend><MapPin size={16} aria-hidden /> Adresse</legend>
         <div className="form-field">
           <label htmlFor="adresse">Adresse</label>
-          <input id="adresse" type="text" placeholder="12 rue des Lilas" value={form.adresse} onChange={(e) => set("adresse", e.target.value)} />
+          <input
+            id="adresse"
+            type="text"
+            placeholder="12 rue des Lilas"
+            value={form.adresse}
+            onChange={(event) => set("adresse", event.target.value)}
+          />
         </div>
         <div className="form-grid-2">
           <div className="form-field">
             <label htmlFor="code_postal">Code postal</label>
-            <input id="code_postal" type="text" placeholder="75001" value={form.code_postal} onChange={(e) => set("code_postal", e.target.value)} />
+            <input
+              id="code_postal"
+              type="text"
+              placeholder="75001"
+              value={form.code_postal}
+              onChange={(event) => set("code_postal", event.target.value)}
+            />
           </div>
           <div className="form-field">
             <label htmlFor="ville">Ville</label>
-            <input id="ville" type="text" placeholder="Paris" value={form.ville} onChange={(e) => set("ville", e.target.value)} />
+            <input
+              id="ville"
+              type="text"
+              placeholder="Paris"
+              value={form.ville}
+              onChange={(event) => set("ville", event.target.value)}
+            />
           </div>
         </div>
       </fieldset>
 
-      {/* ── Contexte & Acquisition ── */}
       <fieldset className="form-section">
-        <legend>Contexte & Acquisition</legend>
+        <legend>Contexte & acquisition</legend>
         <div className="form-field">
           <label htmlFor="family_context">Contexte familial</label>
           <textarea
             id="family_context"
             rows={3}
-            placeholder="Ex : Couple de femmes avec 2 enfants, coparentalité avec donneur connu…"
+            placeholder="Ex : couple avec enfant social, famille recomposee, coparentalite choisie..."
             value={form.family_context}
-            onChange={(e) => set("family_context", e.target.value)}
+            onChange={(event) => set("family_context", event.target.value)}
           />
         </div>
         <div className="form-field">
           <label htmlFor="source_acquisition">Source d'acquisition</label>
-          <select id="source_acquisition" value={form.source_acquisition} onChange={(e) => set("source_acquisition", e.target.value)}>
-            <option value="">Sélectionner…</option>
-            {SOURCES.map((s) => <option key={s} value={s}>{s}</option>)}
+          <select
+            id="source_acquisition"
+            value={form.source_acquisition}
+            onChange={(event) => set("source_acquisition", event.target.value)}
+          >
+            <option value="">Selectionner...</option>
+            {SOURCES.map((source) => (
+              <option key={source} value={source}>{source}</option>
+            ))}
           </select>
         </div>
       </fieldset>
 
-      {/* ── Tags ── */}
       <fieldset className="form-section">
-        <legend><Tag size={16} aria-hidden /> Tags personnalisés</legend>
+        <legend><Tag size={16} aria-hidden /> Tags</legend>
         <div className="form-tags-grid">
           {TAGS_DISPONIBLES.map((tag) => (
             <button
@@ -244,10 +309,15 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
         <div className="form-tag-input">
           <input
             type="text"
-            placeholder="Ajouter un tag personnalisé…"
+            placeholder="Ajouter un tag personnalise..."
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(); } }}
+            onChange={(event) => setTagInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                addCustomTag();
+              }
+            }}
           />
           <button type="button" className="secondary-action" onClick={addCustomTag}>Ajouter</button>
         </div>
@@ -265,30 +335,28 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
         )}
       </fieldset>
 
-      {/* ── Notes ── */}
       <fieldset className="form-section">
         <legend>Notes internes</legend>
         <div className="form-field">
           <textarea
             id="notes"
             rows={4}
-            placeholder="Notes confidentielles sur ce client…"
+            placeholder="Notes confidentielles sur ce client..."
             value={form.notes}
-            onChange={(e) => set("notes", e.target.value)}
+            onChange={(event) => set("notes", event.target.value)}
           />
         </div>
       </fieldset>
 
-      {/* ── Actions ── */}
       <div className="form-actions">
         <button type="button" className="secondary-action" onClick={() => router.back()} disabled={isPending}>
           Annuler
         </button>
         <button type="submit" className="primary-action" disabled={isPending}>
           {isPending ? (
-            <><Loader2 size={18} className="spin" aria-hidden /> Enregistrement…</>
+            <><Loader2 size={18} className="spin" aria-hidden /> Enregistrement...</>
           ) : (
-            <><Save size={18} aria-hidden /> {mode === "create" ? "Créer la fiche client" : "Enregistrer les modifications"}</>
+            <><Save size={18} aria-hidden /> {mode === "create" ? "Creer la fiche client" : "Enregistrer"}</>
           )}
         </button>
       </div>
