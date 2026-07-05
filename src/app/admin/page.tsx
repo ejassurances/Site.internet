@@ -1,5 +1,21 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  Bot,
+  BriefcaseBusiness,
+  CheckCircle2,
+  ChevronRight,
+  ClipboardList,
+  FileText,
+  FolderOpen,
+  Scale,
+  ShieldCheck,
+  TrendingUp,
+  UserPlus,
+  Users,
+  Workflow,
+} from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { requireRole } from "@/lib/auth";
 import { getAccessibleClients } from "@/lib/clients";
@@ -7,60 +23,46 @@ import { getEmprunteurStats } from "@/lib/actions/emprunteur";
 
 const adminModuleCards = [
   {
-    emoji: "🗂️",
-    title: "CRM & Productivité",
-    description: "Gérez vos clients, contacts, agenda et tâches quotidiennes du cabinet.",
-    href: "/admin/crm",
-    stat: "Clients actifs",
-    color: "#e8f4fd",
+    icon: Users,
+    title: "Clients & fiches 360",
+    description: "Fiches clients, familles, contrats, interactions et projets rattaches.",
+    href: "/admin/clients",
+    stat: "Portefeuille",
   },
   {
-    emoji: "💼",
-    title: "Vente, Leads & GED",
-    description: "Suivez votre pipeline commercial, les leads entrants et gérez vos documents.",
-    href: "/admin/vente",
-    stat: "Leads en cours",
-    color: "#fdf3e8",
+    icon: BriefcaseBusiness,
+    title: "Assurance emprunteur",
+    description: "Prospects, recueil des besoins, pieces, workflow de souscription et activation.",
+    href: "/admin/emprunteur",
+    stat: "Dossiers entrants",
   },
   {
-    emoji: "⚙️",
-    title: "Workflows",
-    description: "Automatisez vos processus, gérez les statuts de dossiers et les modèles.",
+    icon: Workflow,
+    title: "Workflows cabinet",
+    description: "Etapes, automatisations, statuts, relances et modeles operationnels.",
     href: "/admin/workflows",
-    stat: "Workflows actifs",
-    color: "#f0f8ee",
+    stat: "Process",
   },
   {
-    emoji: "🤖",
-    title: "Pilotage IA",
-    description: "Analyse familiale assistée par IA, scoring clients et recommandations automatiques.",
-    href: "/admin/ia",
-    stat: "Analyses IA",
-    color: "#f3e8fd",
-  },
-  {
-    emoji: "⚖️",
-    title: "Conformité",
-    description: "Classeurs ACPR, devoir de conseil DDA, RGPD et journal d'audit réglementaire.",
+    icon: Scale,
+    title: "Conformite",
+    description: "DDA, LCB-FT, RGPD, classeurs ACPR, audit et obligations courtage.",
     href: "/admin/conformite",
-    stat: "Dossiers conformes",
-    color: "#fdf8e8",
+    stat: "ACPR",
   },
   {
-    emoji: "💰",
-    title: "Finance & Coms",
-    description: "Suivez vos commissions, gérez mandataires, prescripteurs et facturation.",
-    href: "/admin/finance",
-    stat: "Commissions du mois",
-    color: "#e8fdf0",
+    icon: Bot,
+    title: "Assistants IA",
+    description: "Resume client, redaction, anonymisation, copilot et recommandations.",
+    href: "/admin/ia",
+    stat: "Copilot",
   },
   {
-    emoji: "📊",
-    title: "Stats & Analyses",
-    description: "KPIs cabinet, rapports de performance, analyses clients et exports.",
+    icon: BarChart3,
+    title: "Pilotage",
+    description: "Production, portefeuille, statistiques commerciales et indicateurs cabinet.",
     href: "/admin/stats",
-    stat: "Rapports disponibles",
-    color: "#fde8e8",
+    stat: "KPIs",
   },
 ];
 
@@ -71,93 +73,149 @@ export default async function AdminDashboardPage() {
     getEmprunteurStats(),
   ]);
 
+  const activeClients = clients.length;
+  const pendingBorrowerFiles = emprunteurStats.non_convertis;
+
   return (
     <AppShell role={user.role === "courtier" ? "courtier" : "admin"} user={user}>
-      {/* Stats rapides */}
-      <section className="stats-grid" aria-label="Indicateurs cabinet">
-        <article className="metric">
-          <span>Clients actifs</span>
-          <strong>{clients.length}</strong>
-          <small>dossiers en portefeuille</small>
-        </article>
-        <article className="metric">
-          <span>Cabinet</span>
-          <strong>EJ</strong>
-          <small>Partners Assurances</small>
-        </article>
-        <article className="metric">
-          <span>Contact</span>
-          <strong>01.89</strong>
-          <small>31.40.29</small>
-        </article>
-        <article className="metric">
-          <span>Conformité</span>
-          <strong>OK</strong>
-          <small>compte admin vérifié</small>
-        </article>
-      </section>
-
-      {/* 7 Modules maîtres */}
-      <section aria-label="Modules cabinet">
-        <div style={{ marginBottom: "20px" }}>
-          <p className="eyebrow">Modules cabinet</p>
-          <h2 style={{ margin: "4px 0 0", fontSize: "clamp(20px, 2.5vw, 28px)" }}>
-            Votre espace de travail
-          </h2>
-        </div>
-
-        <div className="admin-modules-grid">
-          {adminModuleCards.map((card) => (
-            <Link key={card.href} href={card.href} className="admin-module-card">
-              <div className="admin-module-icon" style={{ background: card.color }}>
-                {card.emoji}
-              </div>
-              <h3>{card.title}</h3>
-              <p>{card.description}</p>
-              <div className="admin-module-card-footer">
-                <span>Accéder au module</span>
-                <ChevronRight size={16} aria-hidden />
-              </div>
+      <section className="admin-home-hero">
+        <div>
+          <p className="eyebrow">Espace cabinet</p>
+          <h1>Piloter EJ Assurances sans perdre le fil des dossiers.</h1>
+          <p>
+            Une vue claire pour creer une fiche client, traiter les prospects emprunteur,
+            suivre les workflows et garder la conformite au centre du dossier.
+          </p>
+          <div className="admin-home-actions">
+            <Link href="/admin/clients/nouveau" className="primary-action">
+              <UserPlus size={17} aria-hidden /> Creer une fiche client
             </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Alerte prospects emprunteur */}
-      {emprunteurStats.non_convertis > 0 && (
-        <Link href="/admin/emprunteur" className="emprunteur-alert-banner">
-          <span className="emprunteur-alert-dot" aria-hidden />
-          <span>
-            <strong>{emprunteurStats.non_convertis} nouveau{emprunteurStats.non_convertis > 1 ? "x" : ""} dossier{emprunteurStats.non_convertis > 1 ? "s" : ""} emprunteur</strong>
-            {" "}en attente de traitement
-          </span>
-          <ChevronRight size={16} aria-hidden />
-        </Link>
-      )}
-
-      {/* Accès rapide clients */}
-      {clients.length > 0 && (
-        <section style={{ marginTop: "32px" }} aria-label="Derniers clients">
-          <div style={{ marginBottom: "16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div>
-              <p className="eyebrow">Accès rapide</p>
-              <h2 style={{ margin: "4px 0 0", fontSize: "clamp(18px, 2vw, 24px)" }}>Derniers clients</h2>
-            </div>
-            <Link href="/admin/clients" style={{ color: "var(--accent-strong)", fontWeight: 700, fontSize: "14px", display: "flex", alignItems: "center", gap: "4px" }}>
-              Voir tous <ChevronRight size={14} />
+            <Link href="/admin/emprunteur" className="secondary-action">
+              <BriefcaseBusiness size={17} aria-hidden /> Traiter les dossiers emprunteur
             </Link>
           </div>
-          <div className="client-list">
+        </div>
+
+        <div className="admin-home-focus-card">
+          <div className="admin-home-focus-top">
+            <ShieldCheck size={20} aria-hidden />
+            <span>Priorite cabinet</span>
+          </div>
+          <strong>{pendingBorrowerFiles}</strong>
+          <p>dossier{pendingBorrowerFiles > 1 ? "s" : ""} emprunteur a convertir ou suivre</p>
+          <Link href="/admin/emprunteur">
+            Ouvrir la file <ArrowRight size={14} aria-hidden />
+          </Link>
+        </div>
+      </section>
+
+      <section className="admin-home-kpis" aria-label="Indicateurs cabinet">
+        <article>
+          <Users size={18} aria-hidden />
+          <span>Clients accessibles</span>
+          <strong>{activeClients}</strong>
+          <small>fiches en portefeuille</small>
+        </article>
+        <article>
+          <ClipboardList size={18} aria-hidden />
+          <span>Emprunteur</span>
+          <strong>{emprunteurStats.total}</strong>
+          <small>dossiers recus</small>
+        </article>
+        <article>
+          <CheckCircle2 size={18} aria-hidden />
+          <span>Convertis CRM</span>
+          <strong>{emprunteurStats.convertis}</strong>
+          <small>fiches rattachees</small>
+        </article>
+        <article>
+          <TrendingUp size={18} aria-hidden />
+          <span>Cette semaine</span>
+          <strong>{emprunteurStats.cette_semaine}</strong>
+          <small>nouveaux dossiers</small>
+        </article>
+      </section>
+
+      <section className="admin-home-section" aria-label="Actions rapides">
+        <div className="admin-home-section-header">
+          <div>
+            <p className="eyebrow">Actions rapides</p>
+            <h2>Ce que vous faites le plus souvent</h2>
+          </div>
+        </div>
+        <div className="admin-quick-grid">
+          <Link href="/admin/clients/nouveau">
+            <UserPlus size={18} aria-hidden />
+            <span>Nouvelle fiche client</span>
+            <ChevronRight size={15} aria-hidden />
+          </Link>
+          <Link href="/admin/family-protection-os/recueil">
+            <FileText size={18} aria-hidden />
+            <span>Recueil des besoins</span>
+            <ChevronRight size={15} aria-hidden />
+          </Link>
+          <Link href="/admin/conformite/lcb-ft">
+            <Scale size={18} aria-hidden />
+            <span>Controle LCB-FT</span>
+            <ChevronRight size={15} aria-hidden />
+          </Link>
+          <Link href="/admin/vente/ged">
+            <FolderOpen size={18} aria-hidden />
+            <span>Centre documentaire</span>
+            <ChevronRight size={15} aria-hidden />
+          </Link>
+        </div>
+      </section>
+
+      <section className="admin-home-section" aria-label="Modules cabinet">
+        <div className="admin-home-section-header">
+          <div>
+            <p className="eyebrow">Modules cabinet</p>
+            <h2>Votre espace de travail</h2>
+          </div>
+        </div>
+
+        <div className="admin-home-modules-grid">
+          {adminModuleCards.map((card) => {
+            const Icon = card.icon;
+            return (
+              <Link key={card.href} href={card.href} className="admin-home-module-card">
+                <div className="admin-home-module-icon">
+                  <Icon size={19} aria-hidden />
+                </div>
+                <span>{card.stat}</span>
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+                <div>
+                  Acceder <ChevronRight size={15} aria-hidden />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {clients.length > 0 && (
+        <section className="admin-home-section" aria-label="Derniers clients">
+          <div className="admin-home-section-header">
+            <div>
+              <p className="eyebrow">Acces rapide</p>
+              <h2>Derniers clients</h2>
+            </div>
+            <Link href="/admin/clients">
+              Voir tous <ChevronRight size={14} aria-hidden />
+            </Link>
+          </div>
+
+          <div className="admin-home-client-list">
             {clients.slice(0, 5).map((client) => (
-              <div key={client.id} className="client-row">
+              <Link key={client.id} href={`/admin/clients/${client.id}`}>
                 <div>
                   <strong>{client.full_name}</strong>
-                  <p>{client.email}</p>
+                  <p>{client.email || "Email non renseigne"}</p>
                 </div>
-                <Link href={`/admin/clients/${client.id}`} style={{ color: "var(--accent-strong)", fontWeight: 700, fontSize: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
-                  Voir le dossier <ChevronRight size={14} />
-                </Link>
-              </div>
+                <ChevronRight size={15} aria-hidden />
+              </Link>
             ))}
           </div>
         </section>
