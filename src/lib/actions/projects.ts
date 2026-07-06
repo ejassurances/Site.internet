@@ -36,7 +36,7 @@ export async function getClientProjects(clientId: string): Promise<BorrowerProje
   const { data, error } = await supabase
     .from("projects")
     .select(`
-      id, client_id, title, project_type, status, workflow_stage, workflow_data, sensitive_context, created_at, updated_at,
+      id, client_id, title, project_type, status, google_drive_folder_id, google_drive_folder_url, workflow_stage, workflow_data, sensitive_context, created_at, updated_at,
       project_workflow_steps(id, project_id, step_key, label, status, position, delivery_channels, requirements, completed_at, completed_by),
       project_document_requirements(id, project_id, document_key, label, required_for_validation, status, position, accepted_sources, document_id, source, source_metadata, validated_at, validated_by),
       project_borrower_needs(id, project_id, client_id, completion_source, status, bank_name, loan_amount, loan_duration_months, remaining_capital, loan_start_date, loan_end_date, current_insurer, current_annual_premium, requested_quotities, requested_guarantees, delegation_or_substitution, objective, known_data, missing_data, validation_blockers, client_comment, advisor_notes),
@@ -233,6 +233,29 @@ export async function createScooterProjectAction(
         "04 - Fiche conseil",
         "05 - Contrat",
         "06 - Echanges",
+      ],
+    },
+  });
+
+  await supabase.from("drive_sync_events").insert({
+    event_type: "drive.project_folder_requested",
+    client_id: clientId,
+    project_id: project.id,
+    status: "queued",
+    created_by: user.id,
+    payload: {
+      product_code: "ADP",
+      expected_folder_pattern: "DOX_ADP_Prenom_NOM",
+      subfolders: [
+        "01 - Identite KYC",
+        "02 - Recueil des besoins",
+        "03 - Offre de pret",
+        "04 - Tableau amortissement",
+        "05 - Devis",
+        "06 - Feuille de mission",
+        "07 - Fiche conseil",
+        "08 - Souscription",
+        "09 - Echanges",
       ],
     },
   });

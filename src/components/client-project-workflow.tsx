@@ -153,6 +153,13 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
             <small>
               Statut CRM : {activeScooterProject.status} - recueil 25 km/h et extension foyer a completer
             </small>
+            {activeScooterProject.google_drive_folder_url ? (
+              <a href={activeScooterProject.google_drive_folder_url} target="_blank" rel="noreferrer">
+                Ouvrir le dossier Drive du projet
+              </a>
+            ) : (
+              <small>Dossier Drive : creation en attente</small>
+            )}
           </div>
         </section>
       )}
@@ -301,6 +308,13 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
             <span>Projet actif</span>
             <strong>{activeProject.title}</strong>
             <small>Statut CRM : {activeProject.status} - progression {progress.done}/{progress.total}</small>
+            {activeProject.google_drive_folder_url ? (
+              <a href={activeProject.google_drive_folder_url} target="_blank" rel="noreferrer">
+                Ouvrir le dossier Drive du projet
+              </a>
+            ) : (
+              <small>Dossier Drive : creation en attente</small>
+            )}
           </div>
           <div className="project-progress-meter" aria-label={`Progression ${progress.percent}%`}>
             <span style={{ width: `${progress.percent}%` }} />

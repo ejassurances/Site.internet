@@ -103,6 +103,8 @@ export type BorrowerProject = {
   title: string;
   project_type: string;
   status: string;
+  google_drive_folder_id?: string | null;
+  google_drive_folder_url?: string | null;
   workflow_stage?: string | null;
   workflow_data?: Record<string, unknown> | null;
   sensitive_context: string | null;

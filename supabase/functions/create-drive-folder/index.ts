@@ -14,6 +14,8 @@ interface ClientRecord {
   id: string;
   full_name?: string;
   email?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 interface ProjectRecord {
@@ -130,6 +132,58 @@ async function createFolder(
   return data.id as string;
 }
 
+function sanitizeDriveName(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s.-]/g, ' ')
+    .replace(/\s+/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 90);
+}
+
+function escapeDriveQueryString(value: string): string {
+  return value.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function projectCode(projectType?: string): string {
+  if (projectType === 'assurance_emprunteur') return 'ADP';
+  if (projectType === 'assurance_trottinette') return 'TROT';
+  if (projectType === 'prevoyance') return 'PREV';
+  return 'PROJET';
+}
+
+function projectSubfolders(projectType?: string): string[] {
+  if (projectType === 'assurance_emprunteur') {
+    return [
+      '01 - Identite KYC',
+      '02 - Recueil des besoins',
+      '03 - Offre de pret',
+      '04 - Tableau amortissement',
+      '05 - Devis',
+      '06 - Feuille de mission',
+      '07 - Fiche conseil',
+      '08 - Souscription',
+      '09 - Echanges',
+    ];
+  }
+
+  if (projectType === 'assurance_trottinette') {
+    return [
+      '01 - Identite KYC',
+      '02 - Recueil des besoins',
+      '03 - Justificatifs trottinette',
+      '04 - Devis',
+      '05 - Fiche conseil',
+      '06 - Contrat',
+      '07 - Echanges',
+    ];
+  }
+
+  return PROJECT_SUBFOLDERS;
+}
+
 /** Cherche un sous-dossier par nom dans un parent; le crÃ©e s'il n'existe pas. */
 async function findOrCreateFolder(
   accessToken: string,
@@ -137,7 +191,7 @@ async function findOrCreateFolder(
   parentId: string,
 ): Promise<string> {
   const q = encodeURIComponent(
-    `name='${name}' and '${parentId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
+    `name='${escapeDriveQueryString(name)}' and '${escapeDriveQueryString(parentId)}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
   );
   const res = await fetch(`${GOOGLE_DRIVE_API}/files?q=${q}&fields=files(id,name)`, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -231,23 +285,41 @@ serve(async (req: Request) => {
       const project  = payload.record as ProjectRecord;
       const title    = project.title        || `Projet-${project.id.slice(0, 8)}`;
       const type     = project.project_type || 'Divers';
-      folderName     = `${type} â€” ${title}`;
+      const code      = projectCode(type);
+      folderName      = `DOX_${code}_${sanitizeDriveName(title)}`;
 
       let parentFolderId = rootFolderId;
       if (project.client_id) {
-        const { data } = await supabase
+        const { data: client } = await supabase
           .from('clients')
-          .select('google_drive_folder_id')
+          .select('id, full_name, email, google_drive_folder_id')
           .eq('id', project.client_id)
           .single();
-        if (data?.google_drive_folder_id) {
-          parentFolderId = data.google_drive_folder_id;
+
+        if (client?.google_drive_folder_id) {
+          parentFolderId = client.google_drive_folder_id;
+        } else if (client) {
+          const clientsRootId = await findOrCreateFolder(accessToken, 'Clients', rootFolderId);
+          const clientName = client.full_name
+            || client.email
+            || `Client-${client.id.slice(0, 8)}`;
+
+          parentFolderId = await findOrCreateFolder(accessToken, sanitizeDriveName(clientName), clientsRootId);
+
+          for (const sub of CLIENT_SUBFOLDERS) {
+            await findOrCreateFolder(accessToken, sub, parentFolderId);
+          }
+
+          await supabase
+            .from('clients')
+            .update({ google_drive_folder_id: parentFolderId })
+            .eq('id', client.id);
         }
       }
 
-      mainFolderId = await createFolder(accessToken, folderName, parentFolderId);
-      for (const sub of PROJECT_SUBFOLDERS) {
-        await createFolder(accessToken, sub, mainFolderId);
+      mainFolderId = await findOrCreateFolder(accessToken, folderName, parentFolderId);
+      for (const sub of projectSubfolders(type)) {
+        await findOrCreateFolder(accessToken, sub, mainFolderId);
       }
 
       const { error } = await supabase
