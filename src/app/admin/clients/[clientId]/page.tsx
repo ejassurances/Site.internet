@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { requireRole } from "@/lib/auth";
 import { AppShell } from "@/components/app-shell";
-import { getClient360 } from "@/lib/actions/clients";
+import { archiveClientAction, getClient360 } from "@/lib/actions/clients";
 import { getClientProjects } from "@/lib/actions/projects";
 import { ClientFile360Live } from "@/components/client-file-360-live";
 import { ArrowLeft, FileText } from "lucide-react";
@@ -58,6 +58,13 @@ export default async function AdminClientPage({
           <Link href={`/admin/clients/${clientId}/modifier`} className="secondary-action">
             Modifier la fiche
           </Link>
+          <form action={archiveClientAction}>
+            <input type="hidden" name="clientId" value={clientId} />
+            <input type="hidden" name="archiveReason" value="Archivage depuis la fiche client admin." />
+            <button className="archive-action" type="submit">
+              Archiver
+            </button>
+          </form>
         </div>
       </div>
 

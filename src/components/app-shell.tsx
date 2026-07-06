@@ -157,6 +157,7 @@ const clientModules = [
 export function AppShell({ role, user, children }: AppShellProps) {
   const pathname = usePathname() ?? "";
   const isAdmin = role === "admin" || role === "courtier";
+  const isLinkActive = (href: string) => pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
 
   return (
     <div className="app-layout">
@@ -182,17 +183,17 @@ export function AppShell({ role, user, children }: AppShellProps) {
             <>
               {adminModules.map((module, idx) => {
                 const Icon = module.icon;
-                const isActive = module.links.some((l) => pathname === l.href || pathname.startsWith(l.href + "/"));
+                const isActive = module.links.some((l) => isLinkActive(l.href));
                 return (
                   <div key={module.id} className="side-nav-group">
                     {idx > 0 && <div className="side-nav-divider" />}
-                    <div className="side-nav-group-label">
+                    <Link href={module.href} className={`side-nav-group-label${isActive ? " module-active" : ""}`}>
                       <Icon size={12} aria-hidden />
                       {module.emoji} {module.label}
-                    </div>
+                    </Link>
                     {module.links.map((link) => {
                       const LinkIcon = link.icon;
-                      const linkActive = pathname === link.href;
+                      const linkActive = isLinkActive(link.href);
                       return (
                         <Link
                           key={link.href}

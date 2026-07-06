@@ -1422,6 +1422,7 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .sidebar {
   position: sticky;
   top: 0;
+  z-index: 30;
   height: 100svh;
   overflow-y: auto;
   display: flex;
@@ -1430,6 +1431,7 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   background: linear-gradient(180deg, var(--navy) 0%, #10263b 100%);
   border-right: 1px solid rgba(255,255,255,.08);
   box-shadow: 12px 0 40px rgba(7,24,39,.16);
+  pointer-events: auto;
 }
 
 .app-brand {
@@ -1478,12 +1480,20 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
 }
 
 .side-nav-group-label svg {
   opacity: .7;
+}
+
+.side-nav-group-label:hover,
+.side-nav-group-label.module-active {
+  background: rgba(255,255,255,.06);
+  color: rgba(247,245,240,.78);
 }
 
 .side-nav a {
@@ -1525,6 +1535,8 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 
 /* âââ Workspace ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 .workspace {
+  position: relative;
+  z-index: 1;
   padding: 24px clamp(20px, 4vw, 48px) 56px;
   min-height: 100svh;
 }
@@ -3903,6 +3915,21 @@ body {
 .ops-icon-action { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: #065f46; cursor: pointer; }
 .ops-icon-action--danger { color: #991b1b; }
 .ops-empty { padding: 28px; color: var(--muted); text-align: center; }
+.archive-action {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(153,27,27,.22);
+  border-radius: 10px;
+  background: #fff;
+  color: #991b1b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
+  cursor: pointer;
+}
+.archive-action:hover {
+  background: #fee2e2;
+}
 .ops-table-nested { grid-column: 1 / -1; display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-soft); }
 .ops-table-nested article { display: grid; gap: 3px; padding: 10px 12px; border-radius: 10px; background: #fff; }
 .ops-table-nested p { margin: 2px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
