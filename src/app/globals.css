@@ -3996,3 +3996,137 @@ body {
   .lm-paper { box-shadow: none; border: none; padding: 0; }
   .lm-page { padding: 0; max-width: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Refonte CRM — mode moderne & lisible (coque admin + composants partagés)
+   Surcharge volontairement les règles précédentes (fin de fichier = priorité).
+   ═══════════════════════════════════════════════════════════════════════════ */
+.app-layout {
+  --crm-accent: #2f6df0;
+  --crm-bg: #eef2f7;
+  --crm-surface: #ffffff;
+  --crm-surface-2: #f6f8fb;
+  --crm-border: #e4e9f1;
+  --crm-ink: #0e1b2b;
+  --crm-muted: #5b6b7d;
+  --crm-faint: #8695a6;
+  background: var(--crm-bg);
+}
+
+/* ── Barre latérale : plus de contraste, plus lisible ─────────────────────── */
+.app-layout .sidebar {
+  background: linear-gradient(180deg, #0b1f33 0%, #12314c 100%);
+  padding: 18px 12px 20px;
+}
+.app-layout .side-nav a {
+  min-height: 40px;
+  font-size: 14px;
+  font-weight: 550;
+  color: rgba(223,232,241,.84);
+  border-radius: 10px;
+}
+.app-layout .side-nav a svg { opacity: .9; }
+.app-layout .side-nav a:hover { background: rgba(255,255,255,.09); color: #fff; }
+.app-layout .side-nav a.active {
+  background: rgba(47,109,240,.20);
+  color: #fff;
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+.app-layout .side-nav a.active svg { color: var(--gold); opacity: 1; }
+.app-layout .side-nav-group-label {
+  font-size: 10.5px;
+  letter-spacing: .11em;
+  color: rgba(223,232,241,.45);
+  padding: 14px 10px 6px;
+}
+.app-layout .side-nav-group-label:hover,
+.app-layout .side-nav-group-label.module-active {
+  color: rgba(223,232,241,.85);
+  background: transparent;
+}
+
+/* ── Espace de travail ────────────────────────────────────────────────────── */
+.app-layout .workspace { padding: 22px clamp(16px, 3vw, 36px) 48px; }
+.app-layout .workspace-header {
+  padding: 16px 20px;
+  border: 1px solid var(--crm-border);
+  border-radius: 16px;
+  background: var(--crm-surface);
+  box-shadow: 0 1px 2px rgba(11,31,51,.04), 0 8px 24px rgba(11,31,51,.05);
+  backdrop-filter: none;
+}
+.app-layout .workspace-header h1 { font-size: clamp(20px, 2.4vw, 26px); line-height: 1.15; }
+.app-layout .workspace-header .eyebrow { color: var(--crm-muted); }
+.app-layout .icon-button {
+  width: 38px; height: 38px; border-radius: 11px;
+  border: 1px solid var(--crm-border); background: var(--crm-surface); color: var(--crm-ink);
+}
+.app-layout .icon-button:hover { background: var(--crm-surface-2); }
+
+/* ── Cartes (metric / stats / ops / souscription) ─────────────────────────── */
+.app-layout .metric,
+.app-layout .stats-card,
+.app-layout .ops-card,
+.app-layout .souscription-card {
+  border: 1px solid var(--crm-border);
+  border-radius: 14px;
+  background: var(--crm-surface);
+  box-shadow: 0 1px 2px rgba(11,31,51,.04), 0 8px 22px rgba(11,31,51,.05);
+}
+.app-layout .ops-hero {
+  border: 1px solid var(--crm-border);
+  border-radius: 16px;
+  background: var(--crm-surface);
+  box-shadow: 0 1px 2px rgba(11,31,51,.04), 0 8px 22px rgba(11,31,51,.05);
+}
+.app-layout .ops-hero h1 { color: var(--crm-ink); }
+.app-layout .ops-card-title h2,
+.app-layout .ops-section-header h2 { color: var(--crm-ink); font-size: 15px; }
+
+/* ── Tableaux : plus aérés et contrastés ──────────────────────────────────── */
+.app-layout .stats-table th,
+.app-layout .ops-table-head {
+  background: var(--crm-surface-2);
+  color: var(--crm-faint);
+  font-size: 11px;
+  letter-spacing: .05em;
+  border-bottom: 1px solid var(--crm-border);
+}
+.app-layout .stats-table td { padding: 13px 14px; color: var(--crm-ink); border-bottom: 1px solid var(--crm-border); }
+.app-layout .stats-table tr:hover td { background: var(--crm-surface-2); }
+.app-layout .ops-table-row { border-bottom: 1px solid var(--crm-border); }
+.app-layout .ops-table-row--link:hover { background: var(--crm-surface-2); }
+
+/* ── Formulaires admin : champs plus lisibles ─────────────────────────────── */
+.app-layout .ops-form input,
+.app-layout .ops-form select,
+.app-layout .ops-form textarea {
+  border: 1px solid var(--crm-border);
+  border-radius: 10px;
+  background: var(--crm-surface);
+  color: var(--crm-ink);
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.app-layout .ops-form input:focus,
+.app-layout .ops-form select:focus,
+.app-layout .ops-form textarea:focus {
+  outline: none;
+  border-color: var(--crm-accent);
+  box-shadow: 0 0 0 3px rgba(47,109,240,.16);
+}
+.app-layout .btn-primary,
+.app-layout .primary-action {
+  background: var(--crm-accent);
+  border-color: var(--crm-accent);
+  color: #fff;
+  border-radius: 10px;
+}
+.app-layout .btn-primary:hover,
+.app-layout .primary-action:hover { background: #2456c8; }
+
+/* ── Boutons/pastilles de statut : meilleure lisibilité ───────────────────── */
+.app-layout .badge, .app-layout .status-pill, .app-layout .ops-badge {
+  font-weight: 700;
+  letter-spacing: .01em;
+}
