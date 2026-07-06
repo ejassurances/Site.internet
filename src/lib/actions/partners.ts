@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import OpenAI from "openai";
 import { requireRole } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -49,12 +50,20 @@ export type PartnerDistributedContract = {
   commission_rate: number | null;
   commission_notes: string | null;
   subscription_link: string | null;
+  ai_analysis_status?: string | null;
+  ai_guarantee_summary?: string | null;
+  ai_comparison_points?: Record<string, unknown> | null;
+  ai_needs_questions?: string[];
+  ai_advice_notes?: string | null;
+  ai_analyzed_at?: string | null;
   created_at: string;
+  partner_product_documents?: PartnerProductDocument[];
 };
 
 export type PartnerProductDocument = {
   id: string;
   partner_id: string;
+  contract_id?: string | null;
   product_name: string;
   product_category: string;
   document_type: string;
@@ -80,6 +89,14 @@ function contactFromForm(formData: FormData, prefix: string) {
   };
 }
 
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("OPENAI_API_KEY manquant pour lancer l'analyse IA.");
+  }
+  return new OpenAI({ apiKey });
+}
+
 export async function getPartnerCompanies(): Promise<PartnerCompany[]> {
   await requireRole(["admin", "courtier"]);
   const supabase = await createSupabaseServerClient();
@@ -100,7 +117,7 @@ export async function getPartnerCompany(partnerId: string): Promise<PartnerCompa
 
   const { data } = await supabase
     .from("partner_companies")
-    .select("*, partner_distributed_contracts(*), partner_product_documents(*)")
+    .select("*, partner_distributed_contracts(*, partner_product_documents(*)), partner_product_documents(*)")
     .eq("id", partnerId)
     .maybeSingle();
 
@@ -170,6 +187,7 @@ export async function createPartnerProductDocumentAction(
   if (!supabase) return { status: "error", message: "Connexion Supabase indisponible." };
 
   const partnerId = String(formData.get("partnerId") ?? "");
+  const contractId = String(formData.get("contractId") ?? "") || null;
   const productName = String(formData.get("productName") ?? "").trim();
   const productCategory = String(formData.get("productCategory") ?? "autre");
   const documentType = String(formData.get("documentType") ?? "autre");
@@ -182,6 +200,7 @@ export async function createPartnerProductDocumentAction(
 
   const { error } = await supabase.from("partner_product_documents").insert({
     partner_id: partnerId,
+    contract_id: contractId,
     product_name: productName,
     product_category: productCategory,
     document_type: documentType,
@@ -204,6 +223,107 @@ export async function createPartnerProductDocumentAction(
   revalidatePath("/admin/partenaires");
   revalidatePath(`/admin/partenaires/${partnerId}`);
   return { status: "success", message: "Document contractuel rattache a la fiche partenaire." };
+}
+
+export async function generatePartnerContractAiSummaryAction(formData: FormData): Promise<void> {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) throw new Error("Connexion Supabase indisponible.");
+
+  const partnerId = String(formData.get("partnerId") ?? "");
+  const contractId = String(formData.get("contractId") ?? "");
+  if (!partnerId || !contractId) throw new Error("Partenaire ou contrat manquant.");
+
+  const [{ data: partner }, { data: contract }, { data: documents }] = await Promise.all([
+    supabase.from("partner_companies").select("name, partner_type").eq("id", partnerId).maybeSingle(),
+    supabase.from("partner_distributed_contracts").select("*").eq("id", contractId).maybeSingle(),
+    supabase
+      .from("partner_product_documents")
+      .select("document_type, file_name, product_name, notes, valid_from, valid_until")
+      .eq("contract_id", contractId)
+      .order("created_at", { ascending: false }),
+  ]);
+
+  if (!contract) throw new Error("Contrat distribue introuvable.");
+
+  const contractContext = {
+    partner,
+    contract,
+    documents: documents ?? [],
+  };
+
+  const prompt = `Tu es l'agent IA conformité-produit du cabinet EJ Assurances.
+Analyse un contrat d'assurance distribué par un partenaire pour aider le courtier à préparer :
+- un devis comparatif ;
+- un recueil des besoins ;
+- une fiche conseil DDA.
+
+Tu ne dois pas vendre le contrat ni donner une décision de souscription.
+Tu dois résumer les garanties, points de comparaison, limites, questions à poser au client et points de vigilance.
+
+Réponds uniquement en JSON valide avec cette structure :
+{
+  "resume_garanties": "Résumé synthétique en français, 8 à 12 lignes maximum.",
+  "points_comparaison": {
+    "forces": ["..."],
+    "limites": ["..."],
+    "documents_a_verifier": ["..."],
+    "criteres_devis": ["..."]
+  },
+  "questions_recueil_besoins": ["Question utile pour qualifier le besoin client"],
+  "notes_devoir_conseil": "Points à reprendre dans l'analyse et la justification du conseil."
+}
+
+Données disponibles :
+${JSON.stringify(contractContext, null, 2)}`;
+
+  const completion = await getOpenAIClient().chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      { role: "system", content: "Tu produis une analyse assurantielle structurée, prudente, conforme DDA, sans conseil direct au client." },
+      { role: "user", content: prompt },
+    ],
+    temperature: 0.3,
+    max_tokens: 1400,
+    response_format: { type: "json_object" },
+  });
+
+  const content = completion.choices[0]?.message?.content;
+  if (!content) throw new Error("Réponse IA vide.");
+
+  const parsed = JSON.parse(content) as {
+    resume_garanties?: string;
+    points_comparaison?: Record<string, unknown>;
+    questions_recueil_besoins?: string[];
+    notes_devoir_conseil?: string;
+  };
+
+  const { error } = await supabase
+    .from("partner_distributed_contracts")
+    .update({
+      ai_analysis_status: "ready",
+      ai_guarantee_summary: parsed.resume_garanties ?? null,
+      ai_comparison_points: parsed.points_comparaison ?? {},
+      ai_needs_questions: parsed.questions_recueil_besoins ?? [],
+      ai_advice_notes: parsed.notes_devoir_conseil ?? null,
+      ai_analyzed_at: new Date().toISOString(),
+      ai_analyzed_by: user.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", contractId);
+
+  if (error) throw new Error(error.message);
+
+  await supabase.from("audit_logs").insert({
+    actor_id: user.id,
+    action: "partner_contract_ai_summary.generated",
+    target_table: "partner_distributed_contracts",
+    target_id: contractId,
+    metadata: { partner_id: partnerId, contract_name: contract.contract_name },
+  });
+
+  revalidatePath("/admin/partenaires");
+  revalidatePath(`/admin/partenaires/${partnerId}`);
 }
 
 export async function updatePartnerApiConfigurationAction(

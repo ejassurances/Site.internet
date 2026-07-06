@@ -5,10 +5,11 @@ import { requireRole } from "@/lib/auth";
 import {
   createPartnerDistributedContractAction,
   createPartnerProductDocumentAction,
+  generatePartnerContractAiSummaryAction,
   getPartnerCompany,
   updatePartnerApiConfigurationAction,
 } from "@/lib/actions/partners";
-import { Building2, FileText, KeyRound, PackageCheck, ShieldCheck } from "lucide-react";
+import { Bot, Building2, FileText, KeyRound, PackageCheck, ShieldCheck } from "lucide-react";
 
 export const metadata = { title: "Fiche partenaire - EJ Assurances" };
 
@@ -24,12 +25,19 @@ const productCategories = [
 
 const documentTypes = [
   ["notice", "Notice"],
-  ["ipid", "IPID"],
+  ["ipid", "IPID / INPI"],
   ["conditions_generales", "Conditions generales"],
+  ["fiche_produit", "Fiche produit"],
   ["bulletin_adhesion", "Bulletin d'adhesion"],
   ["convention", "Convention signee"],
   ["commission", "Bulletin / bareme de commission"],
   ["autre", "Autre"],
+];
+
+const requiredContractDocuments = [
+  { key: "conditions_generales", label: "Conditions generales", required: true },
+  { key: "ipid", label: "IPID / INPI", required: true },
+  { key: "fiche_produit", label: "Fiche produit", required: false },
 ];
 
 export default async function PartnerDetailPage({ params }: { params: Promise<{ partnerId: string }> }) {
@@ -52,6 +60,11 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
   async function updateApi(formData: FormData) {
     "use server";
     await updatePartnerApiConfigurationAction({ status: "idle", message: "" }, formData);
+  }
+
+  async function generateAiSummary(formData: FormData) {
+    "use server";
+    await generatePartnerContractAiSummaryAction(formData);
   }
 
   const contracts = partner.partner_distributed_contracts ?? [];
@@ -199,6 +212,17 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
 
             <div className="ops-form-grid">
               <label>
+                Contrat rattache
+                <select name="contractId" required defaultValue="">
+                  <option value="">Selectionner un contrat distribue</option>
+                  {contracts.map((contract) => (
+                    <option key={contract.id} value={contract.id}>
+                      {contract.contract_name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
                 Produit concerne
                 <input name="productName" list="partner-products" required />
                 <datalist id="partner-products">
@@ -271,21 +295,68 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
                 <div className="ops-empty">Aucun produit distribue rattache.</div>
               ) : (
                 contracts.map((contract) => (
-                  <div key={contract.id} className="ops-table-row">
-                    <div>
-                      <strong>{contract.contract_name}</strong>
-                      <small>{contract.product_code ?? "Code non renseigne"}</small>
+                  <article key={contract.id} className="ops-contract-card">
+                    <div className="ops-table-row">
+                      <div>
+                        <strong>{contract.contract_name}</strong>
+                        <small>{contract.product_code ?? "Code non renseigne"}</small>
+                      </div>
+                      <div>
+                        <strong>{contract.product_category}</strong>
+                        <small>{contract.target_clients?.join(", ") || "Cibles a qualifier"}</small>
+                      </div>
+                      <div>
+                        <strong>{contract.commission_rate ? `${contract.commission_rate}%` : "Commission a verifier"}</strong>
+                        <small>{contract.subscription_link ? "Lien de souscription renseigne" : "Pas de lien"}</small>
+                      </div>
+                      <div><span className={`ops-status ops-status--${contract.status}`}>{contract.status}</span></div>
                     </div>
-                    <div>
-                      <strong>{contract.product_category}</strong>
-                      <small>{contract.target_clients?.join(", ") || "Cibles a qualifier"}</small>
+
+                    <div className="ops-contract-detail">
+                      <div>
+                        <h3>Documents attendus</h3>
+                        <div className="ops-document-checks">
+                          {requiredContractDocuments.map((requiredDocument) => {
+                            const found = contract.partner_product_documents?.some(
+                              (document) => document.document_type === requiredDocument.key,
+                            );
+                            return (
+                              <span key={requiredDocument.key} className={`ops-status ops-status--${found ? "active" : requiredDocument.required ? "rejected" : "draft"}`}>
+                                {found ? "OK" : requiredDocument.required ? "Manquant" : "Optionnel"} - {requiredDocument.label}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <form action={generateAiSummary}>
+                        <input type="hidden" name="partnerId" value={partner.id} />
+                        <input type="hidden" name="contractId" value={contract.id} />
+                        <button type="submit" className="btn-primary">
+                          <Bot size={15} aria-hidden />
+                          Analyser avec IA
+                        </button>
+                      </form>
                     </div>
-                    <div>
-                      <strong>{contract.commission_rate ? `${contract.commission_rate}%` : "Commission a verifier"}</strong>
-                      <small>{contract.subscription_link ? "Lien de souscription renseigne" : "Pas de lien"}</small>
-                    </div>
-                    <div><span className={`ops-status ops-status--${contract.status}`}>{contract.status}</span></div>
-                  </div>
+
+                    {contract.ai_guarantee_summary && (
+                      <div className="ops-ai-summary">
+                        <div className="ops-card-title">
+                          <Bot size={16} aria-hidden />
+                          <h3>Resume IA garanties</h3>
+                        </div>
+                        <p>{contract.ai_guarantee_summary}</p>
+                        {contract.ai_needs_questions && contract.ai_needs_questions.length > 0 && (
+                          <ul className="ops-list">
+                            {contract.ai_needs_questions.slice(0, 4).map((question) => (
+                              <li key={question}>{question}</li>
+                            ))}
+                          </ul>
+                        )}
+                        {contract.ai_advice_notes && <small>{contract.ai_advice_notes}</small>}
+                      </div>
+                    )}
+                  </article>
                 ))
               )}
             </div>
