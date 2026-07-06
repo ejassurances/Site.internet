@@ -79,7 +79,7 @@ export default function HomePage() {
                 Comprendre le risque parent social <ArrowRight size={18} aria-hidden />
               </Link>
               <Link
-                href="/simulateur"
+                href="/assurance-emprunteur#simulateur"
                 className="inline-flex items-center justify-center rounded-lg border border-[#D8E2F0] bg-[#EEF4FF] px-6 py-3 font-semibold text-[#0F172A] transition hover:border-[#3B82F6]"
               >
                 Simuler mon assurance emprunteur

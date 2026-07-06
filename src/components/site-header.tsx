@@ -12,7 +12,7 @@ const navItems = [
     highlight: true,
     sub: [
       { label: "Comprendre l'assurance emprunteur", href: "/assurance-emprunteur" },
-      { label: "Simulateur emprunteur", href: "/devis/emprunteur" },
+      { label: "Simulateur emprunteur", href: "/assurance-emprunteur#simulateur" },
       { label: "Contact courtier", href: "/contact#rendez-vous" },
     ],
   },

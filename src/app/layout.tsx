@@ -59,7 +59,7 @@ const navigationLinks = [
   { label: "Accueil", href: "/" },
   { label: "Assurance emprunteur", href: "/assurance-emprunteur" },
   { label: "Parent social", href: "/parent-social-enfant" },
-  { label: "Simulateur", href: "/simulateur" },
+  { label: "Simulateur", href: "/assurance-emprunteur#simulateur" },
   { label: "Conformite", href: "/conformite" },
   { label: "Contact", href: "/contact" },
 ];
