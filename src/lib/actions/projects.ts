@@ -42,7 +42,8 @@ export async function getClientProjects(clientId: string): Promise<BorrowerProje
       project_borrower_needs(id, project_id, client_id, completion_source, status, bank_name, loan_amount, loan_duration_months, remaining_capital, loan_start_date, loan_end_date, current_insurer, current_annual_premium, requested_quotities, requested_guarantees, delegation_or_substitution, objective, known_data, missing_data, validation_blockers, client_comment, advisor_notes),
       project_deliveries(id, project_id, delivery_type, channel, status, subject, body, sent_at, created_at),
       project_signatures(id, project_id, signature_type, status, client_comment, requested_at, signed_at),
-      project_email_imports(id, project_id, gmail_thread_id, from_email, subject, received_at, ai_summary, attachment_count, excluded)
+      project_email_imports(id, project_id, gmail_thread_id, from_email, subject, received_at, ai_summary, attachment_count, excluded),
+      scooter_insurance_needs(id, project_id, client_id, status, owner_full_name, owner_email, vehicle_brand, vehicle_model, serial_number, purchase_date, purchase_price, max_speed_limited_25, used_by_household_members, household_users_details, extension_recommended, usage_type, storage_location, desired_effective_date, advisor_notes)
     `)
     .eq("client_id", clientId)
     .order("created_at", { ascending: false });
@@ -376,6 +377,116 @@ export async function saveBorrowerNeedsAction(
       blockers.length === 0
         ? "Recueil enregistre. Les pieces obligatoires sont presentes, la feuille de mission peut etre envoyee."
         : "Recueil enregistre. La validation reste bloquee tant que les pieces obligatoires ne sont pas ajoutees.",
+    projectId,
+  };
+}
+
+export async function saveScooterProjectNeedsAction(
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+
+  if (!supabase) {
+    return { status: "error", message: "Supabase n'est pas configure pour enregistrer le recueil trottinette." };
+  }
+
+  const projectId = String(formData.get("projectId") ?? "");
+  const clientId = String(formData.get("clientId") ?? "");
+  const maxSpeedValue = String(formData.get("maxSpeedLimited25") ?? "");
+  const householdValue = String(formData.get("usedByHouseholdMembers") ?? "");
+
+  if (!projectId || !clientId) {
+    return { status: "error", message: "Projet ou fiche client manquant." };
+  }
+
+  if (!maxSpeedValue || !householdValue) {
+    return { status: "error", message: "Les questions 25 km/h et utilisation par le foyer sont obligatoires." };
+  }
+
+  const extensionRecommended = householdValue === "yes";
+  const needsStatus =
+    maxSpeedValue === "no"
+      ? "needs_review"
+      : extensionRecommended
+        ? "extension_recommended"
+        : "ready_for_quote";
+
+  const numberOrNull = (value: FormDataEntryValue | null) => {
+    const parsed = Number(String(value ?? "").replace(",", "."));
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  };
+
+  const scooterPayload = {
+    project_id: projectId,
+    client_id: clientId,
+    status: needsStatus,
+    owner_full_name: String(formData.get("ownerFullName") ?? "").trim() || null,
+    owner_email: String(formData.get("ownerEmail") ?? "").trim() || null,
+    vehicle_brand: String(formData.get("vehicleBrand") ?? "").trim() || null,
+    vehicle_model: String(formData.get("vehicleModel") ?? "").trim() || null,
+    serial_number: String(formData.get("serialNumber") ?? "").trim() || null,
+    purchase_date: String(formData.get("purchaseDate") ?? "") || null,
+    purchase_price: numberOrNull(formData.get("purchasePrice")),
+    max_speed_limited_25: maxSpeedValue === "yes",
+    used_by_household_members: extensionRecommended,
+    household_users_details: String(formData.get("householdUsersDetails") ?? "").trim() || null,
+    extension_recommended: extensionRecommended,
+    usage_type: String(formData.get("usageType") ?? "") || null,
+    storage_location: String(formData.get("storageLocation") ?? "").trim() || null,
+    desired_effective_date: String(formData.get("desiredEffectiveDate") ?? "") || null,
+    advisor_notes: String(formData.get("advisorNotes") ?? "").trim() || null,
+    collected_by: user.id,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { data: existingNeed } = await supabase
+    .from("scooter_insurance_needs")
+    .select("id")
+    .eq("project_id", projectId)
+    .maybeSingle();
+
+  const { error } = existingNeed?.id
+    ? await supabase.from("scooter_insurance_needs").update(scooterPayload).eq("id", existingNeed.id)
+    : await supabase.from("scooter_insurance_needs").insert(scooterPayload);
+
+  if (error) {
+    return { status: "error", message: error.message };
+  }
+
+  await Promise.all([
+    supabase
+      .from("projects")
+      .update({
+        status: needsStatus === "ready_for_quote" ? "in_progress" : "waiting_documents",
+        workflow_stage: "recueil_besoins_trottinette",
+        workflow_data: {
+          max_speed_limited_25: maxSpeedValue === "yes",
+          used_by_household_members: extensionRecommended,
+          extension_recommended: extensionRecommended,
+          updated_at: new Date().toISOString(),
+        },
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", projectId),
+    supabase.from("audit_logs").insert({
+      actor_id: user.id,
+      action: "scooter_project_needs.saved",
+      target_table: "projects",
+      target_id: projectId,
+      metadata: { client_id: clientId, status: needsStatus, extension_recommended: extensionRecommended },
+    }),
+  ]);
+
+  revalidatePath(`/admin/clients/${clientId}`);
+  revalidatePath("/admin/workflows/trottinette");
+
+  return {
+    status: "success",
+    message: extensionRecommended
+      ? "Recueil trottinette enregistre. Extension foyer fiscal recommandee."
+      : "Recueil trottinette enregistre. Le dossier peut passer en devis.",
     projectId,
   };
 }

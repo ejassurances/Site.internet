@@ -114,6 +114,27 @@ export type BorrowerProject = {
   project_deliveries?: BorrowerDeliveryRecord[];
   project_signatures?: BorrowerSignatureRecord[];
   project_email_imports?: BorrowerEmailImportRecord[];
+  scooter_insurance_needs?: Array<{
+    id: string;
+    project_id: string | null;
+    client_id: string | null;
+    status: string;
+    owner_full_name: string | null;
+    owner_email: string | null;
+    vehicle_brand: string | null;
+    vehicle_model: string | null;
+    serial_number: string | null;
+    purchase_date: string | null;
+    purchase_price: number | null;
+    max_speed_limited_25: boolean | null;
+    used_by_household_members: boolean | null;
+    household_users_details: string | null;
+    extension_recommended: boolean;
+    usage_type: string | null;
+    storage_location: string | null;
+    desired_effective_date: string | null;
+    advisor_notes: string | null;
+  }>;
 };
 
 export type WorkflowStep = {
