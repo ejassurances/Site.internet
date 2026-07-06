@@ -28,6 +28,9 @@ export type PartnerCompany = {
   api_scopes?: string[];
   api_config?: Record<string, unknown> | null;
   api_notes?: string | null;
+  google_drive_folder_id?: string | null;
+  google_drive_folder_url?: string | null;
+  drive_products_folder_id?: string | null;
   notes: string | null;
   created_at: string;
   partner_distributed_contracts?: PartnerDistributedContract[];
@@ -50,6 +53,8 @@ export type PartnerDistributedContract = {
   commission_rate: number | null;
   commission_notes: string | null;
   subscription_link: string | null;
+  google_drive_folder_id?: string | null;
+  google_drive_folder_url?: string | null;
   ai_analysis_status?: string | null;
   ai_guarantee_summary?: string | null;
   ai_comparison_points?: Record<string, unknown> | null;
@@ -81,12 +86,37 @@ export type PartnerActionState = {
   message: string;
 };
 
+const productCategoryLabels: Record<string, string> = {
+  assurance_emprunteur: "Assurance emprunteur",
+  prevoyance: "Prevoyance",
+  assurance_vie: "Assurance vie",
+  sante: "Sante",
+  protection_juridique: "Protection juridique",
+  trottinette: "Trottinette EDPM",
+  autre: "Autre",
+};
+
 function contactFromForm(formData: FormData, prefix: string) {
   return {
     name: String(formData.get(`${prefix}Name`) ?? "").trim(),
     email: String(formData.get(`${prefix}Email`) ?? "").trim(),
     phone: String(formData.get(`${prefix}Phone`) ?? "").trim(),
   };
+}
+
+function extractDriveFolderId(input: string) {
+  const value = input.trim();
+  const match = value.match(/folders\/([a-zA-Z0-9_-]+)/);
+  return match?.[1] ?? value;
+}
+
+function safeFolderName(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 80);
 }
 
 function getOpenAIClient() {
@@ -143,26 +173,30 @@ export async function createPartnerDistributedContractAction(
   const commissionRateRaw = String(formData.get("commissionRate") ?? "").replace(",", ".");
   const commissionRate = Number(commissionRateRaw);
 
-  const { error } = await supabase.from("partner_distributed_contracts").insert({
-    partner_id: partnerId,
-    contract_name: contractName,
-    product_category: productCategory,
-    product_code: String(formData.get("productCode") ?? "").trim() || null,
-    status: String(formData.get("status") ?? "active"),
-    target_clients: formData.getAll("targetClients").map(String).filter(Boolean),
-    guarantees: String(formData.get("guarantees") ?? "")
-      .split(/\n|,/)
-      .map((item) => item.trim())
-      .filter(Boolean),
-    exclusions: String(formData.get("exclusions") ?? "").trim() || null,
-    advice_positioning: String(formData.get("advicePositioning") ?? "").trim() || null,
-    underwriting_rules: String(formData.get("underwritingRules") ?? "").trim() || null,
-    pricing_notes: String(formData.get("pricingNotes") ?? "").trim() || null,
-    commission_rate: Number.isFinite(commissionRate) ? commissionRate : null,
-    commission_notes: String(formData.get("commissionNotes") ?? "").trim() || null,
-    subscription_link: String(formData.get("subscriptionLink") ?? "").trim() || null,
-    created_by: user.id,
-  });
+  const { data: createdContract, error } = await supabase
+    .from("partner_distributed_contracts")
+    .insert({
+      partner_id: partnerId,
+      contract_name: contractName,
+      product_category: productCategory,
+      product_code: String(formData.get("productCode") ?? "").trim() || null,
+      status: String(formData.get("status") ?? "active"),
+      target_clients: formData.getAll("targetClients").map(String).filter(Boolean),
+      guarantees: String(formData.get("guarantees") ?? "")
+        .split(/\n|,/)
+        .map((item) => item.trim())
+        .filter(Boolean),
+      exclusions: String(formData.get("exclusions") ?? "").trim() || null,
+      advice_positioning: String(formData.get("advicePositioning") ?? "").trim() || null,
+      underwriting_rules: String(formData.get("underwritingRules") ?? "").trim() || null,
+      pricing_notes: String(formData.get("pricingNotes") ?? "").trim() || null,
+      commission_rate: Number.isFinite(commissionRate) ? commissionRate : null,
+      commission_notes: String(formData.get("commissionNotes") ?? "").trim() || null,
+      subscription_link: String(formData.get("subscriptionLink") ?? "").trim() || null,
+      created_by: user.id,
+    })
+    .select("id")
+    .single();
 
   if (error) return { status: "error", message: error.message };
 
@@ -173,9 +207,94 @@ export async function createPartnerDistributedContractAction(
     metadata: { partner_id: partnerId, contract_name: contractName, product_category: productCategory },
   });
 
+  await supabase.from("drive_sync_events").insert({
+    event_type: "drive.partner_product_folder_requested",
+    status: "queued",
+    created_by: user.id,
+    payload: {
+      partner_id: partnerId,
+      partner_contract_id: createdContract?.id,
+      product_category: productCategory,
+      product_category_label: productCategoryLabels[productCategory] ?? productCategory,
+      contract_name: contractName,
+      expected_folder_name: `PROD_${productCategory.toUpperCase()}_${safeFolderName(contractName)}`,
+      subfolders: ["CG", "IPID", "Fiche produit", "Tarifs commissions", "Souscription", "Archives"],
+    },
+  });
+
   revalidatePath("/admin/partenaires");
   revalidatePath(`/admin/partenaires/${partnerId}`);
   return { status: "success", message: "Contrat distribue ajoute au referentiel partenaire." };
+}
+
+export async function importPartnerProductFromDriveAction(
+  _previousState: PartnerActionState,
+  formData: FormData,
+): Promise<PartnerActionState> {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { status: "error", message: "Connexion Supabase indisponible." };
+
+  const partnerId = String(formData.get("partnerId") ?? "");
+  const folderName = String(formData.get("folderName") ?? "").trim();
+  const folderInput = String(formData.get("folderIdOrUrl") ?? "").trim();
+  const productCategory = String(formData.get("productCategory") ?? "autre");
+  const productCode = String(formData.get("productCode") ?? "").trim() || null;
+
+  if (!partnerId || !folderName || !folderInput) {
+    return { status: "error", message: "Partenaire, dossier Drive et nom du produit obligatoires." };
+  }
+
+  const folderId = extractDriveFolderId(folderInput);
+  const productName = folderName.replace(/^PROD_[A-Z_]+_/i, "").replace(/_/g, " ").trim() || folderName;
+
+  const { data: contract, error } = await supabase
+    .from("partner_distributed_contracts")
+    .insert({
+      partner_id: partnerId,
+      contract_name: productName,
+      product_category: productCategory,
+      product_code: productCode,
+      status: "draft",
+      google_drive_folder_id: folderId,
+      pricing_notes: "Produit importe depuis un dossier Google Drive. Documents a rattacher et analyse IA a lancer.",
+      created_by: user.id,
+    })
+    .select("id")
+    .single();
+
+  if (error || !contract) {
+    return { status: "error", message: error?.message ?? "Impossible de creer le produit depuis Drive." };
+  }
+
+  await supabase.from("drive_sync_events").insert({
+    event_type: "drive.partner_product_detected",
+    google_drive_folder_id: folderId,
+    status: "done",
+    created_by: user.id,
+    processed_at: new Date().toISOString(),
+    payload: {
+      partner_id: partnerId,
+      partner_contract_id: contract.id,
+      folder_name: folderName,
+      product_category: productCategory,
+      product_code: productCode,
+      source: "manual_drive_import",
+      expected_documents: ["conditions_generales", "ipid", "fiche_produit"],
+    },
+  });
+
+  await supabase.from("audit_logs").insert({
+    actor_id: user.id,
+    action: "partner_product.imported_from_drive",
+    target_table: "partner_distributed_contracts",
+    target_id: contract.id,
+    metadata: { partner_id: partnerId, drive_folder_id: folderId, folder_name: folderName },
+  });
+
+  revalidatePath("/admin/partenaires");
+  revalidatePath(`/admin/partenaires/${partnerId}`);
+  return { status: "success", message: "Produit Drive importe dans le catalogue CRM." };
 }
 
 export async function createPartnerProductDocumentAction(
@@ -396,29 +515,47 @@ export async function createPartnerCompanyAction(
     return { status: "error", message: "Le nom du partenaire est obligatoire." };
   }
 
-  const { error } = await supabase.from("partner_companies").insert({
-    name,
-    partner_type: partnerType,
-    status: String(formData.get("status") ?? "active"),
-    orias_number: String(formData.get("oriasNumber") ?? "").trim() || null,
-    website: String(formData.get("website") ?? "").trim() || null,
-    distributed_products: products,
-    commercial_contact: contactFromForm(formData, "commercial"),
-    claims_contact: contactFromForm(formData, "claims"),
-    complaints_contact: contactFromForm(formData, "complaints"),
-    inspector_contact: contactFromForm(formData, "inspector"),
-    commission_terms: {
-      bulletin: String(formData.get("commissionBulletin") ?? "").trim(),
-      notes: String(formData.get("commissionNotes") ?? "").trim(),
-    },
-    convention_signed_at: String(formData.get("conventionSignedAt") ?? "") || null,
-    notes: String(formData.get("notes") ?? "").trim() || null,
-    created_by: user.id,
-  });
+  const { data: partner, error } = await supabase
+    .from("partner_companies")
+    .insert({
+      name,
+      partner_type: partnerType,
+      status: String(formData.get("status") ?? "active"),
+      orias_number: String(formData.get("oriasNumber") ?? "").trim() || null,
+      website: String(formData.get("website") ?? "").trim() || null,
+      distributed_products: products,
+      commercial_contact: contactFromForm(formData, "commercial"),
+      claims_contact: contactFromForm(formData, "claims"),
+      complaints_contact: contactFromForm(formData, "complaints"),
+      inspector_contact: contactFromForm(formData, "inspector"),
+      commission_terms: {
+        bulletin: String(formData.get("commissionBulletin") ?? "").trim(),
+        notes: String(formData.get("commissionNotes") ?? "").trim(),
+      },
+      convention_signed_at: String(formData.get("conventionSignedAt") ?? "") || null,
+      notes: String(formData.get("notes") ?? "").trim() || null,
+      created_by: user.id,
+    })
+    .select("id")
+    .single();
 
   if (error) {
     return { status: "error", message: error.message };
   }
+
+  await supabase.from("drive_sync_events").insert({
+    event_type: "drive.partner_folder_requested",
+    status: "queued",
+    created_by: user.id,
+    payload: {
+      partner_id: partner?.id,
+      partner_name: name,
+      partner_type: partnerType,
+      expected_folder_name: `PART_${safeFolderName(name)}`,
+      subfolders: ["Produits", "Conventions", "Commissions", "API", "Contacts", "Archives"],
+      product_subfolders: ["CG", "IPID", "Fiche produit"],
+    },
+  });
 
   await supabase.from("audit_logs").insert({
     actor_id: user.id,

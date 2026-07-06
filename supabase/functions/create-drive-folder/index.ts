@@ -1,14 +1,14 @@
-// Edge Function : create-drive-folder v12
-// Déclenchée par pg_net après INSERT sur :
-//   - public.clients   → dossier client standard (KYC / Contrats / Correspondances / Analyse DDA)
-//   - public.projects  → sous-dossier projet dans le dossier client
-//   - public.mandataires → dossier conformité mandataire (Carte d'identité / RCPro / ORIAS …)
-// Appelée manuellement (POST { table: 'cabinet' }) pour initialiser le dossier conformité cabinet.
+﻿// Edge Function : create-drive-folder v12
+// DÃ©clenchÃ©e par pg_net aprÃ¨s INSERT sur :
+//   - public.clients   â†’ dossier client standard (KYC / Contrats / Correspondances / Analyse DDA)
+//   - public.projects  â†’ sous-dossier projet dans le dossier client
+//   - public.mandataires â†’ dossier conformitÃ© mandataire (Carte d'identitÃ© / RCPro / ORIAS â€¦)
+// AppelÃ©e manuellement (POST { table: 'cabinet' }) pour initialiser le dossier conformitÃ© cabinet.
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface ClientRecord {
   id: string;
@@ -29,29 +29,46 @@ interface MandataireRecord {
   company_name?: string;
 }
 
+interface PartnerRecord {
+  id: string;
+  name?: string;
+  partner_type?: string;
+}
+
+interface PartnerContractRecord {
+  id: string;
+  partner_id?: string;
+  contract_name?: string;
+  product_category?: string;
+}
+
 type TriggerPayload =
   | { table: 'clients';     record: ClientRecord }
   | { table: 'projects';    record: ProjectRecord }
   | { table: 'mandataires'; record: MandataireRecord }
+  | { table: 'partner_companies'; record: PartnerRecord }
+  | { table: 'partner_distributed_contracts'; record: PartnerContractRecord }
   | { table: 'cabinet';     record?: never };
 
-// ─── Constantes ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ Constantes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const GOOGLE_TOKEN_URL   = 'https://oauth2.googleapis.com/token';
 const GOOGLE_DRIVE_API   = 'https://www.googleapis.com/drive/v3';
 
 const CLIENT_SUBFOLDERS    = ['KYC', 'Contrats', 'Correspondances', 'Analyse DDA'];
-const PROJECT_SUBFOLDERS   = ['Offres', 'Documents signés', 'Correspondances'];
+const PROJECT_SUBFOLDERS   = ['Offres', 'Documents signÃ©s', 'Correspondances'];
 const MANDATAIRE_SUBFOLDERS = [
-  "Carte d'identité",
+  "Carte d'identitÃ©",
   'Attestation RCPro',
   'Attestation ORIAS',
   'Convention de mandat',
   'Rapport DDA',
   'Autres',
 ];
+const PARTNER_SUBFOLDERS = ['Produits', 'Conventions', 'Commissions', 'API', 'Contacts', 'Archives'];
+const PARTNER_PRODUCT_SUBFOLDERS = ['CG', 'IPID', 'Fiche produit', 'Tarifs commissions', 'Souscription', 'Archives'];
 const CABINET_SUBFOLDERS = [
-  "Carte d'identité dirigeant",
+  "Carte d'identitÃ© dirigeant",
   'Attestation RCPro',
   'Attestation ORIAS',
   'Extrait Kbis',
@@ -59,7 +76,7 @@ const CABINET_SUBFOLDERS = [
   'Autres',
 ];
 
-// ─── Helpers OAuth Google ─────────────────────────────────────────────────────
+// â”€â”€â”€ Helpers OAuth Google â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function getAccessToken(
   clientId: string,
@@ -79,13 +96,13 @@ async function getAccessToken(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Échec refresh token Google OAuth : ${err}`);
+    throw new Error(`Ã‰chec refresh token Google OAuth : ${err}`);
   }
   const data = await res.json();
   return data.access_token as string;
 }
 
-// ─── Helpers Google Drive API ─────────────────────────────────────────────────
+// â”€â”€â”€ Helpers Google Drive API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function createFolder(
   accessToken: string,
@@ -107,13 +124,13 @@ async function createFolder(
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Échec création dossier Drive "${name}" : ${err}`);
+    throw new Error(`Ã‰chec crÃ©ation dossier Drive "${name}" : ${err}`);
   }
   const data = await res.json();
   return data.id as string;
 }
 
-/** Cherche un sous-dossier par nom dans un parent; le crée s'il n'existe pas. */
+/** Cherche un sous-dossier par nom dans un parent; le crÃ©e s'il n'existe pas. */
 async function findOrCreateFolder(
   accessToken: string,
   name: string,
@@ -145,10 +162,10 @@ async function setFolderPermission(
     },
     body: JSON.stringify({ role: 'reader', type: 'user', emailAddress: email }),
   });
-  // Erreurs ignorées (email invalide, etc.)
+  // Erreurs ignorÃ©es (email invalide, etc.)
 }
 
-// ─── Handler principal ────────────────────────────────────────────────────────
+// â”€â”€â”€ Handler principal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 serve(async (req: Request) => {
   if (req.method !== 'POST') {
@@ -161,7 +178,7 @@ serve(async (req: Request) => {
 
     console.log(`[create-drive-folder] table=${table}`, payload.record ? `id=${payload.record.id}` : '(cabinet)');
 
-    // ── Variables d'environnement ───────────────────────────────────────────
+    // â”€â”€ Variables d'environnement â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const clientId       = Deno.env.get('GOOGLE_CLIENT_ID')!;
     const clientSecret   = Deno.env.get('GOOGLE_CLIENT_SECRET')!;
     const refreshToken   = Deno.env.get('GOOGLE_REFRESH_TOKEN')!;
@@ -182,9 +199,9 @@ serve(async (req: Request) => {
     let mainFolderId: string;
     let folderName:   string;
 
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     if (table === 'clients') {
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       const client = payload.record as ClientRecord;
       folderName   = client.full_name || `Client-${client.id.slice(0, 8)}`;
 
@@ -206,15 +223,15 @@ serve(async (req: Request) => {
 
       if (error) throw new Error(`Erreur Supabase update clients : ${error.message}`);
 
-      console.log(`[create-drive-folder] ✅ Client ${client.id} → ${mainFolderId}`);
+      console.log(`[create-drive-folder] âœ… Client ${client.id} â†’ ${mainFolderId}`);
 
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     } else if (table === 'projects') {
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       const project  = payload.record as ProjectRecord;
       const title    = project.title        || `Projet-${project.id.slice(0, 8)}`;
       const type     = project.project_type || 'Divers';
-      folderName     = `${type} — ${title}`;
+      folderName     = `${type} â€” ${title}`;
 
       let parentFolderId = rootFolderId;
       if (project.client_id) {
@@ -234,20 +251,20 @@ serve(async (req: Request) => {
       }
 
       const { error } = await supabase
-        .from*'projects')
+        .from('projects')
         .update({ google_drive_folder_id: mainFolderId })
         .eq('id', project.id);
 
       if (error) throw new Error(`Erreur Supabase update projects : ${error.message}`);
 
-      console.log(`[create-drive-folder] ✅ Projet ${project.id} → ${mainFolderId}`);
+      console.log(`[create-drive-folder] âœ… Projet ${project.id} â†’ ${mainFolderId}`);
 
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     } else if (table === 'mandataires') {
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
       const mandataire = payload.record as MandataireRecord;
 
-      // Récupérer le nom depuis profiles
+      // RÃ©cupÃ©rer le nom depuis profiles
       let mandataireName = mandataire.company_name;
       if (!mandataireName && mandataire.profile_id) {
         const { data: profile } = await supabase
@@ -261,19 +278,19 @@ serve(async (req: Request) => {
       }
       folderName = mandataireName || `Mandataire-${mandataire.id.slice(0, 8)}`;
 
-      // Trouver/créer l'arborescence Conformité > Mandataires
-      const conformiteRootId   = await findOrCreateFolder(accessToken, 'Conformité', rootFolderId);
+      // Trouver/crÃ©er l'arborescence ConformitÃ© > Mandataires
+      const conformiteRootId   = await findOrCreateFolder(accessToken, 'ConformitÃ©', rootFolderId);
       const mandatairesRootId  = await findOrCreateFolder(accessToken, 'Mandataires', conformiteRootId);
 
-      // Créer le dossier individuel du mandataire
+      // CrÃ©er le dossier individuel du mandataire
       mainFolderId = await createFolder(accessToken, folderName, mandatairesRootId);
 
-      // Créer les sous-dossiers conformité
+      // CrÃ©er les sous-dossiers conformitÃ©
       for (const sub of MANDATAIRE_SUBFOLDERS) {
         await createFolder(accessToken, sub, mainFolderId);
       }
 
-      // Mettre à jour Supabase
+      // Mettre Ã  jour Supabase
       const { error } = await supabase
         .from('mandataires')
         .update({ google_drive_folder_id: mainFolderId })
@@ -281,25 +298,86 @@ serve(async (req: Request) => {
 
       if (error) throw new Error(`Erreur Supabase update mandataires : ${error.message}`);
 
-      console.log(`[create-drive-folder] ✅ Mandataire ${mandataire.id} → ${mainFolderId}`);
+      console.log(`[create-drive-folder] âœ… Mandataire ${mandataire.id} â†’ ${mainFolderId}`);
 
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    } else if (table === 'partner_companies') {
+      const partner = payload.record as PartnerRecord;
+      folderName = `PART_${partner.name || `Partenaire-${partner.id.slice(0, 8)}`}`;
+
+      const partnersRootId = await findOrCreateFolder(accessToken, 'Partenaires', rootFolderId);
+      mainFolderId = await findOrCreateFolder(accessToken, folderName, partnersRootId);
+
+      let productsFolderId = '';
+      for (const sub of PARTNER_SUBFOLDERS) {
+        const subFolderId = await findOrCreateFolder(accessToken, sub, mainFolderId);
+        if (sub === 'Produits') productsFolderId = subFolderId;
+      }
+
+      const { error } = await supabase
+        .from('partner_companies')
+        .update({
+          google_drive_folder_id: mainFolderId,
+          drive_products_folder_id: productsFolderId || null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', partner.id);
+
+      if (error) throw new Error(`Erreur Supabase update partner_companies : ${error.message}`);
+
+      console.log(`[create-drive-folder] Partner ${partner.id} -> ${mainFolderId}`);
+
+    } else if (table === 'partner_distributed_contracts') {
+      const contract = payload.record as PartnerContractRecord;
+      const contractName = contract.contract_name || `Produit-${contract.id.slice(0, 8)}`;
+      const category = contract.product_category || 'autre';
+      folderName = `PROD_${category}_${contractName}`;
+
+      let parentFolderId = rootFolderId;
+      if (contract.partner_id) {
+        const { data } = await supabase
+          .from('partner_companies')
+          .select('drive_products_folder_id, google_drive_folder_id')
+          .eq('id', contract.partner_id)
+          .single();
+
+        if (data?.drive_products_folder_id) {
+          parentFolderId = data.drive_products_folder_id;
+        } else if (data?.google_drive_folder_id) {
+          parentFolderId = await findOrCreateFolder(accessToken, 'Produits', data.google_drive_folder_id);
+        }
+      }
+
+      mainFolderId = await findOrCreateFolder(accessToken, folderName, parentFolderId);
+      for (const sub of PARTNER_PRODUCT_SUBFOLDERS) {
+        await findOrCreateFolder(accessToken, sub, mainFolderId);
+      }
+
+      const { error } = await supabase
+        .from('partner_distributed_contracts')
+        .update({ google_drive_folder_id: mainFolderId, updated_at: new Date().toISOString() })
+        .eq('id', contract.id);
+
+      if (error) throw new Error(`Erreur Supabase update partner_distributed_contracts : ${error.message}`);
+
+      console.log(`[create-drive-folder] Partner product ${contract.id} -> ${mainFolderId}`);
+
     } else if (table === 'cabinet') {
-    // ══════════════════════════════════════════════════════════════════════════
-      // Appelé manuellement une fois pour initialiser le dossier cabinet
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+      // AppelÃ© manuellement une fois pour initialiser le dossier cabinet
       folderName = 'EJ Assurances';
 
-      const conformiteRootId = await findOrCreateFolder(accessToken, 'Conformité', rootFolderId);
+      const conformiteRootId = await findOrCreateFolder(accessToken, 'ConformitÃ©', rootFolderId);
       const cabinetRootId    = await findOrCreateFolder(accessToken, 'Cabinet', conformiteRootId);
 
-      // Créer (ou réutiliser) le dossier principal cabinet
+      // CrÃ©er (ou rÃ©utiliser) le dossier principal cabinet
       mainFolderId = await findOrCreateFolder(accessToken, folderName, cabinetRootId);
 
       for (const sub of CABINET_SUBFOLDERS) {
         await findOrCreateFolder(accessToken, sub, mainFolderId);
       }
 
-      // Mettre à jour cabinet_info
+      // Mettre Ã  jour cabinet_info
       const { error } = await supabase
         .from('cabinet_info')
         .update({ google_drive_folder_conformite_id: mainFolderId, updated_at: new Date().toISOString() })
@@ -307,12 +385,12 @@ serve(async (req: Request) => {
 
       if (error) throw new Error(`Erreur Supabase update cabinet_info : ${error.message}`);
 
-      console.log(`[create-drive-folder] ✅ Cabinet → ${mainFolderId}`);
+      console.log(`[create-drive-folder] âœ… Cabinet â†’ ${mainFolderId}`);
 
-    // ══════════════════════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     } else {
       return new Response(
-        JSON.stringify({ error: `Table non supportée : ${(payload as any).table}` }),
+        JSON.stringify({ error: `Table non supportÃ©e : ${(payload as any).table}` }),
         { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
@@ -330,10 +408,11 @@ serve(async (req: Request) => {
 
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error('[create-drive-folder] ❌', message);
+    console.error('[create-drive-folder] âŒ', message);
     return new Response(
       JSON.stringify({ success: false, error: message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } },
     );
   }
 });
+

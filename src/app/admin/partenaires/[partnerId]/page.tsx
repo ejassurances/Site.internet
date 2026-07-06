@@ -7,6 +7,7 @@ import {
   createPartnerProductDocumentAction,
   generatePartnerContractAiSummaryAction,
   getPartnerCompany,
+  importPartnerProductFromDriveAction,
   updatePartnerApiConfigurationAction,
 } from "@/lib/actions/partners";
 import { Bot, Building2, FileText, KeyRound, PackageCheck, ShieldCheck } from "lucide-react";
@@ -55,6 +56,11 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
   async function addProductDocument(formData: FormData) {
     "use server";
     await createPartnerProductDocumentAction({ status: "idle", message: "" }, formData);
+  }
+
+  async function importDriveProduct(formData: FormData) {
+    "use server";
+    await importPartnerProductFromDriveAction({ status: "idle", message: "" }, formData);
   }
 
   async function updateApi(formData: FormData) {
@@ -106,6 +112,7 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
               <li>Statut : <strong>{partner.status}</strong></li>
               <li>ORIAS / reference : <strong>{partner.orias_number ?? "Non renseigne"}</strong></li>
               <li>Site : {partner.website ? <a href={partner.website} target="_blank" rel="noreferrer">{partner.website}</a> : "Non renseigne"}</li>
+              <li>Dossier Drive : {partner.google_drive_folder_url ? <a href={partner.google_drive_folder_url} target="_blank" rel="noreferrer">Ouvrir le dossier partenaire</a> : "Creation en attente"}</li>
               <li>Convention signee : <strong>{partner.convention_signed_at ?? "A verifier"}</strong></li>
             </div>
           </article>
@@ -282,6 +289,55 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
         </section>
 
         <section className="ops-grid ops-grid--two">
+          <form action={importDriveProduct} className="ops-card ops-form">
+            <input type="hidden" name="partnerId" value={partner.id} />
+            <div className="ops-card-title">
+              <FileText size={18} aria-hidden />
+              <h2>Importer un produit cree dans Drive</h2>
+            </div>
+            <p className="form-note">
+              Utilisez cette action quand un dossier produit existe deja dans Drive, par exemple dans Produits/PROD_ASSURANCE_EMPRUNTEUR_NomProduit.
+            </p>
+            <label>
+              Nom du dossier produit
+              <input name="folderName" placeholder="PROD_ASSURANCE_EMPRUNTEUR_NomProduit" required />
+            </label>
+            <div className="ops-form-grid">
+              <label>
+                Categorie
+                <select name="productCategory" defaultValue="assurance_emprunteur">
+                  {productCategories.map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Code produit
+                <input name="productCode" placeholder="Optionnel" />
+              </label>
+            </div>
+            <label>
+              ID ou URL du dossier Drive
+              <input name="folderIdOrUrl" placeholder="https://drive.google.com/drive/folders/..." required />
+            </label>
+            <button type="submit" className="btn-primary">Créer le produit dans le CRM</button>
+          </form>
+
+          <article className="ops-card">
+            <div className="ops-card-title">
+              <ShieldCheck size={18} aria-hidden />
+              <h2>Nomenclature Drive partenaire</h2>
+            </div>
+            <ul className="ops-list">
+              <li>Dossier partenaire : <strong>PART_NomPartenaire</strong></li>
+              <li>Sous-dossier obligatoire : <strong>Produits</strong></li>
+              <li>Dossier produit : <strong>PROD_CATEGORIE_NomProduit</strong></li>
+              <li>Documents produit : <strong>CG_NomProduit</strong>, <strong>IPID_NomProduit</strong>, <strong>FicheProduit_NomProduit</strong>.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section className="ops-grid ops-grid--two">
           <article className="ops-card">
             <div className="ops-section-header">
               <div>
@@ -307,7 +363,8 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
                       </div>
                       <div>
                         <strong>{contract.commission_rate ? `${contract.commission_rate}%` : "Commission a verifier"}</strong>
-                        <small>{contract.subscription_link ? "Lien de souscription renseigne" : "Pas de lien"}</small>
+                      <small>{contract.google_drive_folder_url ? "Dossier Drive produit OK" : contract.subscription_link ? "Lien de souscription renseigne" : "Pas de lien"}</small>
+                      {contract.google_drive_folder_url && <a href={contract.google_drive_folder_url} target="_blank" rel="noreferrer">Ouvrir Drive</a>}
                       </div>
                       <div><span className={`ops-status ops-status--${contract.status}`}>{contract.status}</span></div>
                     </div>
