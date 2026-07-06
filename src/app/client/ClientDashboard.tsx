@@ -1,17 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { AcprDocument, ClientAcprFolder } from "@/components/client-acpr-folder";
 import { CurrentUser } from "@/lib/auth";
-import { ShieldCheck, FolderOpen, FileCheck, Lock, CheckCircle, Clock, AlertTriangle } from "lucide-react";
+import { ShieldCheck, FolderOpen, FileCheck, Lock, CheckCircle, Clock, AlertTriangle, FileSignature, ExternalLink } from "lucide-react";
 
-type Tab = "documents" | "conformite";
+type Tab = "documents" | "lettres" | "conformite";
+
+export type LettreMissionSummary = {
+  id: string;
+  reference: string;
+  product: string;
+  status: string;
+  created_at: string;
+};
 
 interface Props {
   acprDocuments: AcprDocument[];
+  lettres: LettreMissionSummary[];
   user: CurrentUser;
 }
+
+const PRODUCT_LABEL: Record<string, string> = {
+  emprunteur: "Assurance emprunteur",
+  trottinette: "Assurance trottinette",
+  professionnel: "Assurance professionnelle",
+  prevoyance: "Prévoyance",
+  patrimoine: "Assurance-vie & patrimoine",
+  autre: "Assurance",
+};
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; color: string; bg: string }> = {
@@ -89,12 +108,13 @@ function Row({ label, sub, right, last = false }: {
   );
 }
 
-export function ClientDashboard({ acprDocuments, user }: Props) {
+export function ClientDashboard({ acprDocuments, lettres, user }: Props) {
   const [tab, setTab] = useState<Tab>("documents");
 
   const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-    { id: "documents",  label: "Mes documents", icon: FolderOpen   },
-    { id: "conformite", label: "ConformitÃ©",     icon: ShieldCheck  },
+    { id: "documents",  label: "Mes documents",      icon: FolderOpen    },
+    { id: "lettres",    label: "Lettres de mission", icon: FileSignature },
+    { id: "conformite", label: "ConformitÃ©",         icon: ShieldCheck   },
   ];
 
   return (
@@ -119,6 +139,40 @@ export function ClientDashboard({ acprDocuments, user }: Props) {
 
       {/* Documents tab */}
       {tab === "documents" && <ClientAcprFolder documents={acprDocuments} />}
+
+      {/* Lettres de mission tab */}
+      {tab === "lettres" && (
+        <SectionCard icon={FileSignature} iconColor="#8c6e35" title="Lettres de mission">
+          {lettres.length === 0 ? (
+            <Row
+              label="Aucune lettre de mission pour le moment"
+              last
+              sub="Votre conseiller vous transmettra une lettre de mission à signer dès qu'un projet sera lancé."
+            />
+          ) : (
+            lettres.map((lettre, i) => (
+              <Row
+                key={lettre.id}
+                label={PRODUCT_LABEL[lettre.product] ?? lettre.product}
+                last={i === lettres.length - 1}
+                sub={`${lettre.reference} · ${new Date(lettre.created_at).toLocaleDateString("fr-FR")}`}
+                right={
+                  <span style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <StatusBadge status={lettre.status === "signee" ? "signe" : "en_attente"} />
+                    <Link
+                      href={`/client/lettre-mission/${lettre.id}`}
+                      style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px",
+                        color: "var(--accent-strong)", fontWeight: 700 }}
+                    >
+                      {lettre.status === "signee" ? "Consulter" : "Signer"} <ExternalLink size={13} aria-hidden />
+                    </Link>
+                  </span>
+                }
+              />
+            ))
+          )}
+        </SectionCard>
+      )}
 
       {/* ConformitÃ© tab */}
       {tab === "conformite" && (

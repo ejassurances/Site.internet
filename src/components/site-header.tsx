@@ -17,14 +17,25 @@ const navItems = [
     ],
   },
   {
-    label: "Parent social & enfant",
-    href: "/parent-social-enfant",
+    label: "Protection & coparentalité",
+    href: "/expertise-coparentalite",
     highlight: false,
     sub: [
-      { label: "Lien parent social / enfant", href: "/parent-social-enfant" },
       { label: "Coparentalité", href: "/expertise-coparentalite" },
+      { label: "Lien parent social / enfant", href: "/parent-social-enfant" },
       { label: "Familles LGBT+", href: "/familles-lgbt" },
       { label: "Protection des enfants", href: "/protection-enfants" },
+    ],
+  },
+  {
+    label: "Professionnel",
+    href: "/professionnel",
+    highlight: false,
+    sub: [
+      { label: "Responsabilité civile pro", href: "/professionnel#rc-pro" },
+      { label: "Multirisque professionnelle", href: "/professionnel#multirisque" },
+      { label: "Prévoyance TNS", href: "/professionnel#prevoyance-tns" },
+      { label: "Santé collective", href: "/professionnel#sante-collective" },
     ],
   },
   { label: "Assurance-vie & patrimoine", href: "/assurance-vie-patrimoine", highlight: false, sub: [] },
