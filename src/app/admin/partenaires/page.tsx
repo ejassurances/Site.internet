@@ -3,10 +3,9 @@ import { AppShell } from "@/components/app-shell";
 import { requireRole } from "@/lib/auth";
 import {
   createPartnerCompanyAction,
-  createPartnerDistributedContractAction,
   getPartnerCompanies,
 } from "@/lib/actions/partners";
-import { Building2, FileSignature, Handshake, ShieldCheck } from "lucide-react";
+import { Building2, FileSignature, Handshake } from "lucide-react";
 
 export const metadata = { title: "Partenaires assureurs et grossistes - EJ Assurances" };
 
@@ -27,11 +26,6 @@ export default async function PartnersPage() {
   async function createPartner(formData: FormData) {
     "use server";
     await createPartnerCompanyAction({ status: "idle", message: "" }, formData);
-  }
-
-  async function createDistributedContract(formData: FormData) {
-    "use server";
-    await createPartnerDistributedContractAction({ status: "idle", message: "" }, formData);
   }
 
   return (
@@ -161,112 +155,16 @@ export default async function PartnersPage() {
         </section>
 
         <section className="ops-grid ops-grid--two">
-          <form action={createDistributedContract} className="ops-card ops-form">
-            <div className="ops-card-title">
-              <ShieldCheck size={18} aria-hidden />
-              <h2>Ajouter un contrat distribue</h2>
-            </div>
-
-            <label>
-              Partenaire
-              <select name="partnerId" required defaultValue="">
-                <option value="">Selectionner un partenaire</option>
-                {partners.map((partner) => (
-                  <option key={partner.id} value={partner.id}>{partner.name}</option>
-                ))}
-              </select>
-            </label>
-
-            <div className="ops-form-grid">
-              <label>
-                Nom du contrat
-                <input name="contractName" placeholder="Ex : Pack EDPM, Garantie emprunteur..." required />
-              </label>
-              <label>
-                Categorie
-                <select name="productCategory" defaultValue="assurance_emprunteur">
-                  <option value="assurance_emprunteur">Assurance emprunteur</option>
-                  <option value="prevoyance">Prevoyance</option>
-                  <option value="assurance_vie">Assurance vie</option>
-                  <option value="sante">Sante</option>
-                  <option value="protection_juridique">Protection juridique</option>
-                  <option value="trottinette">Trottinette / EDPM</option>
-                  <option value="autre">Autre</option>
-                </select>
-              </label>
-            </div>
-
-            <div className="ops-form-grid">
-              <label>
-                Code produit
-                <input name="productCode" placeholder="ADP001, TROT-MAX..." />
-              </label>
-              <label>
-                Statut
-                <select name="status" defaultValue="active">
-                  <option value="draft">Brouillon</option>
-                  <option value="active">Actif</option>
-                  <option value="suspended">Suspendu</option>
-                  <option value="archived">Archive</option>
-                </select>
-              </label>
-            </div>
-
-            <fieldset className="ops-fieldset">
-              <legend>Cibles devoir de conseil</legend>
-              {["Famille", "Parent social", "Emprunteur", "Trottinette", "Chef d'entreprise", "Senior"].map((target) => (
-                <label key={target}>
-                  <input type="checkbox" name="targetClients" value={target} /> {target}
-                </label>
-              ))}
-            </fieldset>
-
-            <label>
-              Garanties principales
-              <textarea name="guarantees" placeholder="Une garantie par ligne ou separee par virgule" />
-            </label>
-            <label>
-              Positionnement pour le devoir de conseil
-              <textarea name="advicePositioning" placeholder="Dans quel cas recommander ce contrat, et pourquoi ?" />
-            </label>
-            <label>
-              Exclusions / limites a signaler
-              <textarea name="exclusions" />
-            </label>
-            <label>
-              Regles de souscription
-              <textarea name="underwritingRules" placeholder="Age, documents, questionnaire, contraintes compagnie..." />
-            </label>
-
-            <div className="ops-form-grid">
-              <label>
-                Taux commission
-                <input name="commissionRate" inputMode="decimal" placeholder="Ex : 12.5" />
-              </label>
-              <label>
-                Lien de souscription
-                <input name="subscriptionLink" type="url" placeholder="https://..." />
-              </label>
-            </div>
-
-            <label>
-              Notes tarifaires / commission
-              <textarea name="pricingNotes" />
-            </label>
-
-            <button type="submit" className="btn-primary">Ajouter au catalogue</button>
-          </form>
-
           <div className="ops-card">
             <div className="ops-card-title">
               <FileSignature size={18} aria-hidden />
-              <h2>Utilisation future</h2>
+              <h2>Création des produits</h2>
             </div>
             <ul className="ops-list">
-              <li>Alimenter les devis depuis un catalogue fiable.</li>
-              <li>Comparer garanties, exclusions et commissions.</li>
-              <li>Justifier le choix dans la fiche conseil DDA.</li>
-              <li>Rattacher notices, IPID, conditions generales et bulletin d'adhesion.</li>
+              <li>Ouvrir la fiche du partenaire concerne.</li>
+              <li>Ajouter le produit distribue depuis cette fiche uniquement.</li>
+              <li>Rattacher ensuite CG, IPID, fiche produit, commission et API au bon partenaire.</li>
+              <li>Le catalogue reste ainsi fiable pour les devis et la fiche conseil DDA.</li>
             </ul>
           </div>
         </section>

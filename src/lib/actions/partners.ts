@@ -163,11 +163,29 @@ export async function createPartnerDistributedContractAction(
   if (!supabase) return { status: "error", message: "Connexion Supabase indisponible." };
 
   const partnerId = String(formData.get("partnerId") ?? "");
+  const sourceContext = String(formData.get("sourceContext") ?? "");
   const contractName = String(formData.get("contractName") ?? "").trim();
   const productCategory = String(formData.get("productCategory") ?? "autre");
 
+  if (sourceContext !== "partner_file") {
+    return {
+      status: "error",
+      message: "La creation d'un produit d'assurance se fait uniquement depuis la fiche du partenaire.",
+    };
+  }
+
   if (!partnerId || !contractName) {
     return { status: "error", message: "Selectionnez un partenaire et renseignez le nom du contrat." };
+  }
+
+  const { data: partnerExists } = await supabase
+    .from("partner_companies")
+    .select("id")
+    .eq("id", partnerId)
+    .maybeSingle();
+
+  if (!partnerExists) {
+    return { status: "error", message: "Fiche partenaire introuvable." };
   }
 
   const commissionRateRaw = String(formData.get("commissionRate") ?? "").replace(",", ".");
@@ -236,13 +254,31 @@ export async function importPartnerProductFromDriveAction(
   if (!supabase) return { status: "error", message: "Connexion Supabase indisponible." };
 
   const partnerId = String(formData.get("partnerId") ?? "");
+  const sourceContext = String(formData.get("sourceContext") ?? "");
   const folderName = String(formData.get("folderName") ?? "").trim();
   const folderInput = String(formData.get("folderIdOrUrl") ?? "").trim();
   const productCategory = String(formData.get("productCategory") ?? "autre");
   const productCode = String(formData.get("productCode") ?? "").trim() || null;
 
+  if (sourceContext !== "partner_file") {
+    return {
+      status: "error",
+      message: "L'import d'un produit Drive se fait uniquement depuis la fiche du partenaire.",
+    };
+  }
+
   if (!partnerId || !folderName || !folderInput) {
     return { status: "error", message: "Partenaire, dossier Drive et nom du produit obligatoires." };
+  }
+
+  const { data: partnerExists } = await supabase
+    .from("partner_companies")
+    .select("id")
+    .eq("id", partnerId)
+    .maybeSingle();
+
+  if (!partnerExists) {
+    return { status: "error", message: "Fiche partenaire introuvable." };
   }
 
   const folderId = extractDriveFolderId(folderInput);

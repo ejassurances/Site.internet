@@ -134,6 +134,7 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
         <section className="ops-grid ops-grid--two">
           <form action={addDistributedContract} className="ops-card ops-form">
             <input type="hidden" name="partnerId" value={partner.id} />
+            <input type="hidden" name="sourceContext" value="partner_file" />
             <div className="ops-card-title">
               <PackageCheck size={18} aria-hidden />
               <h2>Ajouter un produit distribue</h2>
@@ -291,6 +292,7 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
         <section className="ops-grid ops-grid--two">
           <form action={importDriveProduct} className="ops-card ops-form">
             <input type="hidden" name="partnerId" value={partner.id} />
+            <input type="hidden" name="sourceContext" value="partner_file" />
             <div className="ops-card-title">
               <FileText size={18} aria-hidden />
               <h2>Importer un produit cree dans Drive</h2>
