@@ -199,27 +199,28 @@ export const borrowerWorkflowSteps: WorkflowStep[] = [
   },
   {
     key: "mission",
-    title: "Feuille de mission",
+    title: "Entrée en relation (DER)",
     status: "todo",
-    description: "Generer la feuille de mission, l'envoyer au client et attendre sa signature.",
-    deliverables: ["Feuille de mission", "Signature client", "Archivage classeur projet"],
+    description:
+      "Générer le DER (Document d'Entrée en Relation) et la fiche d'information, l'envoyer au client et attendre sa signature. Étape bloquante (sécurité ACPR).",
+    deliverables: ["DER", "Fiche d'information", "Signature client", "Archivage dossier projet"],
     channels: ["Email", "Espace client"],
   },
   {
     key: "quotes",
-    title: "Creation des devis",
+    title: "Cotation IA",
     status: "todo",
-    description: "Construire les devis a partir des donnees credit et des pieces justificatives valides.",
+    description: "Analyser le recueil, interroger le catalogue partenaires et générer le tableau comparatif (devis).",
     deliverables: ["Comparatif devis", "Hypotheses de garanties", "Economies estimees"],
     channels: ["Courtier", "MIA"],
   },
   {
     key: "advice",
-    title: "Fiche conseil",
+    title: "Devoir de conseil",
     status: "todo",
     description:
-      "Rediger la fiche conseil DDA, l'envoyer au client, recueillir sa signature et ses commentaires eventuels.",
-    deliverables: ["Fiche conseil", "Signature client", "Commentaire client"],
+      "Rédiger la note de synthèse (devoir de conseil DDA) justifiant la recommandation, l'envoyer au client et recueillir sa signature.",
+    deliverables: ["Devoir de conseil", "Signature client", "Commentaire client"],
     channels: ["Email", "Espace client"],
   },
   {
@@ -309,4 +310,57 @@ export function getBorrowerProjectProgress(project?: BorrowerProject | null) {
     total: workflow.length,
     percent: Math.round((done / workflow.length) * 100),
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pipeline CRM : les 5 statuts client (vue simplifiée du workflow interne).
+// Mappe le workflow_stage / les étapes internes sur 5 statuts lisibles, utilisés
+// pour l'affichage d'un « Statut » unique côté fiche projet / Master Sheet.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type ClientStatusKey =
+  | "recueil_besoins"
+  | "der"
+  | "cotation_ia"
+  | "devoir_conseil"
+  | "cloture";
+
+export type ClientStatusDef = {
+  key: ClientStatusKey;
+  position: number;
+  label: string;
+  description: string;
+};
+
+export const CLIENT_STATUSES: ClientStatusDef[] = [
+  { key: "recueil_besoins", position: 1, label: "Recueil des besoins", description: "Data capture — recueil rempli, dossier Drive créé." },
+  { key: "der", position: 2, label: "Entrée en relation (DER)", description: "DER envoyé pour signature — bloquant tant que non signé (ACPR)." },
+  { key: "cotation_ia", position: 3, label: "Cotation IA", description: "Analyse IA du besoin et tableau comparatif généré." },
+  { key: "devoir_conseil", position: 4, label: "Devoir de conseil", description: "Note de synthèse DDA envoyée pour signature." },
+  { key: "cloture", position: 5, label: "Clôturé / Souscrit", description: "Contrat signé, dossier archivé, commission mise à jour." },
+];
+
+// Correspondance workflow_stage interne (ou step_key) -> statut client.
+const STAGE_TO_CLIENT_STATUS: Record<string, ClientStatusKey> = {
+  recueil_besoins: "recueil_besoins",
+  recueil_besoins_trottinette: "recueil_besoins",
+  needs: "recueil_besoins",
+  mission: "der",
+  entree_relation: "der",
+  der: "der",
+  quotes: "cotation_ia",
+  cotation: "cotation_ia",
+  advice: "devoir_conseil",
+  devoir_conseil: "devoir_conseil",
+  subscription: "cloture",
+  validation: "cloture",
+  activation: "cloture",
+  activation_dossier: "cloture",
+  cloture: "cloture",
+};
+
+/** Retourne le statut client (parmi les 5) à partir du workflow_stage / step_key. */
+export function resolveClientStatus(stage?: string | null): ClientStatusDef {
+  const key = (stage && STAGE_TO_CLIENT_STATUS[stage]) || "recueil_besoins";
+  return CLIENT_STATUSES.find((s) => s.key === key) ?? CLIENT_STATUSES[0];
 }
