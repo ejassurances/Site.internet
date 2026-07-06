@@ -290,7 +290,12 @@ export default async function PartnersPage() {
               <div className="ops-empty">Aucune fiche partenaire creee.</div>
             ) : (
               partners.map((partner) => (
-                <div key={partner.id} className="ops-table-row">
+                <Link
+                  key={partner.id}
+                  href={`/admin/partenaires/${partner.id}`}
+                  className="ops-table-row ops-table-row--link"
+                  aria-label={`Ouvrir la fiche partenaire ${partner.name}`}
+                >
                   <div>
                     <strong>{partner.name}</strong>
                     <small>{partner.partner_type} {partner.orias_number ? `- ${partner.orias_number}` : ""}</small>
@@ -304,21 +309,7 @@ export default async function PartnersPage() {
                     <small>{partner.commercial_contact?.email || "Commercial non renseigne"}</small>
                   </div>
                   <div><span className={`ops-status ops-status--${partner.status}`}>{partner.status}</span></div>
-                  {partner.partner_distributed_contracts && partner.partner_distributed_contracts.length > 0 && (
-                    <div className="ops-table-nested">
-                      {partner.partner_distributed_contracts.map((contract) => (
-                        <article key={contract.id}>
-                          <strong>{contract.contract_name}</strong>
-                          <small>
-                            {contract.product_category} - {contract.status}
-                            {contract.commission_rate ? ` - commission ${contract.commission_rate}%` : ""}
-                          </small>
-                          {contract.advice_positioning && <p>{contract.advice_positioning}</p>}
-                        </article>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                </Link>
               ))
             )}
           </div>

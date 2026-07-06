@@ -3903,6 +3903,8 @@ body {
 .ops-table { display: grid; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .ops-table-row { display: grid; grid-template-columns: minmax(180px, 1.4fr) minmax(160px, 1fr) minmax(150px, .8fr) minmax(96px, .5fr); gap: 14px; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); }
 .ops-table-row:last-child { border-bottom: 0; }
+.ops-table-row--link { color: inherit; text-decoration: none; transition: background .18s ease, transform .18s ease, box-shadow .18s ease; }
+.ops-table-row--link:hover { background: rgba(47, 111, 115, .06); transform: translateY(-1px); box-shadow: inset 3px 0 0 var(--accent); }
 .ops-table-head { background: var(--surface-soft); color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
 .ops-table strong, .ops-table small, .ops-table a { display: block; }
 .ops-table small { margin-top: 4px; color: var(--muted); font-size: 12px; }
