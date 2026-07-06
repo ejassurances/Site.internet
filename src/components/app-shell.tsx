@@ -62,6 +62,7 @@ const adminModules = [
       { label: "Leads entrants", href: "/admin/vente/leads", icon: TrendingUp },
       { label: "Devis & Propositions", href: "/admin/vente/devis", icon: FileText },
       { label: "Import Drive vers CRM", href: "/admin/vente/ged/import-drive", icon: FolderOpen },
+      { label: "Synchronisation Drive", href: "/admin/vente/ged/sync", icon: FolderOpen },
       { label: "GED — Documents", href: "/admin/vente/ged", icon: FolderOpen },
       { label: "Méthode cabinet", href: "/admin/family-protection-os", icon: ShieldCheck },
     ],
