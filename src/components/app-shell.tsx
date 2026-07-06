@@ -107,6 +107,7 @@ const adminModules = [
     links: [
       { label: "Tableau conformité", href: "/admin/conformite", icon: Scale },
       { label: "Classeurs ACPR", href: "/admin/conformite/acpr", icon: FolderOpen },
+      { label: "Lettres de mission", href: "/admin/lettres-mission", icon: FileText },
       { label: "DDA & Devoir conseil", href: "/admin/conformite/dda", icon: FileText },
       { label: "RGPD", href: "/admin/conformite/rgpd", icon: ShieldCheck },
       { label: "Journal d'audit", href: "/admin/conformite/audit", icon: FileText },

@@ -1,12 +1,13 @@
 import { AcprDocument } from "@/components/client-acpr-folder";
 import { requireRole } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { ClientDashboard } from "./ClientDashboard";
+import { ClientDashboard, LettreMissionSummary } from "./ClientDashboard";
 
 export default async function ClientDashboardPage() {
   const user = await requireRole(["client"]);
   const supabase = await createSupabaseServerClient();
   let acprDocuments: AcprDocument[] = [];
+  let lettres: LettreMissionSummary[] = [];
 
   if (supabase) {
     const { data: client } = await supabase
@@ -24,8 +25,16 @@ export default async function ClientDashboardPage() {
         .order("created_at", { ascending: false });
 
       acprDocuments = data ?? [];
+
+      const { data: lettresData } = await supabase
+        .from("lettres_mission")
+        .select("id, reference, product, status, created_at")
+        .eq("client_id", client.id)
+        .order("created_at", { ascending: false });
+
+      lettres = (lettresData as LettreMissionSummary[]) ?? [];
     }
   }
 
-  return <ClientDashboard acprDocuments={acprDocuments} user={user} />;
+  return <ClientDashboard acprDocuments={acprDocuments} lettres={lettres} user={user} />;
 }
