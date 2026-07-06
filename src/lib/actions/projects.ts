@@ -36,13 +36,14 @@ export async function getClientProjects(clientId: string): Promise<BorrowerProje
   const { data, error } = await supabase
     .from("projects")
     .select(`
-      id, client_id, title, project_type, status, workflow_stage, workflow_data, sensitive_context, created_at, updated_at,
+      id, client_id, title, project_type, status, google_drive_folder_id, google_drive_folder_url, workflow_stage, workflow_data, sensitive_context, created_at, updated_at,
       project_workflow_steps(id, project_id, step_key, label, status, position, delivery_channels, requirements, completed_at, completed_by),
       project_document_requirements(id, project_id, document_key, label, required_for_validation, status, position, accepted_sources, document_id, source, source_metadata, validated_at, validated_by),
       project_borrower_needs(id, project_id, client_id, completion_source, status, bank_name, loan_amount, loan_duration_months, remaining_capital, loan_start_date, loan_end_date, current_insurer, current_annual_premium, requested_quotities, requested_guarantees, delegation_or_substitution, objective, known_data, missing_data, validation_blockers, client_comment, advisor_notes),
       project_deliveries(id, project_id, delivery_type, channel, status, subject, body, sent_at, created_at),
       project_signatures(id, project_id, signature_type, status, client_comment, requested_at, signed_at),
-      project_email_imports(id, project_id, gmail_thread_id, from_email, subject, received_at, ai_summary, attachment_count, excluded)
+      project_email_imports(id, project_id, gmail_thread_id, from_email, subject, received_at, ai_summary, attachment_count, excluded),
+      scooter_insurance_needs(id, project_id, client_id, status, owner_full_name, owner_email, vehicle_brand, vehicle_model, serial_number, purchase_date, purchase_price, max_speed_limited_25, used_by_household_members, household_users_details, extension_recommended, usage_type, storage_location, desired_effective_date, advisor_notes)
     `)
     .eq("client_id", clientId)
     .order("created_at", { ascending: false });
@@ -152,6 +153,131 @@ export async function createBorrowerProjectAction(
   return {
     status: "success",
     message: "Projet assurance emprunteur cree et rattache a la fiche client.",
+    projectId: project.id,
+  };
+}
+
+export async function createScooterProjectAction(
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+
+  if (!supabase) {
+    return { status: "error", message: "Supabase n'est pas configure pour creer le projet." };
+  }
+
+  const clientId = String(formData.get("clientId") ?? "");
+  const projectTitle = String(formData.get("projectTitle") ?? "Assurance trottinette").trim();
+
+  if (!clientId) {
+    return { status: "error", message: "Fiche client manquante." };
+  }
+
+  const { data: client } = await supabase
+    .from("clients")
+    .select("id, full_name, email")
+    .eq("id", clientId)
+    .maybeSingle();
+
+  if (!client) {
+    return { status: "error", message: "Client introuvable ou inaccessible." };
+  }
+
+  const { data: project, error } = await supabase
+    .from("projects")
+    .insert({
+      client_id: clientId,
+      assigned_courtier_id: user.id,
+      title: projectTitle || `Assurance trottinette - ${client.full_name ?? client.email ?? "client"}`,
+      project_type: "assurance_trottinette",
+      status: "waiting_documents",
+      workflow_stage: "recueil_besoins",
+      sensitive_context:
+        "Recueil trottinette a completer : verifier limitation 25 km/h et extension si utilisation par d'autres membres du foyer fiscal.",
+      workflow_data: {
+        required_questions: ["max_speed_limited_25", "used_by_household_members"],
+        expected_folder_prefix: "DOX_TROT",
+      },
+    })
+    .select("id")
+    .single();
+
+  if (error || !project) {
+    return { status: "error", message: error?.message ?? "Impossible de creer le projet trottinette." };
+  }
+
+  await supabase.from("scooter_insurance_needs").insert({
+    client_id: clientId,
+    project_id: project.id,
+    status: "draft",
+    owner_full_name: client.full_name,
+    owner_email: client.email,
+    collected_by: user.id,
+  });
+
+  await supabase.from("drive_sync_events").insert({
+    event_type: "drive.project_folder_requested",
+    client_id: clientId,
+    project_id: project.id,
+    status: "queued",
+    created_by: user.id,
+    payload: {
+      product_code: "TROT",
+      expected_folder_pattern: "DOX_TROT_Prenom_NOM",
+      subfolders: [
+        "01 - Identite KYC",
+        "02 - Recueil des besoins",
+        "03 - Devis",
+        "04 - Fiche conseil",
+        "05 - Contrat",
+        "06 - Echanges",
+      ],
+    },
+  });
+
+  await supabase.from("drive_sync_events").insert({
+    event_type: "drive.project_folder_requested",
+    client_id: clientId,
+    project_id: project.id,
+    status: "queued",
+    created_by: user.id,
+    payload: {
+      product_code: "ADP",
+      expected_folder_pattern: "DOX_ADP_Prenom_NOM",
+      subfolders: [
+        "01 - Identite KYC",
+        "02 - Recueil des besoins",
+        "03 - Offre de pret",
+        "04 - Tableau amortissement",
+        "05 - Devis",
+        "06 - Feuille de mission",
+        "07 - Fiche conseil",
+        "08 - Souscription",
+        "09 - Echanges",
+      ],
+    },
+  });
+
+  await supabase.from("audit_logs").insert({
+    actor_id: user.id,
+    action: "project.scooter_created_from_client_file",
+    target_table: "projects",
+    target_id: project.id,
+    metadata: {
+      client_id: clientId,
+      project_type: "assurance_trottinette",
+      initial_status: "waiting_documents",
+    },
+  });
+
+  revalidatePath(`/admin/clients/${clientId}`);
+  revalidatePath("/admin/workflows/trottinette");
+
+  return {
+    status: "success",
+    message: "Projet assurance trottinette cree et rattache a la fiche client.",
     projectId: project.id,
   };
 }
@@ -274,6 +400,116 @@ export async function saveBorrowerNeedsAction(
       blockers.length === 0
         ? "Recueil enregistre. Les pieces obligatoires sont presentes, la feuille de mission peut etre envoyee."
         : "Recueil enregistre. La validation reste bloquee tant que les pieces obligatoires ne sont pas ajoutees.",
+    projectId,
+  };
+}
+
+export async function saveScooterProjectNeedsAction(
+  _previousState: ProjectActionState,
+  formData: FormData,
+): Promise<ProjectActionState> {
+  const user = await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+
+  if (!supabase) {
+    return { status: "error", message: "Supabase n'est pas configure pour enregistrer le recueil trottinette." };
+  }
+
+  const projectId = String(formData.get("projectId") ?? "");
+  const clientId = String(formData.get("clientId") ?? "");
+  const maxSpeedValue = String(formData.get("maxSpeedLimited25") ?? "");
+  const householdValue = String(formData.get("usedByHouseholdMembers") ?? "");
+
+  if (!projectId || !clientId) {
+    return { status: "error", message: "Projet ou fiche client manquant." };
+  }
+
+  if (!maxSpeedValue || !householdValue) {
+    return { status: "error", message: "Les questions 25 km/h et utilisation par le foyer sont obligatoires." };
+  }
+
+  const extensionRecommended = householdValue === "yes";
+  const needsStatus =
+    maxSpeedValue === "no"
+      ? "needs_review"
+      : extensionRecommended
+        ? "extension_recommended"
+        : "ready_for_quote";
+
+  const numberOrNull = (value: FormDataEntryValue | null) => {
+    const parsed = Number(String(value ?? "").replace(",", "."));
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  };
+
+  const scooterPayload = {
+    project_id: projectId,
+    client_id: clientId,
+    status: needsStatus,
+    owner_full_name: String(formData.get("ownerFullName") ?? "").trim() || null,
+    owner_email: String(formData.get("ownerEmail") ?? "").trim() || null,
+    vehicle_brand: String(formData.get("vehicleBrand") ?? "").trim() || null,
+    vehicle_model: String(formData.get("vehicleModel") ?? "").trim() || null,
+    serial_number: String(formData.get("serialNumber") ?? "").trim() || null,
+    purchase_date: String(formData.get("purchaseDate") ?? "") || null,
+    purchase_price: numberOrNull(formData.get("purchasePrice")),
+    max_speed_limited_25: maxSpeedValue === "yes",
+    used_by_household_members: extensionRecommended,
+    household_users_details: String(formData.get("householdUsersDetails") ?? "").trim() || null,
+    extension_recommended: extensionRecommended,
+    usage_type: String(formData.get("usageType") ?? "") || null,
+    storage_location: String(formData.get("storageLocation") ?? "").trim() || null,
+    desired_effective_date: String(formData.get("desiredEffectiveDate") ?? "") || null,
+    advisor_notes: String(formData.get("advisorNotes") ?? "").trim() || null,
+    collected_by: user.id,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { data: existingNeed } = await supabase
+    .from("scooter_insurance_needs")
+    .select("id")
+    .eq("project_id", projectId)
+    .maybeSingle();
+
+  const { error } = existingNeed?.id
+    ? await supabase.from("scooter_insurance_needs").update(scooterPayload).eq("id", existingNeed.id)
+    : await supabase.from("scooter_insurance_needs").insert(scooterPayload);
+
+  if (error) {
+    return { status: "error", message: error.message };
+  }
+
+  await Promise.all([
+    supabase
+      .from("projects")
+      .update({
+        status: needsStatus === "ready_for_quote" ? "in_progress" : "waiting_documents",
+        workflow_stage: "recueil_besoins_trottinette",
+        workflow_data: {
+          max_speed_limited_25: maxSpeedValue === "yes",
+          used_by_household_members: extensionRecommended,
+          extension_recommended: extensionRecommended,
+          updated_at: new Date().toISOString(),
+        },
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", projectId),
+    supabase.from("audit_logs").insert({
+      actor_id: user.id,
+      action: "scooter_project_needs.saved",
+      target_table: "projects",
+      target_id: projectId,
+      metadata: { client_id: clientId, status: needsStatus, extension_recommended: extensionRecommended },
+    }),
+  ]);
+
+  revalidatePath(`/admin/clients/${clientId}`);
+  revalidatePath("/admin/workflows/trottinette");
+
+  return {
+    status: "success",
+    message: extensionRecommended
+      ? "Recueil trottinette enregistre. Extension foyer fiscal recommandee."
+      : "Recueil trottinette enregistre. Le dossier peut passer en devis.",
     projectId,
   };
 }

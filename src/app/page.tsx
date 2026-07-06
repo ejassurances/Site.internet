@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import {
   ArrowRight,
   BadgeCheck,
@@ -58,7 +60,9 @@ const process = [
 
 export default function HomePage() {
   return (
-    <main className="bg-[#F6F9FC] text-[#0F172A]">
+    <>
+      <SiteHeader />
+      <main className="bg-[#F6F9FC] text-[#0F172A]">
       <section className="section-hero px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div>
@@ -79,7 +83,7 @@ export default function HomePage() {
                 Comprendre le risque parent social <ArrowRight size={18} aria-hidden />
               </Link>
               <Link
-                href="/simulateur"
+                href="/assurance-emprunteur#simulateur"
                 className="inline-flex items-center justify-center rounded-lg border border-[#D8E2F0] bg-[#EEF4FF] px-6 py-3 font-semibold text-[#0F172A] transition hover:border-[#3B82F6]"
               >
                 Simuler mon assurance emprunteur
@@ -180,6 +184,8 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-    </main>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

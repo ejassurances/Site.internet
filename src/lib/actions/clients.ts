@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createSupabaseServerClient, createSupabaseServiceClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
 
@@ -147,15 +148,49 @@ export async function updateClient(clientId: string, data: ClientFormData): Prom
 
 // ── Supprimer un client ────────────────────────────────────────────────────────
 export async function deleteClient(clientId: string): Promise<ActionResult> {
-  await requireRole(["admin"]);
+  return archiveClient(clientId, "Archivage demande depuis une ancienne action de suppression.");
+}
+
+export async function archiveClient(clientId: string, reason?: string): Promise<ActionResult> {
+  const user = await requireRole(["admin", "courtier"]);
   const supabase = await createSupabaseServerClient();
   if (!supabase) return { success: false, error: "Connexion Supabase non disponible." };
 
-  const { error } = await supabase.from("clients").delete().eq("id", clientId);
-  if (error) return { success: false, error: error.message };
+  const { error } = await supabase
+    .from("clients")
+    .update({
+      archived_at: new Date().toISOString(),
+      archived_by: user.id,
+      archive_reason: reason?.trim() || "Archivage manuel depuis la fiche client.",
+      statut_client: "inactif",
+    })
+    .eq("id", clientId)
+    .is("archived_at", null);
+
+  if (error) return { success: false, error: formatClientError(error.message) };
+
+  await supabase.from("audit_logs").insert({
+    actor_id: user.id,
+    action: "client.archived",
+    target_table: "clients",
+    target_id: clientId,
+    metadata: { reason: reason ?? null },
+  });
 
   revalidatePath("/admin/clients");
+  revalidatePath(`/admin/clients/${clientId}`);
   return { success: true };
+}
+
+export async function archiveClientAction(formData: FormData) {
+  const clientId = String(formData.get("clientId") ?? "");
+  const reason = String(formData.get("archiveReason") ?? "");
+
+  if (clientId) {
+    await archiveClient(clientId, reason);
+  }
+
+  redirect("/admin/clients");
 }
 
 // ── Récupérer un client avec toutes ses données 360° ─────────────────────────
@@ -287,7 +322,7 @@ export async function getClient360(clientId: string) {
   const supabase = await createSupabaseServerClient();
   if (!supabase) return null;
 
-  const [clientRes, tagsRes, relatedRes, interactionsRes, contractsRes] = await Promise.all([
+  const [clientRes, tagsRes, relatedRes, interactionsRes, contractsRes, driveDocsRes] = await Promise.all([
     supabase
       .from("clients")
       .select("*")
@@ -313,6 +348,11 @@ export async function getClient360(clientId: string) {
       .select("*")
       .eq("client_id", clientId)
       .order("created_at", { ascending: false }),
+    supabase
+      .from("drive_synced_documents")
+      .select("*")
+      .eq("client_id", clientId)
+      .order("detected_at", { ascending: false }),
   ]);
 
   if (clientRes.error) return null;
@@ -323,6 +363,7 @@ export async function getClient360(clientId: string) {
     related_persons: relatedRes.data ?? [],
     interactions: interactionsRes.data ?? [],
     contracts: contractsRes.data ?? [],
+    drive_documents: driveDocsRes.data ?? [],
   };
 }
 
@@ -341,10 +382,11 @@ export async function getClientsList(opts?: {
     .from("clients")
     .select(`
       id, full_name, email, phone, statut_client, contact_type, family_context,
-      created_at, score_protection,
+      created_at, score_protection, archived_at,
       client_tags(tag),
       contracts(id, contract_type, status, insurer_name)
     `)
+    .is("archived_at", null)
     .order("created_at", { ascending: false });
 
   if (opts?.search) {

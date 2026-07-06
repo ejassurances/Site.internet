@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, FileCheck2, HeartHandshake, Landmark, PiggyBank, Scale, ShieldCheck } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 /* Page expertise : parent social, enfant et transmission patrimoniale. */
 export const metadata: Metadata = {
@@ -44,7 +46,9 @@ const solutions = [
 
 export default function ParentSocialEnfantPage() {
   return (
-    <main className="bg-[#F6F9FC] text-[#0F172A]">
+    <>
+      <SiteHeader />
+      <main className="bg-[#F6F9FC] text-[#0F172A]">
       <section className="section-hero px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_0.9fr] lg:items-center">
           <div>
@@ -164,6 +168,8 @@ export default function ParentSocialEnfantPage() {
           </Link>
         </div>
       </section>
-    </main>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

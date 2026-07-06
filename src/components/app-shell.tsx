@@ -21,6 +21,8 @@ import {
   Settings,
   Bell,
   Search,
+  Building2,
+  Bike,
 } from "lucide-react";
 import { CurrentUser } from "@/lib/auth";
 import { Role } from "@/lib/content";
@@ -42,6 +44,7 @@ const adminModules = [
     links: [
       { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard },
       { label: "Clients", href: "/admin/clients", icon: Users },
+      { label: "Partenaires", href: "/admin/partenaires", icon: Building2 },
       { label: "Contacts & Prospects", href: "/admin/crm/contacts", icon: Users },
       { label: "Agenda & RDV", href: "/admin/crm/agenda", icon: LayoutDashboard },
       { label: "Tâches", href: "/admin/crm/taches", icon: FileText },
@@ -58,6 +61,8 @@ const adminModules = [
       { label: "Pipeline commercial", href: "/admin/vente/pipeline", icon: TrendingUp },
       { label: "Leads entrants", href: "/admin/vente/leads", icon: TrendingUp },
       { label: "Devis & Propositions", href: "/admin/vente/devis", icon: FileText },
+      { label: "Import Drive vers CRM", href: "/admin/vente/ged/import-drive", icon: FolderOpen },
+      { label: "Synchronisation Drive", href: "/admin/vente/ged/sync", icon: FolderOpen },
       { label: "GED — Documents", href: "/admin/vente/ged", icon: FolderOpen },
       { label: "Méthode cabinet", href: "/admin/family-protection-os", icon: ShieldCheck },
     ],
@@ -71,6 +76,7 @@ const adminModules = [
     description: "Automatisations, processus, statuts",
     links: [
       { label: "Mes workflows", href: "/admin/workflows", icon: Zap },
+      { label: "Assurance trottinette", href: "/admin/workflows/trottinette", icon: Bike },
       { label: "Automatisations", href: "/admin/workflows/automatisations", icon: Zap },
       { label: "Statuts de dossier", href: "/admin/workflows/statuts", icon: FileText },
       { label: "Modèles de documents", href: "/admin/workflows/templates", icon: FileText },
@@ -102,6 +108,7 @@ const adminModules = [
     links: [
       { label: "Tableau conformité", href: "/admin/conformite", icon: Scale },
       { label: "Classeurs ACPR", href: "/admin/conformite/acpr", icon: FolderOpen },
+      { label: "Lettres de mission", href: "/admin/lettres-mission", icon: FileText },
       { label: "DDA & Devoir conseil", href: "/admin/conformite/dda", icon: FileText },
       { label: "RGPD", href: "/admin/conformite/rgpd", icon: ShieldCheck },
       { label: "Journal d'audit", href: "/admin/conformite/audit", icon: FileText },
@@ -152,6 +159,7 @@ const clientModules = [
 export function AppShell({ role, user, children }: AppShellProps) {
   const pathname = usePathname() ?? "";
   const isAdmin = role === "admin" || role === "courtier";
+  const isLinkActive = (href: string) => pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
 
   return (
     <div className="app-layout">
@@ -177,17 +185,17 @@ export function AppShell({ role, user, children }: AppShellProps) {
             <>
               {adminModules.map((module, idx) => {
                 const Icon = module.icon;
-                const isActive = module.links.some((l) => pathname === l.href || pathname.startsWith(l.href + "/"));
+                const isActive = module.links.some((l) => isLinkActive(l.href));
                 return (
                   <div key={module.id} className="side-nav-group">
                     {idx > 0 && <div className="side-nav-divider" />}
-                    <div className="side-nav-group-label">
+                    <Link href={module.href} className={`side-nav-group-label${isActive ? " module-active" : ""}`}>
                       <Icon size={12} aria-hidden />
                       {module.emoji} {module.label}
-                    </div>
+                    </Link>
                     {module.links.map((link) => {
                       const LinkIcon = link.icon;
-                      const linkActive = pathname === link.href;
+                      const linkActive = isLinkActive(link.href);
                       return (
                         <Link
                           key={link.href}

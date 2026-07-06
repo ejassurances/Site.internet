@@ -11,9 +11,10 @@ type PublicPageProps = {
   examples?: { title: string; text: string }[];
   checks?: string[];
   outcome?: string;
+  children?: React.ReactNode;
 };
 
-export function PublicPage({ title, eyebrow, description, highlights, examples = [], checks = [], outcome }: PublicPageProps) {
+export function PublicPage({ title, eyebrow, description, highlights, examples = [], checks = [], outcome, children }: PublicPageProps) {
   return (
     <>
       <SiteHeader />
@@ -103,6 +104,7 @@ export function PublicPage({ title, eyebrow, description, highlights, examples =
             )}
           </section>
         )}
+        {children}
       </main>
       <SiteFooter />
     </>

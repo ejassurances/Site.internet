@@ -17,7 +17,9 @@ import {
 } from "lucide-react";
 import {
   createBorrowerProjectAction,
+  createScooterProjectAction,
   saveBorrowerNeedsAction,
+  saveScooterProjectNeedsAction,
   updateBorrowerWorkflowAction,
   type ProjectActionState,
 } from "@/lib/actions/projects";
@@ -57,9 +59,18 @@ const statusClass: Record<ProjectStepStatus, string> = {
 
 export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkflowProps) {
   const [actionState, formAction, isPending] = useActionState(createBorrowerProjectAction, initialState);
+  const [scooterState, scooterFormAction, isCreatingScooter] = useActionState(createScooterProjectAction, initialState);
   const [needsState, needsFormAction, isSavingNeeds] = useActionState(saveBorrowerNeedsAction, initialState);
-  const borrowerProjects = projects.filter((project) => project.project_type === "assurance_emprunteur");
+  const [scooterNeedsState, scooterNeedsFormAction, isSavingScooterNeeds] = useActionState(
+    saveScooterProjectNeedsAction,
+    initialState,
+  );
+  const ongoingProjects = projects.filter((project) => !["closed", "signed", "archived", "terminated"].includes(project.status));
+  const borrowerProjects = ongoingProjects.filter((project) => project.project_type === "assurance_emprunteur");
+  const scooterProjects = ongoingProjects.filter((project) => project.project_type === "assurance_trottinette");
   const activeProject = borrowerProjects[0] ?? null;
+  const activeScooterProject = scooterProjects[0] ?? null;
+  const scooterNeeds = activeScooterProject?.scooter_insurance_needs?.[0] ?? null;
   const workflow = getBorrowerWorkflow(activeProject);
   const documentRequirements = getBorrowerDocumentRequirements(activeProject);
   const progress = getBorrowerProjectProgress(activeProject);
@@ -98,7 +109,198 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
             </p>
           )}
         </form>
+        <form action={scooterFormAction} className="project-create-form">
+          <input type="hidden" name="clientId" value={clientId} />
+          <label>
+            Nom du projet
+            <input name="projectTitle" defaultValue="Assurance trottinette" />
+          </label>
+          <button className="cf360-add-btn" type="submit" disabled={isCreatingScooter}>
+            <ClipboardCheck size={14} aria-hidden />
+            {isCreatingScooter ? "Creation..." : "Creer un projet trottinette"}
+          </button>
+          {scooterState.message && (
+            <p className={scooterState.status === "success" ? "form-success" : "form-error"}>
+              {scooterState.message}
+            </p>
+          )}
+        </form>
       </section>
+
+      <section className="project-current-card">
+        <div>
+          <span>Projets en cours</span>
+          <strong>{ongoingProjects.length} projet{ongoingProjects.length !== 1 ? "s" : ""} actif{ongoingProjects.length !== 1 ? "s" : ""}</strong>
+          <small>Seuls les projets ouverts sont affiches ici. Les contrats actifs et dossiers clos restent dans les onglets dedies.</small>
+        </div>
+        {ongoingProjects.length > 0 && (
+          <div className="project-action-row">
+            {ongoingProjects.map((project) => (
+              <button key={project.id} type="button">
+                <FileText size={14} aria-hidden />
+                {project.title}
+              </button>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {activeScooterProject && (
+        <section className="project-current-card">
+          <div>
+            <span>Projet trottinette</span>
+            <strong>{activeScooterProject.title}</strong>
+            <small>
+              Statut CRM : {activeScooterProject.status} - recueil 25 km/h et extension foyer a completer
+            </small>
+            {activeScooterProject.google_drive_folder_url ? (
+              <a href={activeScooterProject.google_drive_folder_url} target="_blank" rel="noreferrer">
+                Ouvrir le dossier Drive du projet
+              </a>
+            ) : (
+              <small>Dossier Drive : creation en attente</small>
+            )}
+          </div>
+        </section>
+      )}
+
+      {activeScooterProject && (
+        <section className="project-needs-card">
+          <div className="project-documents-header">
+            <div>
+              <h3>Recueil des besoins trottinette</h3>
+              <p>
+                Ce recueil verifie les conditions essentielles : limitation a 25 km/h, utilisateurs du foyer fiscal,
+                extension eventuelle, usage et informations du vehicule.
+              </p>
+            </div>
+            <ClipboardCheck size={22} aria-hidden />
+          </div>
+
+          <form action={scooterNeedsFormAction} className="project-needs-form">
+            <input type="hidden" name="projectId" value={activeScooterProject.id} />
+            <input type="hidden" name="clientId" value={clientId} />
+
+            <div className="project-needs-grid">
+              <label>
+                Nom de l'assure
+                <input name="ownerFullName" defaultValue={scooterNeeds?.owner_full_name ?? ""} />
+              </label>
+              <label>
+                Email
+                <input name="ownerEmail" type="email" defaultValue={scooterNeeds?.owner_email ?? ""} />
+              </label>
+              <label>
+                Marque
+                <input name="vehicleBrand" defaultValue={scooterNeeds?.vehicle_brand ?? ""} />
+              </label>
+              <label>
+                Modele
+                <input name="vehicleModel" defaultValue={scooterNeeds?.vehicle_model ?? ""} />
+              </label>
+              <label>
+                Numero de serie
+                <input name="serialNumber" defaultValue={scooterNeeds?.serial_number ?? ""} />
+              </label>
+              <label>
+                Prix d'achat
+                <input name="purchasePrice" inputMode="decimal" defaultValue={scooterNeeds?.purchase_price ?? ""} />
+              </label>
+              <label>
+                Date d'achat
+                <input name="purchaseDate" type="date" defaultValue={scooterNeeds?.purchase_date ?? ""} />
+              </label>
+              <label>
+                Usage
+                <select name="usageType" defaultValue={scooterNeeds?.usage_type ?? ""}>
+                  <option value="">A qualifier</option>
+                  <option value="loisir">Loisir</option>
+                  <option value="trajet_travail">Trajet domicile-travail</option>
+                  <option value="mixte">Mixte</option>
+                  <option value="professionnel">Professionnel</option>
+                </select>
+              </label>
+              <label>
+                Lieu de stationnement
+                <input name="storageLocation" defaultValue={scooterNeeds?.storage_location ?? ""} />
+              </label>
+              <label>
+                Date d'effet souhaitee
+                <input name="desiredEffectiveDate" type="date" defaultValue={scooterNeeds?.desired_effective_date ?? ""} />
+              </label>
+            </div>
+
+            <div className="project-doc-checks">
+              <label>
+                <input
+                  type="radio"
+                  name="maxSpeedLimited25"
+                  value="yes"
+                  defaultChecked={scooterNeeds?.max_speed_limited_25 === true}
+                />
+                Trottinette limitee a 25 km/h
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="maxSpeedLimited25"
+                  value="no"
+                  defaultChecked={scooterNeeds?.max_speed_limited_25 === false}
+                />
+                Vitesse a verifier / non limitee
+              </label>
+            </div>
+
+            <div className="project-doc-checks">
+              <label>
+                <input
+                  type="radio"
+                  name="usedByHouseholdMembers"
+                  value="yes"
+                  defaultChecked={scooterNeeds?.used_by_household_members === true}
+                />
+                Utilisee par d'autres membres du foyer fiscal
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="usedByHouseholdMembers"
+                  value="no"
+                  defaultChecked={scooterNeeds?.used_by_household_members === false}
+                />
+                Usage individuel uniquement
+              </label>
+            </div>
+
+            <label className="project-notes-field">
+              Details des autres utilisateurs
+              <textarea name="householdUsersDetails" defaultValue={scooterNeeds?.household_users_details ?? ""} />
+            </label>
+
+            <label className="project-notes-field">
+              Notes conseiller
+              <textarea name="advisorNotes" defaultValue={scooterNeeds?.advisor_notes ?? ""} />
+            </label>
+
+            <div className="project-form-footer">
+              <p className={scooterNeeds?.extension_recommended ? "form-success" : "form-note"}>
+                {scooterNeeds?.extension_recommended
+                  ? "Extension foyer fiscal recommandee."
+                  : "L'extension sera recommandee si la trottinette est utilisee par d'autres membres du foyer fiscal."}
+              </p>
+              <button className="cf360-add-btn" type="submit" disabled={isSavingScooterNeeds}>
+                <ClipboardCheck size={14} aria-hidden />
+                {isSavingScooterNeeds ? "Enregistrement..." : "Enregistrer le recueil trottinette"}
+              </button>
+            </div>
+            {scooterNeedsState.message && (
+              <p className={scooterNeedsState.status === "success" ? "form-success" : "form-error"}>
+                {scooterNeedsState.message}
+              </p>
+            )}
+          </form>
+        </section>
+      )}
 
       {activeProject ? (
         <section className="project-current-card">
@@ -106,6 +308,13 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
             <span>Projet actif</span>
             <strong>{activeProject.title}</strong>
             <small>Statut CRM : {activeProject.status} - progression {progress.done}/{progress.total}</small>
+            {activeProject.google_drive_folder_url ? (
+              <a href={activeProject.google_drive_folder_url} target="_blank" rel="noreferrer">
+                Ouvrir le dossier Drive du projet
+              </a>
+            ) : (
+              <small>Dossier Drive : creation en attente</small>
+            )}
           </div>
           <div className="project-progress-meter" aria-label={`Progression ${progress.percent}%`}>
             <span style={{ width: `${progress.percent}%` }} />
@@ -116,15 +325,7 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
             <button type="button"><Inbox size={14} aria-hidden /> Import Gmail</button>
           </div>
         </section>
-      ) : (
-        <section className="project-empty-notice">
-          <FileText size={22} aria-hidden />
-          <div>
-            <strong>Aucun projet emprunteur rattache.</strong>
-            <p>Creer un projet depuis cette fiche pour initialiser les etapes, documents et signatures.</p>
-          </div>
-        </section>
-      )}
+      ) : null}
 
       {activeProject && (
         <section className="project-needs-card">
@@ -265,6 +466,7 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
         </section>
       )}
 
+      {activeProject && (
       <section className="project-workflow-grid">
         {workflow.map((step, index) => (
           <article key={step.key} className={`project-step project-step--${statusClass[step.status]}`}>
@@ -327,7 +529,9 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
           </article>
         ))}
       </section>
+      )}
 
+      {activeProject && (
       <section className="project-documents-gate">
         <div className="project-documents-header">
           <div>
@@ -349,6 +553,7 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
           ))}
         </div>
       </section>
+      )}
 
       {activeProject && (
         <section className="project-traceability-grid">
