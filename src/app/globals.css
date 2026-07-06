@@ -4058,3 +4058,206 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   .anonymisation-results { grid-template-columns: 1fr; }
   .centre-doc-typologies-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── Workbook souscription : recueil des besoins ─────────────────────────── */
+.souscription-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.souscription-product-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: border-color .18s, box-shadow .18s, transform .18s;
+}
+.souscription-product-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.souscription-product-card h3 { margin: 0 0 2px; font-size: 16px; color: var(--navy); }
+.souscription-product-card p { margin: 0; font-size: 13px; color: var(--muted); }
+.souscription-product-arrow { margin-left: auto; color: var(--accent-strong); }
+.souscription-emoji {
+  font-size: 30px;
+  line-height: 1;
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-soft);
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.souscription-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+.souscription-form { display: flex; flex-direction: column; gap: 18px; }
+.souscription-head { display: flex; gap: 16px; align-items: flex-start; }
+.souscription-intro { margin: 6px 0 0; color: var(--muted); font-size: 14px; max-width: 60ch; }
+
+.souscription-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 22px;
+}
+.souscription-card > h3 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  color: var(--navy);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.souscription-card-desc { margin: -6px 0 14px; font-size: 13px; color: var(--muted); }
+
+.souscription-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+}
+.souscription-field { display: flex; flex-direction: column; gap: 6px; grid-column: 1 / -1; }
+.souscription-field.half { grid-column: span 1; }
+.souscription-label { font-size: 13px; font-weight: 600; color: var(--fg); }
+.souscription-label em { color: var(--accent-strong); font-style: normal; }
+.souscription-hint { font-size: 12px; color: var(--muted); }
+
+.souscription-form input[type="text"],
+.souscription-form input[type="number"],
+.souscription-form input[type="email"],
+.souscription-form input[type="tel"],
+.souscription-form input[type="date"],
+.souscription-form select,
+.souscription-form textarea,
+.lm-sign-form input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--fg);
+  font-size: 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.souscription-form input:focus,
+.souscription-form select:focus,
+.souscription-form textarea:focus,
+.lm-sign-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(196,167,109,.18);
+}
+.souscription-form textarea { resize: vertical; min-height: 76px; }
+
+.souscription-input-suffix { position: relative; display: flex; align-items: center; }
+.souscription-input-suffix span {
+  position: absolute; right: 12px;
+  color: var(--muted); font-size: 13px; pointer-events: none;
+}
+.souscription-input-suffix input { padding-right: 42px; }
+
+.souscription-check {
+  display: flex; align-items: flex-start; gap: 10px;
+  grid-column: 1 / -1;
+  font-size: 14px; color: var(--fg);
+  padding: 8px 0;
+  cursor: pointer;
+}
+.souscription-check input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--accent-strong); flex-shrink: 0; }
+
+.souscription-success-actions { margin-top: 4px; }
+
+.souscription-preview { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 88px; }
+.souscription-preview-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 20px;
+}
+.souscription-preview-card h3 { margin: 4px 0 8px; color: var(--navy); font-size: 16px; }
+.souscription-preview-card h4 { margin: 0 0 10px; color: var(--navy); font-size: 14px; }
+.souscription-preview-card p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.55; }
+.souscription-guarantees { margin: 0; padding-left: 18px; font-size: 13px; color: var(--fg); display: flex; flex-direction: column; gap: 5px; }
+.souscription-steps { margin: 0; padding-left: 18px; font-size: 13px; color: var(--fg); display: flex; flex-direction: column; gap: 6px; }
+
+/* ─── Lettre de mission (consultation + signature) ────────────────────────── */
+.lm-page { max-width: 900px; margin: 0 auto; padding: 28px clamp(16px, 4vw, 40px); }
+.lm-view { display: flex; flex-direction: column; gap: 18px; }
+.lm-toolbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap;
+}
+.lm-paper {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: clamp(20px, 4vw, 40px);
+}
+.lm-signed {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid #10b981;
+  background: rgba(16,185,129,.08);
+  border-radius: var(--radius);
+  color: #065f46;
+}
+.lm-signed strong { display: block; }
+.lm-signed p { margin: 2px 0 0; font-size: 13px; color: #065f46; }
+.lm-sign-form {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.lm-sign-form h3 { margin: 0; display: flex; align-items: center; gap: 8px; color: var(--navy); font-size: 16px; }
+.lm-pending { margin: 0; }
+
+/* ─── Fiche partenaire : Drive ────────────────────────────────────────────── */
+.partenaire-info { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.partenaire-info li { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--fg); }
+.partenaire-drive { display: flex; flex-direction: column; gap: 12px; }
+.partenaire-drive-folder {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  background: var(--surface-soft);
+}
+.partenaire-drive-folder > header {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap;
+}
+.partenaire-drive-files { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.partenaire-drive-files li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--fg); }
+.partenaire-drive-files a { color: var(--accent-strong); }
+
+/* ─── Utilitaires ─────────────────────────────────────────────────────────── */
+.spin { animation: ej-spin 1s linear infinite; }
+@keyframes ej-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .souscription-layout { grid-template-columns: 1fr; }
+  .souscription-preview { position: static; order: -1; }
+  .souscription-grid { grid-template-columns: 1fr; }
+  .souscription-field.half { grid-column: 1 / -1; }
+}
+
+/* ─── Impression : n'imprimer que la lettre ───────────────────────────────── */
+@media print {
+  .site-header, .app-shell-sidebar, .app-sidebar, .lm-toolbar, .lm-sign-form, .back-link { display: none !important; }
+  .lm-paper { box-shadow: none; border: none; padding: 0; }
+  .lm-page { padding: 0; max-width: none; }
+}

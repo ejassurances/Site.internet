@@ -9,6 +9,7 @@ import {
   MessageSquareText,
   Network,
   ClipboardCheck,
+  FileSignature,
   ShieldCheck,
   UsersRound,
 } from "lucide-react";
@@ -262,10 +263,11 @@ export const dashboardConfig: Record<
     nav: [
       { label: "Tableau de bord", href: "/admin", icon: Home },
       { label: "Methode cabinet", href: "/admin/family-protection-os", icon: ClipboardCheck },
+      { label: "Souscription", href: "/admin/souscription", icon: FileSignature },
       { label: "Clients", href: "/admin#clients", icon: UsersRound },
       { label: "Projets", href: "/admin#projets", icon: BriefcaseBusiness },
       { label: "Contrats", href: "/admin#contrats", icon: FileHeart },
-      { label: "Mandataires", href: "/admin#mandataires", icon: Network },
+      { label: "Partenaires", href: "/admin/partenaires", icon: Network },
       { label: "Parametres", href: "/admin#parametres", icon: ShieldCheck },
     ],
     stats: [
@@ -325,6 +327,7 @@ export const dashboardConfig: Record<
     nav: [
       { label: "Tableau de bord", href: "/mandataire", icon: Home },
       { label: "Recueil besoins", href: "/mandataire/recueil-besoins", icon: ClipboardCheck },
+      { label: "Souscription", href: "/admin/souscription", icon: FileSignature },
       { label: "Mes clients", href: "/mandataire#clients", icon: UsersRound },
       { label: "Mes projets", href: "/mandataire#projets", icon: BriefcaseBusiness },
       { label: "Commissions", href: "/mandataire#commissions", icon: Landmark },
