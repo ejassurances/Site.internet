@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StructuredData, organizationSchema, breadcrumbSchema, webPageSchema } from "@/components/seo/structured-data";
 import { FAQSection } from "@/components/seo/faq-section";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 const pageUrl = "https://www.ej-assurances.fr/familles-recomposees";
 
@@ -50,6 +52,7 @@ const faqItems = [
 export default function FamillesRecomposeesPage() {
   return (
     <>
+      <SiteHeader />
       <StructuredData data={organizationSchema} />
       <StructuredData data={webPageSchema({ url: pageUrl, name: "Assurance emprunteur famille recomposée", description: "Points à vérifier pour protéger une famille recomposée avec une assurance emprunteur." })} />
       <StructuredData data={breadcrumbSchema([{ name: "Accueil", url: "https://www.ej-assurances.fr/" }, { name: "Familles recomposées", url: pageUrl }])} />
@@ -151,6 +154,7 @@ export default function FamillesRecomposeesPage() {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </>
   );
 }

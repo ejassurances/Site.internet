@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Mail, Phone } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { createContactIntakeAction } from "@/app/actions/contact-intake";
 
 /* Page contact : formulaire courtier assurance emprunteur en glass-card Navy Fintech. */
@@ -19,7 +21,9 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   const { success, error } = await searchParams;
 
   return (
-    <main className="min-h-screen bg-[#F6F9FC] px-4 py-16 text-[#0F172A] sm:px-6 lg:px-8">
+    <>
+      <SiteHeader />
+      <main className="min-h-screen bg-[#F6F9FC] px-4 py-16 text-[#0F172A] sm:px-6 lg:px-8">
       <section className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
         <div className="pt-4">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#3B82F6]">Contact</p>
@@ -102,6 +106,8 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
           </button>
         </form>
       </section>
-    </main>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

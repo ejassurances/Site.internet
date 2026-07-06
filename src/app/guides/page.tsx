@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { StructuredData, organizationSchema, breadcrumbSchema, webPageSchema } from "@/components/seo/structured-data";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 const pageUrl = "https://www.ej-assurances.fr/guides";
 
@@ -97,6 +99,7 @@ const categoryColors: Record<string, string> = {
 export default function GuidesPage() {
   return (
     <>
+      <SiteHeader />
       <StructuredData data={organizationSchema} />
       <StructuredData
         data={webPageSchema({
@@ -166,6 +169,7 @@ export default function GuidesPage() {
 
         </div>
       </main>
+      <SiteFooter />
     </>
   );
 }
