@@ -202,8 +202,8 @@ export const borrowerWorkflowSteps: WorkflowStep[] = [
     title: "Entrée en relation (DER)",
     status: "todo",
     description:
-      "Générer le DER (Document d'Entrée en Relation) et la fiche d'information, l'envoyer au client et attendre sa signature. Étape bloquante (sécurité ACPR).",
-    deliverables: ["DER", "Fiche d'information", "Signature client", "Archivage dossier projet"],
+      "Générer le DER (Document d'Entrée en Relation) et la fiche d'information, puis l'envoyer au client. L'ACPR vérifie l'envoi du DER — la signature n'est pas obligatoire.",
+    deliverables: ["DER", "Fiche d'information", "Preuve d'envoi", "Archivage dossier projet"],
     channels: ["Email", "Espace client"],
   },
   {
@@ -334,7 +334,7 @@ export type ClientStatusDef = {
 
 export const CLIENT_STATUSES: ClientStatusDef[] = [
   { key: "recueil_besoins", position: 1, label: "Recueil des besoins", description: "Data capture — recueil rempli, dossier Drive créé." },
-  { key: "der", position: 2, label: "Entrée en relation (DER)", description: "DER envoyé pour signature — bloquant tant que non signé (ACPR)." },
+  { key: "der", position: 2, label: "Entrée en relation (DER)", description: "DER envoyé au client — l'ACPR vérifie l'envoi (preuve conservée) ; la signature n'est pas obligatoire." },
   { key: "cotation_ia", position: 3, label: "Cotation IA", description: "Analyse IA du besoin et tableau comparatif généré." },
   { key: "devoir_conseil", position: 4, label: "Devoir de conseil", description: "Note de synthèse DDA envoyée pour signature." },
   { key: "cloture", position: 5, label: "Clôturé / Souscrit", description: "Contrat signé, dossier archivé, commission mise à jour." },
