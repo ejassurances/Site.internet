@@ -5,32 +5,42 @@ import Image from "next/image";
 import { useState } from "react";
 import { CalendarDays, LockKeyhole, Menu, X, ChevronDown } from "lucide-react";
 
+// Navigation unique du site, structurée autour des 3 pôles du cabinet.
 const navItems = [
   {
-    label: "Assurance Emprunteur",
+    label: "Assurance emprunteur",
     href: "/assurance-emprunteur",
     highlight: true,
     sub: [
-      { label: "Délégation d'assurance", href: "/assurance-emprunteur" },
-      { label: "Loi Lemoine", href: "/loi-lemoine" },
-      { label: "Quotité emprunteur", href: "/quotite-assurance-emprunteur" },
-      { label: "Changer d'assurance", href: "/changer-assurance-emprunteur" },
-      { label: "Co-emprunteur", href: "/co-emprunteur" },
+      { label: "Assurance de prêt immobilier", href: "/assurance-emprunteur" },
+      { label: "Simuler mon économie", href: "/devis/emprunteur" },
     ],
   },
   {
-    label: "Familles Modernes",
-    href: "/coparentalite",
+    label: "Protection & coparentalité",
+    href: "/expertise-coparentalite",
     highlight: false,
     sub: [
-      { label: "Coparentalité", href: "/coparentalite" },
-      { label: "Familles LGBT+", href: "/couples-lgbt" },
+      { label: "Coparentalité choisie", href: "/expertise-coparentalite" },
+      { label: "Familles LGBT+", href: "/familles-lgbt" },
       { label: "Familles recomposées", href: "/familles-recomposees" },
-      { label: "Protection famille", href: "/protection-famille" },
+      { label: "Prévoyance familiale", href: "/prevoyance-familiale" },
+      { label: "Protection des enfants", href: "/protection-enfants" },
+    ],
+  },
+  {
+    label: "Professionnel",
+    href: "/professionnel",
+    highlight: false,
+    sub: [
+      { label: "Responsabilité civile pro", href: "/professionnel#rc-pro" },
+      { label: "Multirisque professionnelle", href: "/professionnel#multirisque" },
+      { label: "Prévoyance TNS", href: "/professionnel#prevoyance-tns" },
+      { label: "Santé collective", href: "/professionnel#sante-collective" },
     ],
   },
   { label: "À propos", href: "/a-propos", highlight: false, sub: [] },
-  { label: "Guides", href: "/guides", highlight: false, sub: [] },
+  { label: "Contact", href: "/contact", highlight: false, sub: [] },
 ];
 
 export function SiteHeader() {

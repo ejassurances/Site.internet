@@ -16,15 +16,6 @@ import {
 
 export type Role = "admin" | "courtier" | "client" | "mandataire" | "prescripteur";
 
-export const publicNav = [
-  { label: "Coparentalite", href: "/expertise-coparentalite" },
-  { label: "Familles LGBT+", href: "/familles-lgbt" },
-  { label: "Emprunteur", href: "/assurance-emprunteur" },
-  { label: "Prevoyance", href: "/prevoyance-familiale" },
-  { label: "Enfants", href: "/protection-enfants" },
-  { label: "Contact", href: "/contact" },
-];
-
 export const expertisePages = {
   "/expertise-coparentalite": {
     title: "Coparentalite choisie : proteger chaque parent et chaque enfant",

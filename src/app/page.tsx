@@ -15,6 +15,7 @@ import {
   Scale,
   Baby,
   CalendarDays,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -22,9 +23,9 @@ import { StructuredData, organizationSchema } from "@/components/seo/structured-
 import { EconomiesCounter } from "@/components/economies-counter";
 
 export const metadata: Metadata = {
-  title: "EJ Partners Assurances — Assurance Emprunteur & Protection Familles Modernes",
+  title: "EJ Partners Assurances — Emprunteur · Coparentalité · Professionnel",
   description:
-    "Cabinet expert en assurance emprunteur (objectif 100 000 € d'économies cumulées) et en protection des familles modernes : coparentalité, familles recomposées, couples LGBT+. Conseil indépendant, bienveillant et confidentiel.",
+    "Cabinet de courtage organisé autour de 3 pôles : assurance emprunteur (objectif 100 000 € d'économies cumulées), protection des familles modernes (coparentalité, familles recomposées, couples LGBT+) et assurance des professionnels (RC Pro, prévoyance TNS, santé collective). Conseil indépendant et confidentiel.",
   alternates: { canonical: "https://www.ej-assurances.fr" },
 };
 
@@ -39,8 +40,8 @@ const expertiseCards = [
   {
     icon: Home,
     color: "var(--navy)",
-    tag: "Expertise N°1",
-    title: "Assurance Emprunteur",
+    tag: "Pôle 1",
+    title: "Assurance emprunteur",
     pitch: "Objectif 100 000 € d'économies cumulées pour nos clients propriétaires.",
     points: [
       "Délégation d'assurance sur mesure",
@@ -55,8 +56,8 @@ const expertiseCards = [
   {
     icon: Users,
     color: "var(--gold)",
-    tag: "Expertise N°2",
-    title: "Protection des Familles Modernes",
+    tag: "Pôle 2",
+    title: "Protection & coparentalité",
     pitch: "Coparentalité, familles recomposées, couples LGBT+ : vos proches méritent une vraie protection.",
     points: [
       "Coparentalité choisie & co-parentalité",
@@ -65,7 +66,23 @@ const expertiseCards = [
       "Prévoyance & transmission sur mesure",
     ],
     cta: "Analyser ma situation",
-    href: "/coparentalite",
+    href: "/expertise-coparentalite",
+    ctaHref: "/contact#rendez-vous",
+  },
+  {
+    icon: BriefcaseBusiness,
+    color: "var(--accent-strong)",
+    tag: "Pôle 3",
+    title: "Professionnel",
+    pitch: "Protéger l'activité, le dirigeant et les équipes : le cabinet accompagne aussi les pros et TNS.",
+    points: [
+      "Responsabilité civile professionnelle",
+      "Multirisque professionnelle & locaux",
+      "Prévoyance & retraite du dirigeant (TNS)",
+      "Santé collective (mutuelle d'entreprise)",
+    ],
+    cta: "Étudier mes besoins pro",
+    href: "/professionnel",
     ctaHref: "/contact#rendez-vous",
   },
 ];
@@ -132,23 +149,24 @@ export default function HomePage() {
       <SiteHeader />
       <main className="public-main">
 
-        {/* ── Hero double expertise ── */}
+        {/* ── Hero : 3 pôles ── */}
         <section className="home-hero reposition-hero">
           <div className="reposition-hero-content">
             <div className="hero-proof">
-              <span>🏠 Assurance Emprunteur</span>
-              <span>👨‍👩‍👧 Familles Modernes</span>
-              <span>✦ Cabinet Indépendant</span>
+              <span>🏠 Assurance emprunteur</span>
+              <span>👨‍👩‍👧 Protection &amp; coparentalité</span>
+              <span>💼 Professionnel</span>
             </div>
             <h1>
-              Deux expertises.{" "}
+              Trois pôles.{" "}
               <span className="hero-h1-accent">Un seul cabinet.</span>
             </h1>
             <p className="hero-copy">
-              EJ Partners Assurances est le cabinet de référence pour{" "}
-              <strong>réduire le coût de votre assurance emprunteur</strong> et pour{" "}
-              <strong>protéger les familles modernes</strong> — coparentalité, couples LGBT+,
-              familles recomposées — avec des solutions vraiment adaptées à votre réalité.
+              EJ Partners Assurances vous accompagne sur ses{" "}
+              <strong>trois pôles d'expertise</strong> : réduire le coût de votre{" "}
+              <strong>assurance emprunteur</strong>, <strong>protéger les familles modernes</strong>{" "}
+              (coparentalité, couples LGBT+, familles recomposées) et assurer les{" "}
+              <strong>professionnels</strong> — avec des solutions vraiment adaptées à votre réalité.
             </p>
             <div className="hero-savings-badge">
               <Euro size={18} aria-hidden />
@@ -212,16 +230,17 @@ export default function HomePage() {
           })}
         </section>
 
-        {/* ── Deux expertises maîtresses ── */}
+        {/* ── Nos 3 pôles ── */}
         <section className="expertise-duo-section">
           <div className="section-heading">
-            <p className="eyebrow">Nos deux expertises maîtresses</p>
+            <p className="eyebrow">Nos 3 pôles d'expertise</p>
             <h2>Spécialistes là où les généralistes s'arrêtent</h2>
             <p style={{ color: "var(--muted)", marginTop: "8px", maxWidth: "560px", margin: "8px auto 0" }}>
-              Nous avons fait le choix de l'excellence dans deux domaines précis plutôt que la médiocrité dans dix.
+              Trois pôles, une même exigence : un conseil pointu et indépendant, là où votre situation
+              sort des cases standard.
             </p>
           </div>
-          <div className="expertise-duo-grid">
+          <div className="expertise-duo-grid expertise-trio-grid">
             {expertiseCards.map((card) => {
               const Icon = card.icon;
               return (

@@ -3464,6 +3464,8 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   gap: 28px;
   margin-top: 40px;
 }
+.expertise-trio-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1024px) { .expertise-trio-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 768px) { .expertise-duo-grid { grid-template-columns: 1fr; } }
 .expertise-duo-card {
   border-radius: var(--radius);

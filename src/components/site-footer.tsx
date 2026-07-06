@@ -32,12 +32,12 @@ export function SiteFooter() {
         </div>
 
         <div className="footer-col">
-          <h4>Nos expertises</h4>
-          <Link href="/expertise-coparentalite">Coparentalité choisie</Link>
-          <Link href="/familles-lgbt">Familles LGBT+</Link>
+          <h4>Nos 3 pôles</h4>
           <Link href="/assurance-emprunteur">Assurance emprunteur</Link>
+          <Link href="/expertise-coparentalite">Protection &amp; coparentalité</Link>
+          <Link href="/professionnel">Professionnel</Link>
+          <Link href="/familles-lgbt">Familles LGBT+</Link>
           <Link href="/prevoyance-familiale">Prévoyance familiale</Link>
-          <Link href="/protection-enfants">Protection des enfants</Link>
         </div>
 
         <div className="footer-col">
