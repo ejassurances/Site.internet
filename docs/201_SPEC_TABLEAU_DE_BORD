@@ -1,0 +1,1439 @@
+# 201_SPEC_TABLEAU_DE_BORD
+
+## Objet
+
+Le Tableau de bord constitue l'écran d'accueil principal de la plateforme EJ Assurances.
+
+Il centralise les informations essentielles permettant à chaque utilisateur de piloter son activité quotidienne.
+
+Son contenu est personnalisé en fonction :
+
+- du rôle de l'utilisateur ;
+- de ses permissions ;
+- de ses dossiers ;
+- de ses tâches ;
+- de son agenda ;
+- des alertes le concernant.
+
+Le Tableau de bord doit permettre à l'utilisateur de savoir immédiatement quoi faire, quelles sont ses priorités et quels événements nécessitent son attention.
+
+# Écran 1 — Tableau de bord principal
+
+## Objectif
+
+Présenter à l'utilisateur une vue synthétique et personnalisée de son activité dès sa connexion.
+
+Cet écran constitue le point d'entrée de l'ensemble de la plateforme.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+(Les Clients et Partenaires disposeront d'un tableau de bord spécifique dans leur espace.)
+
+---
+
+## Structure générale
+
+Le tableau de bord est organisé en plusieurs zones.
+
+### Barre supérieure
+
+- Logo EJ Assurances
+- Recherche globale
+- Notifications
+- Raccourcis
+- Profil utilisateur
+
+---
+
+### Colonne gauche
+
+Navigation principale :
+
+- Tableau de bord
+- Clients
+- Projets
+- Agenda
+- Documents
+- Tâches
+- Produits
+- Partenaires
+- Rapports
+- Paramètres
+
+---
+
+### Zone centrale
+
+Elle affiche les widgets principaux.
+
+---
+
+### Colonne droite
+
+Elle affiche les informations secondaires :
+
+- Agenda du jour
+- Notifications
+- Activité récente
+
+---
+
+## Widgets principaux
+
+Le tableau de bord affiche notamment :
+
+### Mes tâches
+
+- À faire aujourd'hui
+- En retard
+- À venir
+
+---
+
+### Mes Projets
+
+- En cours
+- À compléter
+- En attente
+- Terminés
+
+---
+
+### Mon Agenda
+
+- Prochain rendez-vous
+- Rendez-vous du jour
+
+---
+
+### Alertes
+
+- Documents manquants
+- Signatures en attente
+- Relances
+- Contrôles réglementaires
+
+---
+
+### Activité récente
+
+- Derniers Clients créés
+- Derniers Projets modifiés
+- Derniers Documents générés
+
+---
+
+## Actions rapides
+
+L'utilisateur peut créer rapidement :
+
+- Nouveau Client
+- Nouveau Projet
+- Nouveau Rendez-vous
+- Nouvelle Tâche
+- Nouvelle Note
+
+---
+
+## Personnalisation
+
+Chaque utilisateur peut :
+
+- déplacer les widgets ;
+- masquer un widget ;
+- choisir les widgets affichés ;
+- enregistrer sa disposition.
+
+---
+
+## Services IA concernés
+
+Le Service Pilotage prépare les indicateurs.
+
+Le Service CRM prépare les tâches prioritaires.
+
+Le Service Formation peut afficher les nouveautés.
+
+Les Services IA ne modifient jamais directement le tableau de bord.
+
+Ils alimentent les widgets.
+
+---
+
+## Critères de validation
+
+Le tableau de bord sera considéré comme conforme lorsque :
+
+- les informations sont personnalisées ;
+- les widgets sont configurables ;
+- les données sont mises à jour automatiquement ;
+- les actions rapides fonctionnent ;
+- les informations prioritaires sont visibles immédiatement.
+
+# Écran 2 — Structure et comportement du Dashboard
+
+## Objectif
+
+Définir l'organisation générale du Tableau de bord ainsi que son comportement sur ordinateur, tablette et mobile.
+
+Le Dashboard est composé de widgets indépendants organisés dans une grille flexible.
+
+---
+
+## Structure
+
+Le Dashboard est constitué de quatre zones.
+
+### 1. Barre supérieure
+
+Toujours visible.
+
+Elle contient :
+
+- Logo EJ Assurances
+- Recherche globale
+- Notifications
+- Bouton création rapide (+)
+- Accès au profil utilisateur
+
+---
+
+### 2. Menu latéral
+
+Toujours accessible.
+
+Il permet de naviguer entre les différents modules de la plateforme.
+
+Le menu peut être :
+
+- développé ;
+- réduit ;
+- masqué sur mobile.
+
+---
+
+### 3. Zone de travail
+
+Il s'agit de la partie principale.
+
+Elle accueille les widgets du Dashboard.
+
+Les widgets sont affichés sous forme de grille.
+
+Chaque utilisateur peut personnaliser cette grille.
+
+---
+
+### 4. Panneau latéral d'information
+
+Situé à droite.
+
+Il peut afficher :
+
+- Agenda
+- Notifications
+- Activité récente
+- Messages internes
+- Aide contextuelle
+
+L'utilisateur peut choisir de l'afficher ou de le masquer.
+
+---
+
+## Gestion des widgets
+
+Chaque widget est indépendant.
+
+Il peut être :
+
+- déplacé ;
+- redimensionné ;
+- masqué ;
+- ajouté ;
+- supprimé de l'affichage.
+
+La suppression d'un widget ne supprime jamais les données.
+
+Elle masque uniquement son affichage.
+
+---
+
+## Sauvegarde
+
+La disposition des widgets est enregistrée automatiquement.
+
+Chaque utilisateur retrouve son Dashboard exactement comme il l'a laissé.
+
+---
+
+## Responsive
+
+### Ordinateur
+
+Affichage sur plusieurs colonnes.
+
+---
+
+### Tablette
+
+Réorganisation automatique des widgets.
+
+---
+
+### Mobile
+
+Affichage sur une seule colonne.
+
+Les widgets deviennent défilables.
+
+---
+
+## Performances
+
+Le Dashboard ne charge pas l'intégralité des données de la plateforme.
+
+Chaque widget charge uniquement les informations dont il a besoin.
+
+Les widgets sont indépendants.
+
+Une erreur sur un widget ne doit jamais empêcher les autres de fonctionner.
+
+---
+
+## Critères de validation
+
+L'écran sera considéré comme conforme lorsque :
+
+- les widgets sont indépendants ;
+- la disposition est personnalisable ;
+- le Dashboard est responsive ;
+- les préférences utilisateur sont sauvegardées ;
+- une erreur d'un widget n'impacte pas les autres widgets.
+
+# Écran 3 — Widget "Mes tâches"
+
+## Objectif
+
+Permettre à l'utilisateur d'identifier immédiatement les actions qu'il doit réaliser.
+
+Ce widget constitue l'élément prioritaire du Dashboard.
+
+L'objectif est que l'utilisateur sache, en moins de 10 secondes, quelles sont ses prochaines actions.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+---
+
+## Données affichées
+
+Le widget présente :
+
+- Nombre total de tâches ouvertes
+- Nombre de tâches en retard
+- Nombre de tâches à réaliser aujourd'hui
+- Nombre de tâches à venir
+
+---
+
+## Affichage
+
+Les tâches sont triées automatiquement selon la priorité suivante :
+
+1. En retard
+2. Échéance aujourd'hui
+3. Priorité Haute
+4. Priorité Normale
+5. Priorité Faible
+
+Pour chaque tâche :
+
+- Icône de priorité
+- Titre
+- Client concerné (si applicable)
+- Projet concerné (si applicable)
+- Date d'échéance
+- Responsable
+
+---
+
+## Codes couleurs
+
+🟥 En retard
+
+🟧 Aujourd'hui
+
+🟨 À venir
+
+🟩 Terminée
+
+Les couleurs doivent rester cohérentes avec l'ensemble de la plateforme.
+
+---
+
+## Actions disponibles
+
+Depuis le widget, l'utilisateur peut :
+
+- Ouvrir la tâche
+- Marquer comme terminée
+- Reporter la tâche
+- Modifier la date
+- Affecter la tâche (si autorisé)
+- Créer une nouvelle tâche
+
+---
+
+## Automatisations
+
+Le widget est mis à jour automatiquement.
+
+Une tâche disparaît de la liste lorsqu'elle est terminée.
+
+Les tâches créées par les Workflows apparaissent immédiatement.
+
+---
+
+## Services IA concernés
+
+Service CRM
+
+Le Service CRM peut :
+
+- proposer une tâche ;
+- suggérer une priorité ;
+- détecter une tâche oubliée.
+
+Le Service Pilotage peut alimenter les statistiques.
+
+Les Services IA ne clôturent jamais automatiquement une tâche.
+
+---
+
+## Performances
+
+Le widget affiche par défaut :
+
+Les 10 prochaines tâches.
+
+Un bouton "Voir toutes les tâches" ouvre le module dédié.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- les tâches sont triées correctement ;
+- les priorités sont respectées ;
+- les actions sont accessibles ;
+- les mises à jour sont automatiques ;
+- les suggestions IA restent des propositions.
+
+# Écran 4 — Widget "Mes Projets"
+
+## Objectif
+
+Permettre à l'utilisateur d'avoir une vision immédiate de l'état d'avancement de ses Projets.
+
+Le widget offre une vue synthétique de la charge de travail en cours.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+---
+
+## Données affichées
+
+Le widget présente :
+
+- Nombre de Projets en cours
+- Nombre de Projets en attente
+- Nombre de Projets nécessitant une action
+- Nombre de Projets clôturés ce mois
+
+---
+
+## Affichage
+
+Les Projets sont classés par statut.
+
+Exemple :
+
+🟢 En cours
+
+🟡 En attente d'un client
+
+🟠 En attente d'un partenaire
+
+🔴 Action urgente
+
+⚪ Clôturé
+
+Pour chaque Projet :
+
+- Référence
+- Nom du Client
+- Produit concerné
+- Statut
+- Dernière activité
+- Prochaine échéance
+
+---
+
+## Actions disponibles
+
+Depuis le widget, l'utilisateur peut :
+
+- Ouvrir le Projet
+- Rechercher un Projet
+- Créer un nouveau Projet
+- Filtrer par statut
+- Trier la liste
+
+---
+
+## Automatisations
+
+Le widget est mis à jour en temps réel.
+
+Les changements de statut sont immédiatement visibles.
+
+Les Projets sans activité depuis une durée définie sont automatiquement signalés.
+
+---
+
+## Services IA concernés
+
+### Service CRM
+
+Analyse les Projets.
+
+Détecte :
+
+- les dossiers inactifs ;
+- les échéances proches ;
+- les dossiers bloqués.
+
+---
+
+### Service Pilotage
+
+Produit les statistiques globales.
+
+---
+
+## Performances
+
+Le widget affiche par défaut :
+
+Les 10 Projets les plus prioritaires.
+
+Un bouton :
+
+**Voir tous les Projets**
+
+ouvre le module Projet.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- les Projets sont correctement classés ;
+- les statuts sont à jour ;
+- les alertes sont pertinentes ;
+- les actions sont accessibles ;
+- les suggestions IA restent des recommandations.
+
+# Écran 5 — Widget "Alertes & Priorités"
+
+## Objectif
+
+Présenter immédiatement à l'utilisateur les événements nécessitant son attention.
+
+Le widget ne remplace pas les tâches.
+
+Il met en évidence les situations présentant un risque, une échéance importante ou une anomalie.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+Les alertes affichées sont adaptées au rôle de l'utilisateur.
+
+---
+
+## Données affichées
+
+Le widget centralise notamment :
+
+- Documents manquants
+- Signatures en attente
+- Rendez-vous imminents
+- Relances à effectuer
+- Projets inactifs
+- Contrôles réglementaires
+- Échéances importantes
+- Messages prioritaires
+
+---
+
+## Niveau de priorité
+
+Chaque alerte possède un niveau.
+
+🔴 Critique
+
+Action immédiate.
+
+---
+
+🟠 Élevée
+
+À traiter aujourd'hui.
+
+---
+
+🟡 Moyenne
+
+À planifier.
+
+---
+
+🟢 Information
+
+Aucune action urgente.
+
+---
+
+## Présentation
+
+Chaque alerte affiche :
+
+- Icône
+- Niveau de priorité
+- Titre
+- Description
+- Client concerné (si applicable)
+- Projet concerné (si applicable)
+- Date de création
+- Action recommandée
+
+---
+
+## Actions disponibles
+
+Depuis le widget, l'utilisateur peut :
+
+- Ouvrir le Projet
+- Ouvrir le Client
+- Marquer l'alerte comme traitée
+- Reporter l'alerte
+- Voir le détail
+
+---
+
+## Automatisations
+
+Les alertes sont générées automatiquement par les Workflows et les Services IA.
+
+Une alerte disparaît lorsqu'elle est résolue.
+
+Toutes les alertes restent historisées.
+
+---
+
+## Services IA concernés
+
+### Service CRM
+
+Détecte les dossiers sans activité.
+
+---
+
+### Service Conformité
+
+Détecte les risques réglementaires.
+
+---
+
+### Service Documentation
+
+Détecte les documents manquants.
+
+---
+
+### Service Pilotage
+
+Détecte les anomalies globales.
+
+---
+
+## Performances
+
+Le widget affiche uniquement les alertes ouvertes.
+
+Les alertes critiques sont toujours affichées en premier.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- les alertes sont correctement priorisées ;
+- les informations sont à jour ;
+- les actions ouvrent les bons éléments ;
+- les alertes disparaissent automatiquement après résolution ;
+- l'historique est conservé.
+
+# Écran 6 — Widget "Mon Agenda"
+
+## Objectif
+
+Présenter les rendez-vous et événements à venir afin de permettre à l'utilisateur d'organiser efficacement sa journée.
+
+Le widget constitue le lien entre le planning et les Projets.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+---
+
+## Données affichées
+
+Le widget affiche :
+
+- Les rendez-vous du jour
+- Les prochains rendez-vous
+- Les événements importants
+- Les créneaux libres de la journée
+
+---
+
+## Présentation
+
+Pour chaque événement :
+
+- Heure
+- Durée
+- Type de rendez-vous
+- Nom du Client
+- Projet concerné
+- Lieu (physique ou visioconférence)
+- Statut
+
+Exemple :
+
+🟢 Confirmé
+
+🟡 En attente de confirmation
+
+🔴 Annulé
+
+---
+
+## Actions disponibles
+
+Depuis le widget, l'utilisateur peut :
+
+- Ouvrir le rendez-vous
+- Ouvrir le Projet associé
+- Rejoindre une visioconférence
+- Reporter un rendez-vous
+- Créer un nouveau rendez-vous
+- Accéder au calendrier complet
+
+---
+
+## Automatisations
+
+Le widget est synchronisé avec le calendrier de la plateforme.
+
+Si une synchronisation externe est activée (Google Calendar, Microsoft Outlook...), les événements sont également mis à jour.
+
+Toute modification est immédiatement répercutée.
+
+---
+
+## Services IA concernés
+
+### Service CRM
+
+Prépare le contexte du rendez-vous.
+
+---
+
+### Service Documentation
+
+Vérifie que tous les documents nécessaires sont disponibles.
+
+---
+
+### Service Développement Commercial
+
+Peut suggérer les sujets à aborder ou les opportunités de suivi.
+
+---
+
+## Informations contextuelles
+
+Avant chaque rendez-vous, le widget peut afficher :
+
+- les dernières interactions avec le Client ;
+- les tâches en attente ;
+- les documents à préparer ;
+- les alertes liées au Projet.
+
+L'objectif est que le conseiller soit prêt sans avoir à rechercher les informations.
+
+---
+
+## Performances
+
+Le widget affiche par défaut :
+
+- les rendez-vous de la journée ;
+- les trois prochains rendez-vous.
+
+Un bouton **"Voir tout le calendrier"** ouvre le module Agenda.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- les rendez-vous sont affichés dans l'ordre chronologique ;
+- les synchronisations fonctionnent correctement ;
+- les informations contextuelles sont pertinentes ;
+- les actions ouvrent les bons modules ;
+- les modifications sont immédiatement visibles.
+
+# Écran 7 — Widget "Activité récente"
+
+## Objectif
+
+Permettre à l'utilisateur de visualiser les dernières activités concernant ses Clients, Projets et Contrats.
+
+Le widget offre une vision chronologique des événements récents afin de faciliter la reprise d'activité.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+---
+
+## Données affichées
+
+Le widget affiche les dernières activités concernant :
+
+- Clients
+- Projets
+- Contrats
+- Documents
+- Tâches
+- Rendez-vous
+- Signatures
+- Notes
+- Messages internes
+
+---
+
+## Présentation
+
+Les activités sont affichées dans l'ordre chronologique décroissant.
+
+Chaque activité contient :
+
+- Date et heure
+- Icône correspondant au type d'événement
+- Description
+- Client concerné
+- Projet concerné
+- Auteur de l'action
+
+Exemple :
+
+📄 Devoir de conseil généré
+
+👤 Client créé
+
+📅 Rendez-vous ajouté
+
+✍️ Contrat signé
+
+📎 Document ajouté
+
+---
+
+## Filtres
+
+L'utilisateur peut filtrer :
+
+- Aujourd'hui
+- Cette semaine
+- Ce mois
+
+Par type :
+
+- Clients
+- Projets
+- Documents
+- Contrats
+- Agenda
+- Tâches
+
+---
+
+## Actions disponibles
+
+Depuis le widget, l'utilisateur peut :
+
+- Ouvrir le Client
+- Ouvrir le Projet
+- Ouvrir le Contrat
+- Consulter le document concerné
+- Voir l'historique complet
+
+---
+
+## Automatisations
+
+Chaque événement est ajouté automatiquement au fil d'activité.
+
+Aucune saisie manuelle n'est nécessaire.
+
+---
+
+## Services IA concernés
+
+### Service CRM
+
+Identifie les événements importants.
+
+---
+
+### Service Pilotage
+
+Alimente les statistiques d'activité.
+
+Les Services IA ne créent pas d'événements.
+
+Ils exploitent uniquement les événements enregistrés.
+
+---
+
+## Performances
+
+Le widget affiche par défaut les 20 derniers événements.
+
+Le chargement est progressif afin de préserver les performances.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- les événements sont affichés dans le bon ordre ;
+- les filtres fonctionnent correctement ;
+- les liens ouvrent les bons éléments ;
+- les informations sont mises à jour en temps réel.
+
+
+# Écran 8 — Widget "Mes recommandations"
+
+## Objectif
+
+Présenter à l'utilisateur les recommandations générées par les Services IA afin de l'aider à organiser sa journée et à prendre les bonnes décisions.
+
+Les recommandations sont des suggestions.
+
+Elles ne remplacent jamais la décision de l'utilisateur.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+Chaque utilisateur reçoit des recommandations adaptées à son rôle et à son activité.
+
+---
+
+## Données affichées
+
+Le widget présente une liste de recommandations classées par priorité.
+
+Exemples :
+
+- Contacter un Client
+- Relancer un Partenaire
+- Préparer un rendez-vous
+- Vérifier un document
+- Compléter un Projet
+- Anticiper une échéance
+- Programmer une revue annuelle
+
+---
+
+## Présentation
+
+Chaque recommandation contient :
+
+- Icône
+- Niveau de priorité
+- Titre
+- Explication
+- Client concerné (si applicable)
+- Projet concerné (si applicable)
+- Date de création
+- Service IA ayant généré la recommandation
+
+---
+
+## Priorités
+
+🔴 Priorité critique
+
+🟠 Priorité élevée
+
+🟡 Priorité normale
+
+🟢 Opportunité
+
+---
+
+## Actions disponibles
+
+Depuis le widget, l'utilisateur peut :
+
+- Ouvrir le Projet concerné
+- Accepter la recommandation
+- L'ignorer
+- La reporter
+- Consulter son explication
+
+L'acceptation d'une recommandation peut générer automatiquement une tâche ou ouvrir le module concerné.
+
+---
+
+## Automatisations
+
+Les recommandations sont recalculées régulièrement.
+
+Une recommandation disparaît lorsqu'elle :
+
+- est traitée ;
+- n'est plus pertinente ;
+- est remplacée par une nouvelle.
+
+Toutes les recommandations restent historisées.
+
+---
+
+## Services IA concernés
+
+Les recommandations peuvent provenir notamment de :
+
+- Service CRM
+- Service Produits
+- Service Partenaires
+- Service Documentation
+- Service Conformité
+- Service Développement Commercial
+- Service Pilotage
+
+Chaque recommandation indique clairement son origine.
+
+---
+
+## Explicabilité
+
+Chaque recommandation doit expliquer :
+
+- pourquoi elle est proposée ;
+- quelles données ont été utilisées ;
+- quel bénéfice elle apporte ;
+- quelles conséquences peuvent résulter de son absence de traitement.
+
+L'utilisateur doit toujours comprendre le raisonnement.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- les recommandations sont pertinentes ;
+- leur origine est identifiable ;
+- leur justification est compréhensible ;
+- elles peuvent être acceptées ou ignorées ;
+- aucune recommandation n'est imposée à l'utilisateur.
+
+# Écran 9 — Widget "Mes indicateurs"
+
+## Objectif
+
+Permettre à l'utilisateur de suivre ses principaux indicateurs d'activité sans avoir à ouvrir les différents modules de la plateforme.
+
+Les indicateurs sont personnalisés selon le rôle de l'utilisateur.
+
+Ils doivent permettre une lecture rapide de la situation.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+Chaque profil dispose d'indicateurs adaptés à ses responsabilités.
+
+---
+
+## Données affichées
+
+Exemples d'indicateurs :
+
+### Activité
+
+- Nombre de Clients actifs
+- Nombre de Projets en cours
+- Nombre de Contrats signés ce mois
+- Nombre de rendez-vous réalisés
+
+---
+
+### Organisation
+
+- Tâches ouvertes
+- Tâches terminées
+- Projets en attente
+- Alertes ouvertes
+
+---
+
+### Performance
+
+- Taux d'avancement des Projets
+- Temps moyen de traitement
+- Délais de réponse
+- Objectifs atteints
+
+Les indicateurs affichés sont configurables.
+
+---
+
+## Présentation
+
+Les indicateurs sont affichés sous forme de cartes.
+
+Chaque carte contient :
+
+- Icône
+- Valeur
+- Libellé
+- Évolution par rapport à la période précédente
+- Tendance
+
+Exemple :
+
+▲ En hausse
+
+▼ En baisse
+
+▬ Stable
+
+---
+
+## Actions disponibles
+
+Depuis chaque indicateur, l'utilisateur peut :
+
+- Ouvrir le module correspondant
+- Consulter le détail
+- Modifier la période analysée
+
+---
+
+## Automatisations
+
+Les indicateurs sont recalculés automatiquement.
+
+La fréquence de mise à jour dépend du type de donnée.
+
+Les calculs sont réalisés en arrière-plan afin de préserver les performances.
+
+---
+
+## Services IA concernés
+
+### Service Pilotage
+
+Analyse les indicateurs.
+
+Détecte :
+
+- les évolutions importantes ;
+- les tendances ;
+- les anomalies.
+
+Il peut proposer des explications lorsqu'une variation significative est détectée.
+
+---
+
+## Personnalisation
+
+Chaque utilisateur peut :
+
+- masquer un indicateur ;
+- modifier son ordre d'affichage ;
+- choisir les indicateurs visibles.
+
+Les préférences sont enregistrées automatiquement.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- les indicateurs sont fiables ;
+- les données sont actualisées ;
+- les tendances sont correctement calculées ;
+- les cartes ouvrent les bons modules ;
+- les préférences utilisateur sont conservées.
+
+# Écran 10 — Widget "À retenir aujourd'hui"
+
+## Objectif
+
+Présenter à l'utilisateur une synthèse intelligente de sa journée dès son arrivée sur la plateforme.
+
+Ce widget constitue le briefing quotidien personnalisé de l'utilisateur.
+
+Il ne se contente pas d'afficher des données : il les analyse, les hiérarchise et les résume afin de permettre une prise de décision rapide.
+
+L'objectif est qu'en moins de 30 secondes, l'utilisateur sache où concentrer son attention.
+
+---
+
+## Utilisateurs concernés
+
+- Dirigeant
+- Responsable
+- Collaborateur
+- Mandataire
+
+Chaque synthèse est personnalisée selon :
+
+- le rôle de l'utilisateur ;
+- ses Projets ;
+- ses rendez-vous ;
+- ses tâches ;
+- ses alertes ;
+- ses indicateurs.
+
+---
+
+## Présentation
+
+Le widget prend la forme d'un briefing.
+
+Exemple :
+
+---
+
+👋 Bonjour Erwan,
+
+Voici les points importants de votre journée :
+
+📅 Vous avez **3 rendez-vous**, dont le premier à **09h30** avec Monsieur Martin.
+
+📄 **2 documents** sont en attente de validation.
+
+✍️ **1 contrat** a été signé hier soir.
+
+⚠️ **1 Projet** est bloqué depuis 12 jours.
+
+💡 Une relance est recommandée pour Madame Dupont afin d'éviter un retard dans son dossier.
+
+🎉 Aucun contrôle réglementaire n'est en attente.
+
+Bonne journée !
+
+---
+
+## Contenu analysé
+
+Le widget peut intégrer notamment :
+
+### Activité
+
+- rendez-vous du jour ;
+- tâches prioritaires ;
+- échéances importantes.
+
+---
+
+### Production
+
+- nouveaux Projets ;
+- Projets bloqués ;
+- signatures reçues ;
+- documents en attente.
+
+---
+
+### Conformité
+
+- contrôles à effectuer ;
+- pièces manquantes ;
+- échéances réglementaires.
+
+---
+
+### Opportunités
+
+- rendez-vous de suivi ;
+- contrats à renouveler ;
+- relances conseillées ;
+- anniversaires clients (si activés).
+
+---
+
+### Informations générales
+
+- messages internes importants ;
+- nouveautés de la plateforme ;
+- informations communiquées par la Direction.
+
+---
+
+## Personnalisation
+
+L'utilisateur peut choisir :
+
+- les catégories affichées ;
+- l'ordre des informations ;
+- le niveau de détail.
+
+Il peut également masquer définitivement certaines catégories.
+
+---
+
+## Services IA concernés
+
+Le briefing est construit grâce à la collaboration de plusieurs Services IA.
+
+### Service CRM
+
+Analyse les Projets et les tâches.
+
+---
+
+### Service Pilotage
+
+Détermine les priorités.
+
+---
+
+### Service Conformité
+
+Ajoute les éléments réglementaires.
+
+---
+
+### Service Documentation
+
+Analyse les documents.
+
+---
+
+### Service Développement Commercial
+
+Propose les opportunités commerciales pertinentes.
+
+---
+
+Chaque recommandation indique son origine.
+
+---
+
+## Explicabilité
+
+Chaque information du briefing peut être développée.
+
+L'utilisateur peut comprendre :
+
+- pourquoi elle apparaît ;
+- quelles données ont été utilisées ;
+- quelles actions sont possibles.
+
+Aucune information n'est affichée sans justification.
+
+---
+
+## Automatisations
+
+Le briefing est recalculé automatiquement :
+
+- à chaque connexion ;
+- après une modification importante ;
+- à intervalles réguliers durant la journée.
+
+---
+
+## Critères de validation
+
+Le widget sera considéré comme conforme lorsque :
+
+- le briefing est personnalisé ;
+- les informations sont correctement priorisées ;
+- les recommandations sont explicables ;
+- les liens ouvrent les bons modules ;
+- le temps de lecture reste inférieur à une minute.
