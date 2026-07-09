@@ -79,6 +79,20 @@ contractuel / consentement) — à traiter séparément avec validation dédiée
 > Tests d'exécution E2E manuels (parcours réel navigateur) non réalisés dans cet environnement ;
 > le build Next valide le rendu/compilation. Preview Vercel disponible sur la PR pour contrôle visuel.
 
+## 7bis. Tableau récapitulatif (navigation cabinet)
+
+| Métrique | Valeur |
+|---|---|
+| Liens **actifs** (visibles, tous pointant vers une page réelle) | **38** |
+| Liens **masqués** (`hidden: true`, modules non développés, réactivables) | **24** |
+| Liens **recâblés / ajoutés** (pages réelles auparavant orphelines, désormais reliées) | **16** |
+| **Pages admin réelles** accessibles (hors segments dynamiques) | **34** |
+| **Anomalies restantes** (cf. §9) | **8** |
+
+**Mécanisme de masquage (règle 1)** : flag `hidden?: boolean` sur chaque entrée de menu,
+filtré au rendu (`links.filter((l) => !l.hidden)`). Documenté par un commentaire en tête de
+`app-shell.tsx`. **Réactivation = passer `hidden` à `false`** (aucune réécriture du menu).
+
 ## 8. Impacts
 - **Navigation** : le menu cabinet ne montre plus que des liens fonctionnels ; modules non
   développés masqués mais conservés dans le code (réactivation = `hidden: false`).
@@ -92,6 +106,34 @@ contractuel / consentement) — à traiter séparément avec validation dédiée
   `client-file-360-live`, `client-directory`) subsistent → consolidation prévue en P0-02/P1.
 - 🟡 Dette : ~90 occurrences « dossier » légitimes non touchées (Drive folder, emprunteur,
   réglementaire) → harmonisation fine à traiter en **P1-02 (Refonte Projet)**.
+
+## 9bis. Anomalies restantes découvertes (non corrigées — règle 3)
+
+Conformément à la consigne, ces anomalies identifiées pendant le développement **ne sont pas
+corrigées automatiquement** ; elles sont listées avec leur criticité.
+
+| # | Anomalie | Criticité | Traitement proposé |
+|---|---|---|---|
+| 1 | Contenus sensibles à rebrander (mentions légales, énoncé ORIAS, lettre de mission, textes de consentement RGPD) — nécessitent validation juridique | **Important** | Lot dédié « raison sociale » |
+| 2 | Journal d'audit : 5/13 actions couvertes, sans écran (spec 226) | **Important** | P0-02 |
+| 3 | Logique métier dans l'UI (`forms/client-form`, `economies-counter` accèdent Supabase en direct) — viole 227 §3 | **Important** | P0-02 / P1 |
+| 4 | Pas de page admin de gestion Mandataires/Prescripteurs (entrées menu masquées) | **Important** | P1 / P2 |
+| 5 | Pas de page Paramètres cabinet (Moteur de Paramétrage 224 non livré, lien masqué) | **Important** | P0-02+ |
+| 6 | 4 variantes restantes de fiche/annuaire client (redondance) | **Confort** | P0-02 / P1 |
+| 7 | ~90 occurrences « dossier » légitimes non harmonisées (Drive folder, vertical emprunteur, réglementaire) | **Confort** | P1-02 (Refonte Projet) |
+| 8 | 22 warnings lint préexistants (variables inutilisées, fichiers hors périmètre) | **Confort** | au fil de l'eau |
+
+> Aucune anomalie **Critique** (bloquante) identifiée : l'application compile, se déploie et
+> la navigation est cohérente.
+
+## 9ter. Vérifications finales exécutées (règle 4)
+
+| Vérification | Résultat |
+|---|---|
+| Lint (`npx eslint`) | ✅ 0 erreur (22 warnings préexistants) |
+| Build (`npm run build`) | ✅ Compiled successfully (exit 0) |
+| Routes (liens visibles → page réelle) | ✅ 38/38 valides ; 24/24 masqués → pages absentes |
+| Gardes de rôle (`/admin/*`) | ✅ layout `requireRole` actif + 32/37 pages en défense en profondeur |
 
 ## 10. Recommandations pour le lot suivant (P0-02 — Composants transverses)
 1. **Gestion des mentions sensibles** : prévoir un lot dédié « raison sociale » pour statuer sur
