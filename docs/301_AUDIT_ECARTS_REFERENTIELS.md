@@ -165,7 +165,30 @@ Aujourd'hui seuls Client/Projet/Partenaire s'en approchent.
 
 ---
 
-## 7. Plan V1 recommandé (conforme 227 ch.7 « ajouter avant remplacer », zéro régression)
+## 6bis. Alignement sur le Backlog Stratégique officiel (229)
+
+Le référentiel **`229_BACKLOG_STRATEGIQUE_V1`** (arrivé le 2026-07-09) fixe l'ordre officiel
+des lots. Il **confirme et supersède** mon plan ci-dessous, et **tranche l'arbitrage en attente** :
+Produits (P1-04) passe **avant** Opportunités (P2-01). Correspondance :
+
+| Mon lot (§7) | Lot officiel 229 | Priorité | Contenu |
+|---|---|---|---|
+| Lot 1 | **P0-01 Stabilisation du socle** | P0 | nav, liens cassés, terminologie, permissions, suppression obsolètes |
+| Lot 2 | **P0-02 Composants transverses** | P0 | Commentaires, Favoris, Tags, Priorités, Historique, PJ, Vues, Recherche, Notifications |
+| Lot 3 (statut Client) | **P1-01 Refonte modèle Client** | P1 | Prospect = statut, états, historique |
+| Lot 3 (pivot) | **P1-02 Refonte Projet** | P1 | liaisons Contrats/Activités/Documents/Produits |
+| Lot 3 (Contrat→Projet) | **P1-03 Refonte Contrats** | P1 | migration, API, écrans, reporting, audit |
+| Lot 5 (Produits) | **P1-04 Catalogue Produits** | P1 | familles, produits, garanties, options |
+| Lot 4 (Opportunités) | **P2-01 Opportunités** | P2 | pipeline commercial |
+| — | P2-02 à P2-06 | P2 | Sinistres, Renouvellements, Résiliations, Signature, GED avancée |
+| — | P3-01 à P3-06 | P3 | IA (doc/commerciale/conformité), Extension Chrome, Mobile, API partenaires |
+
+**Conséquence** : l'ordre d'exécution est désormais **P0-01 → P0-02 → P1-01 → P1-02 → P1-03 → P1-04 → P2…**.
+Le master prompt (`000`) impose : analyser → comparer → proposer → **attendre validation** avant tout code.
+
+---
+
+## 7. Plan V1 recommandé (repris tel quel dans le backlog 229 — conserver pour référence)
 
 **Lot 1 — Vérité & cohérence de l'UI** *(risque nul, aucun changement de données)*
 - Nav ↔ pages réelles (masquer/étiqueter « à venir »), suppression résidu Astro,
