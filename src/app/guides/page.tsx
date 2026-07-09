@@ -7,12 +7,12 @@ import { SiteFooter } from "@/components/site-footer";
 const pageUrl = "https://www.ej-assurances.fr/guides";
 
 export const metadata: Metadata = {
-  title: "Guides et articles — Assurance emprunteur | EJ Assurances",
+  title: "Guides et articles — Assurance emprunteur | EJ Partners Assurances",
   description:
     "Guides pratiques sur l'assurance emprunteur, la loi Lemoine, les familles recomposées, la coparentalité et les couples LGBT. Des contenus pédagogiques pour comprendre et décider.",
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: "Guides et articles — Assurance emprunteur | EJ Assurances",
+    title: "Guides et articles — Assurance emprunteur | EJ Partners Assurances",
     description:
       "Guides pratiques sur l'assurance emprunteur, la loi Lemoine, les familles recomposées, la coparentalité et les couples LGBT.",
     url: pageUrl,

@@ -7,7 +7,7 @@ import { createContactIntakeAction } from "@/app/actions/contact-intake";
 /* Page contact : formulaire courtier assurance emprunteur en glass-card Navy Fintech. */
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contactez EJ Assurances pour une analyse assurance emprunteur ou transmission parent social enfant.",
+  description: "Contactez EJ Partners Assurances pour une analyse assurance emprunteur ou transmission parent social enfant.",
 };
 
 type ContactPageProps = {
@@ -98,7 +98,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
           <label className="flex gap-3 text-sm leading-6 text-[#475569]">
             <input name="consent" type="checkbox" required className="mt-1 size-4 accent-[#3B82F6]" />
-            J'accepte d'être recontacté par EJ Assurances au sujet de ma demande.
+            J'accepte d'être recontacté par EJ Partners Assurances au sujet de ma demande.
           </label>
 
           <button type="submit" className="btn-primary mt-2 w-full text-white">

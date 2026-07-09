@@ -11,9 +11,9 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export async function generateMetadata({ params }: { params: Promise<{ clientId: string }> }) {
   const { clientId } = await params;
   const user = await requireRole(["admin", "courtier"]).catch(() => null);
-  if (!user) return { title: "Client — EJ Assurances Admin" };
+  if (!user) return { title: "Client — EJ Partners Assurances Admin" };
   const data = await getClient360(clientId);
-  return { title: `${data?.client?.full_name ?? "Client"} — EJ Assurances Admin` };
+  return { title: `${data?.client?.full_name ?? "Client"} — EJ Partners Assurances Admin` };
 }
 
 export default async function AdminClientPage({

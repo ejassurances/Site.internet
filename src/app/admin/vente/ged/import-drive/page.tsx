@@ -13,7 +13,7 @@ import {
 } from "@/lib/actions/drive-imports";
 import { CheckCircle2, FileCheck2, FolderSync, Plus, ShieldAlert, XCircle } from "lucide-react";
 
-export const metadata = { title: "Import Drive vers CRM - EJ Assurances" };
+export const metadata = { title: "Import Drive vers CRM - EJ Partners Assurances" };
 
 const statusLabels: Record<string, string> = {
   pending: "A valider",

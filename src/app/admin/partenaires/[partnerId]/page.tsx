@@ -12,7 +12,7 @@ import {
 } from "@/lib/actions/partners";
 import { Bot, Building2, FileText, KeyRound, PackageCheck, ShieldCheck } from "lucide-react";
 
-export const metadata = { title: "Fiche partenaire - EJ Assurances" };
+export const metadata = { title: "Fiche partenaire - EJ Partners Assurances" };
 
 const productCategories = [
   ["assurance_emprunteur", "Assurance emprunteur"],

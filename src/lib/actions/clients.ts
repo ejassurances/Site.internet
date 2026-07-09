@@ -228,7 +228,7 @@ export async function inviteClientToPortalAction(
     return { status: "error", message: "Ajoutez une adresse email sur la fiche client avant d'envoyer l'invitation." };
   }
 
-  const fullName = String(client.full_name ?? "Client EJ Assurances");
+  const fullName = String(client.full_name ?? "Client EJ Partners Assurances");
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
     process.env.NEXT_PUBLIC_APP_URL ??

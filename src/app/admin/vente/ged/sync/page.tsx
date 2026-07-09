@@ -5,7 +5,7 @@ import { getDriveSyncStatus } from "@/lib/actions/drive-sync";
 import { DriveSyncPanel } from "@/components/forms/drive-sync-panel";
 import { RefreshCw } from "lucide-react";
 
-export const metadata = { title: "Synchronisation Drive — EJ Assurances" };
+export const metadata = { title: "Synchronisation Drive — EJ Partners Assurances" };
 
 export default async function DriveSyncPage() {
   const user = await requireRole(["admin", "courtier"]);

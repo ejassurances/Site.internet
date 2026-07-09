@@ -161,7 +161,7 @@ export async function createContactIntakeAction(formData: FormData) {
     sender_id: profileId,
     recipient_id: profileId,
     client_id: client.id,
-    subject: "Votre espace EJ Assurances",
+    subject: "Votre espace EJ Partners Assurances",
     body: "Votre demande a ete recue. Un lien de connexion vous a ete envoye par email. Votre DER est disponible dans le Classeur ACPR.",
   });
 

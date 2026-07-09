@@ -6,7 +6,7 @@ import { getClient360 } from "@/lib/actions/clients";
 import { ClientForm } from "@/components/forms/client-form";
 import { ArrowLeft, Edit } from "lucide-react";
 
-export const metadata = { title: "Modifier le client — EJ Assurances Admin" };
+export const metadata = { title: "Modifier le client — EJ Partners Assurances Admin" };
 
 export default async function ModifierClientPage({
   params,

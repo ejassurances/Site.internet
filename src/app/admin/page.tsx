@@ -81,7 +81,7 @@ export default async function AdminDashboardPage() {
       <section className="admin-home-hero">
         <div>
           <p className="eyebrow">Espace cabinet</p>
-          <h1>Piloter EJ Assurances sans perdre le fil des dossiers.</h1>
+          <h1>Piloter EJ Partners Assurances sans perdre le fil des dossiers.</h1>
           <p>
             Une vue claire pour creer une fiche client, traiter les prospects emprunteur,
             suivre les workflows et garder la conformite au centre du dossier.

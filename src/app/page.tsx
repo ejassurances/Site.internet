@@ -13,11 +13,11 @@ import {
   Scale,
 } from "lucide-react";
 
-/* Page d'accueil publique : deux expertises EJ Assurances en thème Navy Fintech. */
+/* Page d'accueil publique : deux expertises EJ Partners Assurances en thème Navy Fintech. */
 export const metadata: Metadata = {
   title: "Assurance emprunteur et transmission parent social enfant",
   description:
-    "EJ Assurances accompagne les emprunteurs et les coparents sociaux pour proteger le pret, le patrimoine et la transmission aux enfants.",
+    "EJ Partners Assurances accompagne les emprunteurs et les coparents sociaux pour proteger le pret, le patrimoine et la transmission aux enfants.",
   alternates: { canonical: "https://www.ej-assurances.fr" },
 };
 
@@ -74,7 +74,7 @@ export default function HomePage() {
               Proteger le <span className="text-gradient">pret</span>, le patrimoine et l'enfant.
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-[#475569]">
-              EJ Assurances accompagne deux situations sensibles : l'assurance emprunteur pour securiser
+              EJ Partners Assurances accompagne deux situations sensibles : l'assurance emprunteur pour securiser
               le logement, et la protection des coparents sociaux lorsque la transmission a l'enfant n'est
               pas naturellement protegee par le droit.
             </p>

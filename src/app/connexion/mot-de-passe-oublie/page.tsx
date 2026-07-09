@@ -3,7 +3,7 @@ import { SiteHeader } from "@/components/site-header";
 import { ForgotPasswordForm } from "./forgot-password-form";
 
 export const metadata: Metadata = {
-  title: "Mot de passe oublié — EJ Assurances",
+  title: "Mot de passe oublié — EJ Partners Assurances",
   robots: { index: false, follow: false },
 };
 

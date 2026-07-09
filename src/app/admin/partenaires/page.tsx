@@ -7,7 +7,7 @@ import {
 } from "@/lib/actions/partners";
 import { Building2, FileSignature, Handshake } from "lucide-react";
 
-export const metadata = { title: "Partenaires assureurs et grossistes - EJ Assurances" };
+export const metadata = { title: "Partenaires assureurs et grossistes - EJ Partners Assurances" };
 
 const products = [
   "Assurance emprunteur",

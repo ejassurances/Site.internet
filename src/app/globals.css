@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Design system Navy Fintech global pour EJ Assurances. */
+/* Design system Navy Fintech global pour EJ Partners Assurances. */
 :root {
   --bg-primary: #F6F9FC;
   --bg-surface: #FFFFFF;
@@ -630,7 +630,7 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 
 .contact-form textarea { min-height: 130px; resize: vertical; }
 
-/* EJ Assurances - homepage V2 */
+/* EJ Partners Assurances - homepage V2 */
 .ej-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, .8fr);

@@ -5,7 +5,7 @@ import { requireRole } from "@/lib/auth";
 import { AppShell } from "@/components/app-shell";
 import { ClientForm } from "@/components/forms/client-form";
 
-export const metadata = { title: "Nouvelle fiche client - EJ Assurances Admin" };
+export const metadata = { title: "Nouvelle fiche client - EJ Partners Assurances Admin" };
 
 export default async function NouveauClientPage() {
   const user = await requireRole(["admin", "courtier"]).catch(() => null);

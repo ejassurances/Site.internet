@@ -25,7 +25,7 @@ export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": ["Organization", "InsuranceAgency", "LocalBusiness"],
   "@id": `${siteUrl}/#organization`,
-  name: "EJ Assurances",
+  name: "EJ Partners Assurances",
   alternateName: "EJ Partners Assurances",
   url: siteUrl,
   logo: {
@@ -53,7 +53,7 @@ export const organizationSchema = {
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Services du cabinet EJ Assurances",
+    name: "Services du cabinet EJ Partners Assurances",
     itemListElement: [
       {
         "@type": "Offer",
@@ -125,7 +125,7 @@ export const websiteSchema = {
   "@type": "WebSite",
   "@id": `${siteUrl}/#website`,
   url: siteUrl,
-  name: "EJ Assurances",
+  name: "EJ Partners Assurances",
   description:
     "Cabinet de courtage en assurances spécialisé dans l'assurance emprunteur et la protection des familles modernes.",
   publisher: {
@@ -192,7 +192,7 @@ export function articleSchema({
   description,
   datePublished,
   dateModified,
-  authorName = "EJ Assurances",
+  authorName = "EJ Partners Assurances",
 }: {
   url: string;
   headline: string;

@@ -407,7 +407,7 @@ export async function generatePartnerContractAiSummaryAction(formData: FormData)
     documents: documents ?? [],
   };
 
-  const prompt = `Tu es l'agent IA conformité-produit du cabinet EJ Assurances.
+  const prompt = `Tu es l'agent IA conformité-produit du cabinet EJ Partners Assurances.
 Analyse un contrat d'assurance distribué par un partenaire pour aider le courtier à préparer :
 - un devis comparatif ;
 - un recueil des besoins ;

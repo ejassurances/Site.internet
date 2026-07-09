@@ -3,7 +3,7 @@ import { AppShell } from '@/components/app-shell';
 import CentreDocumentaire from '@/components/vente/centre-documentaire';
 
 export const metadata = {
-  title: 'Centre Documentaire | EJ Assurances',
+  title: 'Centre Documentaire | EJ Partners Assurances',
   robots: { index: false },
 };
 

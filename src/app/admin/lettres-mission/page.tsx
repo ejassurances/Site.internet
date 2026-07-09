@@ -7,7 +7,7 @@ import { PRODUCT_LABELS, productLabel } from "@/lib/lettre-mission";
 import { LettreMissionForm } from "@/components/forms/lettre-mission-form";
 import { FileSignature } from "lucide-react";
 
-export const metadata = { title: "Lettres de mission — EJ Assurances" };
+export const metadata = { title: "Lettres de mission — EJ Partners Assurances" };
 
 const STATUS_LABEL: Record<string, string> = {
   a_signer: "À signer",

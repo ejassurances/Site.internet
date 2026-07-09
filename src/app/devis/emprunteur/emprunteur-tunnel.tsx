@@ -595,7 +595,7 @@ export function EmprunteurTunnel() {
             <CheckCircle2 size={64} className="tunnel-confirmation__icon" />
             <h2>Dossier reçu !</h2>
             <p>
-              Merci {identity.full_name.split(" ")[0]}, votre dossier a bien été transmis à EJ Assurances.
+              Merci {identity.full_name.split(" ")[0]}, votre dossier a bien été transmis à EJ Partners Assurances.
               Nous allons l'étudier et vous recontacterons dans les plus brefs délais à l'adresse{" "}
               <strong>{identity.email}</strong>.
             </p>

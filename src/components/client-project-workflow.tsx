@@ -131,7 +131,7 @@ export function ClientProjectWorkflow({ clientId, projects }: ClientProjectWorkf
         <div>
           <span>Projets en cours</span>
           <strong>{ongoingProjects.length} projet{ongoingProjects.length !== 1 ? "s" : ""} actif{ongoingProjects.length !== 1 ? "s" : ""}</strong>
-          <small>Seuls les projets ouverts sont affiches ici. Les contrats actifs et dossiers clos restent dans les onglets dedies.</small>
+          <small>Seuls les projets ouverts sont affiches ici. Les contrats actifs et projets clos restent dans les onglets dedies.</small>
         </div>
         {ongoingProjects.length > 0 && (
           <div className="project-action-row">
