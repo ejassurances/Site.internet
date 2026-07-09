@@ -140,20 +140,16 @@ Aucune capacité/route API modifiée (T1-T5 sont front + labels ; T6 renforce de
 
 ---
 
-## 5. Décisions requises avant code (étape 4 — validation)
+## 5. Décisions — VERROUILLÉES (2026-07-09)
 
-**Décision A — Traitement des 24 liens morts**
-- A1. *Les retirer* du menu (le plus simple, menu = miroir du réel). **Recommandé.**
-- A2. *Les afficher désactivés « à venir »* (garde la vision cible visible, mais alourdit).
-- A3. *Créer des pages « À venir »* placeholder (déconseillé : P0-01 interdit les nouvelles fonctionnalités).
+- **Décision A → A1 : retirer les 24 liens morts** du menu (menu = miroir exact du réel).
+- **Décision B → B1 : renommage « Dossier »→« Projet » ciblé UI** ; conserver les usages
+  techniques/réglementaires (`emprunteur_dossiers`, dossier/classeur ACPR).
+- **Décision C → C3 : conserver le libellé « Courtier »** (T4 annulé — aucun changement de libellé rôle).
 
-**Décision B — Périmètre du renommage « Dossier »**
-- B1. *Ciblé* : ne renommer que l'UI où « Dossier » = Projet, conserver les usages techniques/ACPR. **Recommandé.**
-- B2. *Différer* entièrement en P1 (refonte Projet).
+**Périmètre P0-01 finalisé** : T1 (recâblage menu, retrait liens morts), T2 (marque EJ Partners),
+T3 (Dossier→Projet ciblé), T5 (suppression obsolètes), T6 (5 gardes de rôle). **T4 supprimé.**
 
-**Décision C — Libellé du rôle `courtier` en interface**
-- C1. « Conseiller » · C2. « Collaborateur » · C3. Laisser « Courtier » pour l'instant.
-
-> Aucune modification ne sera faite tant que ces décisions ne sont pas validées.
-> À réception, j'exécute P0-01 sur `claude/repo-sync-7rrtyt`, puis je fournis le **rapport de fin de lot**
-> (résumé, fichiers, BDD, API, tests, risques, dette, recommandations) conforme au master prompt.
+> Le plan est complet et validé sur ses paramètres. Exécution sur `claude/repo-sync-7rrtyt`
+> après feu vert explicite, puis **rapport de fin de lot** (résumé, fichiers, BDD, API, tests,
+> risques, dette, recommandations) conforme au master prompt `000`.
