@@ -146,11 +146,13 @@ Aujourd'hui seuls Client/Projet/Partenaire s'en approchent.
 
 ## 6. Synthèse des écarts prioritaires
 
-**🔴 Bloquants modèle (à trancher avant de coder des modules)**
-1. `clients.status` (cycle de vie Prospect→Actif→Inactif→Archivé) — unifie Prospect dans Client (198).
-2. Relation **Contrat → Projet obligatoire** (198) : décider migration (rendre `project_id` requis,
-   créer un « projet implicite » pour les contrats orphelins existants).
-3. Objets manquants de 1er rang : **Produits (205)**, **Opportunités (209)**, **Activités enrichies (202)**.
+**🔴 Bloquants modèle — DÉCISIONS PRISES (2026-07-09)**
+1. ✅ **VALIDÉ** — `clients.status` (cycle de vie Prospect→Actif→Inactif→Archivé) : on **unifie
+   le Prospect dans le Client** (conforme 198). La table `referrals` sera migrée vers ce statut.
+2. ✅ **VALIDÉ** — **Contrat → Projet obligatoire** (198) : on rend `contracts.project_id`
+   **requis**, avec création d'un **projet implicite** rétro-généré pour les contrats orphelins.
+3. À arbitrer (priorité) : objets manquants de 1er rang **Produits (205)**, **Opportunités (209)**,
+   **Activités enrichies (202)**.
 
 **🟠 Fondations transverses (bénéficient à tous les modules)**
 4. Socle 199 : Statuts, Priorités, Commentaires, Tags génériques, Favoris, Vues, Actions standard.
@@ -189,11 +191,17 @@ Aujourd'hui seuls Client/Projet/Partenaire s'en approchent.
 
 ## 8. Premières actions concrètes
 
-1. **Décisions modèle** (à valider) : statut Client unifié O/N ; Contrat→Projet obligatoire O/N ;
-   ordre de priorité entre Produits (205), Opportunités (209) et Activités enrichies (202).
-2. **Lot 1** immédiatement mobilisable (risque nul) sur `claude/repo-sync-7rrtyt`.
-3. **Module pilote** pour valider le socle transverse : je recommande **Projet (204)**,
-   déjà le plus proche de la cible, comme banc d'essai des composants 199 + audit systématique.
+**État de décision (2026-07-09)** — phase : **reste en audit, aucun code lancé.**
+- ✅ Statut Client unifié (`clients.status`).
+- ✅ Contrat → Projet obligatoire (projet implicite pour l'existant).
+- ⏳ Reste à arbitrer : priorité Produits (205) / Opportunités (209) / Activités enrichies (202).
+
+Quand le feu vert « code » sera donné :
+1. **Lot 1** (risque nul) mobilisable immédiatement sur `claude/repo-sync-7rrtyt`.
+2. **Module pilote** recommandé pour le socle transverse : **Projet (204)**, déjà le plus
+   proche de la cible, comme banc d'essai des composants 199 + audit systématique.
+3. **Lot 3** (migrations modèle) préparé en amont : scripts réversibles + test d'intégrité RLS
+   avant exécution, conformément à 228 ch.9 (migrations atomiques, testées, tracées).
 
 > Aucune modification de code applicatif n'a été réalisée : ce document est un rapport d'audit.
 > Chaque lot fera l'objet d'un plan détaillé (fichiers impactés, migrations, risques, tests)
