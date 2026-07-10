@@ -4205,3 +4205,157 @@ body {
   font-feature-settings:"tnum" 1;
 }
 /* Fin DES-001 — Phase 1 (fondations tokens) */
+
+/* ==========================================================================
+   DES-001 · SHELL BACK-OFFICE (Phase 2) — sidebar + header
+   --------------------------------------------------------------------------
+   Consomme les tokens --bo-* (Phase 1). Tout est scopé sous `.app-layout`
+   → impact nul sur le site public. Placé en fin de fichier : ces règles
+   priment sur l'ancien style du shell par ordre de cascade, SANS modifier
+   le contenu interne des pages (enveloppé dans .bo-page, inset préservé).
+   ========================================================================== */
+
+/* Grille + fond de l'espace connecté */
+.app-layout {
+  grid-template-columns: 250px minmax(0, 1fr);
+  background: var(--bo-bg);
+}
+
+/* — Sidebar (bleu marine = identité) — */
+.app-layout .sidebar {
+  background: linear-gradient(180deg, var(--bo-navy-850), var(--bo-navy-900));
+  border-right: 1px solid rgba(255,255,255,.06);
+  padding: 18px 12px 14px;
+  gap: 2px;
+}
+.app-layout .app-brand { padding: 6px 8px 14px; gap: 10px; }
+.app-layout .app-brand-title small { color: #7C93A8; font-size: 11px; }
+
+.app-layout .side-nav { gap: 2px; }
+.app-layout .side-nav-group { margin-top: 10px; }
+.app-layout .side-nav-group-label {
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: #5E7791; font-weight: 700; padding: 2px 8px 6px;
+  display: flex; align-items: center; gap: 8px; background: none; border: 0;
+}
+.app-layout .side-nav-group-label:hover,
+.app-layout .side-nav-group-label.module-active { color: #93AABB; }
+.app-layout .side-nav-group-label svg { opacity: .7; }
+
+.app-layout .side-nav a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px;
+  color: #B4C4D3; font-size: 13.5px; font-weight: 500;
+  border: 1px solid transparent; transition: background .14s, color .14s;
+}
+.app-layout .side-nav a svg { opacity: .85; flex-shrink: 0; }
+.app-layout .side-nav a:hover { background: rgba(255,255,255,.06); color: #EAF2F8; }
+.app-layout .side-nav a.active {
+  background: rgba(31,122,128,.22); color: #fff; border-color: rgba(58,160,166,.35);
+}
+.app-layout .side-nav a.active svg { color: #4FC4CB; opacity: 1; }
+.app-layout .side-nav-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 6px; }
+
+/* Pied de sidebar */
+.app-layout .bo-side-foot { margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.07); }
+.app-layout .bo-side-user {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+  color: rgba(226,236,244,.6); font-size: 12.5px;
+}
+.app-layout .bo-side-user span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-layout .bo-signout {
+  display: flex; align-items: center; gap: 8px; width: 100%; min-height: 38px;
+  padding: 0 10px; border: 0; border-radius: 8px;
+  background: rgba(255,255,255,.06); color: rgba(226,236,244,.7);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s;
+}
+.app-layout .bo-signout:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+/* — Workspace : header pleine largeur + contenu inset préservé — */
+.app-layout .workspace { padding: 0; }
+.app-layout .bo-page { padding: 24px clamp(16px, 3vw, 32px) 48px; }
+
+/* Header / topbar premium (sticky) */
+.app-layout .bo-topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px clamp(16px, 3vw, 32px); margin: 0;
+  background: color-mix(in srgb, var(--bo-surface) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(8px);
+  border-bottom: 1px solid var(--bo-border);
+}
+.app-layout .bo-topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.app-layout .bo-greeting .eyebrow { color: var(--bo-faint); }
+.app-layout .bo-greeting h1 { font-size: clamp(17px, 2vw, 22px); line-height: 1.15; color: var(--bo-ink); font-weight: 720; margin: 2px 0 0; }
+.app-layout .bo-topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.app-layout .bo-search {
+  display: flex; align-items: center; gap: 9px;
+  width: clamp(220px, 30vw, 380px);
+  background: var(--bo-surface-3); border: 1px solid var(--bo-border);
+  border-radius: 9px; padding: 8px 12px; color: var(--bo-muted);
+}
+.app-layout .bo-search:focus-within { border-color: var(--bo-teal); box-shadow: var(--bo-ring); }
+.app-layout .bo-search svg { flex: none; }
+.app-layout .bo-search input {
+  border: 0; background: none; outline: none; flex: 1; min-width: 0;
+  font-size: 13.5px; color: var(--bo-text); font-family: inherit;
+}
+.app-layout .bo-search input::placeholder { color: var(--bo-faint); }
+.app-layout .bo-kbd { font-size: 11px; color: var(--bo-faint); border: 1px solid var(--bo-border-strong); border-radius: 5px; padding: 1px 6px; }
+
+.app-layout .bo-iconbtn {
+  position: relative; width: 38px; height: 38px; flex: none;
+  border-radius: 9px; border: 1px solid var(--bo-border); background: var(--bo-surface);
+  color: var(--bo-muted); display: grid; place-items: center; cursor: pointer; transition: .14s;
+}
+.app-layout .bo-iconbtn:hover { color: var(--bo-ink); background: var(--bo-surface-2); border-color: var(--bo-border-strong); }
+.app-layout .bo-dot { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--bo-danger); box-shadow: 0 0 0 2px var(--bo-surface); }
+
+.app-layout .bo-userchip {
+  display: flex; align-items: center; gap: 9px; padding: 5px 12px 5px 6px;
+  border: 1px solid var(--bo-border); border-radius: 22px; background: var(--bo-surface);
+}
+.app-layout .bo-userchip-av {
+  width: 28px; height: 28px; border-radius: 50%; flex: none;
+  background: linear-gradient(140deg, var(--bo-navy-700), var(--bo-teal));
+  color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 700;
+}
+.app-layout .bo-role {
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--bo-teal); background: var(--bo-teal-050); padding: 2px 8px; border-radius: 20px;
+}
+
+/* Burger + backdrop : masqués sur desktop */
+.app-layout .bo-burger { display: none; }
+.app-layout .bo-backdrop { display: none; }
+
+/* — Responsive : tiroir mobile — */
+@media (max-width: 960px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .app-layout .sidebar {
+    position: fixed; top: 0; left: 0; width: 264px; height: 100svh; z-index: 60;
+    transform: translateX(-100%); transition: transform .22s ease; box-shadow: var(--bo-shadow-lg);
+  }
+  .app-layout.bo-nav-open .sidebar { transform: translateX(0); }
+  .app-layout .bo-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 50; border: 0; padding: 0;
+    background: rgba(10,20,32,.5); opacity: 0; pointer-events: none; transition: opacity .2s; cursor: pointer;
+  }
+  .app-layout.bo-nav-open .bo-backdrop { opacity: 1; pointer-events: auto; }
+  .app-layout .bo-burger {
+    display: grid; place-items: center; width: 38px; height: 38px; flex: none;
+    border-radius: 9px; border: 1px solid var(--bo-border); background: var(--bo-surface); color: var(--bo-ink); cursor: pointer;
+  }
+  .app-layout .bo-search { width: auto; }
+  .app-layout .bo-search input, .app-layout .bo-kbd { display: none; }
+}
+@media (max-width: 560px) {
+  .app-layout .bo-greeting .eyebrow { display: none; }
+  .app-layout .bo-role { display: none; }
+  .app-layout .bo-userchip { padding: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-layout .sidebar, .app-layout .bo-backdrop { transition: none; }
+}
+/* Fin DES-001 — Phase 2 (shell) */

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   LogOut,
@@ -23,6 +23,8 @@ import {
   Search,
   Building2,
   Bike,
+  Menu,
+  X,
 } from "lucide-react";
 import { CurrentUser } from "@/lib/auth";
 import { Role } from "@/lib/content";
@@ -195,14 +197,19 @@ const clientModules: NavLink[] = [
 
 export function AppShell({ role, user, children }: AppShellProps) {
   const pathname = usePathname() ?? "";
+  const [menuOpen, setMenuOpen] = useState(false);
   const isAdmin = role === "admin" || role === "courtier";
   const isLinkActive = (href: string) => pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
+  const closeMenu = () => setMenuOpen(false);
+  const initials = user.fullName.split(" ").map((p) => p[0] ?? "").slice(0, 2).join("").toUpperCase();
 
   return (
-    <div className="app-layout">
+    <div className={`app-layout${menuOpen ? " bo-nav-open" : ""}`}>
+      {/* Fond cliquable du tiroir mobile */}
+      <button className="bo-backdrop" type="button" aria-label="Fermer le menu" tabIndex={menuOpen ? 0 : -1} onClick={closeMenu} />
       <aside className="sidebar">
         {/* Brand */}
-        <Link className="brand app-brand" href="/">
+        <Link className="brand app-brand" href="/" onClick={closeMenu}>
           <Image
             className="brand-logo"
             src="/logo-ej-partners-assurances.png"
@@ -227,7 +234,7 @@ export function AppShell({ role, user, children }: AppShellProps) {
                 return (
                   <div key={module.id} className="side-nav-group">
                     {idx > 0 && <div className="side-nav-divider" />}
-                    <Link href={module.href} className={`side-nav-group-label${isActive ? " module-active" : ""}`}>
+                    <Link href={module.href} className={`side-nav-group-label${isActive ? " module-active" : ""}`} onClick={closeMenu}>
                       <Icon size={12} aria-hidden />
                       {module.emoji} {module.label}
                     </Link>
@@ -239,6 +246,7 @@ export function AppShell({ role, user, children }: AppShellProps) {
                           key={link.href}
                           href={link.href}
                           className={linkActive ? "active" : ""}
+                          onClick={closeMenu}
                         >
                           <LinkIcon size={15} aria-hidden />
                           {link.label}
@@ -254,7 +262,7 @@ export function AppShell({ role, user, children }: AppShellProps) {
               const Icon = item.icon;
               const active = pathname === item.href;
               return (
-                <Link key={item.href} href={item.href} className={active ? "active" : ""}>
+                <Link key={item.href} href={item.href} className={active ? "active" : ""} onClick={closeMenu}>
                   <Icon size={15} aria-hidden />
                   {item.label}
                 </Link>
@@ -267,7 +275,7 @@ export function AppShell({ role, user, children }: AppShellProps) {
           {!isAdmin && (
             <>
               <div className="side-nav-divider" />
-              <Link href="/client#parametres">
+              <Link href="/client#parametres" onClick={closeMenu}>
                 <Settings size={15} aria-hidden />
                 Paramètres
               </Link>
@@ -276,31 +284,13 @@ export function AppShell({ role, user, children }: AppShellProps) {
         </nav>
 
         {/* Sidebar footer */}
-        <div className="sidebar-footer">
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px 10px", color: "rgba(247,245,240,.55)", fontSize: "13px" }}>
+        <div className="sidebar-footer bo-side-foot">
+          <div className="bo-side-user">
             <ShieldCheck size={14} aria-hidden />
-            <span style={{ flex: 1 }}>{user.email}</span>
+            <span>{user.email}</span>
           </div>
           <form action="/auth/signout" method="post">
-            <button
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                width: "100%",
-                minHeight: "38px",
-                padding: "0 10px",
-                border: 0,
-                borderRadius: "8px",
-                background: "rgba(255,255,255,.07)",
-                color: "rgba(247,245,240,.65)",
-                fontSize: "13px",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "background .15s",
-              }}
-              type="submit"
-            >
+            <button className="bo-signout" type="submit">
               <LogOut size={14} aria-hidden />
               Se déconnecter
             </button>
@@ -310,29 +300,40 @@ export function AppShell({ role, user, children }: AppShellProps) {
 
       {/* Main workspace */}
       <main className="workspace">
-        <header className="workspace-header">
-          <div>
-            <p className="eyebrow">{isAdmin ? "Cabinet EJ Partners Assurances" : "Espace client"}</p>
-            <h1>Bonjour, {user.fullName.split(" ")[0]} 👋</h1>
+        <header className="workspace-header bo-topbar">
+          <div className="bo-topbar-left">
+            <button
+              className="bo-burger"
+              type="button"
+              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? <X size={18} aria-hidden /> : <Menu size={18} aria-hidden />}
+            </button>
+            <div className="bo-greeting">
+              <p className="eyebrow">{isAdmin ? "Cabinet EJ Partners Assurances" : "Espace client"}</p>
+              <h1>Bonjour, {user.fullName.split(" ")[0]} 👋</h1>
+            </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <button className="icon-button" title="Recherche" aria-label="Recherche">
+          <div className="bo-topbar-right">
+            <div className="bo-search">
               <Search size={16} aria-hidden />
+              <input type="search" placeholder="Rechercher un client, un projet, un contrat…" aria-label="Recherche globale" />
+              <span className="bo-kbd" aria-hidden>⌘K</span>
+            </div>
+            <button className="bo-iconbtn" title="Notifications" aria-label="Notifications">
+              <Bell size={17} aria-hidden />
+              <span className="bo-dot" aria-hidden />
             </button>
-            <button className="icon-button" title="Notifications" aria-label="Notifications">
-              <Bell size={16} aria-hidden />
-            </button>
-            <div className="workspace-user">
-              <ShieldCheck size={16} aria-hidden />
-              <span>{user.fullName}</span>
-              <span style={{ padding: "3px 8px", borderRadius: "999px", background: "rgba(7,24,39,.07)", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em" }}>
-                {user.role}
-              </span>
+            <div className="bo-userchip" title={user.fullName}>
+              <span className="bo-userchip-av">{initials}</span>
+              <span className="bo-role">{user.role}</span>
             </div>
           </div>
         </header>
 
-        {children}
+        <div className="bo-page">{children}</div>
       </main>
     </div>
   );
