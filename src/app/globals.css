@@ -4252,6 +4252,7 @@ body {
 .app-layout .side-nav a:hover { background: rgba(255,255,255,.06); color: #EAF2F8; }
 .app-layout .side-nav a.active {
   background: rgba(31,122,128,.22); color: #fff; border-color: rgba(58,160,166,.35);
+  box-shadow: inset 3px 0 0 var(--bo-teal); /* liseré actif teal (remplace l'or hérité) */
 }
 .app-layout .side-nav a.active svg { color: #4FC4CB; opacity: 1; }
 .app-layout .side-nav-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 6px; }
