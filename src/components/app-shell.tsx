@@ -201,7 +201,11 @@ export function AppShell({ role, user, children }: AppShellProps) {
   const isAdmin = role === "admin" || role === "courtier";
   const isLinkActive = (href: string) => pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
   const closeMenu = () => setMenuOpen(false);
-  const initials = user.fullName.split(" ").map((p) => p[0] ?? "").slice(0, 2).join("").toUpperCase();
+  const nameParts = user.fullName.trim().split(/\s+/).filter(Boolean);
+  const initials = nameParts.map((p) => p[0] ?? "").slice(0, 2).join("").toUpperCase() || "?";
+  const firstName = nameParts[0] ?? user.fullName;
+  const lastInitial = nameParts.length > 1 ? nameParts[nameParts.length - 1][0]?.toUpperCase() : "";
+  const shortName = lastInitial ? `${firstName} ${lastInitial}.` : firstName;
 
   return (
     <div className={`app-layout${menuOpen ? " bo-nav-open" : ""}`}>
@@ -328,7 +332,10 @@ export function AppShell({ role, user, children }: AppShellProps) {
             </button>
             <div className="bo-userchip" title={user.fullName}>
               <span className="bo-userchip-av">{initials}</span>
-              <span className="bo-role">{user.role}</span>
+              <span className="bo-userchip-id">
+                <span className="bo-userchip-name">{shortName}</span>
+                <span className="bo-role">{user.role}</span>
+              </span>
             </div>
           </div>
         </header>

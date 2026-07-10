@@ -1,16 +1,16 @@
 import Link from "next/link";
 import {
-  ArrowRight,
   BarChart3,
+  Bell,
   Bot,
   BriefcaseBusiness,
   CheckCircle2,
   ChevronRight,
   ClipboardList,
+  Clock,
   FileText,
   FolderOpen,
   Scale,
-  ShieldCheck,
   TrendingUp,
   UserPlus,
   Users,
@@ -20,6 +20,19 @@ import { AppShell } from "@/components/app-shell";
 import { requireRole } from "@/lib/auth";
 import { getAccessibleClients } from "@/lib/clients";
 import { getEmprunteurStats } from "@/lib/actions/emprunteur";
+
+function initialsOf(name: string) {
+  return (
+    name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((p) => p[0] ?? "")
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "?"
+  );
+}
 
 const adminModuleCards = [
   {
@@ -78,148 +91,154 @@ export default async function AdminDashboardPage() {
 
   return (
     <AppShell role={user.role === "courtier" ? "courtier" : "admin"} user={user}>
-      <section className="admin-home-hero">
+      {/* Vue de la journée */}
+      <div className="bo-daybar">
         <div>
-          <p className="eyebrow">Espace cabinet</p>
-          <h1>Piloter EJ Partners Assurances sans perdre le fil des dossiers.</h1>
+          <p className="bo-eyebrow">Votre journée</p>
+          <h2>Priorités du cabinet</h2>
           <p>
-            Une vue claire pour creer une fiche client, traiter les prospects emprunteur,
-            suivre les workflows et garder la conformite au centre du dossier.
+            {pendingBorrowerFiles} dossier{pendingBorrowerFiles > 1 ? "s" : ""} emprunteur à traiter
+            {" · "}
+            {emprunteurStats.cette_semaine} nouveau{emprunteurStats.cette_semaine > 1 ? "x" : ""} cette semaine
+            {" · "}
+            {activeClients} client{activeClients > 1 ? "s" : ""} au portefeuille
           </p>
-          <div className="admin-home-actions">
-            <Link href="/admin/clients/nouveau" className="primary-action">
-              <UserPlus size={17} aria-hidden /> Creer une fiche client
-            </Link>
-            <Link href="/admin/emprunteur" className="secondary-action">
-              <BriefcaseBusiness size={17} aria-hidden /> Traiter les dossiers emprunteur
-            </Link>
+        </div>
+        <div className="bo-daybar-actions">
+          <Link href="/admin/clients/nouveau" className="bo-btn bo-btn-primary">
+            <UserPlus size={16} aria-hidden /> Créer une fiche client
+          </Link>
+          <Link href="/admin/emprunteur" className="bo-btn bo-btn-onnavy">
+            <BriefcaseBusiness size={16} aria-hidden /> Traiter les dossiers
+          </Link>
+        </div>
+      </div>
+
+      {/* KPI actionnables */}
+      <div className="bo-kpirow" aria-label="Indicateurs cabinet">
+        <Link href="/admin/clients" className="bo-kpi">
+          <div className="bo-kpi-top"><span className="bo-kpi-lab">Portefeuille clients</span><span className="bo-kpi-ic"><Users size={16} aria-hidden /></span></div>
+          <div className="bo-kpi-val bo-num">{activeClients}</div>
+          <span className="bo-kpi-sub">fiches accessibles</span>
+        </Link>
+        <Link href="/admin/emprunteur" className="bo-kpi">
+          <div className="bo-kpi-top"><span className="bo-kpi-lab">Dossiers emprunteur</span><span className="bo-kpi-ic"><ClipboardList size={16} aria-hidden /></span></div>
+          <div className="bo-kpi-val bo-num">{emprunteurStats.total}</div>
+          <span className="bo-kpi-sub">reçus au total</span>
+        </Link>
+        <Link href="/admin/emprunteur" className="bo-kpi">
+          <div className="bo-kpi-top"><span className="bo-kpi-lab">Convertis CRM</span><span className="bo-kpi-ic"><CheckCircle2 size={16} aria-hidden /></span></div>
+          <div className="bo-kpi-val bo-num">{emprunteurStats.convertis}</div>
+          <span className="bo-kpi-sub">fiches rattachées</span>
+        </Link>
+        <Link href="/admin/emprunteur" className="bo-kpi">
+          <div className="bo-kpi-top"><span className="bo-kpi-lab">Nouveaux cette semaine</span><span className="bo-kpi-ic gold"><TrendingUp size={16} aria-hidden /></span></div>
+          <div className="bo-kpi-val bo-num">{emprunteurStats.cette_semaine}</div>
+          <span className="bo-kpi-delta"><TrendingUp size={13} aria-hidden /> flux entrant</span>
+        </Link>
+      </div>
+
+      {/* À traiter + à venir */}
+      <div className="bo-grid2">
+        <div className="bo-stack">
+          <div className="bo-card">
+            <div className="bo-card-h">
+              <h2>À traiter en priorité</h2>
+              <Link href="/admin/emprunteur" className="bo-seemore">Ouvrir la file <ChevronRight size={14} aria-hidden /></Link>
+            </div>
+            <div className="bo-urgent">
+              <div className="bo-urgent-badge"><BriefcaseBusiness size={22} aria-hidden /></div>
+              <div className="bo-txt">
+                <span className="n bo-num">{pendingBorrowerFiles}</span>
+                <span className="t">dossier{pendingBorrowerFiles > 1 ? "s" : ""} emprunteur à convertir ou relancer</span>
+              </div>
+              <Link href="/admin/emprunteur" className="bo-btn bo-btn-primary">Ouvrir <ChevronRight size={15} aria-hidden /></Link>
+            </div>
+          </div>
+
+          {clients.length > 0 && (
+            <div className="bo-card">
+              <div className="bo-card-h">
+                <h2>Derniers clients</h2>
+                <Link href="/admin/clients" className="bo-seemore">Voir tous <ChevronRight size={14} aria-hidden /></Link>
+              </div>
+              <div className="bo-list">
+                {clients.slice(0, 5).map((client) => (
+                  <Link key={client.id} href={`/admin/clients/${client.id}`}>
+                    <span className="bo-avatar">{initialsOf(client.full_name ?? "?")}</span>
+                    <span className="bo-txt">
+                      <span className="nm">{client.full_name}</span>
+                      <span className="sub">{client.email || "Email non renseigné"}</span>
+                    </span>
+                    <ChevronRight className="chev" size={16} aria-hidden />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="bo-stack">
+          <div className="bo-card">
+            <div className="bo-card-h"><h3>À venir sur votre tableau de bord</h3></div>
+            <div className="bo-card-b">
+              <div className="bo-soon">
+                <span className="bo-soon-ic"><Clock size={17} aria-hidden /></span>
+                <span className="bo-txt"><span className="nm">Tâches & relances</span><span className="sub">agenda et relances clients</span></span>
+                <span className="tag">À connecter</span>
+              </div>
+              <div className="bo-soon">
+                <span className="bo-soon-ic"><FolderOpen size={17} aria-hidden /></span>
+                <span className="bo-txt"><span className="nm">Projets à traiter</span><span className="sub">pipeline des projets clients</span></span>
+                <span className="tag">À connecter</span>
+              </div>
+              <div className="bo-soon">
+                <span className="bo-soon-ic"><FileText size={17} aria-hidden /></span>
+                <span className="bo-txt"><span className="nm">Contrats à échéance</span><span className="sub">renouvellements et échéances</span></span>
+                <span className="tag">À connecter</span>
+              </div>
+              <div className="bo-soon">
+                <span className="bo-soon-ic"><Bell size={17} aria-hidden /></span>
+                <span className="bo-txt"><span className="nm">Notifications importantes</span><span className="sub">alertes conformité et signatures</span></span>
+                <span className="tag">À connecter</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bo-card">
+            <div className="bo-card-h"><h3>Actions rapides</h3></div>
+            <div className="bo-card-b">
+              <div className="bo-quick">
+                <Link href="/admin/clients/nouveau"><UserPlus size={17} aria-hidden /> Nouvelle fiche client <ChevronRight className="chev" size={15} aria-hidden /></Link>
+                <Link href="/admin/family-protection-os/recueil"><FileText size={17} aria-hidden /> Recueil des besoins <ChevronRight className="chev" size={15} aria-hidden /></Link>
+                <Link href="/admin/conformite/lcb-ft"><Scale size={17} aria-hidden /> Contrôle LCB-FT <ChevronRight className="chev" size={15} aria-hidden /></Link>
+                <Link href="/admin/vente/ged"><FolderOpen size={17} aria-hidden /> Centre documentaire <ChevronRight className="chev" size={15} aria-hidden /></Link>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="admin-home-focus-card">
-          <div className="admin-home-focus-top">
-            <ShieldCheck size={20} aria-hidden />
-            <span>Priorite cabinet</span>
-          </div>
-          <strong>{pendingBorrowerFiles}</strong>
-          <p>dossier{pendingBorrowerFiles > 1 ? "s" : ""} emprunteur a convertir ou suivre</p>
-          <Link href="/admin/emprunteur">
-            Ouvrir la file <ArrowRight size={14} aria-hidden />
-          </Link>
+      {/* Modules cabinet */}
+      <div className="bo-sec">
+        <div className="bo-sec-h">
+          <div><p className="bo-eyebrow">Modules cabinet</p><h2>Votre espace de travail</h2></div>
         </div>
-      </section>
-
-      <section className="admin-home-kpis" aria-label="Indicateurs cabinet">
-        <article>
-          <Users size={18} aria-hidden />
-          <span>Clients accessibles</span>
-          <strong>{activeClients}</strong>
-          <small>fiches en portefeuille</small>
-        </article>
-        <article>
-          <ClipboardList size={18} aria-hidden />
-          <span>Emprunteur</span>
-          <strong>{emprunteurStats.total}</strong>
-          <small>dossiers recus</small>
-        </article>
-        <article>
-          <CheckCircle2 size={18} aria-hidden />
-          <span>Convertis CRM</span>
-          <strong>{emprunteurStats.convertis}</strong>
-          <small>fiches rattachees</small>
-        </article>
-        <article>
-          <TrendingUp size={18} aria-hidden />
-          <span>Cette semaine</span>
-          <strong>{emprunteurStats.cette_semaine}</strong>
-          <small>nouveaux dossiers</small>
-        </article>
-      </section>
-
-      <section className="admin-home-section" aria-label="Actions rapides">
-        <div className="admin-home-section-header">
-          <div>
-            <p className="eyebrow">Actions rapides</p>
-            <h2>Ce que vous faites le plus souvent</h2>
-          </div>
-        </div>
-        <div className="admin-quick-grid">
-          <Link href="/admin/clients/nouveau">
-            <UserPlus size={18} aria-hidden />
-            <span>Nouvelle fiche client</span>
-            <ChevronRight size={15} aria-hidden />
-          </Link>
-          <Link href="/admin/family-protection-os/recueil">
-            <FileText size={18} aria-hidden />
-            <span>Recueil des besoins</span>
-            <ChevronRight size={15} aria-hidden />
-          </Link>
-          <Link href="/admin/conformite/lcb-ft">
-            <Scale size={18} aria-hidden />
-            <span>Controle LCB-FT</span>
-            <ChevronRight size={15} aria-hidden />
-          </Link>
-          <Link href="/admin/vente/ged">
-            <FolderOpen size={18} aria-hidden />
-            <span>Centre documentaire</span>
-            <ChevronRight size={15} aria-hidden />
-          </Link>
-        </div>
-      </section>
-
-      <section className="admin-home-section" aria-label="Modules cabinet">
-        <div className="admin-home-section-header">
-          <div>
-            <p className="eyebrow">Modules cabinet</p>
-            <h2>Votre espace de travail</h2>
-          </div>
-        </div>
-
-        <div className="admin-home-modules-grid">
+        <div className="bo-modgrid">
           {adminModuleCards.map((card) => {
             const Icon = card.icon;
             return (
-              <Link key={card.href} href={card.href} className="admin-home-module-card">
-                <div className="admin-home-module-icon">
-                  <Icon size={19} aria-hidden />
-                </div>
-                <span>{card.stat}</span>
+              <Link key={card.href} href={card.href} className="bo-modcard">
+                <span className="bo-modcard-ic"><Icon size={19} aria-hidden /></span>
+                <p className="bo-eyebrow">{card.stat}</p>
                 <h3>{card.title}</h3>
                 <p>{card.description}</p>
-                <div>
-                  Acceder <ChevronRight size={15} aria-hidden />
-                </div>
+                <span className="go">Accéder <ChevronRight size={14} aria-hidden /></span>
               </Link>
             );
           })}
         </div>
-      </section>
-
-      {clients.length > 0 && (
-        <section className="admin-home-section" aria-label="Derniers clients">
-          <div className="admin-home-section-header">
-            <div>
-              <p className="eyebrow">Acces rapide</p>
-              <h2>Derniers clients</h2>
-            </div>
-            <Link href="/admin/clients">
-              Voir tous <ChevronRight size={14} aria-hidden />
-            </Link>
-          </div>
-
-          <div className="admin-home-client-list">
-            {clients.slice(0, 5).map((client) => (
-              <Link key={client.id} href={`/admin/clients/${client.id}`}>
-                <div>
-                  <strong>{client.full_name}</strong>
-                  <p>{client.email || "Email non renseigne"}</p>
-                </div>
-                <ChevronRight size={15} aria-hidden />
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      </div>
     </AppShell>
   );
 }
