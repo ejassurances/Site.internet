@@ -4130,3 +4130,78 @@ body {
   font-weight: 700;
   letter-spacing: .01em;
 }
+
+/* ==========================================================================
+   DES-001 · FONDATIONS DU DESIGN SYSTEM BACK-OFFICE (Phase 1)
+   --------------------------------------------------------------------------
+   Direction validée : bleu marine = identité · teal = action/interaction ·
+   or = premium (parcimonie). Réf. maquette DES-001 + doc 310.
+
+   PORTÉE : ces tokens sont définis UNIQUEMENT sous `.app-layout` (espace
+   cabinet + espace client connecté). Le site public n'utilise pas
+   `.app-layout` → impact nul sur la vitrine.
+
+   ADDITIF : cette phase n'applique les tokens à aucun écran. Ils sont le
+   substrat consommé à partir de la Phase 2 (préfixe `--bo-` / classes `bo-`),
+   sans collision avec l'existant. Aucune règle existante n'est modifiée.
+   ========================================================================== */
+.app-layout {
+  /* — Marque : bleu marine (identité) — */
+  --bo-navy-900:#0A1B2E;
+  --bo-navy-850:#0E2439;
+  --bo-navy-800:#132E47;
+  --bo-navy-700:#1D3E5C;
+
+  /* — Action / interaction : teal — */
+  --bo-teal:#1F7A80;
+  --bo-teal-600:#186468;
+  --bo-teal-050:#E4F1F1;
+
+  /* — Premium : or (usage parcimonieux : badges, certifications, mises en valeur) — */
+  --bo-gold:#BE9E56;
+  --bo-gold-050:#F5EEDC;
+  --bo-gold-ink:#785A1C;
+
+  /* — Neutres à léger biais marine (froids, choisis) — */
+  --bo-bg:#F1F5F9;
+  --bo-surface:#FFFFFF;
+  --bo-surface-2:#F6F9FC;
+  --bo-surface-3:#EEF3F8;
+  --bo-border:#DEE6EF;
+  --bo-border-strong:#CBD6E2;
+  --bo-ink:#12242F;
+  --bo-text:#243746;
+  --bo-muted:#5D6E7E;
+  --bo-faint:#8496A5;
+
+  /* — Sémantique (distincte de l'accent) : fond / bordure / texte — */
+  --bo-success:#0F7B5A; --bo-success-bg:#E3F2EA; --bo-success-bd:#BCE0CD;
+  --bo-warning:#A9721B; --bo-warning-bg:#FBF0D8; --bo-warning-bd:#EDD6A6;
+  --bo-danger:#BE3A2B;  --bo-danger-bg:#FBE7E4;  --bo-danger-bd:#F0C6BF;
+  --bo-info:#1F7A80;    --bo-info-bg:#E4F1F1;     --bo-info-bd:#BFDDDE;
+
+  /* — Rayons — */
+  --bo-r-sm:7px; --bo-r:10px; --bo-r-lg:14px; --bo-r-xl:20px;
+
+  /* — Ombres (élévation douce) — */
+  --bo-shadow-sm:0 1px 2px rgba(12,32,52,.06), 0 1px 3px rgba(12,32,52,.05);
+  --bo-shadow-md:0 6px 18px rgba(12,32,52,.09);
+  --bo-shadow-lg:0 18px 48px rgba(10,27,46,.16);
+
+  /* — Anneau de focus (accessibilité, dérivé du teal) — */
+  --bo-ring:0 0 0 3px rgba(31,122,128,.28);
+
+  /* — Échelle d'espacement systématique — */
+  --bo-sp1:4px; --bo-sp2:8px; --bo-sp3:12px; --bo-sp4:16px;
+  --bo-sp5:24px; --bo-sp6:32px; --bo-sp7:48px;
+
+  /* — Typographie utilitaire (données chiffrées) — */
+  --bo-font-mono:ui-monospace,"SFMono-Regular","Menlo","Consolas",monospace;
+}
+
+/* Utilitaire additif : chiffres tabulaires alignés (KPI, tableaux, montants). */
+.app-layout .bo-num {
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"tnum" 1;
+}
+/* Fin DES-001 — Phase 1 (fondations tokens) */
