@@ -42,26 +42,26 @@ export default async function AdminClientPage({
 
   return (
     <AppShell role={user.role === "courtier" ? "courtier" : "admin"} user={user}>
-      <div className="admin-page-header">
-        <div className="admin-page-header-left">
-          <Link href="/admin/clients" className="back-link">
-            <ArrowLeft size={16} aria-hidden /> Retour à la liste
+      <div className="bo-fichehead">
+        <div>
+          <Link href="/admin/clients" className="bo-back">
+            <ArrowLeft size={15} aria-hidden /> Retour à la liste
           </Link>
           <h1>{data.client.full_name ?? "Client sans nom"}</h1>
-          <p className="admin-page-subtitle">
+          <p className="sub">
             Fiche 360° — {data.contracts.length} contrat{data.contracts.length !== 1 ? "s" : ""},{" "}
             {data.interactions.length} interaction{data.interactions.length !== 1 ? "s" : ""},{" "}
             {data.related_persons.length} personne{data.related_persons.length !== 1 ? "s" : ""} liée{data.related_persons.length !== 1 ? "s" : ""}
           </p>
         </div>
-        <div className="admin-page-header-actions">
-          <Link href={`/admin/clients/${clientId}/modifier`} className="secondary-action">
+        <div className="bo-fichehead-actions">
+          <Link href={`/admin/clients/${clientId}/modifier`} className="bo-btn bo-btn-secondary">
             Modifier la fiche
           </Link>
           <form action={archiveClientAction}>
             <input type="hidden" name="clientId" value={clientId} />
             <input type="hidden" name="archiveReason" value="Archivage depuis la fiche client admin." />
-            <button className="archive-action" type="submit">
+            <button className="bo-btn bo-btn-danger-soft" type="submit">
               Archiver
             </button>
           </form>
@@ -69,10 +69,10 @@ export default async function AdminClientPage({
       </div>
 
       {emprunteurDossierId && (
-        <Link href="/admin/emprunteur" className="emprunteur-source-banner">
+        <Link href="/admin/emprunteur" className="bo-source-banner">
           <FileText size={15} aria-hidden />
           <span>Ce client provient du tunnel Assurance Emprunteur</span>
-          <span className="emprunteur-source-link">Voir le dossier →</span>
+          <span className="lnk">Voir le dossier →</span>
         </Link>
       )}
 

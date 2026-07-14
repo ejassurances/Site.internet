@@ -4466,3 +4466,95 @@ body {
   .app-layout .bo-modgrid { grid-template-columns: 1fr; }
 }
 /* Fin DES-001 — Phase 3 (Dashboard) */
+
+/* ==========================================================================
+   DES-001 · COMPOSANTS CLIENTS (Phase 4) — liste + chrome de la fiche
+   Classes `bo-*` additives scopées .app-layout. N'altèrent ni `crm-*`
+   (pages Finance) ni `cf360-*` (partagé avec le workflow Projet).
+   ========================================================================== */
+
+/* En-tête de page */
+.app-layout .bo-pagehead { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.app-layout .bo-pagehead h1 { font-size: 24px; font-weight: 750; color: var(--bo-ink); }
+.app-layout .bo-pagehead p { margin: 4px 0 0; color: var(--bo-muted); font-size: 14px; }
+
+/* Badges de statut sémantiques */
+.app-layout .bo-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 20px; border: 1px solid transparent; line-height: 1.4; white-space: nowrap; }
+.app-layout .bo-badge .d { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.app-layout .bo-badge-success { color: var(--bo-success); background: var(--bo-success-bg); border-color: var(--bo-success-bd); }
+.app-layout .bo-badge-warning { color: var(--bo-warning); background: var(--bo-warning-bg); border-color: var(--bo-warning-bd); }
+.app-layout .bo-badge-info { color: var(--bo-info); background: var(--bo-info-bg); border-color: var(--bo-info-bd); }
+.app-layout .bo-badge-neutral { color: var(--bo-muted); background: var(--bo-surface-3); border-color: var(--bo-border); }
+.app-layout .bo-badge-gold { color: var(--bo-gold-ink); background: var(--bo-gold-050); border-color: var(--bo-gold); }
+
+/* Onglets (segmented links) */
+.app-layout .bo-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 18px; }
+.app-layout .bo-tab { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 9px; border: 1px solid var(--bo-border); background: var(--bo-surface); color: var(--bo-muted); font-size: 13px; font-weight: 600; transition: .14s; }
+.app-layout .bo-tab:hover { border-color: var(--bo-border-strong); color: var(--bo-ink); }
+.app-layout .bo-tab.on { background: var(--bo-teal-050); border-color: var(--bo-teal); color: var(--bo-teal); }
+
+/* Barre de recherche + filtres */
+.app-layout .bo-searchbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.app-layout .bo-searchfield { display: flex; align-items: center; gap: 9px; flex: 1; min-width: 240px; background: var(--bo-surface); border: 1px solid var(--bo-border-strong); border-radius: 9px; padding: 9px 12px; color: var(--bo-muted); }
+.app-layout .bo-searchfield:focus-within { border-color: var(--bo-teal); box-shadow: var(--bo-ring); }
+.app-layout .bo-searchfield input { border: 0; background: none; outline: none; flex: 1; min-width: 0; font-size: 13.5px; color: var(--bo-ink); font-family: inherit; }
+.app-layout .bo-searchfield input::placeholder { color: var(--bo-faint); }
+.app-layout .bo-selectwrap { display: flex; align-items: center; gap: 7px; background: var(--bo-surface); border: 1px solid var(--bo-border-strong); border-radius: 9px; padding: 0 12px; color: var(--bo-muted); }
+.app-layout .bo-selectwrap select { border: 0; background: none; outline: none; padding: 9px 4px; font-size: 13.5px; color: var(--bo-ink); font-family: inherit; cursor: pointer; }
+.app-layout .bo-reset { display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; color: var(--bo-muted); padding: 9px 10px; }
+.app-layout .bo-reset:hover { color: var(--bo-danger); }
+
+/* Grille de fiches client */
+.app-layout .bo-tilegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.app-layout .bo-tile { display: flex; flex-direction: column; gap: 12px; padding: 18px; border: 1px solid var(--bo-border); border-radius: 14px; background: var(--bo-surface); box-shadow: var(--bo-shadow-sm); color: inherit; transition: .14s; }
+.app-layout .bo-tile:hover { border-color: var(--bo-border-strong); box-shadow: var(--bo-shadow-md); transform: translateY(-1px); }
+.app-layout .bo-tile-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.app-layout .bo-tile-av { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; color: #fff; font-weight: 750; font-size: 17px; flex: none; }
+.app-layout .bo-tile-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.app-layout .bo-tile-type { font-size: 11px; font-weight: 700; color: var(--bo-muted); }
+.app-layout .bo-tile-name { font-size: 16px; font-weight: 700; color: var(--bo-ink); }
+.app-layout .bo-tile-context { font-size: 12.5px; color: var(--bo-muted); margin: 3px 0 0; display: flex; align-items: center; gap: 6px; }
+.app-layout .bo-tile-contact { display: flex; flex-direction: column; gap: 5px; }
+.app-layout .bo-tile-contact span { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--bo-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-layout .bo-tile-contact svg { color: var(--bo-faint); flex: none; }
+.app-layout .bo-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.app-layout .bo-tag { font-size: 11px; font-weight: 600; color: var(--bo-teal); background: var(--bo-teal-050); border: 1px solid var(--bo-info-bd); padding: 2px 8px; border-radius: 6px; }
+.app-layout .bo-tag-more { color: var(--bo-muted); background: var(--bo-surface-3); border-color: var(--bo-border); }
+.app-layout .bo-tile-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 12px; border-top: 1px solid var(--bo-border); margin-top: auto; }
+.app-layout .bo-tile-contracts { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--bo-muted); }
+.app-layout .bo-tile-go { display: inline-flex; align-items: center; gap: 3px; font-size: 12.5px; font-weight: 650; color: var(--bo-teal); }
+
+/* État vide */
+.app-layout .bo-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; padding: 56px 24px; background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: 14px; }
+.app-layout .bo-empty-ic { width: 64px; height: 64px; border-radius: 17px; background: var(--bo-surface-3); border: 1px solid var(--bo-border); display: grid; place-items: center; color: var(--bo-faint); }
+.app-layout .bo-empty h3 { font-size: 17px; color: var(--bo-ink); }
+.app-layout .bo-empty p { color: var(--bo-muted); max-width: 380px; margin: 0; font-size: 13.5px; }
+
+/* — Fiche client : chrome (header page + hero + onglets) — */
+.app-layout .bo-fichehead { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.app-layout .bo-back { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--bo-muted); margin-bottom: 8px; }
+.app-layout .bo-back:hover { color: var(--bo-teal); }
+.app-layout .bo-fichehead h1 { font-size: 22px; font-weight: 750; color: var(--bo-ink); }
+.app-layout .bo-fichehead .sub { margin: 4px 0 0; color: var(--bo-muted); font-size: 13.5px; }
+.app-layout .bo-fichehead-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.app-layout .bo-btn-secondary { background: var(--bo-surface); color: var(--bo-text); border-color: var(--bo-border-strong); }
+.app-layout .bo-btn-secondary:hover { background: var(--bo-surface-2); border-color: var(--bo-muted); }
+.app-layout .bo-btn-danger-soft { background: var(--bo-surface); color: var(--bo-danger); border-color: var(--bo-danger-bd); }
+.app-layout .bo-btn-danger-soft:hover { background: var(--bo-danger-bg); }
+.app-layout .bo-source-banner { display: flex; align-items: center; gap: 10px; padding: 11px 15px; border-radius: 11px; border: 1px solid var(--bo-info-bd); background: var(--bo-info-bg); color: var(--bo-info); font-size: 13px; font-weight: 600; margin-bottom: 18px; }
+.app-layout .bo-source-banner .lnk { margin-left: auto; }
+
+/* Hero de la fiche (identité client) */
+.app-layout .bo-fiche-hero { display: flex; align-items: center; gap: 18px; padding: 20px; background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: 16px; box-shadow: var(--bo-shadow-sm); margin-bottom: 16px; }
+.app-layout .bo-fiche-hero-av { width: 62px; height: 62px; border-radius: 16px; display: grid; place-items: center; font-size: 22px; font-weight: 750; color: #fff; background: linear-gradient(140deg, var(--bo-navy-800), var(--bo-teal)); flex: none; }
+.app-layout .bo-fiche-hero-info { flex: 1; min-width: 0; }
+.app-layout .bo-fiche-hero-name { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.app-layout .bo-fiche-hero-name h2 { font-size: 20px; font-weight: 750; color: var(--bo-ink); }
+.app-layout .bo-fiche-hero-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+.app-layout .bo-fiche-hero-meta a { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--bo-muted); }
+.app-layout .bo-fiche-hero-meta a:hover { color: var(--bo-teal); }
+
+@media (max-width: 620px) {
+  .app-layout .bo-tilegrid { grid-template-columns: 1fr; }
+}
+/* Fin DES-001 — Phase 4 (Clients) */
