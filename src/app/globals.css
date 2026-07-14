@@ -4659,3 +4659,88 @@ body {
   border: 1px solid var(--bo-border-strong); background: var(--bo-surface-2); color: var(--bo-text);
 }
 /* Fin DES-001 — Phase 5 (Projet) */
+
+/* Correctif statuts (décision Phase 6) : le teal n'est jamais un statut par défaut.
+   Les pastilles génériques du Projet passent en neutre (teal réservé actions/progression). */
+.app-layout .project-step-lists b,
+.app-layout .project-document-list span { background: var(--bo-surface-3); color: var(--bo-muted); }
+
+/* ==========================================================================
+   DES-001 · FICHE CONTRAT & CORPS FICHE 360 (Phase 6) — re-skin `cf360-*`
+   --------------------------------------------------------------------------
+   `cf360-*` = corps de la fiche Client 360 (hero, KPI, onglets, contrats,
+   interactions, documents, famille, notes). Overrides scopés `.app-layout`
+   en fin de fichier (priment par cascade). Aucune modification de logique.
+   Statuts (contrat / client / document) : sémantique via configs TSX.
+   ========================================================================== */
+
+/* Hero (identité) — bleu marine */
+.app-layout .cf360-hero { background: linear-gradient(135deg, var(--bo-navy-900), var(--bo-navy-700)); border-radius: var(--bo-r-lg) var(--bo-r-lg) 0 0; }
+.app-layout .cf360-hero-avatar { border-radius: 16px; background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.24); }
+
+/* KPI de la fiche */
+.app-layout .cf360-kpis { border-color: var(--bo-border); background: var(--bo-surface); }
+.app-layout .cf360-kpi { border-right-color: var(--bo-border); }
+.app-layout .cf360-kpi:hover { background: var(--bo-surface-2); }
+.app-layout .cf360-kpi-icon { border-radius: 10px; }
+.app-layout .cf360-kpi-val { color: var(--bo-ink); font-variant-numeric: tabular-nums; }
+.app-layout .cf360-kpi-val small,
+.app-layout .cf360-kpi-lbl { color: var(--bo-muted); }
+
+/* Onglets — actif teal (lien/onglet actif = action) */
+.app-layout .cf360-tabs-wrap { border-color: var(--bo-border); background: var(--bo-surface); }
+.app-layout .cf360-tab { color: var(--bo-muted); }
+.app-layout .cf360-tab:hover { color: var(--bo-ink); }
+.app-layout .cf360-tab--active { color: var(--bo-teal); border-bottom-color: var(--bo-teal); }
+.app-layout .cf360-tab-badge { background: var(--bo-navy-700); }
+.app-layout .cf360-tab--active .cf360-tab-badge { background: var(--bo-teal); }
+
+/* Panneau + boutons d'action */
+.app-layout .cf360-panel { border-color: var(--bo-border); border-radius: 0 0 var(--bo-r-lg) var(--bo-r-lg); background: var(--bo-bg); }
+.app-layout .cf360-tab-count { color: var(--bo-muted); }
+.app-layout .cf360-add-btn { background: var(--bo-teal); }
+.app-layout .cf360-add-btn:hover { background: var(--bo-teal-600); }
+
+/* Cartes d'information / synthèse */
+.app-layout .cf360-info-card,
+.app-layout .cf360-contract-card,
+.app-layout .cf360-person-card { background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: var(--bo-r-lg); }
+.app-layout .cf360-info-card-header,
+.app-layout .cf360-section-header,
+.app-layout .cf360-contract-card-top { color: var(--bo-ink); }
+.app-layout .cf360-detail-label,
+.app-layout .cf360-contract-summary-item,
+.app-layout .cf360-contract-detail-item,
+.app-layout .cf360-person-relation,
+.app-layout .cf360-person-details { color: var(--bo-muted); }
+.app-layout .cf360-detail-val,
+.app-layout .cf360-person-name,
+.app-layout .cf360-contract-insurer { color: var(--bo-ink); }
+.app-layout .cf360-detail-prime,
+.app-layout .cf360-contract-summary-prime { color: var(--bo-teal); }
+
+/* Contrats — icône + entête (marine), statut via config sémantique TSX */
+.app-layout .cf360-contract-icon { background: var(--bo-teal-050); color: var(--bo-teal); border-radius: 10px; }
+.app-layout .cf360-contract-type,
+.app-layout .cf360-contract-summary-type { color: var(--bo-muted); }
+
+/* Timeline interactions */
+.app-layout .cf360-timeline-title { color: var(--bo-ink); }
+.app-layout .cf360-timeline-body { color: var(--bo-muted); }
+.app-layout .cf360-last-interaction { background: var(--bo-surface-2); border: 1px solid var(--bo-border); border-radius: var(--bo-r); }
+.app-layout .cf360-last-interaction-title { color: var(--bo-ink); }
+.app-layout .cf360-last-interaction-date { color: var(--bo-faint); }
+
+/* Tags & pastilles (neutres — teal réservé aux actions) */
+.app-layout .cf360-tag { background: var(--bo-surface-3); color: var(--bo-muted); border: 1px solid var(--bo-border); }
+
+/* Boutons secondaires (edit/delete/invite) sur fond clair */
+.app-layout .cf360-delete-btn { color: var(--bo-danger); }
+.app-layout .cf360-inline-form { background: var(--bo-surface-2); border: 1px solid var(--bo-border); border-radius: var(--bo-r); }
+.app-layout .cf360-inline-form input,
+.app-layout .cf360-inline-form select,
+.app-layout .cf360-inline-form textarea { border: 1px solid var(--bo-border-strong); border-radius: 9px; background: var(--bo-surface); color: var(--bo-ink); }
+.app-layout .cf360-inline-form input:focus,
+.app-layout .cf360-inline-form select:focus,
+.app-layout .cf360-inline-form textarea:focus { border-color: var(--bo-teal); box-shadow: var(--bo-ring); outline: none; }
+/* Fin DES-001 — Phase 6 (Contrat & fiche 360) */
