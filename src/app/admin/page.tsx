@@ -21,6 +21,11 @@ import { requireRole } from "@/lib/auth";
 import { getAccessibleClients } from "@/lib/clients";
 import { getEmprunteurStats } from "@/lib/actions/emprunteur";
 
+// Flag de réactivation — panneaux « À connecter » du Dashboard.
+// La structure est conservée ci-dessous mais masquée tant que le lot fonctionnel
+// « Données Dashboard » (backlog) n'est pas livré. Repasser à `true` pour réafficher.
+const SHOW_DASHBOARD_PLACEHOLDERS = false;
+
 function initialsOf(name: string) {
   return (
     name
@@ -179,31 +184,34 @@ export default async function AdminDashboardPage() {
         </div>
 
         <div className="bo-stack">
-          <div className="bo-card">
-            <div className="bo-card-h"><h3>À venir sur votre tableau de bord</h3></div>
-            <div className="bo-card-b">
-              <div className="bo-soon">
-                <span className="bo-soon-ic"><Clock size={17} aria-hidden /></span>
-                <span className="bo-txt"><span className="nm">Tâches & relances</span><span className="sub">agenda et relances clients</span></span>
-                <span className="tag">À connecter</span>
-              </div>
-              <div className="bo-soon">
-                <span className="bo-soon-ic"><FolderOpen size={17} aria-hidden /></span>
-                <span className="bo-txt"><span className="nm">Projets à traiter</span><span className="sub">pipeline des projets clients</span></span>
-                <span className="tag">À connecter</span>
-              </div>
-              <div className="bo-soon">
-                <span className="bo-soon-ic"><FileText size={17} aria-hidden /></span>
-                <span className="bo-txt"><span className="nm">Contrats à échéance</span><span className="sub">renouvellements et échéances</span></span>
-                <span className="tag">À connecter</span>
-              </div>
-              <div className="bo-soon">
-                <span className="bo-soon-ic"><Bell size={17} aria-hidden /></span>
-                <span className="bo-txt"><span className="nm">Notifications importantes</span><span className="sub">alertes conformité et signatures</span></span>
-                <span className="tag">À connecter</span>
+          {/* Structure conservée, masquée derrière un flag jusqu'au lot « Données Dashboard ». */}
+          {SHOW_DASHBOARD_PLACEHOLDERS && (
+            <div className="bo-card">
+              <div className="bo-card-h"><h3>À venir sur votre tableau de bord</h3></div>
+              <div className="bo-card-b">
+                <div className="bo-soon">
+                  <span className="bo-soon-ic"><Clock size={17} aria-hidden /></span>
+                  <span className="bo-txt"><span className="nm">Tâches & relances</span><span className="sub">agenda et relances clients</span></span>
+                  <span className="tag">À connecter</span>
+                </div>
+                <div className="bo-soon">
+                  <span className="bo-soon-ic"><FolderOpen size={17} aria-hidden /></span>
+                  <span className="bo-txt"><span className="nm">Projets à traiter</span><span className="sub">pipeline des projets clients</span></span>
+                  <span className="tag">À connecter</span>
+                </div>
+                <div className="bo-soon">
+                  <span className="bo-soon-ic"><FileText size={17} aria-hidden /></span>
+                  <span className="bo-txt"><span className="nm">Contrats à échéance</span><span className="sub">renouvellements et échéances</span></span>
+                  <span className="tag">À connecter</span>
+                </div>
+                <div className="bo-soon">
+                  <span className="bo-soon-ic"><Bell size={17} aria-hidden /></span>
+                  <span className="bo-txt"><span className="nm">Notifications importantes</span><span className="sub">alertes conformité et signatures</span></span>
+                  <span className="tag">À connecter</span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className="bo-card">
             <div className="bo-card-h"><h3>Actions rapides</h3></div>

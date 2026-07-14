@@ -379,6 +379,33 @@ Intégrer la signature électronique.
 
 ---
 
+# LOT P2-07 — Données Dashboard
+
+## Objectif
+
+Câbler les données réelles des panneaux du tableau de bord, aujourd'hui présents en
+placeholders « À connecter » (structure livrée en DES-001 Phase 3, masquée par flag).
+
+## Périmètre
+
+- Tâches et relances
+- Projets à traiter
+- Contrats à échéance
+- Notifications importantes
+
+## Nature
+
+Lot **fonctionnel** (touche la logique / la base de données / les requêtes), distinct de la
+refonte visuelle DES-001. Réactive les panneaux via le flag `SHOW_DASHBOARD_PLACEHOLDERS`
+une fois les sources de données disponibles.
+
+## Dépendances
+
+- Composants transverses (Notifications, Activités) — P0-02
+- Modèle Projet / Contrat — P1-02 / P1-03
+
+---
+
 # LOT P3-01 — IA documentaire
 
 ## Objectif
