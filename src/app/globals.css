@@ -4558,3 +4558,104 @@ body {
   .app-layout .bo-tilegrid { grid-template-columns: 1fr; }
 }
 /* Fin DES-001 — Phase 4 (Clients) */
+
+/* ==========================================================================
+   DES-001 · FICHE PROJET (Phase 5) — re-skin des classes `project-*`
+   --------------------------------------------------------------------------
+   `project-*` est exclusif au composant Projet (client-project-workflow),
+   rendu dans l'onglet Projets de la fiche 360. Overrides scopés `.app-layout`,
+   placés en fin de fichier : ils priment par cascade, sans toucher la logique
+   (612 lignes TSX inchangées) ni le Contrat. Layouts préservés, seuls les
+   surfaces / couleurs / statuts / typographie passent aux tokens DES-001.
+   ========================================================================== */
+
+/* Cartes & titres */
+.app-layout .project-workflow-hero,
+.app-layout .project-current-card,
+.app-layout .project-empty-notice,
+.app-layout .project-documents-gate,
+.app-layout .project-needs-card {
+  background: var(--bo-surface); border: 1px solid var(--bo-border);
+  border-radius: var(--bo-r-lg); box-shadow: var(--bo-shadow-sm);
+}
+.app-layout .project-workflow-hero h3,
+.app-layout .project-documents-header h3,
+.app-layout .project-empty-notice strong,
+.app-layout .project-current-card strong,
+.app-layout .project-step-title h4,
+.app-layout .project-traceability-grid h4,
+.app-layout .project-automation-grid h4 { color: var(--bo-ink); }
+.app-layout .project-workflow-hero p,
+.app-layout .project-documents-header p,
+.app-layout .project-empty-notice p,
+.app-layout .project-automation-grid p,
+.app-layout .project-step p,
+.app-layout .project-current-card span,
+.app-layout .project-current-card small,
+.app-layout .project-traceability-grid p,
+.app-layout .project-document-list small { color: var(--bo-muted); }
+.app-layout .project-empty-notice svg,
+.app-layout .project-documents-header svg,
+.app-layout .project-automation-grid svg { color: var(--bo-teal); }
+
+/* Progression → teal */
+.app-layout .project-progress-meter { background: var(--bo-surface-3); }
+.app-layout .project-progress-meter span { background: linear-gradient(90deg, var(--bo-teal), #2AA0A6); }
+
+/* Étapes du pipeline */
+.app-layout .project-step { background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: var(--bo-r-lg); }
+.app-layout .project-step-index { background: var(--bo-teal-050); color: var(--bo-teal); border-radius: 11px; }
+.app-layout .project-step-title span { background: var(--bo-surface-3); color: var(--bo-muted); }
+.app-layout .project-step--done { border-color: var(--bo-success-bd); }
+.app-layout .project-step--done .project-step-index { background: var(--bo-success-bg); color: var(--bo-success); }
+.app-layout .project-step--done .project-step-title span { background: var(--bo-success-bg); color: var(--bo-success); }
+.app-layout .project-step--blocked { border-color: var(--bo-danger-bd); background: var(--bo-danger-bg); }
+.app-layout .project-step--blocked .project-step-title span { background: var(--bo-danger-bg); color: var(--bo-danger); }
+.app-layout .project-step-lists small { color: var(--bo-faint); }
+.app-layout .project-step-lists b,
+.app-layout .project-document-list span { background: var(--bo-teal-050); color: var(--bo-teal); }
+
+/* Boutons d'étape / d'action */
+.app-layout .project-step-actions button,
+.app-layout .project-action-row button {
+  border: 1px solid var(--bo-border-strong); border-radius: 9px;
+  background: var(--bo-surface); color: var(--bo-text); font-weight: 650;
+}
+.app-layout .project-step-actions button:hover,
+.app-layout .project-action-row button:hover { background: var(--bo-surface-2); border-color: var(--bo-muted); }
+.app-layout .project-step-actions button:last-child {
+  background: var(--bo-teal); border-color: var(--bo-teal); color: #fff;
+}
+.app-layout .project-step-actions button:last-child:hover { background: var(--bo-teal-600); }
+
+/* Documents / traçabilité / automatisations */
+.app-layout .project-documents-header { border-bottom-color: var(--bo-border); }
+.app-layout .project-document-list article,
+.app-layout .project-traceability-grid article,
+.app-layout .project-automation-grid article {
+  border: 1px solid var(--bo-border); border-radius: var(--bo-r); background: var(--bo-surface-2);
+}
+.app-layout .project-document-list article div { color: var(--bo-ink); }
+
+/* Formulaires (besoins / notes / création) */
+.app-layout .project-needs-grid label,
+.app-layout .project-notes-field { color: var(--bo-muted); }
+.app-layout .project-needs-grid input,
+.app-layout .project-needs-grid select,
+.app-layout .project-needs-grid textarea,
+.app-layout .project-step-actions input,
+.app-layout .project-notes-field textarea {
+  border: 1px solid var(--bo-border-strong); border-radius: 10px;
+  background: var(--bo-surface); color: var(--bo-ink);
+}
+.app-layout .project-needs-grid input:focus,
+.app-layout .project-needs-grid select:focus,
+.app-layout .project-needs-grid textarea:focus,
+.app-layout .project-notes-field textarea:focus { border-color: var(--bo-teal); box-shadow: var(--bo-ring); outline: none; }
+
+/* Pastilles de garanties / documents */
+.app-layout .project-check-pill,
+.app-layout .project-doc-checks label {
+  border: 1px solid var(--bo-border-strong); background: var(--bo-surface-2); color: var(--bo-text);
+}
+/* Fin DES-001 — Phase 5 (Projet) */
