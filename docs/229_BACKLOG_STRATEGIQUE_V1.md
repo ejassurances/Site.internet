@@ -57,6 +57,27 @@ P2 : Important
 P3 : Confort
 
 
+# Suivi d'avancement (mise à jour 2026-07-15)
+
+Ce bloc consigne l'état des lots déjà engagés et la dette technique documentée.
+Toute modification d'état est datée et rattachée à un rapport.
+
+| Lot | État | Rapport | Notes |
+|---|---|---|---|
+| **P0-01** — Stabilisation du socle | ✔️ Clôturé | 300–303 | Liens morts masqués (flag réactivable), terminologie, routes/rôles vérifiés |
+| **DES-001** — Refonte visuelle back-office | ✔️ **Clôturé** | 310–316, 318 | Phases 1→Contrat + nettoyage CSS Lot A. Impact public nul (scope `.app-layout`) |
+| **DES-001 / Lot B** — Nettoyage `crm-*` mort | ⛔ **Différé** | 317, 318 | **Dette technique liée à la future refonte Finance** : sous-classes `crm-*` de l'ancienne liste client, à retirer sélecteur par sélecteur, tokens `--crm-*` exclus, 4 pages Finance à re-tester. Aucune suppression `crm-*` tant que la refonte Finance n'est pas planifiée |
+
+**Dette technique CSS restante** (cf. rapport 318) : `globals.css` conserve les sous-classes
+`crm-*` mortes de l'ancienne liste client (surchargées par `bo-*`) ainsi que les bases `cf360-*`
+et `project-*` (qui, elles, **portent le layout** et ne sont pas mortes). Ce reliquat est assumé
+et **gelé** jusqu'à un lot de nettoyage validé, prioritairement adossé à la refonte Finance.
+
+**Règle de gouvernance visuelle** : aucun nettoyage visuel ou CSS supplémentaire ne doit être
+lancé sans nouveau lot explicitement validé par la gouvernance.
+
+---
+
 # Phase 0 — Fondations (Terminée)
 
 Objectif :
