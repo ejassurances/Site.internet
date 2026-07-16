@@ -1,0 +1,1260 @@
+# 321_PRODUCT_BOOK
+
+# Product Book
+
+Version : 1.0
+
+---
+
+# Chapitre 1
+
+## Notre philosophie
+
+EJ Partners n'est pas un CRM.
+
+EJ Partners est un espace de travail conçu pour les professionnels de l'assurance, du patrimoine et du conseil.
+
+Notre objectif n'est pas simplement de stocker des données.
+
+Notre objectif est d'aider le conseiller à mieux travailler.
+
+Chaque écran, chaque action et chaque fonctionnalité doivent répondre à une question simple :
+
+> Est-ce que cela aide réellement le conseiller dans son quotidien ?
+
+Si la réponse est non, la fonctionnalité n'a pas sa place.
+
+---
+
+## Notre vision
+
+Le conseiller ne travaille pas avec des menus.
+
+Il travaille avec des clients.
+
+Avec des projets.
+
+Avec des contrats.
+
+Avec des tâches.
+
+Avec des échéances.
+
+Avec des documents.
+
+Le logiciel doit donc suivre cette logique.
+
+Le logiciel accompagne le travail.
+
+Il ne l'interrompt jamais.
+
+---
+
+## Notre promesse
+
+À tout moment, le conseiller doit savoir :
+
+- ce qu'il doit faire ;
+- pourquoi il doit le faire ;
+- pour qui il doit le faire ;
+- dans quel délai ;
+- quelles sont les conséquences s'il ne le fait pas.
+
+Le logiciel devient un copilote.
+
+Jamais un obstacle.
+
+---
+
+## Nos principes
+
+### Simplicité
+
+Une action doit demander le moins de clics possible.
+
+---
+
+### Clarté
+
+L'information importante est toujours visible.
+
+---
+
+### Rapidité
+
+Les actions fréquentes sont accessibles immédiatement.
+
+---
+
+### Continuité
+
+Le conseiller ne change pas d'écran inutilement.
+
+---
+
+### Intelligence
+
+Le logiciel anticipe les besoins avant que le conseiller ne les exprime.
+
+---
+
+### Confiance
+
+Le logiciel rappelle sans être intrusif.
+
+Il assiste sans décider à la place du conseiller.
+
+---
+
+## Notre ambition
+
+Créer le logiciel que nous aurions aimé utiliser en tant que cabinet.
+
+Un logiciel pensé par des professionnels du métier, et non uniquement par des développeurs.
+
+
+# Chapitre 2
+
+## Les valeurs d'EJ Partners
+
+EJ Partners n'est pas conçu pour impressionner.
+
+Il est conçu pour être utilisé.
+
+Chaque fonctionnalité doit améliorer le quotidien du conseiller.
+
+Nous privilégions toujours l'efficacité à la complexité.
+
+---
+
+# 1. L'humain avant le logiciel
+
+Le client est toujours au centre.
+
+Le logiciel ne doit jamais remplacer la relation humaine.
+
+Il doit permettre au conseiller de consacrer plus de temps à ses clients et moins de temps à l'administration.
+
+Chaque minute gagnée sur une tâche administrative est une minute rendue à la relation client.
+
+---
+
+# 2. La confiance avant tout
+
+Le conseiller doit pouvoir faire confiance au logiciel.
+
+Les informations sont fiables.
+
+Les rappels sont pertinents.
+
+Les historiques sont complets.
+
+Les actions sont traçables.
+
+Le logiciel n'efface jamais silencieusement une information importante.
+
+---
+
+# 3. Une seule source de vérité
+
+Une information ne doit être saisie qu'une seule fois.
+
+Toutes les fonctionnalités doivent réutiliser cette donnée.
+
+La duplication est considérée comme un défaut de conception.
+
+---
+
+# 4. Le contexte avant les menus
+
+Le conseiller ne doit jamais chercher où se trouve une information.
+
+Lorsqu'il ouvre un client, un projet ou un contrat, toutes les informations utiles doivent être accessibles dans leur contexte.
+
+L'utilisateur navigue dans son activité, pas dans les menus.
+
+---
+
+# 5. L'action avant la consultation
+
+Chaque écran doit permettre d'agir.
+
+Une fiche qui ne fait qu'afficher des informations est incomplète.
+
+Le logiciel doit proposer les actions les plus pertinentes au bon moment.
+
+---
+
+# 6. La simplicité avant la sophistication
+
+Une fonctionnalité simple mais utilisée tous les jours a plus de valeur qu'une fonctionnalité complexe utilisée une fois par an.
+
+Nous privilégions toujours la simplicité lorsqu'elle ne réduit pas les capacités du logiciel.
+
+---
+
+# 7. La conformité invisible
+
+Le conseiller ne doit pas subir la conformité.
+
+Le logiciel doit l'accompagner naturellement.
+
+Les obligations réglementaires doivent être intégrées dans les processus sans complexifier inutilement le travail.
+
+---
+
+# 8. Une plateforme évolutive
+
+Chaque évolution doit enrichir le logiciel sans remettre en cause les usages existants.
+
+L'utilisateur ne doit jamais avoir le sentiment de devoir réapprendre son métier à chaque mise à jour.
+
+---
+
+# Notre engagement
+
+Nous ne développons pas des fonctionnalités.
+
+Nous développons des outils qui permettent aux conseillers de mieux accompagner leurs clients.
+
+Chaque décision produit est évaluée selon une question unique :
+
+> Est-ce que cette évolution apporte une valeur réelle au conseiller et à son client ?
+
+
+# Chapitre 3
+
+## Notre utilisateur
+
+Nous ne concevons pas EJ Partners pour "un utilisateur".
+
+Nous le concevons pour un professionnel qui accompagne des personnes dans des décisions importantes de leur vie.
+
+Ce professionnel manque souvent de temps.
+
+Il jongle entre plusieurs dossiers, plusieurs clients, plusieurs compagnies et de nombreuses obligations réglementaires.
+
+Le logiciel doit réduire sa charge mentale.
+
+---
+
+# Qui est notre utilisateur ?
+
+Notre utilisateur peut être :
+
+- Courtier en assurances
+- Agent général
+- Conseiller en gestion de patrimoine
+- Mandataire
+- Collaborateur de cabinet
+- Gestionnaire
+- Assistant(e) commercial(e)
+- Responsable de cabinet
+
+À terme, EJ Partners accompagnera également les activités de crédit et de conseil en investissement financier.
+
+---
+
+# Son quotidien
+
+Une journée n'est jamais linéaire.
+
+Le conseiller :
+
+- répond aux appels ;
+- traite ses emails ;
+- prépare des rendez-vous ;
+- reçoit des clients ;
+- compare des contrats ;
+- relance des prospects ;
+- suit des sinistres ;
+- échange avec des partenaires ;
+- répond à des demandes administratives.
+
+Le logiciel doit s'adapter à cette réalité.
+
+---
+
+# Ce qu'il attend réellement
+
+Notre utilisateur ne cherche pas un logiciel.
+
+Il cherche à :
+
+- gagner du temps ;
+- ne rien oublier ;
+- retrouver rapidement une information ;
+- sécuriser ses dossiers ;
+- mieux conseiller ses clients ;
+- développer son activité.
+
+Chaque fonctionnalité doit répondre à au moins un de ces besoins.
+
+---
+
+# Ses frustrations
+
+Aujourd'hui, les professionnels utilisent souvent plusieurs outils :
+
+- CRM
+- Agenda
+- Emails
+- GED
+- Téléphone
+- Tableurs
+- Extranets compagnies
+- Notes personnelles
+
+Les informations sont dispersées.
+
+Le conseiller perd du temps à chercher.
+
+EJ Partners doit devenir le point d'entrée principal de son activité.
+
+---
+
+# Ce qu'il ne doit jamais ressentir
+
+Le logiciel ne doit jamais donner l'impression :
+
+- d'être complexe ;
+- de ralentir le travail ;
+- d'imposer des tâches inutiles ;
+- de masquer une information importante ;
+- de faire perdre du temps.
+
+---
+
+# Ce qu'il doit ressentir
+
+En ouvrant EJ Partners, le conseiller doit avoir le sentiment que :
+
+- tout est à sa place ;
+- il sait immédiatement quoi faire ;
+- il retrouve facilement chaque information ;
+- il est accompagné sans être contraint ;
+- il garde la maîtrise de ses décisions.
+
+---
+
+# Notre objectif
+
+À la fin de chaque journée, le conseiller doit avoir le sentiment d'avoir mieux travaillé grâce au logiciel.
+
+Le succès d'EJ Partners ne se mesurera pas uniquement au nombre de fonctionnalités, mais au temps gagné, au stress évité et à la qualité de la relation client.
+
+# Chapitre 4
+
+## Une journée de travail avec EJ Partners
+
+EJ Partners n'organise pas le travail autour de modules.
+
+Il organise le travail autour des actions réelles du conseiller.
+
+Le logiciel accompagne naturellement le déroulement d'une journée.
+
+---
+
+# Début de journée
+
+Lorsque le conseiller ouvre EJ Partners, il ne découvre pas une liste de menus.
+
+Il découvre sa journée.
+
+Le logiciel lui présente notamment :
+
+- les rendez-vous du jour ;
+- les relances à effectuer ;
+- les signatures attendues ;
+- les contrats arrivant à échéance ;
+- les tâches prioritaires ;
+- les alertes importantes.
+
+Le conseiller sait immédiatement où concentrer son attention.
+
+---
+
+# Pendant la journée
+
+Chaque action permet naturellement d'accéder à la suivante.
+
+Exemple :
+
+Un appel client peut conduire à :
+
+- consulter son historique ;
+- ouvrir son projet ;
+- préparer une proposition ;
+- envoyer un document ;
+- programmer un rendez-vous ;
+- créer une tâche de suivi.
+
+Le conseiller ne change pas de logiciel.
+
+Il reste dans son contexte de travail.
+
+---
+
+# Les actions rapides
+
+Les actions les plus fréquentes doivent toujours être accessibles en un clic.
+
+Par exemple :
+
+- appeler un client ;
+- envoyer un email ;
+- créer une tâche ;
+- ajouter un commentaire ;
+- envoyer un document ;
+- programmer un rendez-vous ;
+- créer un projet ;
+- consulter un contrat.
+
+---
+
+# Les interruptions
+
+Le métier est fait d'interruptions.
+
+Le logiciel doit permettre de reprendre immédiatement son travail.
+
+Chaque fiche doit rappeler :
+
+- les dernières actions réalisées ;
+- les prochaines échéances ;
+- les tâches en attente ;
+- les échanges récents.
+
+Le conseiller retrouve instantanément son contexte.
+
+---
+
+# Les priorités
+
+Toutes les tâches n'ont pas la même importance.
+
+Le logiciel aide le conseiller à distinguer :
+
+- ce qui est urgent ;
+- ce qui est important ;
+- ce qui peut attendre.
+
+Les priorités doivent être compréhensibles sans effort.
+
+---
+
+# Fin de journée
+
+Avant de quitter son poste, le conseiller peut visualiser :
+
+- les actions réalisées ;
+- les tâches reportées ;
+- les signatures obtenues ;
+- les relances restantes ;
+- les échéances du lendemain.
+
+Le logiciel prépare naturellement la journée suivante.
+
+---
+
+# Notre objectif
+
+Le conseiller ne doit jamais avoir l'impression de naviguer dans un logiciel.
+
+Il doit avoir le sentiment d'être accompagné dans son travail tout au long de sa journée.
+
+# Chapitre 5
+
+## Le client est le point d'entrée naturel
+
+Dans EJ Partners, le client est le centre de la relation.
+
+Tous les autres éléments gravitent autour de lui :
+
+- Projets
+- Contrats
+- Documents
+- Tâches
+- Rendez-vous
+- Historique
+- Commentaires
+- Notifications
+- Activités
+- Signatures
+- Opportunités
+
+Le conseiller ne travaille pas avec des modules.
+
+Il travaille avec des personnes.
+
+---
+
+# Une vision à 360°
+
+Lorsque le conseiller ouvre une fiche client, il doit comprendre la situation en quelques secondes.
+
+Sans changer d'écran, il doit pouvoir répondre aux questions suivantes :
+
+- Qui est ce client ?
+- Où en est la relation ?
+- Quels projets sont en cours ?
+- Quels contrats possède-t-il ?
+- Quelles sont les prochaines échéances ?
+- Quelles actions sont attendues ?
+- Quels documents sont manquants ?
+- Quels sont les derniers échanges ?
+- Y a-t-il un risque ou une opportunité ?
+
+---
+
+# Une fiche vivante
+
+La fiche client n'est pas un formulaire.
+
+C'est un espace de travail.
+
+Elle évolue au rythme de la relation.
+
+Chaque nouvelle interaction enrichit naturellement la fiche.
+
+---
+
+# Les informations importantes avant les informations complètes
+
+Le conseiller ne doit jamais être noyé dans les données.
+
+Les informations critiques sont visibles immédiatement.
+
+Les informations détaillées restent accessibles sans encombrer la lecture.
+
+La fiche doit permettre une compréhension rapide avant une analyse approfondie.
+
+---
+
+# Une seule action, plusieurs conséquences
+
+Lorsqu'une action est réalisée, le logiciel met automatiquement à jour le contexte.
+
+Par exemple :
+
+- un document envoyé est visible dans l'historique ;
+- une signature reçue met à jour le projet ;
+- un rendez-vous terminé enrichit la chronologie ;
+- un contrat validé apparaît dans le portefeuille.
+
+Le conseiller n'a pas à répéter les mêmes actions.
+
+---
+
+# Toujours proposer l'étape suivante
+
+Après chaque action importante, EJ Partners suggère naturellement la suite logique.
+
+Par exemple :
+
+Après un rendez-vous :
+
+- créer un projet ;
+- envoyer les documents demandés ;
+- programmer une relance ;
+- préparer une proposition.
+
+Le logiciel accompagne sans imposer.
+
+---
+
+# Notre objectif
+
+À aucun moment le conseiller ne doit se demander :
+
+"Où est cette information ?"
+
+La réponse est toujours :
+
+"Sur la fiche client."
+
+# Chapitre 6
+
+## Le logiciel travaille avec le conseiller
+
+La majorité des logiciels attendent que l'utilisateur fasse le premier pas.
+
+EJ Partners adopte une approche différente.
+
+Le logiciel observe le contexte, identifie les opportunités et accompagne le conseiller dans son travail.
+
+Il n'agit jamais à sa place.
+
+Il lui propose les meilleures actions au bon moment.
+
+---
+
+# Un copilote, pas un pilote
+
+Le conseiller reste toujours décisionnaire.
+
+Le logiciel :
+
+- analyse ;
+- rappelle ;
+- suggère ;
+- prépare ;
+- vérifie ;
+- alerte.
+
+Le conseiller décide.
+
+---
+
+# Les suggestions intelligentes
+
+EJ Partners peut notamment suggérer :
+
+- une relance oubliée ;
+- un contrat arrivant à échéance ;
+- un document manquant ;
+- une signature en attente ;
+- un rendez-vous annuel conseillé ;
+- une opportunité de multi-équipement ;
+- une anomalie de conformité ;
+- une incohérence dans un dossier.
+
+Les suggestions restent des recommandations.
+
+Elles ne remplacent jamais le jugement du conseiller.
+
+---
+
+# Les actions préparées
+
+Le logiciel réduit le travail répétitif.
+
+Par exemple, il peut :
+
+- préparer un email ;
+- préremplir un document ;
+- proposer une liste de pièces à demander ;
+- préparer un compte rendu de rendez-vous ;
+- générer une checklist adaptée au contexte.
+
+Le conseiller conserve toujours la possibilité de modifier ou d'annuler ces propositions.
+
+---
+
+# Les alertes utiles
+
+Une alerte doit toujours avoir une raison.
+
+Le logiciel évite les notifications inutiles.
+
+Chaque alerte explique :
+
+- pourquoi elle apparaît ;
+- quel est le risque ;
+- quelle action est recommandée.
+
+Le logiciel privilégie la qualité des alertes à leur quantité.
+
+---
+
+# Une intelligence progressive
+
+L'intelligence d'EJ Partners évolue avec les données disponibles.
+
+Au début, le logiciel fournit des rappels simples.
+
+Progressivement, il devient capable de proposer des recommandations plus pertinentes grâce à l'historique, aux habitudes du cabinet et aux informations disponibles.
+
+---
+
+# Le respect du conseiller
+
+Le logiciel ne prend jamais de décision engageant le cabinet ou le client.
+
+Les décisions importantes restent toujours validées par un professionnel.
+
+Le logiciel assiste.
+
+Le conseiller décide.
+
+---
+
+# Notre ambition
+
+Le conseiller doit avoir le sentiment qu'un collaborateur discret travaille à ses côtés.
+
+Un collaborateur qui n'oublie rien, prépare le terrain et aide à prendre les bonnes décisions, sans jamais imposer son point de vue.
+
+
+
+# Chapitre 7
+
+## Le temps du conseiller est précieux
+
+Le temps est la seule ressource qu'un conseiller ne peut pas récupérer.
+
+Chaque clic inutile.
+
+Chaque recherche.
+
+Chaque ressaisie.
+
+Chaque changement d'écran.
+
+Chaque oubli.
+
+Représente du temps perdu.
+
+La mission d'EJ Partners est de rendre ce temps au conseiller.
+
+---
+
+# Réduire la charge mentale
+
+Le logiciel ne doit jamais obliger le conseiller à mémoriser une information.
+
+Il doit lui rappeler ce qui est utile au moment où il en a besoin.
+
+Le conseiller doit pouvoir se concentrer sur son client.
+
+Pas sur le fonctionnement du logiciel.
+
+---
+
+# Une seule saisie
+
+Une information est saisie une seule fois.
+
+Ensuite, elle est automatiquement réutilisée partout où elle est pertinente.
+
+Le conseiller ne doit jamais avoir le sentiment de répéter son travail.
+
+---
+
+# Les raccourcis intelligents
+
+Les actions les plus fréquentes doivent toujours être accessibles immédiatement.
+
+Le logiciel apprend progressivement quelles actions sont les plus utilisées.
+
+Il peut proposer des raccourcis adaptés aux habitudes du cabinet.
+
+Ces suggestions restent personnalisables.
+
+---
+
+# Les automatismes utiles
+
+Chaque automatisme doit répondre à une question simple :
+
+"Quelle tâche répétitive pouvons-nous supprimer ?"
+
+Par exemple :
+
+- classement automatique de documents ;
+- préparation d'emails ;
+- rappels automatiques ;
+- création de tâches de suivi ;
+- archivage intelligent ;
+- organisation des pièces d'un dossier.
+
+---
+
+# Le rythme de travail
+
+Le logiciel doit s'adapter au rythme du conseiller.
+
+Il ne doit jamais imposer un ordre artificiel.
+
+Il accompagne les interruptions, les reprises de travail et les changements de priorité.
+
+---
+
+# Les temps d'attente
+
+Les périodes d'attente ne sont pas des périodes inutiles.
+
+Pendant qu'un document est signé ou qu'un client répond, le logiciel peut proposer :
+
+- une autre relance ;
+- une tâche rapide ;
+- un dossier à préparer ;
+- une opportunité à analyser.
+
+Le temps est utilisé intelligemment.
+
+---
+
+# Notre objectif
+
+À la fin de chaque journée, le conseiller doit avoir le sentiment d'avoir consacré davantage de temps à ses clients qu'à son logiciel.
+
+
+# Chapitre 8
+
+## Un logiciel doit aussi procurer un ressenti
+
+Un bon logiciel ne se contente pas d'être fonctionnel.
+
+Il inspire confiance.
+
+Il rassure.
+
+Il donne envie de travailler.
+
+Chaque interaction avec EJ Partners doit renforcer ce sentiment.
+
+---
+
+# La sérénité
+
+Le conseiller ne doit jamais se demander :
+
+- Ai-je oublié quelque chose ?
+- Où est cette information ?
+- Quel est le prochain dossier ?
+- Ai-je fait toutes les démarches nécessaires ?
+
+Le logiciel doit répondre naturellement à ces questions.
+
+---
+
+# La maîtrise
+
+Le conseiller garde toujours le contrôle.
+
+Il comprend :
+
+- ce qui se passe ;
+- pourquoi cela se passe ;
+- ce qui est recommandé ;
+- ce qui reste à faire.
+
+Le logiciel est transparent dans son fonctionnement.
+
+---
+
+# La confiance
+
+Chaque action importante est :
+
+- expliquée ;
+- traçable ;
+- réversible lorsque cela est possible.
+
+Le conseiller travaille avec confiance.
+
+---
+
+# La fluidité
+
+L'utilisateur ne doit jamais avoir l'impression de lutter contre le logiciel.
+
+Les transitions sont naturelles.
+
+Les écrans sont cohérents.
+
+Les actions sont prévisibles.
+
+Le logiciel accompagne le rythme de travail.
+
+---
+
+# La satisfaction
+
+À la fin d'une action importante, le logiciel valorise discrètement le travail accompli.
+
+Par exemple :
+
+- Dossier complété.
+- Signature reçue.
+- Projet terminé.
+- Contrat mis à jour.
+
+L'objectif n'est pas de "gamifier" le travail.
+
+L'objectif est de donner un sentiment de progression.
+
+---
+
+# La discrétion
+
+Le logiciel attire l'attention uniquement lorsque cela est utile.
+
+Il ne surcharge jamais l'utilisateur de notifications, de pop-ups ou de messages inutiles.
+
+Chaque intervention doit avoir une valeur.
+
+---
+
+# Notre ambition
+
+Le conseiller doit terminer sa journée avec le sentiment :
+
+- d'avoir été efficace ;
+- de n'avoir rien oublié d'important ;
+- d'avoir consacré plus de temps à ses clients qu'à son logiciel ;
+- d'avoir travaillé dans un environnement agréable et rassurant.
+
+# Chapitre 9
+
+## Les règles d'or
+
+Chaque évolution d'EJ Partners devra respecter les règles suivantes.
+
+Elles constituent notre grille de décision.
+
+Si une fonctionnalité ne respecte pas ces principes, elle devra être repensée.
+
+---
+
+# Règle n°1
+
+Le logiciel accompagne le conseiller.
+
+Il ne le remplace jamais.
+
+Les décisions importantes restent toujours humaines.
+
+---
+
+# Règle n°2
+
+Une fonctionnalité doit faire gagner du temps.
+
+Si elle ajoute de la complexité sans bénéfice réel, elle n'a pas sa place.
+
+---
+
+# Règle n°3
+
+Une information ne se saisit qu'une seule fois.
+
+Toutes les autres fonctionnalités doivent la réutiliser.
+
+---
+
+# Règle n°4
+
+Le contexte est plus important que le menu.
+
+Le conseiller doit retrouver les informations dans son contexte naturel de travail.
+
+---
+
+# Règle n°5
+
+Le logiciel doit toujours proposer la prochaine meilleure action.
+
+Sans jamais l'imposer.
+
+---
+
+# Règle n°6
+
+Chaque écran doit permettre d'agir.
+
+Pas seulement de consulter.
+
+---
+
+# Règle n°7
+
+La conformité doit être intégrée naturellement.
+
+Elle ne doit jamais devenir une contrainte artificielle.
+
+---
+
+# Règle n°8
+
+Une nouvelle fonctionnalité ne doit jamais dégrader l'expérience existante.
+
+L'évolution doit être progressive.
+
+---
+
+# Règle n°9
+
+Chaque automatisation doit rester compréhensible.
+
+Le conseiller doit savoir :
+
+- pourquoi elle existe ;
+- ce qu'elle fait ;
+- comment la modifier ;
+- comment la désactiver.
+
+---
+
+# Règle n°10
+
+L'information importante est toujours visible.
+
+L'information détaillée est toujours accessible.
+
+Mais elles ne doivent jamais se concurrencer.
+
+---
+
+# Règle n°11
+
+Le logiciel doit réduire la charge mentale.
+
+Jamais l'augmenter.
+
+Chaque évolution doit être évaluée sous cet angle.
+
+---
+
+# Règle n°12
+
+L'expérience utilisateur prime sur la technique.
+
+La meilleure architecture est celle qui sert le mieux le métier.
+
+La technique est un moyen.
+
+Jamais une finalité.
+
+---
+
+# Notre engagement
+
+Ces règles constituent la constitution d'EJ Partners.
+
+Avant chaque nouveau développement, chaque fonctionnalité devra être confrontée à ces principes.
+
+Ils guideront nos choix produits, nos arbitrages techniques et nos décisions de conception.
+
+CRM Assurance
+
+↓
+
+CRM Assurance + CGP
+
+↓
+
+Crédit
+
+↓
+
+CIF
+
+↓
+
+Patrimoine
+
+↓
+
+Workspace du conseiller
+
+# Chapitre 11
+
+## L'évolution du produit
+
+EJ Partners n'est pas un logiciel figé.
+
+Il est conçu pour accompagner les évolutions du métier de conseiller sur le long terme.
+
+Chaque nouvelle étape doit renforcer la vision initiale sans remettre en cause les habitudes acquises.
+
+---
+
+# Notre trajectoire
+
+Aujourd'hui, EJ Partners est un Workspace dédié au courtage en assurances.
+
+Demain, il intégrera naturellement :
+
+- le conseil patrimonial ;
+- le crédit ;
+- le conseil en investissement financier ;
+- la protection sociale ;
+- la retraite ;
+- la transmission ;
+- l'accompagnement des dirigeants.
+
+Chaque évolution s'appuiera sur les mêmes principes :
+
+- simplicité ;
+- contextualisation ;
+- accompagnement ;
+- conformité intégrée.
+
+---
+
+# Une plateforme unique
+
+Notre ambition n'est pas d'empiler des modules.
+
+Notre ambition est de construire un environnement de travail unique où le conseiller retrouve l'ensemble de son activité.
+
+Le client reste le point d'entrée principal.
+
+Les nouveaux métiers viennent enrichir la relation sans modifier les habitudes de travail.
+
+---
+
+# Une évolution continue
+
+Chaque évolution doit :
+
+- apporter une valeur immédiate ;
+- rester cohérente avec les usages existants ;
+- éviter les ruptures dans les méthodes de travail.
+
+L'utilisateur doit avoir le sentiment que le logiciel grandit avec lui.
+
+Jamais qu'il repart de zéro.
+
+---
+
+# Notre ambition
+
+À long terme, EJ Partners doit devenir le Workspace de référence des professionnels du conseil.
+
+Quelle que soit leur spécialité, ils doivent retrouver la même logique, la même ergonomie et la même philosophie de travail.
+
+
+
+# Chapitre 12
+
+## Les erreurs à ne jamais reproduire
+
+Construire un excellent logiciel consiste autant à éviter les mauvaises décisions qu'à prendre les bonnes.
+
+Chaque évolution devra être confrontée à cette liste.
+
+---
+
+# Nous ne devons jamais...
+
+Créer plusieurs façons différentes de réaliser la même action.
+
+Multiplier les menus lorsque le contexte suffit.
+
+Obliger l'utilisateur à saisir plusieurs fois la même information.
+
+Ajouter une fonctionnalité uniquement parce qu'elle est tendance.
+
+Créer des écrans surchargés d'informations.
+
+Afficher des indicateurs sans utilité réelle.
+
+Masquer les actions importantes derrière plusieurs clics.
+
+Multiplier les notifications inutiles.
+
+Remplacer la décision du conseiller par celle du logiciel.
+
+Complexifier un processus sans bénéfice clair.
+
+Casser les habitudes des utilisateurs sans amélioration significative.
+
+Créer des dépendances entre modules qui empêchent l'évolution du produit.
+
+Ajouter une fonctionnalité qui ralentit le travail quotidien.
+
+---
+
+# Notre règle
+
+Chaque nouvelle fonctionnalité doit simplifier le travail.
+
+Jamais le compliquer.
+
+Si une évolution augmente la charge mentale de l'utilisateur sans bénéfice évident, elle doit être repensée.
+
+
+
+# Chapitre 13
+
+## La vision à dix ans
+
+EJ Partners n'a pas vocation à devenir uniquement un excellent CRM Assurance.
+
+Notre ambition est plus grande.
+
+Nous voulons construire le Workspace de référence des professionnels du conseil.
+
+---
+
+# Notre vision
+
+Créer une plateforme unique permettant à un professionnel d'accompagner ses clients tout au long de leur vie.
+
+Qu'il s'agisse :
+
+- d'assurance ;
+- de patrimoine ;
+- de crédit ;
+- de retraite ;
+- de protection sociale ;
+- de transmission ;
+- d'investissement.
+
+Le conseiller retrouve toujours les mêmes principes de travail.
+
+---
+
+# Notre philosophie
+
+Le logiciel évolue.
+
+Le métier évolue.
+
+Les réglementations évoluent.
+
+Mais certains principes restent immuables :
+
+- l'humain décide ;
+- le logiciel accompagne ;
+- la conformité protège ;
+- la simplicité reste une priorité.
+
+---
+
+# Notre responsabilité
+
+Chaque décision produit doit être prise en pensant aux dix prochaines années.
+
+Nous privilégions toujours les choix durables aux solutions temporaires.
+
+---
+
+# Notre héritage
+
+Nous ne voulons pas simplement développer un logiciel.
+
+Nous voulons créer un outil qui améliore durablement le quotidien des professionnels du conseil.
+
+Notre réussite se mesurera au temps gagné, à la qualité des relations clients et à la confiance que les utilisateurs accorderont à EJ Partners.
+
+# Notre promesse
+
+Le Product Book constitue la référence fonctionnelle d'EJ Partners.
+
+Toute évolution du produit doit respecter les principes définis dans ce document.
+
+En cas de contradiction entre une évolution technique et la vision produit, un arbitrage doit être réalisé.
+
+Les contraintes réglementaires, légales, de sécurité ou de conformité peuvent conduire à adapter la mise en œuvre, mais jamais à perdre de vue l'intention fonctionnelle.
+
+---
+
+## Notre engagement
+
+Chaque nouvelle fonctionnalité devra rendre le travail du conseiller :
+
+- plus simple ;
+- plus sûr ;
+- ou plus utile.
+
+Si elle ne répond à aucun de ces trois objectifs, elle n'a pas sa place dans EJ Partners.
+
+---
+
+> **Notre mission n'est pas de créer le CRM le plus complet.**
+>
+> **Notre mission est de créer le Workspace que les professionnels du conseil auront plaisir à utiliser chaque jour.**
