@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { anonymiserPourIA, labelClient, logIaUsage } from "@/lib/ia/audit-anonymise";
 
 function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -12,7 +13,7 @@ function getOpenAIClient() {
 
 type Contract = { product_type: string; insurer: string; contract_number: string; status: string; annual_premium: number; commission_rate: number };
 type Interaction = { date: string; type: string; summary: string; outcome: string };
-type InactiveClient = { first_name: string; last_name: string; email: string };
+type InactiveClient = { id: string; first_name: string; last_name: string; email: string };
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,6 +22,8 @@ export async function POST(req: NextRequest) {
     if (!supabase) return NextResponse.json({ error: "Connexion Supabase non disponible." }, { status: 500 });
 
     let crmContext = "";
+    // Clients dont les données personnelles sont envoyées à l'IA (pour l'audit).
+    const concernedClientIds: string[] = [];
 
     if (context === "client" && clientSearch) {
       const { data: clients } = await supabase
@@ -44,17 +47,18 @@ export async function POST(req: NextRequest) {
           .order("date", { ascending: false })
           .limit(5);
 
+        concernedClientIds.push(client.id);
+        // Identifiants directs neutralisés ; situation familiale conservée (raisonnement).
         crmContext = `
-CONTEXTE CLIENT — ${client.first_name} ${client.last_name}
-Email: ${client.email} | Téléphone: ${(client as { phone?: string }).phone || "N/A"}
-Statut: ${client.status} | Situation familiale: ${(client as { family_context?: string }).family_context || "N/A"}
-Notes: ${(client as { notes?: string }).notes || "Aucune"}
+CONTEXTE CLIENT — ${labelClient(0)}
+Statut: ${client.status || "N/A"} | Situation familiale: ${(client as { family_context?: string }).family_context || "N/A"}
+Notes: ${anonymiserPourIA((client as { notes?: string }).notes) || "Aucune"}
 
 CONTRATS ACTIFS (${contracts?.length || 0}):
 ${(contracts as Contract[] | null)?.map((c) => `- ${c.product_type} chez ${c.insurer} (N°${c.contract_number}) — ${c.status} — Prime: ${c.annual_premium}€/an — Commission: ${c.commission_rate}%`).join("\n") || "Aucun contrat"}
 
 DERNIÈRES INTERACTIONS:
-${(interactions as Interaction[] | null)?.map((i) => `- ${new Date(i.date).toLocaleDateString("fr-FR")} [${i.type}]: ${i.summary || "N/A"} → ${i.outcome || "N/A"}`).join("\n") || "Aucune interaction"}
+${(interactions as Interaction[] | null)?.map((i) => `- ${new Date(i.date).toLocaleDateString("fr-FR")} [${i.type}]: ${anonymiserPourIA(i.summary) || "N/A"} → ${anonymiserPourIA(i.outcome) || "N/A"}`).join("\n") || "Aucune interaction"}
 `;
       }
     } else {
@@ -65,18 +69,22 @@ ${(interactions as Interaction[] | null)?.map((i) => `- ${new Date(i.date).toLoc
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
       const { data: inactiveClients } = await supabase
         .from("clients")
-        .select("first_name, last_name, email")
+        .select("id, first_name, last_name, email")
         .lt("updated_at", thirtyDaysAgo.toISOString())
         .eq("status", "actif")
         .limit(5);
 
+      const inactifs = (inactiveClients as InactiveClient[] | null) || [];
+      inactifs.forEach((c) => concernedClientIds.push(c.id));
+
+      // Noms/emails des clients inactifs neutralisés avant envoi à l'IA.
       crmContext = `
 CONTEXTE CABINET EJ PARTNERS ASSURANCES
 Total clients: ${clientCount || 0}
 Contrats actifs: ${contractCount || 0}
 
 CLIENTS INACTIFS RÉCENTS (>30 jours sans contact):
-${(inactiveClients as InactiveClient[] | null)?.map((c) => `- ${c.first_name} ${c.last_name} (${c.email})`).join("\n") || "Aucun"}
+${inactifs.map((_, idx) => `- ${labelClient(idx)}`).join("\n") || "Aucun"}
 `;
     }
 
@@ -97,13 +105,29 @@ ${crmContext ? `DONNÉES CRM DISPONIBLES:\n${crmContext}` : ""}`;
       model: "gpt-4o",
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "user", content: message },
+        // Le message libre du courtier peut contenir un identifiant direct saisi
+        // à la main : on le passe dans le module d'anonymisation avant envoi.
+        { role: "user", content: anonymiserPourIA(message) },
       ],
       max_tokens: 1000,
       temperature: 0.7,
     });
 
     const response = completion.choices[0]?.message?.content || "Je n'ai pas pu générer une réponse.";
+
+    // Journal d'audit : une ligne par client dont les données ont été envoyées à l'IA.
+    const { data: { user } } = await supabase.auth.getUser();
+    await logIaUsage(supabase, {
+      actorId: user?.id ?? null,
+      action: "ia.copilot",
+      clientIds: concernedClientIds,
+      metadata: {
+        service: "openai",
+        model: "gpt-4o",
+        scope: context === "client" && clientSearch ? "client" : "cabinet",
+        summary: "Réponse copilot IaGO générée",
+      },
+    });
 
     const actions = [];
     if (response.toLowerCase().includes("email") || response.toLowerCase().includes("envoyer")) {

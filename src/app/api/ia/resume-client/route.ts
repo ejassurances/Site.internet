@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { anonymiserPourIA, ageDepuisNaissance, labelClient, logIaUsage } from "@/lib/ia/audit-anonymise";
 
 function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -36,22 +37,25 @@ export async function POST(req: NextRequest) {
     const interactions = (interactionsRes.data || []) as Interaction[];
     const relatedPersons = (relatedPersonsRes.data || []) as RelatedPerson[];
 
+    // Anonymisation avant envoi à OpenAI : les identifiants directs (nom, email,
+    // téléphone, date de naissance) sont neutralisés ; l'âge et la situation
+    // familiale (utiles au raisonnement, non identifiants directs) sont conservés.
+    const clientAge = ageDepuisNaissance((client as { date_naissance?: string | null }).date_naissance);
     const clientData = `
-CLIENT: ${client.first_name} ${client.last_name}
-Né(e) le: ${client.date_of_birth || "N/A"} | Email: ${client.email} | Tél: ${client.phone || "N/A"}
-Statut: ${client.status} | Source: ${client.source || "N/A"}
+CLIENT: ${labelClient(0)}
+Âge: ${clientAge ?? "N/A"} | Statut: ${client.status || "N/A"}
 Situation familiale: ${client.family_context || "N/A"} | Situation: ${client.marital_status || "N/A"}
 Profession: ${client.profession || "N/A"}
-Notes: ${client.notes || "Aucune"}
+Notes: ${anonymiserPourIA(client.notes) || "Aucune"}
 
 CONTRATS (${contracts.length}):
 ${contracts.map((c) => `- ${c.product_type} chez ${c.insurer} — ${c.status} — Prime: ${c.annual_premium}€/an — Début: ${c.start_date || "N/A"}`).join("\n") || "Aucun contrat"}
 
 PERSONNES LIÉES (${relatedPersons.length}):
-${relatedPersons.map((p) => `- ${p.relation}: ${p.first_name} ${p.last_name} (né(e) le ${p.date_of_birth || "N/A"})`).join("\n") || "Aucune"}
+${relatedPersons.map((p, idx) => `- ${p.relation}: Proche ${idx + 1} (âge ${ageDepuisNaissance(p.date_of_birth) ?? "N/A"})`).join("\n") || "Aucune"}
 
 HISTORIQUE INTERACTIONS (${interactions.length}):
-${interactions.slice(0, 8).map((i) => `- ${new Date(i.date).toLocaleDateString("fr-FR")} [${i.type}]: ${i.summary || "N/A"} → Résultat: ${i.outcome || "N/A"}`).join("\n") || "Aucune interaction"}
+${interactions.slice(0, 8).map((i) => `- ${new Date(i.date).toLocaleDateString("fr-FR")} [${i.type}]: ${anonymiserPourIA(i.summary) || "N/A"} → Résultat: ${anonymiserPourIA(i.outcome) || "N/A"}`).join("\n") || "Aucune interaction"}
 `;
 
     const systemPrompt = `Tu es IaGO, l'assistant IA du cabinet EJ Partners Assurances.
@@ -89,6 +93,20 @@ Les 5 points doivent couvrir: situation actuelle, contrats en place, besoins non
     if (!content) return NextResponse.json({ error: "Réponse vide de l'IA" }, { status: 500 });
 
     const parsed = JSON.parse(content);
+
+    // Ré-injection du vrai nom côté serveur (jamais envoyé à OpenAI).
+    const realName = [client.first_name, client.last_name].filter(Boolean).join(" ").trim();
+    parsed.client_name = realName || client.full_name || parsed.client_name;
+
+    // Journal d'audit : usage IA sur ce client.
+    const { data: { user } } = await supabase.auth.getUser();
+    await logIaUsage(supabase, {
+      actorId: user?.id ?? null,
+      action: "ia.resume_client",
+      clientIds: [clientId],
+      metadata: { service: "openai", model: "gpt-4o", summary: "Synthèse de dossier client générée" },
+    });
+
     return NextResponse.json(parsed);
   } catch (error) {
     console.error("Resume client error:", error);
