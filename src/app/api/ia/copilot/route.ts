@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { anonymiserPourIA, labelClient, logIaUsage } from "@/lib/ia/audit-anonymise";
+import { anonymiserPourIA, labelClient, logIaUsage, warnRequete } from "@/lib/ia/audit-anonymise";
 
 function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -11,9 +11,9 @@ function getOpenAIClient() {
   return new OpenAI({ apiKey });
 }
 
-type Contract = { product_type: string; insurer: string; contract_number: string; status: string; annual_premium: number; commission_rate: number };
-type Interaction = { date: string; type: string; summary: string; outcome: string };
-type InactiveClient = { id: string; first_name: string; last_name: string; email: string };
+type Contract = { contract_type: string; insurer_name: string; contract_number: string; status: string; prime_annuelle: number; taux_commission: number };
+type Interaction = { created_at: string; type: string; titre: string; contenu: string };
+type InactiveClient = { id: string; full_name: string | null; email: string };
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,53 +26,61 @@ export async function POST(req: NextRequest) {
     const concernedClientIds: string[] = [];
 
     if (context === "client" && clientSearch) {
-      const { data: clients } = await supabase
+      const clientsRes = await supabase
         .from("clients")
-        .select("id, first_name, last_name, email, phone, status, family_context, notes")
-        .or(`first_name.ilike.%${clientSearch}%,last_name.ilike.%${clientSearch}%`)
+        .select("id, full_name, email, phone, statut_client, family_context, notes")
+        .ilike("full_name", `%${clientSearch}%`)
         .limit(3);
+      warnRequete("copilot/client-search", clientsRes, { warnIfEmpty: true });
+      const clients = clientsRes.data;
 
       if (clients && clients.length > 0) {
         const client = clients[0];
-        const { data: contracts } = await supabase
+        const contractsRes = await supabase
           .from("contracts")
-          .select("product_type, insurer, contract_number, status, annual_premium, commission_rate")
+          .select("contract_type, insurer_name, contract_number, status, prime_annuelle, taux_commission")
           .eq("client_id", client.id)
           .limit(10);
+        warnRequete("copilot/contracts", contractsRes);
+        const contracts = contractsRes.data;
 
-        const { data: interactions } = await supabase
-          .from("client_interactions")
-          .select("type, date, summary, outcome")
+        const interactionsRes = await supabase
+          .from("interactions")
+          .select("type, created_at, titre, contenu")
           .eq("client_id", client.id)
-          .order("date", { ascending: false })
+          .order("created_at", { ascending: false })
           .limit(5);
+        warnRequete("copilot/interactions", interactionsRes);
+        const interactions = interactionsRes.data;
 
         concernedClientIds.push(client.id);
         // Identifiants directs neutralisés ; situation familiale conservée (raisonnement).
         crmContext = `
 CONTEXTE CLIENT — ${labelClient(0)}
-Statut: ${client.status || "N/A"} | Situation familiale: ${(client as { family_context?: string }).family_context || "N/A"}
+Statut: ${client.statut_client || "N/A"} | Situation familiale: ${(client as { family_context?: string }).family_context || "N/A"}
 Notes: ${anonymiserPourIA((client as { notes?: string }).notes) || "Aucune"}
 
 CONTRATS ACTIFS (${contracts?.length || 0}):
-${(contracts as Contract[] | null)?.map((c) => `- ${c.product_type} chez ${c.insurer} (N°${c.contract_number}) — ${c.status} — Prime: ${c.annual_premium}€/an — Commission: ${c.commission_rate}%`).join("\n") || "Aucun contrat"}
+${(contracts as Contract[] | null)?.map((c) => `- ${c.contract_type} chez ${c.insurer_name} (N°${c.contract_number}) — ${c.status} — Prime: ${c.prime_annuelle}€/an — Commission: ${c.taux_commission}%`).join("\n") || "Aucun contrat"}
 
 DERNIÈRES INTERACTIONS:
-${(interactions as Interaction[] | null)?.map((i) => `- ${new Date(i.date).toLocaleDateString("fr-FR")} [${i.type}]: ${anonymiserPourIA(i.summary) || "N/A"} → ${anonymiserPourIA(i.outcome) || "N/A"}`).join("\n") || "Aucune interaction"}
+${(interactions as Interaction[] | null)?.map((i) => `- ${new Date(i.created_at).toLocaleDateString("fr-FR")} [${i.type}]: ${anonymiserPourIA(i.titre) || "N/A"} → ${anonymiserPourIA(i.contenu) || "N/A"}`).join("\n") || "Aucune interaction"}
 `;
       }
     } else {
       const { count: clientCount } = await supabase.from("clients").select("*", { count: "exact", head: true });
-      const { count: contractCount } = await supabase.from("contracts").select("*", { count: "exact", head: true }).eq("status", "actif");
+      const { count: contractCount } = await supabase.from("contracts").select("*", { count: "exact", head: true }).eq("status", "active");
 
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      const { data: inactiveClients } = await supabase
+      const inactiveRes = await supabase
         .from("clients")
-        .select("id, first_name, last_name, email")
+        .select("id, full_name, email")
         .lt("updated_at", thirtyDaysAgo.toISOString())
-        .eq("status", "actif")
+        .eq("statut_client", "actif")
         .limit(5);
+      warnRequete("copilot/inactive-clients", inactiveRes);
+      const inactiveClients = inactiveRes.data;
 
       const inactifs = (inactiveClients as InactiveClient[] | null) || [];
       inactifs.forEach((c) => concernedClientIds.push(c.id));

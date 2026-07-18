@@ -36,6 +36,23 @@ export function ageDepuisNaissance(dateNaissance: string | null | undefined): nu
   return age >= 0 && age < 130 ? age : null;
 }
 
+// Garde anti-régression : signale (sans bloquer) une requête Supabase en échec —
+// ou vide de façon inattendue — afin qu'un futur mismatch de schéma (colonne/table
+// inexistante → erreur PostgREST) ne redevienne pas silencieux.
+export function warnRequete(
+  label: string,
+  res: { data: unknown; error: { message: string } | null },
+  options: { warnIfEmpty?: boolean } = {},
+): void {
+  if (res.error) {
+    console.warn(`[ia] requête "${label}" en échec: ${res.error.message}`);
+    return;
+  }
+  if (options.warnIfEmpty && Array.isArray(res.data) && res.data.length === 0) {
+    console.warn(`[ia] requête "${label}" renvoie 0 résultat (inattendu — vérifier le schéma).`);
+  }
+}
+
 // Journalise l'usage d'un service IA. Une ligne audit_logs par client concerné
 // (même en batch) afin de pouvoir répondre à « qu'a fait l'IA avec les données de
 // CE client ». Best-effort : un échec d'audit ne casse pas la réponse IA produite.
