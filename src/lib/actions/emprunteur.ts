@@ -28,6 +28,51 @@ export type EmprunteurStats = {
   cette_semaine: number;
 };
 
+// Bucket privé du tunnel emprunteur (pièces d'identité, tableaux d'amortissement, offres de prêt).
+const PROSPECT_BUCKET = "prospect-documents";
+// Durée de vie courte des URLs signées : l'accès expire après quelques minutes.
+const SIGNED_URL_TTL_SECONDS = 600; // 10 minutes
+
+// Normalise une valeur stockée en chemin de stockage.
+// Les nouvelles écritures stockent déjà le chemin ; on gère aussi les anciennes
+// valeurs qui pourraient contenir une URL publique/signée complète.
+function toStoragePath(pathOrUrl: string): string {
+  const value = pathOrUrl.trim();
+  const markers = [
+    `/object/public/${PROSPECT_BUCKET}/`,
+    `/object/sign/${PROSPECT_BUCKET}/`,
+    `/${PROSPECT_BUCKET}/`,
+  ];
+  for (const marker of markers) {
+    const idx = value.indexOf(marker);
+    if (idx !== -1) {
+      // Retire un éventuel query string (?token=... des anciennes URLs signées).
+      return value.slice(idx + marker.length).split("?")[0];
+    }
+  }
+  return value;
+}
+
+// Génère à la demande une URL signée à courte durée de vie pour un document du
+// tunnel emprunteur. Réservé au personnel (admin / courtier). L'URL n'est jamais
+// stockée en base : elle est produite au moment de l'affichage puis expire.
+export async function getEmprunteurDocumentUrl(
+  pathOrUrl: string,
+): Promise<{ url: string | null; error?: string }> {
+  await requireRole(["admin", "courtier"]);
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { url: null, error: "Connexion Supabase non disponible." };
+  if (!pathOrUrl?.trim()) return { url: null, error: "Chemin de document manquant." };
+
+  const path = toStoragePath(pathOrUrl);
+  const { data, error } = await supabase.storage
+    .from(PROSPECT_BUCKET)
+    .createSignedUrl(path, SIGNED_URL_TTL_SECONDS);
+
+  if (error || !data) return { url: null, error: error?.message ?? "Document introuvable." };
+  return { url: data.signedUrl };
+}
+
 export async function getEmprunteurDossiers(): Promise<EmprunteurDossier[]> {
   await requireRole(["admin", "courtier"]);
   const supabase = await createSupabaseServerClient();
