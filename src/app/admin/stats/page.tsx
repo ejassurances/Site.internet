@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { StatsDashboardClient } from "@/components/stats/stats-dashboard-client";
 
-export const metadata = { title: "Stats & Analyses — EJ Assurances" };
+export const metadata = { title: "Stats & Analyses — EJ Partners Assurances" };
 
 export default async function StatsPage() {
   const user = await requireRole(["admin", "courtier"]);

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Design system Navy Fintech global pour EJ Assurances. */
+/* Design system Navy Fintech global pour EJ Partners Assurances. */
 :root {
   --bg-primary: #F6F9FC;
   --bg-surface: #FFFFFF;
@@ -630,7 +630,7 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 
 .contact-form textarea { min-height: 130px; resize: vertical; }
 
-/* EJ Assurances - homepage V2 */
+/* EJ Partners Assurances - homepage V2 */
 .ej-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, .8fr);
@@ -1263,19 +1263,9 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
     grid-template-columns: 1fr;
   }
 
-  .admin-home-hero,
-  .admin-home-kpis,
-  .admin-home-modules-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .admin-create-rail {
     position: static;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .admin-quick-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1300,10 +1290,6 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   }
 
   .admin-create-rail,
-  .admin-home-hero,
-  .admin-home-kpis,
-  .admin-home-modules-grid,
-  .admin-quick-grid,
   .form-grid-2,
   .form-tag-input {
     grid-template-columns: 1fr;
@@ -1559,39 +1545,6 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   margin-bottom: 0;
   font-size: clamp(26px, 3.5vw, 42px);
   line-height: 1.05;
-}
-
-.workspace-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 42px;
-  padding: 0 10px 0 16px;
-  border: 1px solid rgba(7,24,39,.08);
-  border-radius: 999px;
-  background: white;
-  color: var(--muted);
-  box-shadow: none;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.icon-button {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  border: 1px solid rgba(7,24,39,.06);
-  border-radius: 10px;
-  background: rgba(7,24,39,.04);
-  color: var(--navy);
-  cursor: pointer;
-  transition: background .15s, transform .15s;
-}
-
-.icon-button:hover {
-  background: rgba(7,24,39,.08);
-  transform: translateY(-1px);
 }
 
 /* âââ Stats Grid âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
@@ -1935,243 +1888,6 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .field-hint, .assessment-preview small { color: var(--muted); font-size: 13px; }
 
 .form-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-
-/* Admin home */
-.admin-home-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
-  gap: 18px;
-  align-items: stretch;
-  margin-bottom: 18px;
-}
-
-.admin-home-hero > div:first-child,
-.admin-home-focus-card,
-.admin-home-kpis article,
-.admin-home-section,
-.admin-quick-grid a,
-.admin-home-module-card,
-.admin-home-client-list a {
-  border: 1px solid rgba(30,58,95,.12);
-  background: rgba(255,255,255,.92);
-  box-shadow: 0 18px 55px rgba(15,23,42,.07);
-}
-
-.admin-home-hero > div:first-child {
-  position: relative;
-  overflow: hidden;
-  border-radius: 20px;
-  padding: clamp(24px, 4vw, 38px);
-  background:
-    radial-gradient(circle at 88% 12%, rgba(59,130,246,.16), transparent 30%),
-    linear-gradient(135deg, #ffffff, #f8fafc 55%, #eef6ff);
-}
-
-.admin-home-hero h1 {
-  max-width: 840px;
-  margin: 6px 0 12px;
-  color: var(--navy);
-  font-size: clamp(30px, 4vw, 48px);
-  line-height: 1.02;
-  letter-spacing: 0;
-}
-
-.admin-home-hero p {
-  max-width: 760px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.65;
-}
-
-.admin-home-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.admin-home-focus-card {
-  display: grid;
-  align-content: space-between;
-  gap: 12px;
-  border-radius: 20px;
-  padding: 22px;
-  background:
-    linear-gradient(135deg, rgba(7,17,30,.96), rgba(15,39,68,.95));
-  color: white;
-}
-
-.admin-home-focus-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  color: rgba(255,255,255,.68);
-  font-size: 12px;
-  font-weight: 850;
-  text-transform: uppercase;
-}
-
-.admin-home-focus-card strong {
-  display: block;
-  color: white;
-  font-size: 58px;
-  line-height: 1;
-}
-
-.admin-home-focus-card p {
-  color: rgba(240,244,248,.78);
-  font-size: 14px;
-}
-
-.admin-home-focus-card a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  justify-self: start;
-  border-radius: 999px;
-  background: rgba(255,255,255,.1);
-  color: white;
-  padding: 9px 12px;
-  font-size: 13px;
-  font-weight: 850;
-}
-
-.admin-home-kpis {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.admin-home-kpis article {
-  display: grid;
-  gap: 6px;
-  border-radius: 16px;
-  padding: 17px;
-}
-
-.admin-home-kpis svg { color: var(--accent-strong); }
-.admin-home-kpis span { color: var(--muted); font-size: 12px; font-weight: 850; text-transform: uppercase; }
-.admin-home-kpis strong { color: var(--navy); font-size: 30px; line-height: 1; }
-.admin-home-kpis small { color: var(--muted); font-size: 12px; }
-
-.admin-home-section {
-  display: grid;
-  gap: 15px;
-  border-radius: 20px;
-  padding: 20px;
-  margin-top: 18px;
-}
-
-.admin-home-section-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  align-items: center;
-}
-
-.admin-home-section-header h2 {
-  margin: 3px 0 0;
-  color: var(--navy);
-  font-size: clamp(20px, 2.5vw, 28px);
-}
-
-.admin-home-section-header > a {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--accent-strong);
-  font-size: 13px;
-  font-weight: 850;
-}
-
-.admin-quick-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.admin-quick-grid a {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 10px;
-  border-radius: 14px;
-  padding: 14px;
-  color: var(--navy);
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.admin-quick-grid svg:first-child { color: var(--accent-strong); }
-
-.admin-home-modules-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.admin-home-module-card {
-  display: grid;
-  gap: 10px;
-  border-radius: 16px;
-  padding: 18px;
-  color: inherit;
-  transition: transform .16s, box-shadow .16s, border-color .16s;
-}
-
-.admin-home-module-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(59,130,246,.28);
-  box-shadow: 0 24px 65px rgba(15,23,42,.1);
-}
-
-.admin-home-module-icon {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
-  background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(139,92,246,.12));
-  color: var(--accent-strong);
-}
-
-.admin-home-module-card > span {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.admin-home-module-card h3 { margin: 0; color: var(--navy); font-size: 17px; }
-.admin-home-module-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
-.admin-home-module-card div:last-child {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--accent-strong);
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.admin-home-client-list {
-  display: grid;
-  gap: 9px;
-}
-
-.admin-home-client-list a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  border-radius: 14px;
-  padding: 14px 16px;
-}
-
-.admin-home-client-list strong { color: var(--navy); }
-.admin-home-client-list p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
 
 /* Admin client creation */
 .admin-client-create-hero {
@@ -3926,21 +3642,6 @@ body {
 .ops-icon-action { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: #065f46; cursor: pointer; }
 .ops-icon-action--danger { color: #991b1b; }
 .ops-empty { padding: 28px; color: var(--muted); text-align: center; }
-.archive-action {
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid rgba(153,27,27,.22);
-  border-radius: 10px;
-  background: #fff;
-  color: #991b1b;
-  font: inherit;
-  font-size: 13px;
-  font-weight: 850;
-  cursor: pointer;
-}
-.archive-action:hover {
-  background: #fee2e2;
-}
 .ops-table-nested { grid-column: 1 / -1; display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-soft); }
 .ops-table-nested article { display: grid; gap: 3px; padding: 10px 12px; border-radius: 10px; background: #fff; }
 .ops-table-nested p { margin: 2px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
@@ -4057,12 +3758,6 @@ body {
 }
 .app-layout .workspace-header h1 { font-size: clamp(20px, 2.4vw, 26px); line-height: 1.15; }
 .app-layout .workspace-header .eyebrow { color: var(--crm-muted); }
-.app-layout .icon-button {
-  width: 38px; height: 38px; border-radius: 11px;
-  border: 1px solid var(--crm-border); background: var(--crm-surface); color: var(--crm-ink);
-}
-.app-layout .icon-button:hover { background: var(--crm-surface-2); }
-
 /* ── Cartes (metric / stats / ops / souscription) ─────────────────────────── */
 .app-layout .metric,
 .app-layout .stats-card,
@@ -4130,3 +3825,617 @@ body {
   font-weight: 700;
   letter-spacing: .01em;
 }
+
+/* ==========================================================================
+   DES-001 · FONDATIONS DU DESIGN SYSTEM BACK-OFFICE (Phase 1)
+   --------------------------------------------------------------------------
+   Direction validée : bleu marine = identité · teal = action/interaction ·
+   or = premium (parcimonie). Réf. maquette DES-001 + doc 310.
+
+   PORTÉE : ces tokens sont définis UNIQUEMENT sous `.app-layout` (espace
+   cabinet + espace client connecté). Le site public n'utilise pas
+   `.app-layout` → impact nul sur la vitrine.
+
+   ADDITIF : cette phase n'applique les tokens à aucun écran. Ils sont le
+   substrat consommé à partir de la Phase 2 (préfixe `--bo-` / classes `bo-`),
+   sans collision avec l'existant. Aucune règle existante n'est modifiée.
+   ========================================================================== */
+.app-layout {
+  /* — Marque : bleu marine (identité) — */
+  --bo-navy-900:#0A1B2E;
+  --bo-navy-850:#0E2439;
+  --bo-navy-800:#132E47;
+  --bo-navy-700:#1D3E5C;
+
+  /* — Action / interaction : teal — */
+  --bo-teal:#1F7A80;
+  --bo-teal-600:#186468;
+  --bo-teal-050:#E4F1F1;
+
+  /* — Premium : or (usage parcimonieux : badges, certifications, mises en valeur) — */
+  --bo-gold:#BE9E56;
+  --bo-gold-050:#F5EEDC;
+  --bo-gold-ink:#785A1C;
+
+  /* — Neutres à léger biais marine (froids, choisis) — */
+  --bo-bg:#F1F5F9;
+  --bo-surface:#FFFFFF;
+  --bo-surface-2:#F6F9FC;
+  --bo-surface-3:#EEF3F8;
+  --bo-border:#DEE6EF;
+  --bo-border-strong:#CBD6E2;
+  --bo-ink:#12242F;
+  --bo-text:#243746;
+  --bo-muted:#5D6E7E;
+  --bo-faint:#8496A5;
+
+  /* — Sémantique (distincte de l'accent) : fond / bordure / texte — */
+  --bo-success:#0F7B5A; --bo-success-bg:#E3F2EA; --bo-success-bd:#BCE0CD;
+  --bo-warning:#A9721B; --bo-warning-bg:#FBF0D8; --bo-warning-bd:#EDD6A6;
+  --bo-danger:#BE3A2B;  --bo-danger-bg:#FBE7E4;  --bo-danger-bd:#F0C6BF;
+  --bo-info:#1F7A80;    --bo-info-bg:#E4F1F1;     --bo-info-bd:#BFDDDE;
+
+  /* — Rayons — */
+  --bo-r-sm:7px; --bo-r:10px; --bo-r-lg:14px; --bo-r-xl:20px;
+
+  /* — Ombres (élévation douce) — */
+  --bo-shadow-sm:0 1px 2px rgba(12,32,52,.06), 0 1px 3px rgba(12,32,52,.05);
+  --bo-shadow-md:0 6px 18px rgba(12,32,52,.09);
+  --bo-shadow-lg:0 18px 48px rgba(10,27,46,.16);
+
+  /* — Anneau de focus (accessibilité, dérivé du teal) — */
+  --bo-ring:0 0 0 3px rgba(31,122,128,.28);
+
+  /* — Échelle d'espacement systématique — */
+  --bo-sp1:4px; --bo-sp2:8px; --bo-sp3:12px; --bo-sp4:16px;
+  --bo-sp5:24px; --bo-sp6:32px; --bo-sp7:48px;
+
+  /* — Typographie utilitaire (données chiffrées) — */
+  --bo-font-mono:ui-monospace,"SFMono-Regular","Menlo","Consolas",monospace;
+}
+
+/* Utilitaire additif : chiffres tabulaires alignés (KPI, tableaux, montants). */
+.app-layout .bo-num {
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"tnum" 1;
+}
+/* Fin DES-001 — Phase 1 (fondations tokens) */
+
+/* ==========================================================================
+   DES-001 · SHELL BACK-OFFICE (Phase 2) — sidebar + header
+   --------------------------------------------------------------------------
+   Consomme les tokens --bo-* (Phase 1). Tout est scopé sous `.app-layout`
+   → impact nul sur le site public. Placé en fin de fichier : ces règles
+   priment sur l'ancien style du shell par ordre de cascade, SANS modifier
+   le contenu interne des pages (enveloppé dans .bo-page, inset préservé).
+   ========================================================================== */
+
+/* Grille + fond de l'espace connecté */
+.app-layout {
+  grid-template-columns: 250px minmax(0, 1fr);
+  background: var(--bo-bg);
+}
+
+/* — Sidebar (bleu marine = identité) — */
+.app-layout .sidebar {
+  background: linear-gradient(180deg, var(--bo-navy-850), var(--bo-navy-900));
+  border-right: 1px solid rgba(255,255,255,.06);
+  padding: 18px 12px 14px;
+  gap: 2px;
+}
+.app-layout .app-brand { padding: 6px 8px 14px; gap: 10px; }
+.app-layout .app-brand-title small { color: #7C93A8; font-size: 11px; }
+
+.app-layout .side-nav { gap: 2px; }
+.app-layout .side-nav-group { margin-top: 10px; }
+.app-layout .side-nav-group-label {
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: #5E7791; font-weight: 700; padding: 2px 8px 6px;
+  display: flex; align-items: center; gap: 8px; background: none; border: 0;
+}
+.app-layout .side-nav-group-label:hover,
+.app-layout .side-nav-group-label.module-active { color: #93AABB; }
+.app-layout .side-nav-group-label svg { opacity: .7; }
+
+.app-layout .side-nav a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px;
+  color: #B4C4D3; font-size: 13.5px; font-weight: 500;
+  border: 1px solid transparent; transition: background .14s, color .14s;
+}
+.app-layout .side-nav a svg { opacity: .85; flex-shrink: 0; }
+.app-layout .side-nav a:hover { background: rgba(255,255,255,.06); color: #EAF2F8; }
+.app-layout .side-nav a.active {
+  background: rgba(31,122,128,.22); color: #fff; border-color: rgba(58,160,166,.35);
+  box-shadow: inset 3px 0 0 var(--bo-teal); /* liseré actif teal (remplace l'or hérité) */
+}
+.app-layout .side-nav a.active svg { color: #4FC4CB; opacity: 1; }
+.app-layout .side-nav-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 6px; }
+
+/* Pied de sidebar */
+.app-layout .bo-side-foot { margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.07); }
+.app-layout .bo-side-user {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+  color: rgba(226,236,244,.6); font-size: 12.5px;
+}
+.app-layout .bo-side-user span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-layout .bo-signout {
+  display: flex; align-items: center; gap: 8px; width: 100%; min-height: 38px;
+  padding: 0 10px; border: 0; border-radius: 8px;
+  background: rgba(255,255,255,.06); color: rgba(226,236,244,.7);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s;
+}
+.app-layout .bo-signout:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+/* — Workspace : header pleine largeur + contenu inset préservé — */
+.app-layout .workspace { padding: 0; }
+.app-layout .bo-page { padding: 24px clamp(16px, 3vw, 32px) 48px; }
+
+/* Header / topbar premium (sticky) */
+.app-layout .bo-topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px clamp(16px, 3vw, 32px); margin: 0;
+  background: color-mix(in srgb, var(--bo-surface) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(8px);
+  border-bottom: 1px solid var(--bo-border);
+}
+.app-layout .bo-topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.app-layout .bo-greeting .eyebrow { color: var(--bo-faint); }
+.app-layout .bo-greeting h1 { font-size: clamp(17px, 2vw, 22px); line-height: 1.15; color: var(--bo-ink); font-weight: 720; margin: 2px 0 0; }
+.app-layout .bo-topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.app-layout .bo-search {
+  display: flex; align-items: center; gap: 9px;
+  width: clamp(220px, 30vw, 380px);
+  background: var(--bo-surface-3); border: 1px solid var(--bo-border);
+  border-radius: 9px; padding: 8px 12px; color: var(--bo-muted);
+}
+.app-layout .bo-search:focus-within { border-color: var(--bo-teal); box-shadow: var(--bo-ring); }
+.app-layout .bo-search svg { flex: none; }
+.app-layout .bo-search input {
+  border: 0; background: none; outline: none; flex: 1; min-width: 0;
+  font-size: 13.5px; color: var(--bo-text); font-family: inherit;
+}
+.app-layout .bo-search input::placeholder { color: var(--bo-faint); }
+.app-layout .bo-kbd { font-size: 11px; color: var(--bo-faint); border: 1px solid var(--bo-border-strong); border-radius: 5px; padding: 1px 6px; }
+
+.app-layout .bo-iconbtn {
+  position: relative; width: 38px; height: 38px; flex: none;
+  border-radius: 9px; border: 1px solid var(--bo-border); background: var(--bo-surface);
+  color: var(--bo-muted); display: grid; place-items: center; cursor: pointer; transition: .14s;
+}
+.app-layout .bo-iconbtn:hover { color: var(--bo-ink); background: var(--bo-surface-2); border-color: var(--bo-border-strong); }
+.app-layout .bo-dot { position: absolute; top: 8px; right: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--bo-danger); box-shadow: 0 0 0 2px var(--bo-surface); }
+
+.app-layout .bo-userchip {
+  display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px;
+  border: 1px solid var(--bo-border); border-radius: 22px; background: var(--bo-surface);
+}
+.app-layout .bo-userchip-av {
+  width: 30px; height: 30px; border-radius: 50%; flex: none;
+  background: linear-gradient(140deg, var(--bo-navy-700), var(--bo-teal));
+  color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 700;
+}
+.app-layout .bo-userchip-id { display: flex; flex-direction: column; line-height: 1.12; }
+.app-layout .bo-userchip-name { font-size: 12.5px; font-weight: 650; color: var(--bo-ink); white-space: nowrap; }
+.app-layout .bo-role {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--bo-muted);
+}
+
+/* Burger + backdrop : masqués sur desktop */
+.app-layout .bo-burger { display: none; }
+.app-layout .bo-backdrop { display: none; }
+
+/* — Responsive : tiroir mobile — */
+@media (max-width: 960px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .app-layout .sidebar {
+    position: fixed; top: 0; left: 0; width: 264px; height: 100svh; z-index: 60;
+    transform: translateX(-100%); transition: transform .22s ease; box-shadow: var(--bo-shadow-lg);
+  }
+  .app-layout.bo-nav-open .sidebar { transform: translateX(0); }
+  .app-layout .bo-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 50; border: 0; padding: 0;
+    background: rgba(10,20,32,.5); opacity: 0; pointer-events: none; transition: opacity .2s; cursor: pointer;
+  }
+  .app-layout.bo-nav-open .bo-backdrop { opacity: 1; pointer-events: auto; }
+  .app-layout .bo-burger {
+    display: grid; place-items: center; width: 38px; height: 38px; flex: none;
+    border-radius: 9px; border: 1px solid var(--bo-border); background: var(--bo-surface); color: var(--bo-ink); cursor: pointer;
+  }
+  .app-layout .bo-search { width: auto; }
+  .app-layout .bo-search input, .app-layout .bo-kbd { display: none; }
+}
+@media (max-width: 560px) {
+  .app-layout .bo-greeting .eyebrow { display: none; }
+  .app-layout .bo-userchip-id { display: none; }
+  .app-layout .bo-userchip { padding: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-layout .sidebar, .app-layout .bo-backdrop { transition: none; }
+}
+/* Fin DES-001 — Phase 2 (shell) */
+
+/* ==========================================================================
+   DES-001 · COMPOSANTS DASHBOARD (Phase 3)
+   Classes `bo-*` scopées .app-layout, consommant les tokens Phase 1.
+   Additif (namespacé) : appliqué au Dashboard uniquement à ce stade.
+   ========================================================================== */
+.app-layout .bo-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--bo-faint); }
+.app-layout .bo-stack { display: flex; flex-direction: column; gap: 20px; }
+.app-layout .bo-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+/* Barre "votre journée" (bleu marine) */
+.app-layout .bo-daybar {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+  background: linear-gradient(120deg, var(--bo-navy-900), var(--bo-navy-800));
+  color: #DCE7F0; border-radius: 16px; padding: 20px 22px; margin-bottom: 20px;
+}
+.app-layout .bo-daybar .bo-eyebrow { color: #7FA7C4; }
+.app-layout .bo-daybar h2 { color: #fff; font-size: 19px; font-weight: 720; margin: 5px 0 0; }
+.app-layout .bo-daybar p { color: #A9C0D2; font-size: 13.5px; margin: 7px 0 0; }
+.app-layout .bo-daybar-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Boutons */
+.app-layout .bo-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 9px; font-size: 13.5px; font-weight: 650; cursor: pointer; border: 1px solid transparent; transition: .14s; white-space: nowrap; }
+.app-layout .bo-btn-primary { background: var(--bo-teal); color: #fff; }
+.app-layout .bo-btn-primary:hover { background: var(--bo-teal-600); }
+.app-layout .bo-btn-onnavy { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.2); }
+.app-layout .bo-btn-onnavy:hover { background: rgba(255,255,255,.2); }
+
+/* KPI */
+.app-layout .bo-kpirow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+.app-layout .bo-kpi { position: relative; display: block; background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: 14px; padding: 16px 16px 14px; box-shadow: var(--bo-shadow-sm); transition: .14s; color: inherit; }
+.app-layout a.bo-kpi:hover { border-color: var(--bo-border-strong); box-shadow: var(--bo-shadow-md); transform: translateY(-1px); }
+.app-layout .bo-kpi-top { display: flex; align-items: center; justify-content: space-between; }
+.app-layout .bo-kpi-lab { font-size: 12.5px; color: var(--bo-muted); font-weight: 600; }
+.app-layout .bo-kpi-ic { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--bo-teal-050); color: var(--bo-teal); }
+.app-layout .bo-kpi-ic.gold { background: var(--bo-gold-050); color: var(--bo-gold); }
+.app-layout .bo-kpi-val { font-size: 27px; font-weight: 760; color: var(--bo-ink); letter-spacing: -.02em; margin: 8px 0 2px; }
+.app-layout .bo-kpi-sub { font-size: 12px; color: var(--bo-faint); }
+.app-layout .bo-kpi-delta { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 700; color: var(--bo-success); }
+
+/* Cartes */
+.app-layout .bo-card { background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: 14px; box-shadow: var(--bo-shadow-sm); }
+.app-layout .bo-card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; border-bottom: 1px solid var(--bo-border); }
+.app-layout .bo-card-h h2, .app-layout .bo-card-h h3 { font-size: 15px; font-weight: 700; color: var(--bo-ink); }
+.app-layout .bo-card-b { padding: 16px 18px; }
+.app-layout .bo-seemore { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; color: var(--bo-teal); }
+
+/* Grille 2 colonnes */
+.app-layout .bo-grid2 { display: grid; grid-template-columns: 1.55fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+/* Urgence / à traiter */
+.app-layout .bo-urgent { display: flex; align-items: center; gap: 16px; padding: 18px; }
+.app-layout .bo-urgent-badge { width: 52px; height: 52px; border-radius: 13px; display: grid; place-items: center; background: var(--bo-warning-bg); color: var(--bo-warning); flex: none; }
+.app-layout .bo-urgent .n { font-size: 28px; font-weight: 770; color: var(--bo-ink); line-height: 1; }
+.app-layout .bo-urgent .t { color: var(--bo-muted); font-size: 13.5px; margin-top: 4px; }
+
+/* Liste clients */
+.app-layout .bo-list { display: flex; flex-direction: column; }
+.app-layout .bo-list a { display: flex; align-items: center; gap: 12px; padding: 11px 18px; border-top: 1px solid var(--bo-border); color: inherit; transition: .12s; }
+.app-layout .bo-list a:first-child { border-top: 0; }
+.app-layout .bo-list a:hover { background: var(--bo-surface-2); }
+.app-layout .bo-avatar { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-weight: 700; font-size: 12px; color: #fff; background: var(--bo-navy-700); flex: none; }
+.app-layout .bo-list .nm { font-weight: 600; color: var(--bo-ink); font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-layout .bo-list .sub { font-size: 12px; color: var(--bo-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-layout .bo-list .chev { margin-left: auto; color: var(--bo-faint); flex: none; }
+
+/* État "à connecter" (honnête, sans donnée factice) */
+.app-layout .bo-soon { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px dashed var(--bo-border-strong); border-radius: 11px; background: var(--bo-surface-2); }
+.app-layout .bo-soon + .bo-soon { margin-top: 10px; }
+.app-layout .bo-soon-ic { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: var(--bo-surface-3); color: var(--bo-faint); flex: none; }
+.app-layout .bo-soon .nm { font-weight: 650; color: var(--bo-text); font-size: 13px; }
+.app-layout .bo-soon .sub { font-size: 11.5px; color: var(--bo-faint); }
+.app-layout .bo-soon .tag { margin-left: auto; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--bo-muted); background: var(--bo-surface-3); border: 1px solid var(--bo-border); padding: 3px 8px; border-radius: 20px; flex: none; }
+
+/* Actions rapides */
+.app-layout .bo-quick { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.app-layout .bo-quick a { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--bo-border); border-radius: 11px; background: var(--bo-surface); color: var(--bo-ink); font-size: 13px; font-weight: 600; transition: .14s; }
+.app-layout .bo-quick a:hover { border-color: var(--bo-teal); background: var(--bo-teal-050); color: var(--bo-teal); }
+.app-layout .bo-quick a .chev { margin-left: auto; color: var(--bo-faint); }
+.app-layout .bo-quick a:hover .chev { color: var(--bo-teal); }
+
+/* Modules cabinet */
+.app-layout .bo-sec { margin-bottom: 22px; }
+.app-layout .bo-sec-h { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.app-layout .bo-sec-h h2 { font-size: 16px; font-weight: 720; color: var(--bo-ink); margin: 3px 0 0; }
+.app-layout .bo-modgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.app-layout .bo-modcard { display: flex; flex-direction: column; gap: 8px; padding: 18px; border: 1px solid var(--bo-border); border-radius: 14px; background: var(--bo-surface); box-shadow: var(--bo-shadow-sm); color: inherit; transition: .14s; }
+.app-layout .bo-modcard:hover { border-color: var(--bo-border-strong); box-shadow: var(--bo-shadow-md); transform: translateY(-1px); }
+.app-layout .bo-modcard-ic { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: var(--bo-teal-050); color: var(--bo-teal); }
+.app-layout .bo-modcard h3 { font-size: 15px; font-weight: 700; color: var(--bo-ink); }
+.app-layout .bo-modcard p { font-size: 12.5px; color: var(--bo-muted); margin: 0; line-height: 1.5; }
+.app-layout .bo-modcard .go { margin-top: auto; display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; color: var(--bo-teal); padding-top: 6px; }
+
+/* Responsive Dashboard */
+@media (max-width: 1080px) {
+  .app-layout .bo-kpirow { grid-template-columns: repeat(2, 1fr); }
+  .app-layout .bo-grid2 { grid-template-columns: 1fr; }
+  .app-layout .bo-modgrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .app-layout .bo-kpirow { grid-template-columns: 1fr; }
+  .app-layout .bo-modgrid { grid-template-columns: 1fr; }
+}
+/* Fin DES-001 — Phase 3 (Dashboard) */
+
+/* ==========================================================================
+   DES-001 · COMPOSANTS CLIENTS (Phase 4) — liste + chrome de la fiche
+   Classes `bo-*` additives scopées .app-layout. N'altèrent ni `crm-*`
+   (pages Finance) ni `cf360-*` (partagé avec le workflow Projet).
+   ========================================================================== */
+
+/* En-tête de page */
+.app-layout .bo-pagehead { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.app-layout .bo-pagehead h1 { font-size: 24px; font-weight: 750; color: var(--bo-ink); }
+.app-layout .bo-pagehead p { margin: 4px 0 0; color: var(--bo-muted); font-size: 14px; }
+
+/* Badges de statut sémantiques */
+.app-layout .bo-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 20px; border: 1px solid transparent; line-height: 1.4; white-space: nowrap; }
+.app-layout .bo-badge .d { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.app-layout .bo-badge-success { color: var(--bo-success); background: var(--bo-success-bg); border-color: var(--bo-success-bd); }
+.app-layout .bo-badge-warning { color: var(--bo-warning); background: var(--bo-warning-bg); border-color: var(--bo-warning-bd); }
+.app-layout .bo-badge-info { color: var(--bo-info); background: var(--bo-info-bg); border-color: var(--bo-info-bd); }
+.app-layout .bo-badge-neutral { color: var(--bo-muted); background: var(--bo-surface-3); border-color: var(--bo-border); }
+.app-layout .bo-badge-gold { color: var(--bo-gold-ink); background: var(--bo-gold-050); border-color: var(--bo-gold); }
+
+/* Onglets (segmented links) */
+.app-layout .bo-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 18px; }
+.app-layout .bo-tab { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 9px; border: 1px solid var(--bo-border); background: var(--bo-surface); color: var(--bo-muted); font-size: 13px; font-weight: 600; transition: .14s; }
+.app-layout .bo-tab:hover { border-color: var(--bo-border-strong); color: var(--bo-ink); }
+.app-layout .bo-tab.on { background: var(--bo-teal-050); border-color: var(--bo-teal); color: var(--bo-teal); }
+
+/* Barre de recherche + filtres */
+.app-layout .bo-searchbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.app-layout .bo-searchfield { display: flex; align-items: center; gap: 9px; flex: 1; min-width: 240px; background: var(--bo-surface); border: 1px solid var(--bo-border-strong); border-radius: 9px; padding: 9px 12px; color: var(--bo-muted); }
+.app-layout .bo-searchfield:focus-within { border-color: var(--bo-teal); box-shadow: var(--bo-ring); }
+.app-layout .bo-searchfield input { border: 0; background: none; outline: none; flex: 1; min-width: 0; font-size: 13.5px; color: var(--bo-ink); font-family: inherit; }
+.app-layout .bo-searchfield input::placeholder { color: var(--bo-faint); }
+.app-layout .bo-selectwrap { display: flex; align-items: center; gap: 7px; background: var(--bo-surface); border: 1px solid var(--bo-border-strong); border-radius: 9px; padding: 0 12px; color: var(--bo-muted); }
+.app-layout .bo-selectwrap select { border: 0; background: none; outline: none; padding: 9px 4px; font-size: 13.5px; color: var(--bo-ink); font-family: inherit; cursor: pointer; }
+.app-layout .bo-reset { display: inline-flex; align-items: center; font-size: 13px; font-weight: 600; color: var(--bo-muted); padding: 9px 10px; }
+.app-layout .bo-reset:hover { color: var(--bo-danger); }
+
+/* Grille de fiches client */
+.app-layout .bo-tilegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.app-layout .bo-tile { display: flex; flex-direction: column; gap: 12px; padding: 18px; border: 1px solid var(--bo-border); border-radius: 14px; background: var(--bo-surface); box-shadow: var(--bo-shadow-sm); color: inherit; transition: .14s; }
+.app-layout .bo-tile:hover { border-color: var(--bo-border-strong); box-shadow: var(--bo-shadow-md); transform: translateY(-1px); }
+.app-layout .bo-tile-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.app-layout .bo-tile-av { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; color: #fff; font-weight: 750; font-size: 17px; flex: none; }
+.app-layout .bo-tile-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.app-layout .bo-tile-type { font-size: 11px; font-weight: 700; color: var(--bo-muted); }
+.app-layout .bo-tile-name { font-size: 16px; font-weight: 700; color: var(--bo-ink); }
+.app-layout .bo-tile-context { font-size: 12.5px; color: var(--bo-muted); margin: 3px 0 0; display: flex; align-items: center; gap: 6px; }
+.app-layout .bo-tile-contact { display: flex; flex-direction: column; gap: 5px; }
+.app-layout .bo-tile-contact span { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--bo-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-layout .bo-tile-contact svg { color: var(--bo-faint); flex: none; }
+.app-layout .bo-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.app-layout .bo-tag { font-size: 11px; font-weight: 600; color: var(--bo-teal); background: var(--bo-teal-050); border: 1px solid var(--bo-info-bd); padding: 2px 8px; border-radius: 6px; }
+.app-layout .bo-tag-more { color: var(--bo-muted); background: var(--bo-surface-3); border-color: var(--bo-border); }
+.app-layout .bo-tile-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 12px; border-top: 1px solid var(--bo-border); margin-top: auto; }
+.app-layout .bo-tile-contracts { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--bo-muted); }
+.app-layout .bo-tile-go { display: inline-flex; align-items: center; gap: 3px; font-size: 12.5px; font-weight: 650; color: var(--bo-teal); }
+
+/* État vide */
+.app-layout .bo-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; padding: 56px 24px; background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: 14px; }
+.app-layout .bo-empty-ic { width: 64px; height: 64px; border-radius: 17px; background: var(--bo-surface-3); border: 1px solid var(--bo-border); display: grid; place-items: center; color: var(--bo-faint); }
+.app-layout .bo-empty h3 { font-size: 17px; color: var(--bo-ink); }
+.app-layout .bo-empty p { color: var(--bo-muted); max-width: 380px; margin: 0; font-size: 13.5px; }
+
+/* — Fiche client : chrome (header page + hero + onglets) — */
+.app-layout .bo-fichehead { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.app-layout .bo-back { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--bo-muted); margin-bottom: 8px; }
+.app-layout .bo-back:hover { color: var(--bo-teal); }
+.app-layout .bo-fichehead h1 { font-size: 22px; font-weight: 750; color: var(--bo-ink); }
+.app-layout .bo-fichehead .sub { margin: 4px 0 0; color: var(--bo-muted); font-size: 13.5px; }
+.app-layout .bo-fichehead-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.app-layout .bo-btn-secondary { background: var(--bo-surface); color: var(--bo-text); border-color: var(--bo-border-strong); }
+.app-layout .bo-btn-secondary:hover { background: var(--bo-surface-2); border-color: var(--bo-muted); }
+.app-layout .bo-btn-danger-soft { background: var(--bo-surface); color: var(--bo-danger); border-color: var(--bo-danger-bd); }
+.app-layout .bo-btn-danger-soft:hover { background: var(--bo-danger-bg); }
+.app-layout .bo-source-banner { display: flex; align-items: center; gap: 10px; padding: 11px 15px; border-radius: 11px; border: 1px solid var(--bo-info-bd); background: var(--bo-info-bg); color: var(--bo-info); font-size: 13px; font-weight: 600; margin-bottom: 18px; }
+.app-layout .bo-source-banner .lnk { margin-left: auto; }
+
+/* Hero de la fiche (identité client) */
+.app-layout .bo-fiche-hero { display: flex; align-items: center; gap: 18px; padding: 20px; background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: 16px; box-shadow: var(--bo-shadow-sm); margin-bottom: 16px; }
+.app-layout .bo-fiche-hero-av { width: 62px; height: 62px; border-radius: 16px; display: grid; place-items: center; font-size: 22px; font-weight: 750; color: #fff; background: linear-gradient(140deg, var(--bo-navy-800), var(--bo-teal)); flex: none; }
+.app-layout .bo-fiche-hero-info { flex: 1; min-width: 0; }
+.app-layout .bo-fiche-hero-name { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.app-layout .bo-fiche-hero-name h2 { font-size: 20px; font-weight: 750; color: var(--bo-ink); }
+.app-layout .bo-fiche-hero-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+.app-layout .bo-fiche-hero-meta a { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--bo-muted); }
+.app-layout .bo-fiche-hero-meta a:hover { color: var(--bo-teal); }
+
+@media (max-width: 620px) {
+  .app-layout .bo-tilegrid { grid-template-columns: 1fr; }
+}
+/* Fin DES-001 — Phase 4 (Clients) */
+
+/* ==========================================================================
+   DES-001 · FICHE PROJET (Phase 5) — re-skin des classes `project-*`
+   --------------------------------------------------------------------------
+   `project-*` est exclusif au composant Projet (client-project-workflow),
+   rendu dans l'onglet Projets de la fiche 360. Overrides scopés `.app-layout`,
+   placés en fin de fichier : ils priment par cascade, sans toucher la logique
+   (612 lignes TSX inchangées) ni le Contrat. Layouts préservés, seuls les
+   surfaces / couleurs / statuts / typographie passent aux tokens DES-001.
+   ========================================================================== */
+
+/* Cartes & titres */
+.app-layout .project-workflow-hero,
+.app-layout .project-current-card,
+.app-layout .project-empty-notice,
+.app-layout .project-documents-gate,
+.app-layout .project-needs-card {
+  background: var(--bo-surface); border: 1px solid var(--bo-border);
+  border-radius: var(--bo-r-lg); box-shadow: var(--bo-shadow-sm);
+}
+.app-layout .project-workflow-hero h3,
+.app-layout .project-documents-header h3,
+.app-layout .project-empty-notice strong,
+.app-layout .project-current-card strong,
+.app-layout .project-step-title h4,
+.app-layout .project-traceability-grid h4,
+.app-layout .project-automation-grid h4 { color: var(--bo-ink); }
+.app-layout .project-workflow-hero p,
+.app-layout .project-documents-header p,
+.app-layout .project-empty-notice p,
+.app-layout .project-automation-grid p,
+.app-layout .project-step p,
+.app-layout .project-current-card span,
+.app-layout .project-current-card small,
+.app-layout .project-traceability-grid p,
+.app-layout .project-document-list small { color: var(--bo-muted); }
+.app-layout .project-empty-notice svg,
+.app-layout .project-documents-header svg,
+.app-layout .project-automation-grid svg { color: var(--bo-teal); }
+
+/* Progression → teal */
+.app-layout .project-progress-meter { background: var(--bo-surface-3); }
+.app-layout .project-progress-meter span { background: linear-gradient(90deg, var(--bo-teal), #2AA0A6); }
+
+/* Étapes du pipeline */
+.app-layout .project-step { background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: var(--bo-r-lg); }
+.app-layout .project-step-index { background: var(--bo-teal-050); color: var(--bo-teal); border-radius: 11px; }
+.app-layout .project-step-title span { background: var(--bo-surface-3); color: var(--bo-muted); }
+.app-layout .project-step--done { border-color: var(--bo-success-bd); }
+.app-layout .project-step--done .project-step-index { background: var(--bo-success-bg); color: var(--bo-success); }
+.app-layout .project-step--done .project-step-title span { background: var(--bo-success-bg); color: var(--bo-success); }
+.app-layout .project-step--blocked { border-color: var(--bo-danger-bd); background: var(--bo-danger-bg); }
+.app-layout .project-step--blocked .project-step-title span { background: var(--bo-danger-bg); color: var(--bo-danger); }
+.app-layout .project-step-lists small { color: var(--bo-faint); }
+.app-layout .project-step-lists b,
+.app-layout .project-document-list span { background: var(--bo-teal-050); color: var(--bo-teal); }
+
+/* Boutons d'étape / d'action */
+.app-layout .project-step-actions button,
+.app-layout .project-action-row button {
+  border: 1px solid var(--bo-border-strong); border-radius: 9px;
+  background: var(--bo-surface); color: var(--bo-text); font-weight: 650;
+}
+.app-layout .project-step-actions button:hover,
+.app-layout .project-action-row button:hover { background: var(--bo-surface-2); border-color: var(--bo-muted); }
+.app-layout .project-step-actions button:last-child {
+  background: var(--bo-teal); border-color: var(--bo-teal); color: #fff;
+}
+.app-layout .project-step-actions button:last-child:hover { background: var(--bo-teal-600); }
+
+/* Documents / traçabilité / automatisations */
+.app-layout .project-documents-header { border-bottom-color: var(--bo-border); }
+.app-layout .project-document-list article,
+.app-layout .project-traceability-grid article,
+.app-layout .project-automation-grid article {
+  border: 1px solid var(--bo-border); border-radius: var(--bo-r); background: var(--bo-surface-2);
+}
+.app-layout .project-document-list article div { color: var(--bo-ink); }
+
+/* Formulaires (besoins / notes / création) */
+.app-layout .project-needs-grid label,
+.app-layout .project-notes-field { color: var(--bo-muted); }
+.app-layout .project-needs-grid input,
+.app-layout .project-needs-grid select,
+.app-layout .project-needs-grid textarea,
+.app-layout .project-step-actions input,
+.app-layout .project-notes-field textarea {
+  border: 1px solid var(--bo-border-strong); border-radius: 10px;
+  background: var(--bo-surface); color: var(--bo-ink);
+}
+.app-layout .project-needs-grid input:focus,
+.app-layout .project-needs-grid select:focus,
+.app-layout .project-needs-grid textarea:focus,
+.app-layout .project-notes-field textarea:focus { border-color: var(--bo-teal); box-shadow: var(--bo-ring); outline: none; }
+
+/* Pastilles de garanties / documents */
+.app-layout .project-check-pill,
+.app-layout .project-doc-checks label {
+  border: 1px solid var(--bo-border-strong); background: var(--bo-surface-2); color: var(--bo-text);
+}
+/* Fin DES-001 — Phase 5 (Projet) */
+
+/* Correctif statuts (décision Phase 6) : le teal n'est jamais un statut par défaut.
+   Les pastilles génériques du Projet passent en neutre (teal réservé actions/progression). */
+.app-layout .project-step-lists b,
+.app-layout .project-document-list span { background: var(--bo-surface-3); color: var(--bo-muted); }
+
+/* ==========================================================================
+   DES-001 · FICHE CONTRAT & CORPS FICHE 360 (Phase 6) — re-skin `cf360-*`
+   --------------------------------------------------------------------------
+   `cf360-*` = corps de la fiche Client 360 (hero, KPI, onglets, contrats,
+   interactions, documents, famille, notes). Overrides scopés `.app-layout`
+   en fin de fichier (priment par cascade). Aucune modification de logique.
+   Statuts (contrat / client / document) : sémantique via configs TSX.
+   ========================================================================== */
+
+/* Hero (identité) — bleu marine */
+.app-layout .cf360-hero { background: linear-gradient(135deg, var(--bo-navy-900), var(--bo-navy-700)); border-radius: var(--bo-r-lg) var(--bo-r-lg) 0 0; }
+.app-layout .cf360-hero-avatar { border-radius: 16px; background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.24); }
+
+/* KPI de la fiche */
+.app-layout .cf360-kpis { border-color: var(--bo-border); background: var(--bo-surface); }
+.app-layout .cf360-kpi { border-right-color: var(--bo-border); }
+.app-layout .cf360-kpi:hover { background: var(--bo-surface-2); }
+.app-layout .cf360-kpi-icon { border-radius: 10px; }
+.app-layout .cf360-kpi-val { color: var(--bo-ink); font-variant-numeric: tabular-nums; }
+.app-layout .cf360-kpi-val small,
+.app-layout .cf360-kpi-lbl { color: var(--bo-muted); }
+
+/* Onglets — actif teal (lien/onglet actif = action) */
+.app-layout .cf360-tabs-wrap { border-color: var(--bo-border); background: var(--bo-surface); }
+.app-layout .cf360-tab { color: var(--bo-muted); }
+.app-layout .cf360-tab:hover { color: var(--bo-ink); }
+.app-layout .cf360-tab--active { color: var(--bo-teal); border-bottom-color: var(--bo-teal); }
+.app-layout .cf360-tab-badge { background: var(--bo-navy-700); }
+.app-layout .cf360-tab--active .cf360-tab-badge { background: var(--bo-teal); }
+
+/* Panneau + boutons d'action */
+.app-layout .cf360-panel { border-color: var(--bo-border); border-radius: 0 0 var(--bo-r-lg) var(--bo-r-lg); background: var(--bo-bg); }
+.app-layout .cf360-tab-count { color: var(--bo-muted); }
+.app-layout .cf360-add-btn { background: var(--bo-teal); }
+.app-layout .cf360-add-btn:hover { background: var(--bo-teal-600); }
+
+/* Cartes d'information / synthèse */
+.app-layout .cf360-info-card,
+.app-layout .cf360-contract-card,
+.app-layout .cf360-person-card { background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: var(--bo-r-lg); }
+.app-layout .cf360-info-card-header,
+.app-layout .cf360-section-header,
+.app-layout .cf360-contract-card-top { color: var(--bo-ink); }
+.app-layout .cf360-detail-label,
+.app-layout .cf360-contract-summary-item,
+.app-layout .cf360-contract-detail-item,
+.app-layout .cf360-person-relation,
+.app-layout .cf360-person-details { color: var(--bo-muted); }
+.app-layout .cf360-detail-val,
+.app-layout .cf360-person-name,
+.app-layout .cf360-contract-insurer { color: var(--bo-ink); }
+.app-layout .cf360-detail-prime,
+.app-layout .cf360-contract-summary-prime { color: var(--bo-teal); }
+
+/* Contrats — icône + entête (marine), statut via config sémantique TSX */
+.app-layout .cf360-contract-icon { background: var(--bo-teal-050); color: var(--bo-teal); border-radius: 10px; }
+.app-layout .cf360-contract-type,
+.app-layout .cf360-contract-summary-type { color: var(--bo-muted); }
+
+/* Timeline interactions */
+.app-layout .cf360-timeline-title { color: var(--bo-ink); }
+.app-layout .cf360-timeline-body { color: var(--bo-muted); }
+.app-layout .cf360-last-interaction { background: var(--bo-surface-2); border: 1px solid var(--bo-border); border-radius: var(--bo-r); }
+.app-layout .cf360-last-interaction-title { color: var(--bo-ink); }
+.app-layout .cf360-last-interaction-date { color: var(--bo-faint); }
+
+/* Tags & pastilles (neutres — teal réservé aux actions) */
+.app-layout .cf360-tag { background: var(--bo-surface-3); color: var(--bo-muted); border: 1px solid var(--bo-border); }
+
+/* Boutons secondaires (edit/delete/invite) sur fond clair */
+.app-layout .cf360-delete-btn { color: var(--bo-danger); }
+.app-layout .cf360-inline-form { background: var(--bo-surface-2); border: 1px solid var(--bo-border); border-radius: var(--bo-r); }
+.app-layout .cf360-inline-form input,
+.app-layout .cf360-inline-form select,
+.app-layout .cf360-inline-form textarea { border: 1px solid var(--bo-border-strong); border-radius: 9px; background: var(--bo-surface); color: var(--bo-ink); }
+.app-layout .cf360-inline-form input:focus,
+.app-layout .cf360-inline-form select:focus,
+.app-layout .cf360-inline-form textarea:focus { border-color: var(--bo-teal); box-shadow: var(--bo-ring); outline: none; }
+/* Fin DES-001 — Phase 6 (Contrat & fiche 360) */

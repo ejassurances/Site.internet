@@ -3,7 +3,7 @@ import { AppShell } from '@/components/app-shell';
 import AnonymisationTool from '@/components/ia/anonymisation-tool';
 
 export const metadata = {
-  title: 'Anonymisation RGPD | IaGO — EJ Assurances',
+  title: 'Anonymisation RGPD | IaGO — EJ Partners Assurances',
   robots: { index: false },
 };
 

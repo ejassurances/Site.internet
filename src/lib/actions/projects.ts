@@ -653,7 +653,7 @@ async function createDeliveryForStep(
   const deliveryByStep: Partial<Record<ProjectStepKey, { type: string; subject: string; body: string }>> = {
     mission: {
       type: "feuille_mission",
-      subject: "Votre feuille de mission EJ Assurances",
+      subject: "Votre feuille de mission EJ Partners Assurances",
       body: "La feuille de mission est disponible pour signature dans votre espace client.",
     },
     advice: {

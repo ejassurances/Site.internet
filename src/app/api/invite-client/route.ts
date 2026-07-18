@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       process.env.NEXT_PUBLIC_APP_URL ??
       "https://www.ej-assurances.fr";
     const redirectTo = `${siteUrl.replace(/\/$/, "")}/connexion/nouveau-mot-de-passe`;
-    const fullName = String(client.full_name ?? "Client EJ Assurances");
+    const fullName = String(client.full_name ?? "Client EJ Partners Assurances");
     const existingUserId = String(client.profile_id ?? client.supabase_user_id ?? "");
 
     if (existingUserId) {

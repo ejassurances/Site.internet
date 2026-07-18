@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
-  title: "Assurance-vie et patrimoine financier - EJ Assurances",
+  title: "Assurance-vie et patrimoine financier - EJ Partners Assurances",
   description:
     "Créer un patrimoine financier grâce à l'assurance-vie, préparer la transmission et protéger les familles atypiques avec une stratégie adaptée.",
 };

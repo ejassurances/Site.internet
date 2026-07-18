@@ -18,10 +18,10 @@ const subLinks = [
     description: "Recueil 25 km/h, utilisateurs du foyer fiscal et extension recommandee.",
   },
   {
-    label: "Statuts de dossier",
+    label: "Statuts de projet",
     href: "/admin/workflows/statuts",
     emoji: "Statut",
-    description: "Configurez les statuts et etapes de vos dossiers clients.",
+    description: "Configurez les statuts et etapes de vos projets clients.",
   },
   {
     label: "Modeles de documents",
@@ -44,7 +44,7 @@ export default async function WorkflowsPage() {
       <AdminModulePage
         emoji="Auto"
         title="Workflows"
-        description="Automatisez vos processus metier, configurez les statuts de dossiers et gerez vos modeles de documents."
+        description="Automatisez vos processus metier, configurez les statuts de projets et gerez vos modeles de documents."
         subLinks={subLinks}
       />
     </AppShell>

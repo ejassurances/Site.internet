@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
 import {
   LogOut,
   ShieldCheck,
@@ -17,12 +18,13 @@ import {
   Scale,
   DollarSign,
   BarChart3,
-  ChevronRight,
   Settings,
   Bell,
   Search,
   Building2,
   Bike,
+  Menu,
+  X,
 } from "lucide-react";
 import { CurrentUser } from "@/lib/auth";
 import { Role } from "@/lib/content";
@@ -33,7 +35,22 @@ type AppShellProps = {
   children?: ReactNode;
 };
 
-const adminModules = [
+// P0-01 — Stabilisation du socle.
+// `hidden: true` masque un lien de la navigation sans le supprimer : la cible
+// correspond à un module non encore développé (specs 201→226 / backlog 229).
+// Réactiver = passer `hidden` à false une fois la page livrée. Ne pas supprimer.
+type NavLink = { label: string; href: string; icon: LucideIcon; hidden?: boolean };
+type AdminModule = {
+  id: string;
+  label: string;
+  emoji: string;
+  icon: LucideIcon;
+  href: string;
+  description: string;
+  links: NavLink[];
+};
+
+const adminModules: AdminModule[] = [
   {
     id: "crm",
     label: "CRM & Productivité",
@@ -45,9 +62,10 @@ const adminModules = [
       { label: "Tableau de bord", href: "/admin", icon: LayoutDashboard },
       { label: "Clients", href: "/admin/clients", icon: Users },
       { label: "Partenaires", href: "/admin/partenaires", icon: Building2 },
-      { label: "Contacts & Prospects", href: "/admin/crm/contacts", icon: Users },
-      { label: "Agenda & RDV", href: "/admin/crm/agenda", icon: LayoutDashboard },
-      { label: "Tâches", href: "/admin/crm/taches", icon: FileText },
+      // Masqués — modules non développés (Agenda 213, Activités/Tâches 202, Contacts).
+      { label: "Contacts & Prospects", href: "/admin/crm/contacts", icon: Users, hidden: true },
+      { label: "Agenda & RDV", href: "/admin/crm/agenda", icon: LayoutDashboard, hidden: true },
+      { label: "Tâches", href: "/admin/crm/taches", icon: FileText, hidden: true },
     ],
   },
   {
@@ -58,13 +76,15 @@ const adminModules = [
     href: "/admin/vente",
     description: "Pipeline, devis, documents",
     links: [
-      { label: "Pipeline commercial", href: "/admin/vente/pipeline", icon: TrendingUp },
-      { label: "Leads entrants", href: "/admin/vente/leads", icon: TrendingUp },
-      { label: "Devis & Propositions", href: "/admin/vente/devis", icon: FileText },
       { label: "Import Drive vers CRM", href: "/admin/vente/ged/import-drive", icon: FolderOpen },
       { label: "Synchronisation Drive", href: "/admin/vente/ged/sync", icon: FolderOpen },
       { label: "GED — Documents", href: "/admin/vente/ged", icon: FolderOpen },
+      { label: "Assurance emprunteur", href: "/admin/emprunteur", icon: FileText },
       { label: "Méthode cabinet", href: "/admin/family-protection-os", icon: ShieldCheck },
+      // Masqués — modules non développés (Opportunités/pipeline 209, Leads, Devis 205).
+      { label: "Pipeline commercial", href: "/admin/vente/pipeline", icon: TrendingUp, hidden: true },
+      { label: "Leads entrants", href: "/admin/vente/leads", icon: TrendingUp, hidden: true },
+      { label: "Devis & Propositions", href: "/admin/vente/devis", icon: FileText, hidden: true },
     ],
   },
   {
@@ -77,10 +97,11 @@ const adminModules = [
     links: [
       { label: "Mes workflows", href: "/admin/workflows", icon: Zap },
       { label: "Assurance trottinette", href: "/admin/workflows/trottinette", icon: Bike },
-      { label: "Automatisations", href: "/admin/workflows/automatisations", icon: Zap },
-      { label: "Statuts de dossier", href: "/admin/workflows/statuts", icon: FileText },
-      { label: "Modèles de documents", href: "/admin/workflows/templates", icon: FileText },
-      { label: "Notifications", href: "/admin/workflows/notifications", icon: Bell },
+      // Masqués — modules non développés (Workflows configurables 211, Templates 215, Notifications 199).
+      { label: "Automatisations", href: "/admin/workflows/automatisations", icon: Zap, hidden: true },
+      { label: "Statuts de projet", href: "/admin/workflows/statuts", icon: FileText, hidden: true },
+      { label: "Modèles de documents", href: "/admin/workflows/templates", icon: FileText, hidden: true },
+      { label: "Notifications", href: "/admin/workflows/notifications", icon: Bell, hidden: true },
     ],
   },
   {
@@ -92,10 +113,16 @@ const adminModules = [
     description: "Analyse IA, recommandations, scoring",
     links: [
       { label: "Tableau IA", href: "/admin/ia", icon: Bot },
-      { label: "Analyse familiale IA", href: "/admin/ia/analyse-familiale", icon: Bot },
-      { label: "Scoring clients", href: "/admin/ia/scoring", icon: BarChart3 },
-      { label: "Recommandations", href: "/admin/ia/recommandations", icon: Bot },
+      { label: "Copilot IA", href: "/admin/ia/copilot", icon: Bot },
+      { label: "Résumé client IA", href: "/admin/ia/resume-client", icon: FileText },
+      { label: "Rédaction IA", href: "/admin/ia/redaction", icon: FileText },
+      { label: "Cross-selling IA", href: "/admin/ia/cross-selling", icon: TrendingUp },
+      { label: "Anonymisation", href: "/admin/ia/anonymisation", icon: ShieldCheck },
       { label: "Recueil des besoins", href: "/admin/family-protection-os/recueil", icon: FileText },
+      // Masqués — modules non développés (Analyse familiale, Scoring, Recommandations IA).
+      { label: "Analyse familiale IA", href: "/admin/ia/analyse-familiale", icon: Bot, hidden: true },
+      { label: "Scoring clients", href: "/admin/ia/scoring", icon: BarChart3, hidden: true },
+      { label: "Recommandations", href: "/admin/ia/recommandations", icon: Bot, hidden: true },
     ],
   },
   {
@@ -107,11 +134,13 @@ const adminModules = [
     description: "ORIAS, DDA, RGPD, classeurs ACPR",
     links: [
       { label: "Tableau conformité", href: "/admin/conformite", icon: Scale },
-      { label: "Classeurs ACPR", href: "/admin/conformite/acpr", icon: FolderOpen },
+      { label: "LCB-FT", href: "/admin/conformite/lcb-ft", icon: ShieldCheck },
       { label: "Lettres de mission", href: "/admin/lettres-mission", icon: FileText },
-      { label: "DDA & Devoir conseil", href: "/admin/conformite/dda", icon: FileText },
-      { label: "RGPD", href: "/admin/conformite/rgpd", icon: ShieldCheck },
-      { label: "Journal d'audit", href: "/admin/conformite/audit", icon: FileText },
+      // Masqués — modules non développés (Classeurs ACPR, DDA, RGPD, Journal d'audit 226).
+      { label: "Classeurs ACPR", href: "/admin/conformite/acpr", icon: FolderOpen, hidden: true },
+      { label: "DDA & Devoir conseil", href: "/admin/conformite/dda", icon: FileText, hidden: true },
+      { label: "RGPD", href: "/admin/conformite/rgpd", icon: ShieldCheck, hidden: true },
+      { label: "Journal d'audit", href: "/admin/conformite/audit", icon: FileText, hidden: true },
     ],
   },
   {
@@ -123,10 +152,16 @@ const adminModules = [
     description: "Commissions, mandataires, facturation",
     links: [
       { label: "Tableau finance", href: "/admin/finance", icon: DollarSign },
-      { label: "Commissions", href: "/admin/finance/commissions", icon: DollarSign },
-      { label: "Mandataires", href: "/admin/mandataire", icon: Users },
-      { label: "Prescripteurs", href: "/admin/prescripteur", icon: Users },
+      { label: "Encaissements", href: "/admin/finance/encaissements", icon: DollarSign },
+      { label: "Reversements", href: "/admin/finance/reversements", icon: DollarSign },
+      { label: "Avenants", href: "/admin/finance/avenants", icon: FileText },
+      { label: "Bordereaux", href: "/admin/finance/bordereaux", icon: FileText },
       { label: "Facturation", href: "/admin/finance/facturation", icon: FileText },
+      { label: "Exports", href: "/admin/finance/exports", icon: FolderOpen },
+      // Masqués — modules non développés (Commissions dédiées, gestion Mandataires/Prescripteurs).
+      { label: "Commissions", href: "/admin/finance/commissions", icon: DollarSign, hidden: true },
+      { label: "Mandataires", href: "/admin/mandataire", icon: Users, hidden: true },
+      { label: "Prescripteurs", href: "/admin/prescripteur", icon: Users, hidden: true },
     ],
   },
   {
@@ -138,15 +173,19 @@ const adminModules = [
     description: "KPIs, rapports, performance",
     links: [
       { label: "Vue d'ensemble", href: "/admin/stats", icon: BarChart3 },
-      { label: "Performance cabinet", href: "/admin/stats/performance", icon: TrendingUp },
-      { label: "Rapports clients", href: "/admin/stats/clients", icon: Users },
-      { label: "Rapports financiers", href: "/admin/stats/finance", icon: DollarSign },
-      { label: "Exports", href: "/admin/stats/exports", icon: FolderOpen },
+      { label: "Commercial", href: "/admin/stats/commercial", icon: TrendingUp },
+      { label: "Portefeuille", href: "/admin/stats/portefeuille", icon: BarChart3 },
+      { label: "Production", href: "/admin/stats/production", icon: BarChart3 },
+      // Masqués — modules non développés (Reporting 220, KPI 219, Exports stats 221).
+      { label: "Performance cabinet", href: "/admin/stats/performance", icon: TrendingUp, hidden: true },
+      { label: "Rapports clients", href: "/admin/stats/clients", icon: Users, hidden: true },
+      { label: "Rapports financiers", href: "/admin/stats/finance", icon: DollarSign, hidden: true },
+      { label: "Exports", href: "/admin/stats/exports", icon: FolderOpen, hidden: true },
     ],
   },
 ];
 
-const clientModules = [
+const clientModules: NavLink[] = [
   { label: "Tableau de bord", href: "/client", icon: LayoutDashboard },
   { label: "Diagnostic familial", href: "/client/diagnostic-familial", icon: ShieldCheck },
   { label: "Mes projets", href: "/client#projets", icon: FolderOpen },
@@ -158,14 +197,23 @@ const clientModules = [
 
 export function AppShell({ role, user, children }: AppShellProps) {
   const pathname = usePathname() ?? "";
+  const [menuOpen, setMenuOpen] = useState(false);
   const isAdmin = role === "admin" || role === "courtier";
   const isLinkActive = (href: string) => pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`));
+  const closeMenu = () => setMenuOpen(false);
+  const nameParts = user.fullName.trim().split(/\s+/).filter(Boolean);
+  const initials = nameParts.map((p) => p[0] ?? "").slice(0, 2).join("").toUpperCase() || "?";
+  const firstName = nameParts[0] ?? user.fullName;
+  const lastInitial = nameParts.length > 1 ? nameParts[nameParts.length - 1][0]?.toUpperCase() : "";
+  const shortName = lastInitial ? `${firstName} ${lastInitial}.` : firstName;
 
   return (
-    <div className="app-layout">
+    <div className={`app-layout${menuOpen ? " bo-nav-open" : ""}`}>
+      {/* Fond cliquable du tiroir mobile */}
+      <button className="bo-backdrop" type="button" aria-label="Fermer le menu" tabIndex={menuOpen ? 0 : -1} onClick={closeMenu} />
       <aside className="sidebar">
         {/* Brand */}
-        <Link className="brand app-brand" href="/">
+        <Link className="brand app-brand" href="/" onClick={closeMenu}>
           <Image
             className="brand-logo"
             src="/logo-ej-partners-assurances.png"
@@ -185,15 +233,16 @@ export function AppShell({ role, user, children }: AppShellProps) {
             <>
               {adminModules.map((module, idx) => {
                 const Icon = module.icon;
-                const isActive = module.links.some((l) => isLinkActive(l.href));
+                const visibleLinks = module.links.filter((l) => !l.hidden);
+                const isActive = visibleLinks.some((l) => isLinkActive(l.href));
                 return (
                   <div key={module.id} className="side-nav-group">
                     {idx > 0 && <div className="side-nav-divider" />}
-                    <Link href={module.href} className={`side-nav-group-label${isActive ? " module-active" : ""}`}>
+                    <Link href={module.href} className={`side-nav-group-label${isActive ? " module-active" : ""}`} onClick={closeMenu}>
                       <Icon size={12} aria-hidden />
                       {module.emoji} {module.label}
                     </Link>
-                    {module.links.map((link) => {
+                    {visibleLinks.map((link) => {
                       const LinkIcon = link.icon;
                       const linkActive = isLinkActive(link.href);
                       return (
@@ -201,6 +250,7 @@ export function AppShell({ role, user, children }: AppShellProps) {
                           key={link.href}
                           href={link.href}
                           className={linkActive ? "active" : ""}
+                          onClick={closeMenu}
                         >
                           <LinkIcon size={15} aria-hidden />
                           {link.label}
@@ -216,7 +266,7 @@ export function AppShell({ role, user, children }: AppShellProps) {
               const Icon = item.icon;
               const active = pathname === item.href;
               return (
-                <Link key={item.href} href={item.href} className={active ? "active" : ""}>
+                <Link key={item.href} href={item.href} className={active ? "active" : ""} onClick={closeMenu}>
                   <Icon size={15} aria-hidden />
                   {item.label}
                 </Link>
@@ -224,41 +274,27 @@ export function AppShell({ role, user, children }: AppShellProps) {
             })
           )}
 
-          <div className="side-nav-divider" />
-
-          {/* Paramètres */}
-          <Link href={isAdmin ? "/admin/parametres" : "/client#parametres"}>
-            <Settings size={15} aria-hidden />
-            Paramètres
-          </Link>
+          {/* Paramètres — masqué côté cabinet tant que le Moteur de Paramétrage (spec 224)
+              n'est pas livré (/admin/parametres n'existe pas). Réactiver à ce moment-là. */}
+          {!isAdmin && (
+            <>
+              <div className="side-nav-divider" />
+              <Link href="/client#parametres" onClick={closeMenu}>
+                <Settings size={15} aria-hidden />
+                Paramètres
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Sidebar footer */}
-        <div className="sidebar-footer">
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px 10px", color: "rgba(247,245,240,.55)", fontSize: "13px" }}>
+        <div className="sidebar-footer bo-side-foot">
+          <div className="bo-side-user">
             <ShieldCheck size={14} aria-hidden />
-            <span style={{ flex: 1 }}>{user.email}</span>
+            <span>{user.email}</span>
           </div>
           <form action="/auth/signout" method="post">
-            <button
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                width: "100%",
-                minHeight: "38px",
-                padding: "0 10px",
-                border: 0,
-                borderRadius: "8px",
-                background: "rgba(255,255,255,.07)",
-                color: "rgba(247,245,240,.65)",
-                fontSize: "13px",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "background .15s",
-              }}
-              type="submit"
-            >
+            <button className="bo-signout" type="submit">
               <LogOut size={14} aria-hidden />
               Se déconnecter
             </button>
@@ -268,29 +304,43 @@ export function AppShell({ role, user, children }: AppShellProps) {
 
       {/* Main workspace */}
       <main className="workspace">
-        <header className="workspace-header">
-          <div>
-            <p className="eyebrow">{isAdmin ? "Cabinet EJ Partners Assurances" : "Espace client"}</p>
-            <h1>Bonjour, {user.fullName.split(" ")[0]} 👋</h1>
+        <header className="workspace-header bo-topbar">
+          <div className="bo-topbar-left">
+            <button
+              className="bo-burger"
+              type="button"
+              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? <X size={18} aria-hidden /> : <Menu size={18} aria-hidden />}
+            </button>
+            <div className="bo-greeting">
+              <p className="eyebrow">{isAdmin ? "Cabinet EJ Partners Assurances" : "Espace client"}</p>
+              <h1>Bonjour, {user.fullName.split(" ")[0]} 👋</h1>
+            </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <button className="icon-button" title="Recherche" aria-label="Recherche">
+          <div className="bo-topbar-right">
+            <div className="bo-search">
               <Search size={16} aria-hidden />
+              <input type="search" placeholder="Rechercher un client, un projet, un contrat…" aria-label="Recherche globale" />
+              <span className="bo-kbd" aria-hidden>⌘K</span>
+            </div>
+            <button className="bo-iconbtn" title="Notifications" aria-label="Notifications">
+              <Bell size={17} aria-hidden />
+              <span className="bo-dot" aria-hidden />
             </button>
-            <button className="icon-button" title="Notifications" aria-label="Notifications">
-              <Bell size={16} aria-hidden />
-            </button>
-            <div className="workspace-user">
-              <ShieldCheck size={16} aria-hidden />
-              <span>{user.fullName}</span>
-              <span style={{ padding: "3px 8px", borderRadius: "999px", background: "rgba(7,24,39,.07)", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em" }}>
-                {user.role}
+            <div className="bo-userchip" title={user.fullName}>
+              <span className="bo-userchip-av">{initials}</span>
+              <span className="bo-userchip-id">
+                <span className="bo-userchip-name">{shortName}</span>
+                <span className="bo-role">{user.role}</span>
               </span>
             </div>
           </div>
         </header>
 
-        {children}
+        <div className="bo-page">{children}</div>
       </main>
     </div>
   );

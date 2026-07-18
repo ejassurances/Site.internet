@@ -8,14 +8,14 @@ import { StructuredData, organizationSchema, breadcrumbSchema, webPageSchema } f
 const pageUrl = "https://www.ej-assurances.fr/a-propos";
 
 export const metadata: Metadata = {
-  title: "À propos d'EJ Assurances — Cabinet de courtage familles modernes",
+  title: "À propos d'EJ Partners Assurances — Cabinet de courtage familles modernes",
   description:
-    "EJ Assurances est un cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles recomposées, coparentalité et couples LGBT.",
+    "EJ Partners Assurances est un cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles recomposées, coparentalité et couples LGBT.",
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: "À propos d'EJ Assurances — Cabinet de courtage familles modernes",
+    title: "À propos d'EJ Partners Assurances — Cabinet de courtage familles modernes",
     description:
-      "EJ Assurances est un cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles recomposées, coparentalité et couples LGBT.",
+      "EJ Partners Assurances est un cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles recomposées, coparentalité et couples LGBT.",
     url: pageUrl,
     type: "website",
   },
@@ -43,7 +43,7 @@ export default function AProposPage() {
   return (
     <>
       <StructuredData data={organizationSchema} />
-      <StructuredData data={webPageSchema({ url: pageUrl, name: "À propos d'EJ Assurances", description: "Cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles modernes." })} />
+      <StructuredData data={webPageSchema({ url: pageUrl, name: "À propos d'EJ Partners Assurances", description: "Cabinet de courtage indépendant spécialisé dans l'assurance emprunteur et la protection des familles modernes." })} />
       <StructuredData data={breadcrumbSchema([{ name: "Accueil", url: "https://www.ej-assurances.fr/" }, { name: "À propos", url: pageUrl }])} />
       <SiteHeader />
       <main className="public-main">

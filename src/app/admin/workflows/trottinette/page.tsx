@@ -5,7 +5,7 @@ import { getClientsList } from "@/lib/actions/clients";
 import { createScooterNeedAction, getScooterNeeds } from "@/lib/actions/scooter";
 import { Bike, CheckCircle2, ShieldQuestion } from "lucide-react";
 
-export const metadata = { title: "Workflow assurance trottinette - EJ Assurances" };
+export const metadata = { title: "Workflow assurance trottinette - EJ Partners Assurances" };
 
 export default async function ScooterWorkflowPage() {
   const user = await requireRole(["admin", "courtier"]);

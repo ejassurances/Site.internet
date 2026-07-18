@@ -35,7 +35,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
   return {
     id: user.id,
     email: user.email ?? "",
-    fullName: profile?.full_name ?? user.email ?? "Utilisateur EJ Assurances",
+    fullName: profile?.full_name ?? user.email ?? "Utilisateur EJ Partners Assurances",
     role,
   };
 }

@@ -166,14 +166,16 @@ export function EmprunteurTunnel() {
   };
 
   // ── Upload helper ──
+  // Bucket privé : on NE génère jamais d'URL publique. On stocke uniquement le
+  // chemin de stockage ; l'URL signée est produite à la demande côté serveur
+  // (Server Action getEmprunteurDocumentUrl) au moment de l'affichage.
   const uploadFile = async (file: File, path: string): Promise<string> => {
     const { error: uploadError } = await supabase.storage
       .from("prospect-documents")
       .upload(path, file, { upsert: true });
     if (uploadError) throw uploadError;
 
-    const { data } = supabase.storage.from("prospect-documents").getPublicUrl(path);
-    return data.publicUrl;
+    return path;
   };
 
   // ── Step 2 → upload personal docs ──
@@ -196,13 +198,14 @@ export function EmprunteurTunnel() {
       for (const { file, type } of toUpload) {
         const ext = file.name.split(".").pop();
         const path = `${dossierId}/${type}.${ext}`;
-        const url = await uploadFile(file, path);
+        const storagePath = await uploadFile(file, path);
 
         const { error: docErr } = await supabase.from("emprunteur_documents").insert({
           dossier_id: dossierId,
           type_document: type,
           file_name: file.name,
-          file_url: url,
+          // Chemin de stockage (bucket privé), pas une URL publique.
+          file_url: storagePath,
         });
         if (docErr) throw docErr;
       }
@@ -222,16 +225,17 @@ export function EmprunteurTunnel() {
     try {
       for (let i = 0; i < credits.length; i++) {
         const c = credits[i];
-        let tableauUrl: string | null = null;
-        let offreUrl: string | null = null;
+        // Chemins de stockage (bucket privé), signés à la demande côté serveur.
+        let tableauPath: string | null = null;
+        let offrePath: string | null = null;
 
         if (c.tableau_amortissement_file) {
           const ext = c.tableau_amortissement_file.name.split(".").pop();
-          tableauUrl = await uploadFile(c.tableau_amortissement_file, `${dossierId}/credit-${i}-tableau.${ext}`);
+          tableauPath = await uploadFile(c.tableau_amortissement_file, `${dossierId}/credit-${i}-tableau.${ext}`);
         }
         if (c.offre_pret_file) {
           const ext = c.offre_pret_file.name.split(".").pop();
-          offreUrl = await uploadFile(c.offre_pret_file, `${dossierId}/credit-${i}-offre.${ext}`);
+          offrePath = await uploadFile(c.offre_pret_file, `${dossierId}/credit-${i}-offre.${ext}`);
         }
 
         const { error: creditErr } = await supabase.from("emprunteur_credits").insert({
@@ -246,8 +250,8 @@ export function EmprunteurTunnel() {
           date_debut_pret: c.date_debut_pret || null,
           assureur_actuel: c.assureur_actuel || null,
           prime_actuelle_mensuelle: c.prime_actuelle_mensuelle ? parseFloat(c.prime_actuelle_mensuelle) : null,
-          tableau_amortissement_url: tableauUrl,
-          offre_pret_url: offreUrl,
+          tableau_amortissement_url: tableauPath,
+          offre_pret_url: offrePath,
           sort_order: i,
         });
         if (creditErr) throw creditErr;
@@ -595,7 +599,7 @@ export function EmprunteurTunnel() {
             <CheckCircle2 size={64} className="tunnel-confirmation__icon" />
             <h2>Dossier reçu !</h2>
             <p>
-              Merci {identity.full_name.split(" ")[0]}, votre dossier a bien été transmis à EJ Assurances.
+              Merci {identity.full_name.split(" ")[0]}, votre dossier a bien été transmis à EJ Partners Assurances.
               Nous allons l'étudier et vous recontacterons dans les plus brefs délais à l'adresse{" "}
               <strong>{identity.email}</strong>.
             </p>

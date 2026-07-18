@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { ResetPasswordForm } from "./reset-form";
 
 export const metadata: Metadata = {
-  title: "Nouveau mot de passe — EJ Assurances",
+  title: "Nouveau mot de passe — EJ Partners Assurances",
   robots: { index: false, follow: false },
 };
 
@@ -20,7 +20,7 @@ export default function ResetPasswordPage() {
             <p className="hero-copy">
               Vous avez cliqué sur le lien de réinitialisation reçu par email.
               Définissez maintenant un nouveau mot de passe sécurisé pour accéder
-              à votre espace EJ Assurances.
+              à votre espace EJ Partners Assurances.
             </p>
             <div className="trust-row standalone">
               <ShieldCheck size={20} aria-hidden />

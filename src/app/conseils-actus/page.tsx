@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
-  title: "Conseils et actualités - EJ Assurances",
+  title: "Conseils et actualités - EJ Partners Assurances",
   description:
     "Conseils, articles et actualités sur l'assurance emprunteur, le parent social, l'enfant, l'assurance-vie et la protection patrimoniale des familles.",
 };

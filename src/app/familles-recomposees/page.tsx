@@ -8,12 +8,12 @@ import { SiteFooter } from "@/components/site-footer";
 const pageUrl = "https://www.ej-assurances.fr/familles-recomposees";
 
 export const metadata: Metadata = {
-  title: "Assurance emprunteur famille recomposée | EJ Assurances",
+  title: "Assurance emprunteur famille recomposée | EJ Partners Assurances",
   description:
     "Comprendre les points à vérifier pour protéger une famille recomposée avec une assurance emprunteur : quotité, co-emprunteur, séparation, décès et garanties.",
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: "Assurance emprunteur famille recomposée | EJ Assurances",
+    title: "Assurance emprunteur famille recomposée | EJ Partners Assurances",
     description:
       "Comprendre les points à vérifier pour protéger une famille recomposée avec une assurance emprunteur : quotité, co-emprunteur, séparation, décès et garanties.",
     url: pageUrl,

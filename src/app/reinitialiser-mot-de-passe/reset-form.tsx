@@ -102,7 +102,7 @@ export function ResetPasswordForm() {
   return (
     <form className="contact-form forgot-form" onSubmit={handleSubmit}>
       <p className="forgot-intro">
-        Choisissez un nouveau mot de passe sécurisé pour votre compte EJ Assurances.
+        Choisissez un nouveau mot de passe sécurisé pour votre compte EJ Partners Assurances.
         Il doit contenir au moins 8 caractères.
       </p>
 

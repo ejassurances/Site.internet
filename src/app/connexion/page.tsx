@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = {
-  title: "Connexion — EJ Assurances",
+  title: "Connexion — EJ Partners Assurances",
   robots: { index: false, follow: false },
 };
 
@@ -16,7 +16,7 @@ export default function ConnexionPage() {
         <section className="page-hero login-hero">
           <div>
             <p className="eyebrow">Connexion securisee</p>
-            <h1>Acceder a votre espace EJ Assurances.</h1>
+            <h1>Acceder a votre espace EJ Partners Assurances.</h1>
             <p className="hero-copy">
               Les espaces connectes sont separes par role afin que chaque personne voie uniquement
               les informations utiles a sa mission ou a son dossier.

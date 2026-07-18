@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Calculator, CheckCircle2, Euro, Plus, Trash2, Users } from "lucide-react";
 
-/* Simulateur natif EJ Assurances : tunnel par etapes avec co-emprunteur et jusqu'a 3 prets. */
+/* Simulateur natif EJ Partners Assurances : tunnel par etapes avec co-emprunteur et jusqu'a 3 prets. */
 type LoanPurpose = "achat" | "substitution" | "renegociation";
 type HealthProfile = "standard" | "renforce";
 type Loan = {
@@ -372,7 +372,7 @@ export function SimulateurClient() {
           <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#3B82F6]">Resultat</p>
-              <h2 className="mt-3 text-2xl font-black text-[#0F172A]">Votre estimation EJ Assurances.</h2>
+              <h2 className="mt-3 text-2xl font-black text-[#0F172A]">Votre estimation EJ Partners Assurances.</h2>
               <p className="mt-2 text-sm leading-6 text-[#475569]">
                 Ce resultat est indicatif. Le cabinet doit verifier les garanties, les quotites, les exclusions et l'equivalence bancaire.
               </p>

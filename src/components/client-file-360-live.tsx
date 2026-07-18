@@ -117,12 +117,13 @@ const INTERACTION_COLORS: Record<string, string> = {
   visio: "#06b6d4", note: "#f59e0b", sms: "#ec4899", document: "#6b7280",
 };
 
+// Statuts sémantiques DES-001 : succès / attention / danger / neutre.
 const CONTRACT_STATUS: Record<string, { label: string; color: string; bg: string }> = {
-  draft:              { label: "Brouillon",            color: "#6b7280", bg: "#f3f4f6" },
-  active:             { label: "Actif",                color: "#065f46", bg: "#d1fae5" },
-  pending_signature:  { label: "En attente signature", color: "#1e40af", bg: "#dbeafe" },
-  terminated:         { label: "Résilié",              color: "#991b1b", bg: "#fee2e2" },
-  archived:           { label: "Archivé",              color: "#374151", bg: "#e5e7eb" },
+  draft:              { label: "Brouillon",            color: "#5D6E7E", bg: "#EEF3F8" },
+  active:             { label: "Actif",                color: "#0F7B5A", bg: "#E3F2EA" },
+  pending_signature:  { label: "En attente signature", color: "#A9721B", bg: "#FBF0D8" },
+  terminated:         { label: "Résilié",              color: "#BE3A2B", bg: "#FBE7E4" },
+  archived:           { label: "Archivé",              color: "#5D6E7E", bg: "#EEF3F8" },
 };
 
 const RELATION_LABELS: Record<string, string> = {
@@ -142,10 +143,10 @@ const RELATION_COLORS: Record<string, string> = {
 };
 
 const STATUT_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  prospect: { label: "Prospect",     color: "#92400e", bg: "#fef3c7" },
-  actif:    { label: "Client actif", color: "#065f46", bg: "#d1fae5" },
-  en_cours: { label: "En cours",     color: "#1e40af", bg: "#dbeafe" },
-  inactif:  { label: "Inactif",      color: "#6b7280", bg: "#f3f4f6" },
+  prospect: { label: "Prospect",     color: "#A9721B", bg: "#FBF0D8" },
+  actif:    { label: "Client actif", color: "#0F7B5A", bg: "#E3F2EA" },
+  en_cours: { label: "En cours",     color: "#1F7A80", bg: "#E4F1F1" },
+  inactif:  { label: "Inactif",      color: "#5D6E7E", bg: "#EEF3F8" },
 };
 
 export function ClientFile360Live({ clientId, initialData }: Props) {
@@ -245,7 +246,7 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
       {/* ── KPIs ── */}
       <div className="cf360-kpis">
         <div className="cf360-kpi">
-          <div className="cf360-kpi-icon" style={{ background: "#dbeafe", color: "#1e40af" }}>
+          <div className="cf360-kpi-icon" style={{ background: "#E4F1F1", color: "#1F7A80" }}>
             <FileText size={18} aria-hidden />
           </div>
           <div>
@@ -254,7 +255,7 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
           </div>
         </div>
         <div className="cf360-kpi">
-          <div className="cf360-kpi-icon" style={{ background: "#d1fae5", color: "#065f46" }}>
+          <div className="cf360-kpi-icon" style={{ background: "#E4F1F1", color: "#1F7A80" }}>
             <MessageSquare size={18} aria-hidden />
           </div>
           <div>
@@ -263,7 +264,7 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
           </div>
         </div>
         <div className="cf360-kpi">
-          <div className="cf360-kpi-icon" style={{ background: "#fef3c7", color: "#92400e" }}>
+          <div className="cf360-kpi-icon" style={{ background: "#E4F1F1", color: "#1F7A80" }}>
             <Users size={18} aria-hidden />
           </div>
           <div>
@@ -272,7 +273,7 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
           </div>
         </div>
         <div className="cf360-kpi">
-          <div className="cf360-kpi-icon" style={{ background: score >= 70 ? "#d1fae5" : score >= 40 ? "#fef3c7" : "#fee2e2", color: score >= 70 ? "#065f46" : score >= 40 ? "#92400e" : "#991b1b" }}>
+          <div className="cf360-kpi-icon" style={{ background: score >= 70 ? "#E3F2EA" : score >= 40 ? "#FBF0D8" : "#FBE7E4", color: score >= 70 ? "#0F7B5A" : score >= 40 ? "#A9721B" : "#BE3A2B" }}>
             <Shield size={18} aria-hidden />
           </div>
           <div>
@@ -368,7 +369,7 @@ export function ClientFile360Live({ clientId, initialData }: Props) {
             {activeContracts.length > 0 && (
               <div className="cf360-synthese-section">
                 <div className="cf360-section-header">
-                  <CheckCircle2 size={15} style={{ color: "#10b981" }} aria-hidden />
+                  <CheckCircle2 size={15} style={{ color: "#0F7B5A" }} aria-hidden />
                   <span>Contrats actifs</span>
                 </div>
                 <div className="cf360-contracts-summary">

@@ -122,7 +122,7 @@ export function ClientForm({ mode, initialData, onSuccess }: Props) {
     <form onSubmit={handleSubmit} className="client-form admin-client-form">
       <div className="admin-client-form-intro">
         <div>
-          <p className="eyebrow">CRM EJ Assurances</p>
+          <p className="eyebrow">CRM EJ Partners Assurances</p>
           <h2>{mode === "create" ? "Creer une fiche exploitable" : "Mettre a jour la fiche"}</h2>
           <p>
             Renseignez les informations utiles au suivi commercial, au conseil et aux obligations
