@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { anonymiserPourIA, ageDepuisNaissance, labelClient, logIaUsage } from "@/lib/ia/audit-anonymise";
+import { anonymiserPourIA, ageDepuisNaissance, labelClient, logIaUsage, warnRequete } from "@/lib/ia/audit-anonymise";
 
 function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -11,9 +11,9 @@ function getOpenAIClient() {
   return new OpenAI({ apiKey });
 }
 
-type Contract = { product_type: string; insurer: string; status: string; annual_premium: number; start_date: string };
-type RelatedPerson = { relation: string; first_name: string; last_name: string; date_of_birth: string };
-type Interaction = { date: string; type: string; summary: string; outcome: string };
+type Contract = { contract_type: string; insurer_name: string; status: string; prime_annuelle: number; effective_date: string };
+type RelatedPerson = { type_relation: string; full_name: string; date_naissance: string };
+type Interaction = { created_at: string; type: string; titre: string; contenu: string };
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,9 +26,14 @@ export async function POST(req: NextRequest) {
     const [clientRes, contractsRes, interactionsRes, relatedPersonsRes] = await Promise.all([
       supabase.from("clients").select("*").eq("id", clientId).single(),
       supabase.from("contracts").select("*").eq("client_id", clientId),
-      supabase.from("client_interactions").select("*").eq("client_id", clientId).order("date", { ascending: false }).limit(10),
-      supabase.from("client_related_persons").select("*").eq("client_id", clientId),
+      supabase.from("interactions").select("*").eq("client_id", clientId).order("created_at", { ascending: false }).limit(10),
+      supabase.from("related_persons").select("*").eq("client_id", clientId),
     ]);
+
+    warnRequete("resume-client/client", clientRes);
+    warnRequete("resume-client/contracts", contractsRes);
+    warnRequete("resume-client/interactions", interactionsRes);
+    warnRequete("resume-client/related_persons", relatedPersonsRes);
 
     const client = clientRes.data;
     if (!client) return NextResponse.json({ error: "Client introuvable" }, { status: 404 });
@@ -43,19 +48,19 @@ export async function POST(req: NextRequest) {
     const clientAge = ageDepuisNaissance((client as { date_naissance?: string | null }).date_naissance);
     const clientData = `
 CLIENT: ${labelClient(0)}
-Âge: ${clientAge ?? "N/A"} | Statut: ${client.status || "N/A"}
-Situation familiale: ${client.family_context || "N/A"} | Situation: ${client.marital_status || "N/A"}
+Âge: ${clientAge ?? "N/A"} | Statut: ${client.statut_client || "N/A"}
+Situation familiale: ${client.family_context || "N/A"} | Situation: ${client.situation_familiale || "N/A"}
 Profession: ${client.profession || "N/A"}
 Notes: ${anonymiserPourIA(client.notes) || "Aucune"}
 
 CONTRATS (${contracts.length}):
-${contracts.map((c) => `- ${c.product_type} chez ${c.insurer} — ${c.status} — Prime: ${c.annual_premium}€/an — Début: ${c.start_date || "N/A"}`).join("\n") || "Aucun contrat"}
+${contracts.map((c) => `- ${c.contract_type} chez ${c.insurer_name} — ${c.status} — Prime: ${c.prime_annuelle}€/an — Début: ${c.effective_date || "N/A"}`).join("\n") || "Aucun contrat"}
 
 PERSONNES LIÉES (${relatedPersons.length}):
-${relatedPersons.map((p, idx) => `- ${p.relation}: Proche ${idx + 1} (âge ${ageDepuisNaissance(p.date_of_birth) ?? "N/A"})`).join("\n") || "Aucune"}
+${relatedPersons.map((p, idx) => `- ${p.type_relation}: Proche ${idx + 1} (âge ${ageDepuisNaissance(p.date_naissance) ?? "N/A"})`).join("\n") || "Aucune"}
 
 HISTORIQUE INTERACTIONS (${interactions.length}):
-${interactions.slice(0, 8).map((i) => `- ${new Date(i.date).toLocaleDateString("fr-FR")} [${i.type}]: ${anonymiserPourIA(i.summary) || "N/A"} → Résultat: ${anonymiserPourIA(i.outcome) || "N/A"}`).join("\n") || "Aucune interaction"}
+${interactions.slice(0, 8).map((i) => `- ${new Date(i.created_at).toLocaleDateString("fr-FR")} [${i.type}]: ${anonymiserPourIA(i.titre) || "N/A"} → ${anonymiserPourIA(i.contenu) || "N/A"}`).join("\n") || "Aucune interaction"}
 `;
 
     const systemPrompt = `Tu es IaGO, l'assistant IA du cabinet EJ Partners Assurances.
@@ -95,8 +100,8 @@ Les 5 points doivent couvrir: situation actuelle, contrats en place, besoins non
     const parsed = JSON.parse(content);
 
     // Ré-injection du vrai nom côté serveur (jamais envoyé à OpenAI).
-    const realName = [client.first_name, client.last_name].filter(Boolean).join(" ").trim();
-    parsed.client_name = realName || client.full_name || parsed.client_name;
+    // full_name est un champ unique en base (pas first_name + last_name).
+    parsed.client_name = client.full_name || parsed.client_name;
 
     // Journal d'audit : usage IA sur ce client.
     const { data: { user } } = await supabase.auth.getUser();

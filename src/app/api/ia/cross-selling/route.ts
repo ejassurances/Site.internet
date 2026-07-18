@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { labelClient, logIaUsage } from "@/lib/ia/audit-anonymise";
+import { labelClient, logIaUsage, warnRequete } from "@/lib/ia/audit-anonymise";
 
 function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -11,8 +11,8 @@ function getOpenAIClient() {
   return new OpenAI({ apiKey });
 }
 
-type ClientRow = { id: string; first_name: string; last_name: string; email: string; family_context: string | null; marital_status: string | null; status: string };
-type ContractRow = { client_id: string; product_type: string; status: string };
+type ClientRow = { id: string; full_name: string | null; email: string; family_context: string | null; situation_familiale: string | null; statut_client: string };
+type ContractRow = { client_id: string; contract_type: string; status: string };
 type Opportunity = { opportunites: { potentiel_ca: string }[] };
 
 export async function POST() {
@@ -20,11 +20,13 @@ export async function POST() {
     const supabase = await createSupabaseServerClient();
     if (!supabase) return NextResponse.json({ error: "Connexion Supabase non disponible." }, { status: 500 });
 
-    const { data: clients } = await supabase
+    const clientsRes = await supabase
       .from("clients")
-      .select("id, first_name, last_name, email, family_context, marital_status, status")
-      .in("status", ["actif", "prospect"])
+      .select("id, full_name, email, family_context, situation_familiale, statut_client")
+      .in("statut_client", ["actif", "prospect"])
       .limit(50);
+    warnRequete("cross-selling/clients", clientsRes, { warnIfEmpty: true });
+    const clients = clientsRes.data;
 
     if (!clients || clients.length === 0) {
       return NextResponse.json({
@@ -36,11 +38,13 @@ export async function POST() {
     }
 
     const clientIds = (clients as ClientRow[]).map((c) => c.id);
-    const { data: allContracts } = await supabase
+    const contractsRes = await supabase
       .from("contracts")
-      .select("client_id, product_type, status")
+      .select("client_id, contract_type, status")
       .in("client_id", clientIds)
-      .eq("status", "actif");
+      .eq("status", "active");
+    warnRequete("cross-selling/contracts", contractsRes);
+    const allContracts = contractsRes.data;
 
     // Table de correspondance conservée côté serveur uniquement (jamais envoyée à
     // OpenAI) pour ré-injecter le vrai nom / email dans la réponse.
@@ -49,7 +53,7 @@ export async function POST() {
     const clientsData = (clients as ClientRow[]).map((client, index) => {
       const clientContracts = ((allContracts || []) as ContractRow[]).filter((c) => c.client_id === client.id);
       realById.set(client.id, {
-        name: [client.first_name, client.last_name].filter(Boolean).join(" ").trim(),
+        name: client.full_name?.trim() || "",
         email: client.email,
       });
       // Envoyé à OpenAI : identifiants directs neutralisés (nom → étiquette, pas
@@ -58,8 +62,8 @@ export async function POST() {
       return {
         id: client.id,
         nom: labelClient(index),
-        situation: client.family_context || client.marital_status || "Non précisé",
-        contrats: clientContracts.map((c) => c.product_type),
+        situation: client.family_context || client.situation_familiale || "Non précisé",
+        contrats: clientContracts.map((c) => c.contract_type),
       };
     });
 
