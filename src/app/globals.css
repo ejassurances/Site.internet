@@ -150,6 +150,155 @@ h1, h2, h3, h4, p { margin-top: 0; }
   background: white;
 }
 
+/* --- Menu de navigation public : items + déroulants -------------------- */
+.header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Lien mis en avant (Assurance emprunteur) */
+.public-nav .nav-link-highlight {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* Panneau déroulant : flotte sous le déclencheur, opaque, au-dessus du contenu */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  z-index: 50;
+}
+
+/* Pont invisible : couvre l'espace entre le lien et le panneau pour éviter
+   le clignotement (flicker) au passage de la souris. */
+.nav-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+
+.nav-dropdown .nav-dropdown-item {
+  display: block;
+  padding: 9px 12px;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+
+.nav-dropdown .nav-dropdown-item:hover {
+  background: rgba(59,130,246,.10);
+  color: var(--navy);
+}
+
+/* Déclencheur burger (masqué en desktop, affiché en mobile via media query) */
+.burger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(7,24,39,.12);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,.8);
+  color: var(--navy);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.burger-btn:hover {
+  border-color: rgba(7,24,39,.22);
+  background: white;
+}
+
+/* --- Menu mobile (overlay sous le header) ----------------------------- */
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px clamp(20px, 4vw, 40px) 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+  max-height: calc(100vh - 72px);
+  overflow-y: auto;
+  z-index: 45;
+}
+
+.mobile-menu nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav-group {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--line);
+}
+
+.mobile-nav-link {
+  padding: 13px 4px;
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.mobile-nav-sub {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 8px 14px;
+}
+
+.mobile-nav-sub-link {
+  padding: 9px 4px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mobile-nav-sub-link:hover,
+.mobile-nav-link:hover {
+  color: var(--navy);
+}
+
+.mobile-menu-cta {
+  margin-top: 4px;
+}
+
+.mobile-menu-cta .primary-action {
+  width: 100%;
+  justify-content: center;
+}
+
 /* âââ Site Footer ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 .site-footer {
   margin-top: 80px;
@@ -2152,8 +2301,9 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 }
 
 @media (max-width: 980px) {
-  .site-header { flex-wrap: wrap; min-height: auto; padding: 14px clamp(20px, 4vw, 40px); gap: 12px; }
-  .public-nav { flex-wrap: wrap; justify-content: flex-start; gap: 4px; }
+  .site-header { min-height: auto; padding: 14px clamp(20px, 4vw, 40px); gap: 12px; }
+  .public-nav { display: none; }
+  .burger-btn { display: inline-flex; }
 
   .home-hero, .page-hero, .split-section, .content-band,
   .values-grid, .trust-strip, .stats-grid, .example-grid,
