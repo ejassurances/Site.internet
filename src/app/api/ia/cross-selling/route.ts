@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { labelClient, logIaUsage } from "@/lib/ia/audit-anonymise";
 
 function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -41,12 +42,22 @@ export async function POST() {
       .in("client_id", clientIds)
       .eq("status", "actif");
 
-    const clientsData = (clients as ClientRow[]).map((client) => {
+    // Table de correspondance conservée côté serveur uniquement (jamais envoyée à
+    // OpenAI) pour ré-injecter le vrai nom / email dans la réponse.
+    const realById = new Map<string, { name: string; email: string }>();
+
+    const clientsData = (clients as ClientRow[]).map((client, index) => {
       const clientContracts = ((allContracts || []) as ContractRow[]).filter((c) => c.client_id === client.id);
+      realById.set(client.id, {
+        name: [client.first_name, client.last_name].filter(Boolean).join(" ").trim(),
+        email: client.email,
+      });
+      // Envoyé à OpenAI : identifiants directs neutralisés (nom → étiquette, pas
+      // d'email) ; l'id (non identifiant direct) est conservé pour le mapping ;
+      // la situation familiale utile au raisonnement est conservée.
       return {
         id: client.id,
-        nom: `${client.first_name} ${client.last_name}`,
-        email: client.email,
+        nom: labelClient(index),
         situation: client.family_context || client.marital_status || "Non précisé",
         contrats: clientContracts.map((c) => c.product_type),
       };
@@ -103,12 +114,30 @@ Inclure seulement les clients avec au moins une opportunité réelle. Maximum 20
     const parsed = JSON.parse(content);
     const opportunities: Opportunity[] = parsed.opportunities || [];
 
+    // Ré-injection du vrai nom / email côté serveur (jamais envoyés à OpenAI).
+    (opportunities as unknown as { client_id?: string; client_name?: string; email?: string }[]).forEach((opp) => {
+      const real = opp.client_id ? realById.get(opp.client_id) : undefined;
+      if (real) {
+        opp.client_name = real.name || opp.client_name;
+        opp.email = real.email || opp.email;
+      }
+    });
+
     let totalCA = 0;
     opportunities.forEach((opp) => {
       opp.opportunites.forEach((op) => {
         const match = op.potentiel_ca.match(/(\d+)/);
         if (match) totalCA += parseInt(match[1]);
       });
+    });
+
+    // Journal d'audit : une ligne par client dont les données ont été envoyées à l'IA.
+    const { data: { user } } = await supabase.auth.getUser();
+    await logIaUsage(supabase, {
+      actorId: user?.id ?? null,
+      action: "ia.cross_selling",
+      clientIds: (clients as ClientRow[]).map((c) => c.id),
+      metadata: { service: "openai", model: "gpt-4o", summary: "Scan cross-selling du portefeuille", clients_count: clients.length },
     });
 
     return NextResponse.json({
