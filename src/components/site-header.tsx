@@ -6,38 +6,19 @@ import { useState } from "react";
 import { CalendarDays, ChevronDown, LockKeyhole, Menu, X } from "lucide-react";
 
 const navItems = [
-  {
-    label: "Assurance emprunteur",
-    href: "/assurance-emprunteur",
-    highlight: true,
-    sub: [
-      { label: "Comprendre l'assurance emprunteur", href: "/assurance-emprunteur" },
-      { label: "Simulateur emprunteur", href: "/assurance-emprunteur#simulateur" },
-      { label: "Contact courtier", href: "/contact#rendez-vous" },
-    ],
-  },
+  { label: "Assurance emprunteur", href: "/assurance-emprunteur", highlight: true, sub: [] },
   {
     label: "Protection & coparentalité",
     href: "/expertise-coparentalite",
     highlight: false,
     sub: [
-      { label: "Coparentalité", href: "/expertise-coparentalite" },
       { label: "Lien parent social / enfant", href: "/parent-social-enfant" },
       { label: "Familles LGBT+", href: "/familles-lgbt" },
       { label: "Protection des enfants", href: "/protection-enfants" },
+      { label: "Familles recomposées", href: "/familles-recomposees" },
     ],
   },
-  {
-    label: "Professionnel",
-    href: "/professionnel",
-    highlight: false,
-    sub: [
-      { label: "Responsabilité civile pro", href: "/professionnel#rc-pro" },
-      { label: "Multirisque professionnelle", href: "/professionnel#multirisque" },
-      { label: "Prévoyance TNS", href: "/professionnel#prevoyance-tns" },
-      { label: "Santé collective", href: "/professionnel#sante-collective" },
-    ],
-  },
+  { label: "Professionnel", href: "/professionnel", highlight: false, sub: [] },
   { label: "Assurance-vie & patrimoine", href: "/assurance-vie-patrimoine", highlight: false, sub: [] },
   { label: "Conseils & actus", href: "/conseils-actus", highlight: false, sub: [] },
   { label: "À propos", href: "/a-propos", highlight: false, sub: [] },
