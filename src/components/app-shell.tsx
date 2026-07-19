@@ -43,7 +43,6 @@ type NavLink = { label: string; href: string; icon: LucideIcon; hidden?: boolean
 type AdminModule = {
   id: string;
   label: string;
-  emoji: string;
   icon: LucideIcon;
   href: string;
   description: string;
@@ -54,7 +53,6 @@ const adminModules: AdminModule[] = [
   {
     id: "crm",
     label: "CRM & Productivité",
-    emoji: "🗂️",
     icon: Users,
     href: "/admin/crm",
     description: "Clients, contacts, agenda, tâches",
@@ -71,7 +69,6 @@ const adminModules: AdminModule[] = [
   {
     id: "vente",
     label: "Vente, Leads & GED",
-    emoji: "💼",
     icon: TrendingUp,
     href: "/admin/vente",
     description: "Pipeline, devis, documents",
@@ -90,7 +87,6 @@ const adminModules: AdminModule[] = [
   {
     id: "workflows",
     label: "Workflows",
-    emoji: "⚙️",
     icon: Zap,
     href: "/admin/workflows",
     description: "Automatisations, processus, statuts",
@@ -107,7 +103,6 @@ const adminModules: AdminModule[] = [
   {
     id: "ia",
     label: "Pilotage IA",
-    emoji: "🤖",
     icon: Bot,
     href: "/admin/ia",
     description: "Analyse IA, recommandations, scoring",
@@ -128,7 +123,6 @@ const adminModules: AdminModule[] = [
   {
     id: "conformite",
     label: "Conformité",
-    emoji: "⚖️",
     icon: Scale,
     href: "/admin/conformite",
     description: "ORIAS, DDA, RGPD, classeurs ACPR",
@@ -146,7 +140,6 @@ const adminModules: AdminModule[] = [
   {
     id: "finance",
     label: "Finance & Coms",
-    emoji: "💰",
     icon: DollarSign,
     href: "/admin/finance",
     description: "Commissions, mandataires, facturation",
@@ -167,7 +160,6 @@ const adminModules: AdminModule[] = [
   {
     id: "stats",
     label: "Stats & Analyses",
-    emoji: "📊",
     icon: BarChart3,
     href: "/admin/stats",
     description: "KPIs, rapports, performance",
@@ -240,7 +232,7 @@ export function AppShell({ role, user, children }: AppShellProps) {
                     {idx > 0 && <div className="side-nav-divider" />}
                     <Link href={module.href} className={`side-nav-group-label${isActive ? " module-active" : ""}`} onClick={closeMenu}>
                       <Icon size={12} aria-hidden />
-                      {module.emoji} {module.label}
+                      {module.label}
                     </Link>
                     {visibleLinks.map((link) => {
                       const LinkIcon = link.icon;

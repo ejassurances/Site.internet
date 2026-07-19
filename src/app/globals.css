@@ -1,20 +1,8 @@
 @import "tailwindcss";
 
-/* Design system Navy Fintech global pour EJ Partners Assurances. */
-:root {
-  --bg-primary: #F6F9FC;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #EEF4FF;
-  --border-color: #D8E2F0;
-  --accent-blue: #3B82F6;
-  --accent-purple: #8B5CF6;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --gradient-hero: linear-gradient(135deg, #F6F9FC 0%, #FFFFFF 52%, #EAF2FF 100%);
-  --gradient-btn: linear-gradient(135deg, #3B82F6, #8B5CF6);
-  --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.15);
-}
+/* Palette unique EJ Partners : voir le bloc « Design Tokens » ci-dessous
+   (Système navy / teal / bronze). L'ancien système "Navy Fintech" bleu/violet
+   a été neutralisé au profit de cette palette. */
 
 /* âââ Design Tokens âââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 :root {
@@ -3662,27 +3650,22 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   .project-automation-grid { grid-template-columns: 1fr; }
 }
 
-/* Utilitaires Navy Fintech communs aux pages publiques et admin. */
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-}
-
+/* Utilitaires communs aux pages publiques et admin (palette unique). */
 .glass-card {
   background: rgba(255,255,255,0.86);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   backdrop-filter: blur(12px);
   border-radius: 12px;
 }
 
 .glass-card:hover {
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-primary {
-  background: var(--gradient-btn);
+  background: var(--navy);
   color: white;
   border-radius: 8px;
   padding: 12px 24px;
@@ -3691,15 +3674,15 @@ body {
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  background: var(--navy-soft);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-md);
 }
 
-.section-hero { background: var(--gradient-hero); }
+.section-hero { background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 55%, var(--surface-soft) 100%); }
 
 .text-gradient {
-  background: var(--gradient-btn);
+  background: linear-gradient(135deg, var(--navy), var(--accent-strong));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -3707,29 +3690,29 @@ body {
 
 .navy-input {
   width: 100%;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--bg-elevated);
-  color: var(--text-primary);
+  background: var(--surface);
+  color: var(--fg);
   padding: 12px 14px;
   outline: none;
 }
 
-.navy-input::placeholder { color: var(--text-muted); }
+.navy-input::placeholder { color: var(--muted); }
 
 .navy-input:focus {
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.22);
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 3px rgba(47, 111, 115, 0.18);
 }
 
 .navy-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid rgba(59, 130, 246, 0.35);
+  border: 1px solid rgba(7, 24, 39, 0.18);
   border-radius: 999px;
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--text-primary);
+  background: rgba(7, 24, 39, 0.05);
+  color: var(--navy);
   padding: 6px 10px;
   font-size: 12px;
   font-weight: 700;
