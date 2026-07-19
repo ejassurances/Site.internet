@@ -4313,6 +4313,7 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .app-layout .bo-badge-warning { color: var(--bo-warning); background: var(--bo-warning-bg); border-color: var(--bo-warning-bd); }
 .app-layout .bo-badge-info { color: var(--bo-info); background: var(--bo-info-bg); border-color: var(--bo-info-bd); }
 .app-layout .bo-badge-neutral { color: var(--bo-muted); background: var(--bo-surface-3); border-color: var(--bo-border); }
+.app-layout .bo-badge-danger { color: var(--bo-danger); background: var(--bo-danger-bg); border-color: var(--bo-danger-bd); }
 .app-layout .bo-badge-gold { color: var(--bo-gold-ink); background: var(--bo-gold-050); border-color: var(--bo-gold); }
 
 /* Onglets (segmented links) */
