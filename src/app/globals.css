@@ -1,20 +1,8 @@
 @import "tailwindcss";
 
-/* Design system Navy Fintech global pour EJ Partners Assurances. */
-:root {
-  --bg-primary: #F6F9FC;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #EEF4FF;
-  --border-color: #D8E2F0;
-  --accent-blue: #3B82F6;
-  --accent-purple: #8B5CF6;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --gradient-hero: linear-gradient(135deg, #F6F9FC 0%, #FFFFFF 52%, #EAF2FF 100%);
-  --gradient-btn: linear-gradient(135deg, #3B82F6, #8B5CF6);
-  --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.15);
-}
+/* Palette unique EJ Partners : voir le bloc « Design Tokens » ci-dessous
+   (Système navy / teal / bronze). L'ancien système "Navy Fintech" bleu/violet
+   a été neutralisé au profit de cette palette. */
 
 /* âââ Design Tokens âââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 :root {
@@ -3662,27 +3650,22 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
   .project-automation-grid { grid-template-columns: 1fr; }
 }
 
-/* Utilitaires Navy Fintech communs aux pages publiques et admin. */
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-}
-
+/* Utilitaires communs aux pages publiques et admin (palette unique). */
 .glass-card {
   background: rgba(255,255,255,0.86);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   backdrop-filter: blur(12px);
   border-radius: 12px;
 }
 
 .glass-card:hover {
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-primary {
-  background: var(--gradient-btn);
+  background: var(--navy);
   color: white;
   border-radius: 8px;
   padding: 12px 24px;
@@ -3691,15 +3674,15 @@ body {
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  background: var(--navy-soft);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-md);
 }
 
-.section-hero { background: var(--gradient-hero); }
+.section-hero { background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 55%, var(--surface-soft) 100%); }
 
 .text-gradient {
-  background: var(--gradient-btn);
+  background: linear-gradient(135deg, var(--navy), var(--accent-strong));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -3707,29 +3690,29 @@ body {
 
 .navy-input {
   width: 100%;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--bg-elevated);
-  color: var(--text-primary);
+  background: var(--surface);
+  color: var(--fg);
   padding: 12px 14px;
   outline: none;
 }
 
-.navy-input::placeholder { color: var(--text-muted); }
+.navy-input::placeholder { color: var(--muted); }
 
 .navy-input:focus {
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.22);
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 3px rgba(47, 111, 115, 0.18);
 }
 
 .navy-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid rgba(59, 130, 246, 0.35);
+  border: 1px solid rgba(7, 24, 39, 0.18);
   border-radius: 999px;
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--text-primary);
+  background: rgba(7, 24, 39, 0.05);
+  color: var(--navy);
   padding: 6px 10px;
   font-size: 12px;
   font-weight: 700;
@@ -4330,6 +4313,7 @@ body {
 .app-layout .bo-badge-warning { color: var(--bo-warning); background: var(--bo-warning-bg); border-color: var(--bo-warning-bd); }
 .app-layout .bo-badge-info { color: var(--bo-info); background: var(--bo-info-bg); border-color: var(--bo-info-bd); }
 .app-layout .bo-badge-neutral { color: var(--bo-muted); background: var(--bo-surface-3); border-color: var(--bo-border); }
+.app-layout .bo-badge-danger { color: var(--bo-danger); background: var(--bo-danger-bg); border-color: var(--bo-danger-bd); }
 .app-layout .bo-badge-gold { color: var(--bo-gold-ink); background: var(--bo-gold-050); border-color: var(--bo-gold); }
 
 /* Onglets (segmented links) */
@@ -4589,3 +4573,58 @@ body {
 .app-layout .cf360-inline-form select:focus,
 .app-layout .cf360-inline-form textarea:focus { border-color: var(--bo-teal); box-shadow: var(--bo-ring); outline: none; }
 /* Fin DES-001 — Phase 6 (Contrat & fiche 360) */
+
+/* ── Assistant Projet (stepper) — Lot 1 refonte, palette Système B ─────────── */
+.app-layout .bo-wf { display: flex; flex-direction: column; gap: 20px; }
+.app-layout .bo-wf-head h3 { margin: 0; font-size: 20px; letter-spacing: -.01em; color: var(--navy); }
+.app-layout .bo-wf-head .bo-wf-sub { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; }
+.app-layout .bo-wf-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: var(--bo-teal-050, #E4F1F1); color: var(--accent-strong); border: 1px solid #BFDDDE; }
+
+/* Stepper */
+.app-layout .bo-wf-stepper { display: flex; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 8px; box-shadow: var(--shadow-sm); }
+.app-layout .bo-wf-st { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; position: relative; padding: 2px 6px; background: none; border: none; cursor: pointer; font: inherit; }
+.app-layout .bo-wf-st:not(:last-child)::after { content: ""; position: absolute; top: 16px; left: 62%; right: -38%; height: 2px; background: var(--line); }
+.app-layout .bo-wf-st.is-done:not(:last-child)::after { background: var(--bo-success, #0F7B5A); }
+.app-layout .bo-wf-st .bo-wf-dot { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 800; background: var(--surface-soft); color: var(--muted); border: 2px solid var(--line); z-index: 1; }
+.app-layout .bo-wf-st.is-done .bo-wf-dot { background: var(--bo-success-bg, #E3F2EA); color: var(--bo-success, #0F7B5A); border-color: var(--bo-success, #0F7B5A); }
+.app-layout .bo-wf-st.is-active .bo-wf-dot { background: var(--navy); color: #fff; border-color: var(--navy); box-shadow: 0 0 0 4px rgba(7,24,39,.10); }
+.app-layout .bo-wf-st .bo-wf-lab { font-size: 11.5px; font-weight: 700; text-align: center; color: var(--muted); line-height: 1.3; }
+.app-layout .bo-wf-st.is-active .bo-wf-lab { color: var(--navy); }
+.app-layout .bo-wf-st.is-done .bo-wf-lab { color: var(--ink); }
+
+/* Layout */
+.app-layout .bo-wf-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; align-items: start; }
+.app-layout .bo-wf-panel, .app-layout .bo-wf-railcard { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-sm); }
+.app-layout .bo-wf-panel-h { padding: 15px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+.app-layout .bo-wf-panel-h h4 { margin: 0; font-size: 15.5px; color: var(--navy); }
+.app-layout .bo-wf-panel-h .bo-wf-stepi { font-size: 12px; color: var(--muted); font-weight: 600; }
+.app-layout .bo-wf-panel-b { padding: 20px; }
+.app-layout .bo-wf-panel-b > p { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+.app-layout .bo-wf-hint { background: var(--bo-teal-050, #E4F1F1); border: 1px solid #CFE6E6; border-radius: 10px; padding: 10px 13px; font-size: 12.5px; color: #1c5c60; margin-bottom: 16px; }
+.app-layout .bo-wf-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 15px 20px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.app-layout .bo-wf-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Buttons */
+.app-layout .bo-wf-btn { border: 1px solid var(--line); border-radius: 9px; padding: 10px 16px; font-size: 13px; font-weight: 700; cursor: pointer; background: #fff; color: var(--navy); display: inline-flex; align-items: center; gap: 6px; }
+.app-layout .bo-wf-btn:hover { border-color: var(--border-strong, #CBD6E2); }
+.app-layout .bo-wf-btn--primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+.app-layout .bo-wf-btn--primary:hover { background: var(--navy-soft); }
+.app-layout .bo-wf-btn:disabled { opacity: .55; cursor: default; }
+
+/* Rail */
+.app-layout .bo-wf-rail { display: flex; flex-direction: column; gap: 16px; }
+.app-layout .bo-wf-railcard .bo-wf-panel-b { padding: 16px 18px; }
+.app-layout .bo-wf-railh { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 0 6px; }
+.app-layout .bo-wf-kv { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 4px 0; }
+.app-layout .bo-wf-kv .k { color: var(--muted); }
+.app-layout .bo-wf-kv .v { font-weight: 700; text-align: right; }
+.app-layout .bo-wf-prog { height: 8px; border-radius: 6px; background: var(--surface-soft); overflow: hidden; margin: 6px 0 2px; }
+.app-layout .bo-wf-prog i { display: block; height: 100%; background: var(--accent-strong); }
+.app-layout .bo-wf-doc { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+.app-layout .bo-wf-doc:last-child { border-bottom: none; }
+.app-layout .bo-wf-trace p { font-size: 12px; color: var(--muted); margin: 5px 0; }
+
+@media (max-width: 900px) {
+  .app-layout .bo-wf-grid { grid-template-columns: 1fr; }
+  .app-layout .bo-wf-stepper { overflow-x: auto; }
+}
