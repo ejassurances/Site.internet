@@ -4229,6 +4229,10 @@ h3 { font-size: clamp(18px, 2vw, 24px); letter-spacing: -.01em; }
 .app-layout .bo-kpi-val { font-size: 27px; font-weight: 760; color: var(--bo-ink); letter-spacing: -.02em; margin: 8px 0 2px; }
 .app-layout .bo-kpi-sub { font-size: 12px; color: var(--bo-faint); }
 .app-layout .bo-kpi-delta { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 700; color: var(--bo-success); }
+/* KPI en attente de branchement (empty-state honnête) */
+.app-layout .bo-kpi.is-soon { background: var(--bo-surface-2); border-style: dashed; }
+.app-layout .bo-kpi.is-soon .bo-kpi-ic { background: var(--bo-surface-3); color: var(--bo-muted); }
+.app-layout .bo-kpi.is-soon .bo-kpi-val { color: var(--bo-faint); font-weight: 600; }
 
 /* Cartes */
 .app-layout .bo-card { background: var(--bo-surface); border: 1px solid var(--bo-border); border-radius: 14px; box-shadow: var(--bo-shadow-sm); }
